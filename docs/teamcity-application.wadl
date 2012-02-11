@@ -1,0 +1,558 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<application xmlns="http://research.sun.com/wadl/2006/10">
+    <doc xmlns:jersey="http://jersey.dev.java.net/" jersey:generatedBy="Jersey: 1.1.4 11/10/2009 05:36 PM"/>
+    <resources base="http://teamcity.codebetter.com/">
+        <resource path="/app/rest/changes">
+            <method name="GET" id="serveChanges">
+                <request>
+                    <param xmlns:xs="http://www.w3.org/2001/XMLSchema" type="xs:string" style="query" name="project"/>
+                    <param xmlns:xs="http://www.w3.org/2001/XMLSchema" type="xs:string" style="query" name="buildType"/>
+                    <param xmlns:xs="http://www.w3.org/2001/XMLSchema" type="xs:string" style="query" name="build"/>
+                    <param xmlns:xs="http://www.w3.org/2001/XMLSchema" type="xs:string" style="query" name="vcsRoot"/>
+                    <param xmlns:xs="http://www.w3.org/2001/XMLSchema" type="xs:string" style="query" name="sinceChange"/>
+                    <param xmlns:xs="http://www.w3.org/2001/XMLSchema" default="0" type="xs:long" style="query" name="start"/>
+                    <param xmlns:xs="http://www.w3.org/2001/XMLSchema" default="100" type="xs:int" style="query" name="count"/>
+                </request>
+                <response>
+                    <representation mediaType="application/xml"/>
+                    <representation mediaType="application/json"/>
+                </response>
+            </method>
+            <resource path="/{changeLocator}">
+                <param xmlns:xs="http://www.w3.org/2001/XMLSchema" type="xs:string" style="template" name="changeLocator"/>
+                <method name="GET" id="serveChange">
+                    <response>
+                        <representation mediaType="application/xml"/>
+                        <representation mediaType="application/json"/>
+                    </response>
+                </method>
+            </resource>
+        </resource>
+        <resource path="/app/rest/vcs-roots">
+            <method name="GET" id="serveRoots">
+                <response>
+                    <representation mediaType="application/xml"/>
+                    <representation mediaType="application/json"/>
+                </response>
+            </method>
+            <resource path="/{vcsRootLocator}">
+                <param xmlns:xs="http://www.w3.org/2001/XMLSchema" type="xs:string" style="template" name="vcsRootLocator"/>
+                <method name="GET" id="serveRoot">
+                    <response>
+                        <representation mediaType="application/xml"/>
+                        <representation mediaType="application/json"/>
+                    </response>
+                </method>
+            </resource>
+        </resource>
+        <resource path="/app/rest/server">
+            <method name="GET" id="serveServerInfo">
+                <response>
+                    <representation mediaType="application/xml"/>
+                    <representation mediaType="application/json"/>
+                </response>
+            </method>
+            <resource path="/backup">
+                <method name="POST" id="startBackup">
+                    <request>
+                        <param xmlns:xs="http://www.w3.org/2001/XMLSchema" type="xs:string" style="query" name="fileName"/>
+                        <param xmlns:xs="http://www.w3.org/2001/XMLSchema" type="xs:boolean" style="query" name="addTimestamp"/>
+                        <param xmlns:xs="http://www.w3.org/2001/XMLSchema" type="xs:boolean" style="query" name="includeConfigs"/>
+                        <param xmlns:xs="http://www.w3.org/2001/XMLSchema" type="xs:boolean" style="query" name="includeDatabase"/>
+                        <param xmlns:xs="http://www.w3.org/2001/XMLSchema" type="xs:boolean" style="query" name="includeBuildLogs"/>
+                        <param xmlns:xs="http://www.w3.org/2001/XMLSchema" type="xs:boolean" style="query" name="includePersonalChanges"/>
+                        <param xmlns:xs="http://www.w3.org/2001/XMLSchema" type="xs:string" name=""/>
+                    </request>
+                    <response>
+                        <representation mediaType="text/plain"/>
+                    </response>
+                </method>
+                <method name="GET" id="getBackupStatus">
+                    <request>
+                        <param xmlns:xs="http://www.w3.org/2001/XMLSchema" type="xs:string" name=""/>
+                    </request>
+                    <response>
+                        <representation mediaType="text/plain"/>
+                    </response>
+                </method>
+            </resource>
+            <resource path="/{field}">
+                <param xmlns:xs="http://www.w3.org/2001/XMLSchema" type="xs:string" style="template" name="field"/>
+                <method name="GET" id="serveServerVersion">
+                    <response>
+                        <representation mediaType="text/plain"/>
+                    </response>
+                </method>
+            </resource>
+            <resource path="/plugins">
+                <method name="GET" id="servePlugins">
+                    <response>
+                        <representation mediaType="application/xml"/>
+                        <representation mediaType="application/json"/>
+                    </response>
+                </method>
+            </resource>
+        </resource>
+        <resource path="/app/rest">
+            <method name="GET" id="serveRoot">
+                <response>
+                    <representation mediaType="text/plain"/>
+                </response>
+            </method>
+            <resource path="/version">
+                <method name="GET" id="serveApiVersion">
+                    <response>
+                        <representation mediaType="text/plain"/>
+                    </response>
+                </method>
+            </resource>
+            <resource path="/info">
+                <method name="GET" id="servePluginInfo">
+                    <response>
+                        <representation mediaType="application/xml"/>
+                    </response>
+                </method>
+            </resource>
+            <resource path="/{projectLocator}/{btLocator}/{buildLocator}/{field}">
+                <param xmlns:xs="http://www.w3.org/2001/XMLSchema" type="xs:string" style="template" name="field"/>
+                <param xmlns:xs="http://www.w3.org/2001/XMLSchema" type="xs:string" style="template" name="projectLocator"/>
+                <param xmlns:xs="http://www.w3.org/2001/XMLSchema" type="xs:string" style="template" name="btLocator"/>
+                <param xmlns:xs="http://www.w3.org/2001/XMLSchema" type="xs:string" style="template" name="buildLocator"/>
+                <method name="GET" id="serveBuildFieldShort">
+                    <response>
+                        <representation mediaType="text/plain"/>
+                    </response>
+                </method>
+            </resource>
+        </resource>
+        <resource path="/app/rest/userGroups">
+            <method name="GET" id="serveGroups">
+                <response>
+                    <representation mediaType="application/xml"/>
+                    <representation mediaType="application/json"/>
+                </response>
+            </method>
+            <resource path="/{groupLocator}/roles">
+                <param xmlns:xs="http://www.w3.org/2001/XMLSchema" type="xs:string" style="template" name="groupLocator"/>
+                <method name="PUT" id="addRole">
+                    <request>
+                        <representation mediaType="application/xml"/>
+                        <representation mediaType="application/json"/>
+                    </request>
+                </method>
+                <method name="GET" id="listRoles">
+                    <response>
+                        <representation mediaType="application/xml"/>
+                        <representation mediaType="application/json"/>
+                    </response>
+                </method>
+            </resource>
+            <resource path="/{groupLocator}/roles/{roleId}/{scope}">
+                <param xmlns:xs="http://www.w3.org/2001/XMLSchema" type="xs:string" style="template" name="groupLocator"/>
+                <param xmlns:xs="http://www.w3.org/2001/XMLSchema" type="xs:string" style="template" name="scope"/>
+                <param xmlns:xs="http://www.w3.org/2001/XMLSchema" type="xs:string" style="template" name="roleId"/>
+                <method name="DELETE" id="deleteRole"/>
+                <method name="GET" id="listRole">
+                    <response>
+                        <representation mediaType="*/*"/>
+                    </response>
+                </method>
+                <method name="POST" id="addRoleSimple"/>
+            </resource>
+            <resource path="/{groupLocator}">
+                <param xmlns:xs="http://www.w3.org/2001/XMLSchema" type="xs:string" style="template" name="groupLocator"/>
+                <method name="GET" id="serveGroup">
+                    <response>
+                        <representation mediaType="application/xml"/>
+                        <representation mediaType="application/json"/>
+                    </response>
+                </method>
+            </resource>
+        </resource>
+        <resource path="/app/rest/users">
+            <method name="POST" id="createUser">
+                <request>
+                    <representation mediaType="application/xml"/>
+                    <representation mediaType="application/json"/>
+                </request>
+                <response>
+                    <representation mediaType="*/*"/>
+                </response>
+            </method>
+            <method name="GET" id="serveUsers">
+                <response>
+                    <representation mediaType="application/xml"/>
+                    <representation mediaType="application/json"/>
+                </response>
+            </method>
+            <resource path="/{userLocator}/roles">
+                <param xmlns:xs="http://www.w3.org/2001/XMLSchema" type="xs:string" style="template" name="userLocator"/>
+                <method name="PUT" id="addRole">
+                    <request>
+                        <representation mediaType="application/xml"/>
+                        <representation mediaType="application/json"/>
+                    </request>
+                </method>
+                <method name="GET" id="listRoles">
+                    <response>
+                        <representation mediaType="application/xml"/>
+                        <representation mediaType="application/json"/>
+                    </response>
+                </method>
+            </resource>
+            <resource path="/{userLocator}">
+                <param xmlns:xs="http://www.w3.org/2001/XMLSchema" type="xs:string" style="template" name="userLocator"/>
+                <method name="PUT" id="updateUser">
+                    <request>
+                        <representation mediaType="application/xml"/>
+                        <representation mediaType="application/json"/>
+                    </request>
+                </method>
+                <method name="GET" id="serveUser">
+                    <response>
+                        <representation mediaType="application/xml"/>
+                        <representation mediaType="application/json"/>
+                    </response>
+                </method>
+            </resource>
+            <resource path="/{userLocator}/roles/{roleId}/{scope}">
+                <param xmlns:xs="http://www.w3.org/2001/XMLSchema" type="xs:string" style="template" name="userLocator"/>
+                <param xmlns:xs="http://www.w3.org/2001/XMLSchema" type="xs:string" style="template" name="scope"/>
+                <param xmlns:xs="http://www.w3.org/2001/XMLSchema" type="xs:string" style="template" name="roleId"/>
+                <method name="DELETE" id="deleteRole"/>
+                <method name="GET" id="listRole">
+                    <response>
+                        <representation mediaType="*/*"/>
+                    </response>
+                </method>
+                <method name="POST" id="addRoleSimple"/>
+            </resource>
+        </resource>
+        <resource path="/app/rest/builds">
+            <method name="GET" id="serveAllBuilds">
+                <request>
+                    <param xmlns:xs="http://www.w3.org/2001/XMLSchema" type="xs:string" style="query" name="buildType"/>
+                    <param xmlns:xs="http://www.w3.org/2001/XMLSchema" type="xs:string" style="query" name="status"/>
+                    <param xmlns:xs="http://www.w3.org/2001/XMLSchema" type="xs:string" style="query" name="triggeredByUser"/>
+                    <param xmlns:xs="http://www.w3.org/2001/XMLSchema" type="xs:boolean" style="query" name="includePersonal"/>
+                    <param xmlns:xs="http://www.w3.org/2001/XMLSchema" type="xs:boolean" style="query" name="includeCanceled"/>
+                    <param xmlns:xs="http://www.w3.org/2001/XMLSchema" type="xs:boolean" style="query" name="onlyPinned"/>
+                    <param xmlns:xs="http://www.w3.org/2001/XMLSchema" type="xs:string" style="query" name="tag"/>
+                    <param xmlns:xs="http://www.w3.org/2001/XMLSchema" type="xs:string" style="query" name="agentName"/>
+                    <param xmlns:xs="http://www.w3.org/2001/XMLSchema" type="xs:string" style="query" name="sinceBuild"/>
+                    <param xmlns:xs="http://www.w3.org/2001/XMLSchema" type="xs:string" style="query" name="sinceDate"/>
+                    <param xmlns:xs="http://www.w3.org/2001/XMLSchema" default="0" type="xs:long" style="query" name="start"/>
+                    <param xmlns:xs="http://www.w3.org/2001/XMLSchema" default="100" type="xs:int" style="query" name="count"/>
+                    <param xmlns:xs="http://www.w3.org/2001/XMLSchema" type="xs:string" style="query" name="locator"/>
+                </request>
+                <response>
+                    <representation mediaType="application/xml"/>
+                    <representation mediaType="application/json"/>
+                </response>
+            </method>
+            <resource path="/{buildLocator}">
+                <param xmlns:xs="http://www.w3.org/2001/XMLSchema" type="xs:string" style="template" name="buildLocator"/>
+                <method name="DELETE" id="deleteBuild"/>
+                <method name="GET" id="serveBuild">
+                    <response>
+                        <representation mediaType="application/xml"/>
+                        <representation mediaType="application/json"/>
+                    </response>
+                </method>
+            </resource>
+            <resource path="/{buildLocator}/{field}">
+                <param xmlns:xs="http://www.w3.org/2001/XMLSchema" type="xs:string" style="template" name="field"/>
+                <param xmlns:xs="http://www.w3.org/2001/XMLSchema" type="xs:string" style="template" name="buildLocator"/>
+                <method name="GET" id="serveBuildFieldByBuildOnly">
+                    <response>
+                        <representation mediaType="text/plain"/>
+                    </response>
+                </method>
+            </resource>
+            <resource path="/{buildLocator}/statistics/">
+                <param xmlns:xs="http://www.w3.org/2001/XMLSchema" type="xs:string" style="template" name="buildLocator"/>
+                <method name="GET" id="serveBuildStatisticValues">
+                    <response>
+                        <representation mediaType="application/xml"/>
+                        <representation mediaType="application/json"/>
+                    </response>
+                </method>
+            </resource>
+            <resource path="/{buildLocator}/statistics/{name}">
+                <param xmlns:xs="http://www.w3.org/2001/XMLSchema" type="xs:string" style="template" name="name"/>
+                <param xmlns:xs="http://www.w3.org/2001/XMLSchema" type="xs:string" style="template" name="buildLocator"/>
+                <method name="GET" id="serveBuildStatisticValue">
+                    <response>
+                        <representation mediaType="text/plain"/>
+                    </response>
+                </method>
+            </resource>
+            <resource path="/{buildLocator}/tags/">
+                <param xmlns:xs="http://www.w3.org/2001/XMLSchema" type="xs:string" style="template" name="buildLocator"/>
+                <method name="GET" id="serveTags">
+                    <response>
+                        <representation mediaType="application/xml"/>
+                        <representation mediaType="application/json"/>
+                    </response>
+                </method>
+                <method name="PUT" id="replaceTags">
+                    <request>
+                        <representation mediaType="application/xml"/>
+                        <representation mediaType="application/json"/>
+                    </request>
+                </method>
+                <method name="POST" id="addTags">
+                    <request>
+                        <representation mediaType="application/xml"/>
+                        <representation mediaType="application/json"/>
+                    </request>
+                </method>
+                <method name="POST" id="addTag">
+                    <request>
+                        <representation mediaType="text/plain"/>
+                    </request>
+                </method>
+            </resource>
+            <resource path="/{buildLocator}/pin/">
+                <param xmlns:xs="http://www.w3.org/2001/XMLSchema" type="xs:string" style="template" name="buildLocator"/>
+                <method name="GET" id="getPinned">
+                    <response>
+                        <representation mediaType="text/plain"/>
+                    </response>
+                </method>
+                <method name="PUT" id="pinBuild">
+                    <request>
+                        <representation mediaType="text/plain"/>
+                    </request>
+                </method>
+                <method name="DELETE" id="unpinBuild">
+                    <request>
+                        <representation mediaType="text/plain"/>
+                    </request>
+                </method>
+            </resource>
+            <resource path="/{buildLocator}/comment">
+                <param xmlns:xs="http://www.w3.org/2001/XMLSchema" type="xs:string" style="template" name="buildLocator"/>
+                <method name="PUT" id="replaceComment">
+                    <request>
+                        <representation mediaType="text/plain"/>
+                    </request>
+                </method>
+                <method name="DELETE" id="deleteComment"/>
+            </resource>
+        </resource>
+        <resource path="/app/rest/agents">
+            <method name="GET" id="serveAgents">
+                <request>
+                    <param xmlns:xs="http://www.w3.org/2001/XMLSchema" default="true" type="xs:boolean" style="query" name="includeDisconnected"/>
+                    <param xmlns:xs="http://www.w3.org/2001/XMLSchema" default="true" type="xs:boolean" style="query" name="includeUnauthorized"/>
+                </request>
+                <response>
+                    <representation mediaType="application/xml"/>
+                    <representation mediaType="application/json"/>
+                </response>
+            </method>
+            <resource path="/{agentLocator}">
+                <param xmlns:xs="http://www.w3.org/2001/XMLSchema" type="xs:string" style="template" name="agentLocator"/>
+                <method name="GET" id="serveAgent">
+                    <response>
+                        <representation mediaType="application/xml"/>
+                        <representation mediaType="application/json"/>
+                    </response>
+                </method>
+            </resource>
+        </resource>
+        <resource path="/app/rest/buildTypes">
+            <method name="GET" id="serveBuildTypesXML">
+                <response>
+                    <representation mediaType="application/xml"/>
+                    <representation mediaType="application/json"/>
+                </response>
+            </method>
+            <resource path="/{btLocator}">
+                <param xmlns:xs="http://www.w3.org/2001/XMLSchema" type="xs:string" style="template" name="btLocator"/>
+                <method name="GET" id="serveBuildTypeXML">
+                    <response>
+                        <representation mediaType="application/xml"/>
+                        <representation mediaType="application/json"/>
+                    </response>
+                </method>
+            </resource>
+            <resource path="/{btLocator}/{field}">
+                <param xmlns:xs="http://www.w3.org/2001/XMLSchema" type="xs:string" style="template" name="field"/>
+                <param xmlns:xs="http://www.w3.org/2001/XMLSchema" type="xs:string" style="template" name="btLocator"/>
+                <method name="GET" id="serveBuildTypeField">
+                    <response>
+                        <representation mediaType="text/plain"/>
+                    </response>
+                </method>
+            </resource>
+            <resource path="/{btLocator}/parameters/{name}">
+                <param xmlns:xs="http://www.w3.org/2001/XMLSchema" type="xs:string" style="template" name="btLocator"/>
+                <param xmlns:xs="http://www.w3.org/2001/XMLSchema" type="xs:string" style="template" name="name"/>
+                <method name="GET" id="serveBuildTypeParameter">
+                    <response>
+                        <representation mediaType="text/plain"/>
+                    </response>
+                </method>
+                <method name="PUT" id="putBuildTypeParameter">
+                    <request>
+                        <representation mediaType="*/*"/>
+                    </request>
+                </method>
+                <method name="DELETE" id="deleteBuildTypeParameter"/>
+            </resource>
+            <resource path="/{btLocator}/runParameters/{name}">
+                <param xmlns:xs="http://www.w3.org/2001/XMLSchema" type="xs:string" style="template" name="btLocator"/>
+                <param xmlns:xs="http://www.w3.org/2001/XMLSchema" type="xs:string" style="template" name="name"/>
+                <method name="PUT" id="putBuildTypeRunParameter">
+                    <request>
+                        <representation mediaType="*/*"/>
+                    </request>
+                </method>
+            </resource>
+            <resource path="/{btLocator}/builds">
+                <param xmlns:xs="http://www.w3.org/2001/XMLSchema" type="xs:string" style="template" name="btLocator"/>
+                <method name="GET" id="serveBuilds">
+                    <request>
+                        <param xmlns:xs="http://www.w3.org/2001/XMLSchema" type="xs:string" style="query" name="status"/>
+                        <param xmlns:xs="http://www.w3.org/2001/XMLSchema" type="xs:string" style="query" name="triggeredByUser"/>
+                        <param xmlns:xs="http://www.w3.org/2001/XMLSchema" type="xs:boolean" style="query" name="includePersonal"/>
+                        <param xmlns:xs="http://www.w3.org/2001/XMLSchema" type="xs:boolean" style="query" name="includeCanceled"/>
+                        <param xmlns:xs="http://www.w3.org/2001/XMLSchema" type="xs:boolean" style="query" name="onlyPinned"/>
+                        <param xmlns:xs="http://www.w3.org/2001/XMLSchema" type="xs:string" style="query" name="tag"/>
+                        <param xmlns:xs="http://www.w3.org/2001/XMLSchema" type="xs:string" style="query" name="agentName"/>
+                        <param xmlns:xs="http://www.w3.org/2001/XMLSchema" type="xs:string" style="query" name="sinceBuild"/>
+                        <param xmlns:xs="http://www.w3.org/2001/XMLSchema" type="xs:string" style="query" name="sinceDate"/>
+                        <param xmlns:xs="http://www.w3.org/2001/XMLSchema" default="0" type="xs:long" style="query" name="start"/>
+                        <param xmlns:xs="http://www.w3.org/2001/XMLSchema" default="100" type="xs:int" style="query" name="count"/>
+                    </request>
+                    <response>
+                        <representation mediaType="application/xml"/>
+                        <representation mediaType="application/json"/>
+                    </response>
+                </method>
+            </resource>
+            <resource path="/{btLocator}/builds/{buildLocator}">
+                <param xmlns:xs="http://www.w3.org/2001/XMLSchema" type="xs:string" style="template" name="btLocator"/>
+                <param xmlns:xs="http://www.w3.org/2001/XMLSchema" type="xs:string" style="template" name="buildLocator"/>
+                <method name="GET" id="serveBuildWithProject">
+                    <response>
+                        <representation mediaType="application/xml"/>
+                        <representation mediaType="application/json"/>
+                    </response>
+                </method>
+            </resource>
+            <resource path="/{btLocator}/builds/{buildLocator}/{field}">
+                <param xmlns:xs="http://www.w3.org/2001/XMLSchema" type="xs:string" style="template" name="field"/>
+                <param xmlns:xs="http://www.w3.org/2001/XMLSchema" type="xs:string" style="template" name="btLocator"/>
+                <param xmlns:xs="http://www.w3.org/2001/XMLSchema" type="xs:string" style="template" name="buildLocator"/>
+                <method name="GET" id="serveBuildField">
+                    <response>
+                        <representation mediaType="text/plain"/>
+                    </response>
+                </method>
+            </resource>
+        </resource>
+        <resource path="/app/rest/projects">
+            <method name="GET" id="serveProjects">
+                <response>
+                    <representation mediaType="application/xml"/>
+                    <representation mediaType="application/json"/>
+                </response>
+            </method>
+            <resource path="/{projectLocator}/buildTypes/{btLocator}/builds">
+                <param xmlns:xs="http://www.w3.org/2001/XMLSchema" type="xs:string" style="template" name="projectLocator"/>
+                <param xmlns:xs="http://www.w3.org/2001/XMLSchema" type="xs:string" style="template" name="btLocator"/>
+                <method name="GET" id="serveBuilds">
+                    <request>
+                        <param xmlns:xs="http://www.w3.org/2001/XMLSchema" type="xs:string" style="query" name="status"/>
+                        <param xmlns:xs="http://www.w3.org/2001/XMLSchema" type="xs:string" style="query" name="triggeredByUser"/>
+                        <param xmlns:xs="http://www.w3.org/2001/XMLSchema" type="xs:boolean" style="query" name="includePersonal"/>
+                        <param xmlns:xs="http://www.w3.org/2001/XMLSchema" type="xs:boolean" style="query" name="includeCanceled"/>
+                        <param xmlns:xs="http://www.w3.org/2001/XMLSchema" type="xs:boolean" style="query" name="onlyPinned"/>
+                        <param xmlns:xs="http://www.w3.org/2001/XMLSchema" type="xs:string" style="query" name="tag"/>
+                        <param xmlns:xs="http://www.w3.org/2001/XMLSchema" type="xs:string" style="query" name="agentName"/>
+                        <param xmlns:xs="http://www.w3.org/2001/XMLSchema" type="xs:string" style="query" name="sinceBuild"/>
+                        <param xmlns:xs="http://www.w3.org/2001/XMLSchema" type="xs:string" style="query" name="sinceDate"/>
+                        <param xmlns:xs="http://www.w3.org/2001/XMLSchema" default="0" type="xs:long" style="query" name="start"/>
+                        <param xmlns:xs="http://www.w3.org/2001/XMLSchema" default="100" type="xs:int" style="query" name="count"/>
+                    </request>
+                    <response>
+                        <representation mediaType="application/xml"/>
+                        <representation mediaType="application/json"/>
+                    </response>
+                </method>
+            </resource>
+            <resource path="/{projectLocator}/buildTypes/{btLocator}/builds/{buildLocator}">
+                <param xmlns:xs="http://www.w3.org/2001/XMLSchema" type="xs:string" style="template" name="projectLocator"/>
+                <param xmlns:xs="http://www.w3.org/2001/XMLSchema" type="xs:string" style="template" name="btLocator"/>
+                <param xmlns:xs="http://www.w3.org/2001/XMLSchema" type="xs:string" style="template" name="buildLocator"/>
+                <method name="GET" id="serveBuildWithProject">
+                    <response>
+                        <representation mediaType="application/xml"/>
+                        <representation mediaType="application/json"/>
+                    </response>
+                </method>
+            </resource>
+            <resource path="/{projectLocator}">
+                <param xmlns:xs="http://www.w3.org/2001/XMLSchema" type="xs:string" style="template" name="projectLocator"/>
+                <method name="GET" id="serveProject">
+                    <response>
+                        <representation mediaType="application/xml"/>
+                        <representation mediaType="application/json"/>
+                    </response>
+                </method>
+            </resource>
+            <resource path="/{projectLocator}/{field}">
+                <param xmlns:xs="http://www.w3.org/2001/XMLSchema" type="xs:string" style="template" name="field"/>
+                <param xmlns:xs="http://www.w3.org/2001/XMLSchema" type="xs:string" style="template" name="projectLocator"/>
+                <method name="GET" id="serveProjectFiled">
+                    <response>
+                        <representation mediaType="text/plain"/>
+                    </response>
+                </method>
+            </resource>
+            <resource path="/{projectLocator}/buildTypes">
+                <param xmlns:xs="http://www.w3.org/2001/XMLSchema" type="xs:string" style="template" name="projectLocator"/>
+                <method name="GET" id="serveBuildTypesInProject">
+                    <response>
+                        <representation mediaType="application/xml"/>
+                        <representation mediaType="application/json"/>
+                    </response>
+                </method>
+            </resource>
+            <resource path="/{projectLocator}/buildTypes/{btLocator}">
+                <param xmlns:xs="http://www.w3.org/2001/XMLSchema" type="xs:string" style="template" name="projectLocator"/>
+                <param xmlns:xs="http://www.w3.org/2001/XMLSchema" type="xs:string" style="template" name="btLocator"/>
+                <method name="GET" id="serveBuildType">
+                    <response>
+                        <representation mediaType="application/xml"/>
+                        <representation mediaType="application/json"/>
+                    </response>
+                </method>
+            </resource>
+            <resource path="/{projectLocator}/buildTypes/{btLocator}/{field}">
+                <param xmlns:xs="http://www.w3.org/2001/XMLSchema" type="xs:string" style="template" name="field"/>
+                <param xmlns:xs="http://www.w3.org/2001/XMLSchema" type="xs:string" style="template" name="projectLocator"/>
+                <param xmlns:xs="http://www.w3.org/2001/XMLSchema" type="xs:string" style="template" name="btLocator"/>
+                <method name="GET" id="serveBuildTypeFieldWithProject">
+                    <response>
+                        <representation mediaType="text/plain"/>
+                    </response>
+                </method>
+            </resource>
+            <resource path="/{projectLocator}/buildTypes/{btLocator}/builds/{buildLocator}/{field}">
+                <param xmlns:xs="http://www.w3.org/2001/XMLSchema" type="xs:string" style="template" name="field"/>
+                <param xmlns:xs="http://www.w3.org/2001/XMLSchema" type="xs:string" style="template" name="projectLocator"/>
+                <param xmlns:xs="http://www.w3.org/2001/XMLSchema" type="xs:string" style="template" name="btLocator"/>
+                <param xmlns:xs="http://www.w3.org/2001/XMLSchema" type="xs:string" style="template" name="buildLocator"/>
+                <method name="GET" id="serveBuildFieldWithProject">
+                    <response>
+                        <representation mediaType="text/plain"/>
+                    </response>
+                </method>
+            </resource>
+        </resource>
+    </resources>
+</application>

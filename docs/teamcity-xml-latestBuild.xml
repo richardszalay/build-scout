@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<build id="38566" number="62" status="FAILURE" href="/httpAuth/app/rest/builds/id:38566" webUrl="http://teamcity.codebetter.com/viewLog.html?buildId=38566&amp;buildTypeId=bt362" personal="false" history="false" pinned="false">
+  <statusText>Compilation failed</statusText>
+  <buildType id="bt362" name="IronPython 2.7" href="/httpAuth/app/rest/buildTypes/id:bt362" projectName="IronLanguages" projectId="project110" webUrl="http://teamcity.codebetter.com/viewType.html?buildTypeId=bt362"/>
+  <startDate>20120211T025811-0600</startDate>
+  <finishDate>20120211T025828-0600</finishDate>
+  <agent name="agent01" id="1" href="/httpAuth/app/rest/agents/id:1"/>
+  <tags/>
+  <properties>
+    <property name="env.DLR_BIN" value="%env.DLR_ROOT%\bin\Debug"/>
+    <property name="env.DLR_ROOT" value="%teamcity.build.checkoutDir%"/>
+  </properties>
+  <revisions>
+    <revision display-version="52a6a516ad0e82dc93b153156efb446a50b816a1">
+      <vcs-root href="/httpAuth/app/rest/vcs-roots/id:5062" name="IronLanguages Git (GitHub) (2.7)"/>
+    </revision>
+  </revisions>
+  <changes href="/httpAuth/app/rest/changes?build=id:38566" count="1"/>
+  <relatedIssues/>
+</build>

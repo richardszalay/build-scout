@@ -1,0 +1,263 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>8.0.30703</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{C6B64C7E-956B-4E84-B5EF-86DFE1C01979}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>RichardSzalay.PocketCiTray.AcceptanceTest</RootNamespace>
+    <AssemblyName>RichardSzalay.PocketCiTray.AcceptanceTest</AssemblyName>
+    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <PlatformTarget>x86</PlatformTarget>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="Args, Version=1.0.3.31211, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\WP7Test.0.9.6\lib\net40\Args.dll</HintPath>
+    </Reference>
+    <Reference Include="EntityDataModel">
+      <HintPath>..\packages\WebApi.OData.0.6.0\lib\40-Full\EntityDataModel.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.ApplicationServer.Http, Version=2.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\WebApi.0.6.0\lib\40-Full\Microsoft.ApplicationServer.Http.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.ApplicationServer.HttpEnhancements">
+      <HintPath>..\packages\WebApi.Enhancements.0.6.0\lib\40-Full\Microsoft.ApplicationServer.HttpEnhancements.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Data.Spatial">
+      <HintPath>..\packages\WebApi.OData.0.6.0\lib\40-Full\Microsoft.Data.Spatial.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Json, Version=2.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\JsonValue.0.6.0\lib\40\Microsoft.Json.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Net.Http.Formatting, Version=2.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\HttpClient.0.6.0\lib\40\Microsoft.Net.Http.Formatting.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Net.Http.Formatting.OData">
+      <HintPath>..\packages\WebApi.OData.0.6.0\lib\40-Full\Microsoft.Net.Http.Formatting.OData.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Runtime.Serialization.Internal, Version=2.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\WebApi.0.6.0\lib\40-Full\Microsoft.Runtime.Serialization.Internal.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Server.Common, Version=2.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\WebApi.0.6.0\lib\40-Full\Microsoft.Server.Common.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.ServiceModel.Internal, Version=2.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\WebApi.0.6.0\lib\40-Full\Microsoft.ServiceModel.Internal.dll</HintPath>
+    </Reference>
+    <Reference Include="nunit.framework, Version=2.5.10.11092, Culture=neutral, PublicKeyToken=96d09a1eb7f44a77, processorArchitecture=MSIL">
+      <HintPath>..\packages\NUnit.2.5.10.11092\lib\nunit.framework.dll</HintPath>
+    </Reference>
+    <Reference Include="nunit.mocks, Version=2.5.10.11092, Culture=neutral, PublicKeyToken=96d09a1eb7f44a77, processorArchitecture=MSIL">
+      <HintPath>..\packages\NUnit.2.5.10.11092\lib\nunit.mocks.dll</HintPath>
+    </Reference>
+    <Reference Include="pnunit.framework, Version=1.0.4109.34242, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\NUnit.2.5.10.11092\lib\pnunit.framework.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.ComponentModel.DataAnnotations" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Data.OData">
+      <HintPath>..\packages\WebApi.OData.0.6.0\lib\40-Full\System.Data.OData.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Net.Http">
+      <HintPath>..\packages\HttpClient.0.6.0\lib\40\System.Net.Http.dll</HintPath>
+    </Reference>
+    <Reference Include="System.ServiceModel" />
+    <Reference Include="System.ServiceModel.Activation" />
+    <Reference Include="System.ServiceModel.Web" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
+    <Reference Include="TechTalk.SpecFlow, Version=1.8.1.0, Culture=neutral, PublicKeyToken=0778194805d6db41, processorArchitecture=MSIL">
+      <HintPath>..\packages\SpecFlow.1.8.1\lib\net35\TechTalk.SpecFlow.dll</HintPath>
+    </Reference>
+    <Reference Include="WindowsInput, Version=0.2.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\WP7Test.0.9.6\lib\net40\WindowsInput.dll</HintPath>
+    </Reference>
+    <Reference Include="WindowsPhoneTestFramework.Server.AndroidDeviceController, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\WP7Test.0.9.6\lib\net40\WindowsPhoneTestFramework.Server.AndroidDeviceController.dll</HintPath>
+    </Reference>
+    <Reference Include="WindowsPhoneTestFramework.Server.AndroidDisplayInputController.Windows, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\WP7Test.0.9.6\lib\net40\WindowsPhoneTestFramework.Server.AndroidDisplayInputController.Windows.dll</HintPath>
+    </Reference>
+    <Reference Include="WindowsPhoneTestFramework.Server.AutomationController.Android.Emulator, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\WP7Test.0.9.6\lib\net40\WindowsPhoneTestFramework.Server.AutomationController.Android.Emulator.dll</HintPath>
+    </Reference>
+    <Reference Include="WindowsPhoneTestFramework.Server.AutomationController.WindowsPhone.Emulator, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\WP7Test.0.9.6\lib\net40\WindowsPhoneTestFramework.Server.AutomationController.WindowsPhone.Emulator.dll</HintPath>
+    </Reference>
+    <Reference Include="WindowsPhoneTestFramework.Server.Core, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\WP7Test.0.9.6\lib\net40\WindowsPhoneTestFramework.Server.Core.dll</HintPath>
+    </Reference>
+    <Reference Include="WindowsPhoneTestFramework.Server.DeviceController, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\WP7Test.0.9.6\lib\net40\WindowsPhoneTestFramework.Server.DeviceController.dll</HintPath>
+    </Reference>
+    <Reference Include="WindowsPhoneTestFramework.Server.DisplayInputControllerCore, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\WP7Test.0.9.6\lib\net40\WindowsPhoneTestFramework.Server.DisplayInputControllerCore.dll</HintPath>
+    </Reference>
+    <Reference Include="WindowsPhoneTestFramework.Server.FluentCore, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\WP7Test.0.9.6\lib\net40\WindowsPhoneTestFramework.Server.FluentCore.dll</HintPath>
+    </Reference>
+    <Reference Include="WindowsPhoneTestFramework.Server.Utils, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\WP7Test.0.9.6\lib\net40\WindowsPhoneTestFramework.Server.Utils.dll</HintPath>
+    </Reference>
+    <Reference Include="WindowsPhoneTestFramework.Server.WCFHostedAutomationController, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\WP7Test.0.9.6\lib\net40\WindowsPhoneTestFramework.Server.WCFHostedAutomationController.dll</HintPath>
+    </Reference>
+    <Reference Include="WindowsPhoneTestFramework.Server.WindowsPhoneDeviceController, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\WP7Test.0.9.6\lib\net40\WindowsPhoneTestFramework.Server.WindowsPhoneDeviceController.dll</HintPath>
+    </Reference>
+    <Reference Include="WindowsPhoneTestFramework.Test.EmuSteps, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\WP7Test.0.9.6\lib\net40\WindowsPhoneTestFramework.Test.EmuSteps.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="..\RichardSzalay.PocketCiTray\BuildResult.cs">
+      <Link>Linked\BuildResult.cs</Link>
+    </Compile>
+    <Compile Include="..\RichardSzalay.PocketCiTray\JobState.cs">
+      <Link>Linked\JobState.cs</Link>
+    </Compile>
+    <Compile Include="Context\ApplicationContext.cs" />
+    <Compile Include="Context\ApplicationStateBuilder.cs" />
+    <Compile Include="Context\CruiseCompatibleBuildServerStub.cs" />
+    <Compile Include="Features\AddCruiseProject.feature.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>AddCruiseProject.feature</DependentUpon>
+    </Compile>
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Context\BuilderServerStub.cs" />
+    <Compile Include="Steps\ApplicationStateSteps.cs" />
+    <Compile Include="Steps\ApplicationSteps.cs" />
+    <Compile Include="Steps\BuildServerStateSteps.cs" />
+    <Compile Include="Context\JobBuilder.cs" />
+    <Compile Include="Steps\BuildResultSteps.cs" />
+    <Compile Include="Context\BuildServerContext.cs" />
+    <Compile Include="Steps\JobListSteps.cs" />
+    <Compile Include="Steps\StepUtilities.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="App.config" />
+    <None Include="Features\AddCruiseProject.feature">
+      <Generator>SpecFlowSingleFileGenerator</Generator>
+      <LastGenOutput>AddCruiseProject.feature.cs</LastGenOutput>
+    </None>
+    <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\..\..\WindowsPhoneTestFramework\CommandLine\AutomationHost\AutomationHost.csproj">
+      <Project>{E7F08DBA-90A9-425F-9DA0-02C7A003292A}</Project>
+      <Name>AutomationHost</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\..\..\WindowsPhoneTestFramework\CommandLine\CommandLineHost\CommandLineHost.csproj">
+      <Project>{2F9D77C2-C258-45BA-9921-9A7AE3729D4C}</Project>
+      <Name>CommandLineHost</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\..\..\WindowsPhoneTestFramework\CommandLine\EmuBackground\EmuBackground.csproj">
+      <Project>{AA54B613-9AA7-4DDD-99B3-E8A3447B7BB4}</Project>
+      <Name>EmuBackground</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\..\..\WindowsPhoneTestFramework\CommandLine\EmuForeground\EmuForeground.csproj">
+      <Project>{5F4F4B92-DFD3-43FB-80B3-E68215A975CE}</Project>
+      <Name>EmuForeground</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\..\..\WindowsPhoneTestFramework\CommandLine\EmuHost\EmuHost.csproj">
+      <Project>{08B30BEC-3995-4508-81EC-E96E396177FC}</Project>
+      <Name>EmuHost</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\..\..\WindowsPhoneTestFramework\CommandLine\EmuMac\EmuMac.csproj">
+      <Project>{2A8828E5-50D9-4129-A28C-1E585C2D1B18}</Project>
+      <Name>EmuMac</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\..\..\WindowsPhoneTestFramework\Example2\UnitConverter.Spec\UnitConverter.Spec.csproj">
+      <Project>{B68A73FD-F634-45FA-A76B-26292518A795}</Project>
+      <Name>UnitConverter.Spec</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\..\..\WindowsPhoneTestFramework\Server\AndroidDeviceController\AndroidDeviceController.csproj">
+      <Project>{83D197CE-5EE5-409E-8A41-8C7104172205}</Project>
+      <Name>AndroidDeviceController</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\..\..\WindowsPhoneTestFramework\Server\AndroidDisplayInputController.Windows\AndroidDisplayInputController.Windows.csproj">
+      <Project>{42306605-A5D0-43AB-8EA3-540A9CD23218}</Project>
+      <Name>AndroidDisplayInputController.Windows</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\..\..\WindowsPhoneTestFramework\Server\AndroidPhoneEmulatorAutomationController\AndroidEmulatorAutomationController.csproj">
+      <Project>{8CF22F8F-C476-4053-83C5-FDAAA9963AAE}</Project>
+      <Name>AndroidEmulatorAutomationController</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\..\..\WindowsPhoneTestFramework\Server\Core\Core.csproj">
+      <Project>{D781684B-6B06-4D2C-B6F1-3A281D7C3697}</Project>
+      <Name>Core</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\..\..\WindowsPhoneTestFramework\Server\DeviceControllerCore\DeviceControllerCore.csproj">
+      <Project>{3C004657-8682-4230-9AF9-15A179542CA4}</Project>
+      <Name>DeviceControllerCore</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\..\..\WindowsPhoneTestFramework\Server\DisplayInputControllerCore\DisplayInputControllerCore.csproj">
+      <Project>{A2C1E054-51F1-49FC-B602-98FFF0E9D218}</Project>
+      <Name>DisplayInputControllerCore</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\..\..\WindowsPhoneTestFramework\Server\FluentCore\FluentCore.csproj">
+      <Project>{56CC191E-4433-40A0-93C6-A893B97BCBC7}</Project>
+      <Name>FluentCore</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\..\..\WindowsPhoneTestFramework\Server\Utils\Utils.csproj">
+      <Project>{4C0765F2-A904-4E2E-8FFA-9DE0AA461804}</Project>
+      <Name>Utils</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\..\..\WindowsPhoneTestFramework\Server\WCFHostedAutomationController\WCFHostedAutomationController.csproj">
+      <Project>{B0F9A9E3-D4AC-44C5-AEC2-DE83534C7E73}</Project>
+      <Name>WCFHostedAutomationController</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\..\..\WindowsPhoneTestFramework\Server\WindowsPhoneDeviceController\WindowsPhoneDeviceController.csproj">
+      <Project>{924F63A9-9125-4E62-AF3F-ED28B9354E9E}</Project>
+      <Name>WindowsPhoneDeviceController</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\..\..\WindowsPhoneTestFramework\Server\WindowsPhoneEmulatorAutomationController\WindowsPhoneEmulatorAutomationController.csproj">
+      <Project>{C46C6F71-28D0-4151-8268-D5E851CDE9DC}</Project>
+      <Name>WindowsPhoneEmulatorAutomationController</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\..\..\WindowsPhoneTestFramework\Test\EmuSteps\EmuSteps.csproj">
+      <Project>{A1828C05-AE1C-45F0-8F86-1195E40E62D7}</Project>
+      <Name>EmuSteps</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

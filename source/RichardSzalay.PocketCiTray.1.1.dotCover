@@ -1,0 +1,11 @@
+<Configuration>
+  <CoverageFilters>
+    <IncludeFilters>
+      <Filter ModuleMask="*" ClassMask="*" FunctionMask="*" />
+    </IncludeFilters>
+    <ExcludeFilters />
+  </CoverageFilters>
+  <SnapshotDialog>
+    <InitialDirectory>C:\Users\Richard\Code\PocketCiTray\source\RichardSzalay.PocketCiTray</InitialDirectory>
+  </SnapshotDialog>
+</Configuration>

@@ -1,0 +1,171 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<projects>
+  <project name="#Nose" id="project131" href="/httpAuth/app/rest/projects/id:project131"/>
+  <project name=".Less" id="project60" href="/httpAuth/app/rest/projects/id:project60"/>
+  <project name="Agatha" id="project130" href="/httpAuth/app/rest/projects/id:project130"/>
+  <project name="ARINC 838" id="project179" href="/httpAuth/app/rest/projects/id:project179"/>
+  <project name="aspComet" id="project59" href="/httpAuth/app/rest/projects/id:project59"/>
+  <project name="Autofac" id="project94" href="/httpAuth/app/rest/projects/id:project94"/>
+  <project name="AutoFixture" id="project129" href="/httpAuth/app/rest/projects/id:project129"/>
+  <project name="AutoMapper" id="project13" href="/httpAuth/app/rest/projects/id:project13"/>
+  <project name="bbv.Common" id="project118" href="/httpAuth/app/rest/projects/id:project118"/>
+  <project name="BFBC2 PRoCon" id="project77" href="/httpAuth/app/rest/projects/id:project77"/>
+  <project name="BizArk" id="project169" href="/httpAuth/app/rest/projects/id:project169"/>
+  <project name="Book Cataloger" id="project58" href="/httpAuth/app/rest/projects/id:project58"/>
+  <project name="Bounce" id="project132" href="/httpAuth/app/rest/projects/id:project132"/>
+  <project name="Caliburn" id="project73" href="/httpAuth/app/rest/projects/id:project73"/>
+  <project name="Cassia" id="project51" href="/httpAuth/app/rest/projects/id:project51"/>
+  <project name="Castle Tx-AutoTx-NHFac" id="project120" href="/httpAuth/app/rest/projects/id:project120"/>
+  <project name="ChuckNorris" id="project43" href="/httpAuth/app/rest/projects/id:project43"/>
+  <project name="Ci-Eye" id="project139" href="/httpAuth/app/rest/projects/id:project139"/>
+  <project name="Clockwork Web Framework" id="project50" href="/httpAuth/app/rest/projects/id:project50"/>
+  <project name="clrzmq" id="project180" href="/httpAuth/app/rest/projects/id:project180"/>
+  <project name="CodeCampServer" id="project11" href="/httpAuth/app/rest/projects/id:project11"/>
+  <project name="ColorCode" id="project17" href="/httpAuth/app/rest/projects/id:project17"/>
+  <project name="Command Line Processing Library for .NET 4.0" id="project144" href="/httpAuth/app/rest/projects/id:project144"/>
+  <project name="Coypu" id="project138" href="/httpAuth/app/rest/projects/id:project138"/>
+  <project name="crap4n" id="project48" href="/httpAuth/app/rest/projects/id:project48"/>
+  <project name="csharp-cloudfiles" id="project114" href="/httpAuth/app/rest/projects/id:project114"/>
+  <project name="DDDSample.NET" id="project53" href="/httpAuth/app/rest/projects/id:project53"/>
+  <project name="DeadDevsSociety" id="project90" href="/httpAuth/app/rest/projects/id:project90"/>
+  <project name="demottoolbox" id="project82" href="/httpAuth/app/rest/projects/id:project82"/>
+  <project name="Docu" id="project28" href="/httpAuth/app/rest/projects/id:project28"/>
+  <project name="DotNetMigrations" id="project97" href="/httpAuth/app/rest/projects/id:project97"/>
+  <project name="DotNetOpenAuth" id="project55" href="/httpAuth/app/rest/projects/id:project55"/>
+  <project name="DotSpatial" id="project158" href="/httpAuth/app/rest/projects/id:project158"/>
+  <project name="DownmarkerWPF" id="project178" href="/httpAuth/app/rest/projects/id:project178"/>
+  <project name="dpHibernate" id="project117" href="/httpAuth/app/rest/projects/id:project117"/>
+  <project name="EasyHttp" id="project115" href="/httpAuth/app/rest/projects/id:project115"/>
+  <project name="F1 Live-Timing for .NET" id="project76" href="/httpAuth/app/rest/projects/id:project76"/>
+  <project name="FacebookSharp" id="project99" href="/httpAuth/app/rest/projects/id:project99"/>
+  <project name="Fake - F# Make" id="project61" href="/httpAuth/app/rest/projects/id:project61"/>
+  <project name="FakeItEasy" id="project152" href="/httpAuth/app/rest/projects/id:project152"/>
+  <project name="FileHelpers" id="project41" href="/httpAuth/app/rest/projects/id:project41"/>
+  <project name="Fluent Assertions" id="project173" href="/httpAuth/app/rest/projects/id:project173"/>
+  <project name="Fluent DateTime" id="project47" href="/httpAuth/app/rest/projects/id:project47"/>
+  <project name="Fluent NHibernate" id="project8" href="/httpAuth/app/rest/projects/id:project8"/>
+  <project name="FluentDot" id="project22" href="/httpAuth/app/rest/projects/id:project22"/>
+  <project name="FluentMigrator" id="project46" href="/httpAuth/app/rest/projects/id:project46"/>
+  <project name="Fracture" id="project128" href="/httpAuth/app/rest/projects/id:project128"/>
+  <project name="fs4net" id="project174" href="/httpAuth/app/rest/projects/id:project174"/>
+  <project name="FubuMVC" id="project14" href="/httpAuth/app/rest/projects/id:project14"/>
+  <project name="FunctionalNHibernate" id="project71" href="/httpAuth/app/rest/projects/id:project71"/>
+  <project name="Gestor de eventos" id="project86" href="/httpAuth/app/rest/projects/id:project86"/>
+  <project name="github.juanplopes" id="project87" href="/httpAuth/app/rest/projects/id:project87"/>
+  <project name="Glimpse" id="project135" href="/httpAuth/app/rest/projects/id:project135"/>
+  <project name="gwt-dispatch" id="project93" href="/httpAuth/app/rest/projects/id:project93"/>
+  <project name="gwt-platform" id="project92" href="/httpAuth/app/rest/projects/id:project92"/>
+  <project name="GWT-Presenter" id="project91" href="/httpAuth/app/rest/projects/id:project91"/>
+  <project name="HORN" id="project32" href="/httpAuth/app/rest/projects/id:project32"/>
+  <project name="HTTP Abstractions" id="project166" href="/httpAuth/app/rest/projects/id:project166"/>
+  <project name="Index 4 Objects" id="project38" href="/httpAuth/app/rest/projects/id:project38"/>
+  <project name="IronCSS" id="project65" href="/httpAuth/app/rest/projects/id:project65"/>
+  <project name="IronLanguages" id="project110" href="/httpAuth/app/rest/projects/id:project110"/>
+  <project name="Jukito" id="project103" href="/httpAuth/app/rest/projects/id:project103"/>
+  <project name="Kayak" id="project136" href="/httpAuth/app/rest/projects/id:project136"/>
+  <project name="LibGit2Sharp" id="project127" href="/httpAuth/app/rest/projects/id:project127"/>
+  <project name="LinFu" id="project18" href="/httpAuth/app/rest/projects/id:project18"/>
+  <project name="Lospi.net Utils" id="project145" href="/httpAuth/app/rest/projects/id:project145"/>
+  <project name="Lucene.NET" id="project56" href="/httpAuth/app/rest/projects/id:project56"/>
+  <project name="Machine" id="project27" href="/httpAuth/app/rest/projects/id:project27"/>
+  <project name="MarsinEngine" id="project167" href="/httpAuth/app/rest/projects/id:project167"/>
+  <project name="MassTransit" id="project6" href="/httpAuth/app/rest/projects/id:project6"/>
+  <project name="Math.NET" id="project20" href="/httpAuth/app/rest/projects/id:project20"/>
+  <project name="mavanagaiata" id="project121" href="/httpAuth/app/rest/projects/id:project121"/>
+  <project name="Maven Drools Plugin" id="project116" href="/httpAuth/app/rest/projects/id:project116"/>
+  <project name="MDownloader" id="project57" href="/httpAuth/app/rest/projects/id:project57"/>
+  <project name="MefContrib" id="project81" href="/httpAuth/app/rest/projects/id:project81"/>
+  <project name="meREM" id="project95" href="/httpAuth/app/rest/projects/id:project95"/>
+  <project name="Messageless" id="project33" href="/httpAuth/app/rest/projects/id:project33"/>
+  <project name="Miado" id="project40" href="/httpAuth/app/rest/projects/id:project40"/>
+  <project name="MindMelder" id="project42" href="/httpAuth/app/rest/projects/id:project42"/>
+  <project name="moq" id="project88" href="/httpAuth/app/rest/projects/id:project88"/>
+  <project name="MSBuild Shell Extension" id="project142" href="/httpAuth/app/rest/projects/id:project142"/>
+  <project name="MVC Turbine" id="project70" href="/httpAuth/app/rest/projects/id:project70"/>
+  <project name="MVCContrib" id="project10" href="/httpAuth/app/rest/projects/id:project10"/>
+  <project name="MvcExtensions" id="project79" href="/httpAuth/app/rest/projects/id:project79"/>
+  <project name="Mylyn-Mantis Connector" id="project96" href="/httpAuth/app/rest/projects/id:project96"/>
+  <project name="N2 CMS" id="project16" href="/httpAuth/app/rest/projects/id:project16"/>
+  <project name="Nancy" id="project112" href="/httpAuth/app/rest/projects/id:project112"/>
+  <project name="NAnt" id="project69" href="/httpAuth/app/rest/projects/id:project69"/>
+  <project name="NaturalSpec" id="project62" href="/httpAuth/app/rest/projects/id:project62"/>
+  <project name="NBehave" id="project30" href="/httpAuth/app/rest/projects/id:project30"/>
+  <project name="NBuilder" id="project98" href="/httpAuth/app/rest/projects/id:project98"/>
+  <project name="NerdDinner" id="project141" href="/httpAuth/app/rest/projects/id:project141"/>
+  <project name="netdomain" id="project111" href="/httpAuth/app/rest/projects/id:project111"/>
+  <project name="NetMx" id="project66" href="/httpAuth/app/rest/projects/id:project66"/>
+  <project name="NGenerics" id="project21" href="/httpAuth/app/rest/projects/id:project21"/>
+  <project name="NHaml" id="project26" href="/httpAuth/app/rest/projects/id:project26"/>
+  <project name="NHibernate" id="project7" href="/httpAuth/app/rest/projects/id:project7"/>
+  <project name="Nina" id="project124" href="/httpAuth/app/rest/projects/id:project124"/>
+  <project name="Ninject" id="project3" href="/httpAuth/app/rest/projects/id:project3"/>
+  <project name="Noda Time" id="project54" href="/httpAuth/app/rest/projects/id:project54"/>
+  <project name="NOperation" id="project75" href="/httpAuth/app/rest/projects/id:project75"/>
+  <project name="NQUnit" id="project134" href="/httpAuth/app/rest/projects/id:project134"/>
+  <project name="NServiceBus" id="project39" href="/httpAuth/app/rest/projects/id:project39"/>
+  <project name="nservicebus-contrib" id="project104" href="/httpAuth/app/rest/projects/id:project104"/>
+  <project name="NServiceMVC" id="project182" href="/httpAuth/app/rest/projects/id:project182"/>
+  <project name="NSubstitute" id="project140" href="/httpAuth/app/rest/projects/id:project140"/>
+  <project name="NuGetFeed.org" id="project147" href="/httpAuth/app/rest/projects/id:project147"/>
+  <project name="NuSelfUpdate" id="project146" href="/httpAuth/app/rest/projects/id:project146"/>
+  <project name="OoMapper" id="project151" href="/httpAuth/app/rest/projects/id:project151"/>
+  <project name="Orchard" id="project143" href="/httpAuth/app/rest/projects/id:project143"/>
+  <project name="OWIN - Open Web Interface for .NET" id="project107" href="/httpAuth/app/rest/projects/id:project107"/>
+  <project name="OxyPlot" id="project171" href="/httpAuth/app/rest/projects/id:project171"/>
+  <project name="Phoenix Framework" id="project175" href="/httpAuth/app/rest/projects/id:project175"/>
+  <project name="Pickles" id="project176" href="/httpAuth/app/rest/projects/id:project176"/>
+  <project name="Project Template" id="project163" href="/httpAuth/app/rest/projects/id:project163"/>
+  <project name="proxy-servlet" id="project133" href="/httpAuth/app/rest/projects/id:project133"/>
+  <project name="PS-Get" id="project125" href="/httpAuth/app/rest/projects/id:project125"/>
+  <project name="rake-dotnet" id="project72" href="/httpAuth/app/rest/projects/id:project72"/>
+  <project name="RazorSharp" id="project153" href="/httpAuth/app/rest/projects/id:project153"/>
+  <project name="rb-utils" id="project168" href="/httpAuth/app/rest/projects/id:project168"/>
+  <project name="Refix" id="project83" href="/httpAuth/app/rest/projects/id:project83"/>
+  <project name="Regionerate" id="project15" href="/httpAuth/app/rest/projects/id:project15"/>
+  <project name="ReSharper PowerToys" id="project85" href="/httpAuth/app/rest/projects/id:project85"/>
+  <project name="Rhino" id="project2" href="/httpAuth/app/rest/projects/id:project2"/>
+  <project name="S#arp Architecture" id="project9" href="/httpAuth/app/rest/projects/id:project9"/>
+  <project name="Sando" id="project181" href="/httpAuth/app/rest/projects/id:project181"/>
+  <project name="Scrum Sprint Monitor" id="project49" href="/httpAuth/app/rest/projects/id:project49"/>
+  <project name="Shouldly" id="project106" href="/httpAuth/app/rest/projects/id:project106"/>
+  <project name="Shrinkr" id="project80" href="/httpAuth/app/rest/projects/id:project80"/>
+  <project name="Siege" id="project149" href="/httpAuth/app/rest/projects/id:project149"/>
+  <project name="SienaDotNet" id="project150" href="/httpAuth/app/rest/projects/id:project150"/>
+  <project name="signal-collect" id="project122" href="/httpAuth/app/rest/projects/id:project122"/>
+  <project name="SimpleSpec" id="project160" href="/httpAuth/app/rest/projects/id:project160"/>
+  <project name="SNAP" id="project159" href="/httpAuth/app/rest/projects/id:project159"/>
+  <project name="SnapImpact" id="project78" href="/httpAuth/app/rest/projects/id:project78"/>
+  <project name="SolrNet" id="project36" href="/httpAuth/app/rest/projects/id:project36"/>
+  <project name="Spark" id="project29" href="/httpAuth/app/rest/projects/id:project29"/>
+  <project name="SquishIt" id="project170" href="/httpAuth/app/rest/projects/id:project170"/>
+  <project name="StatLight" id="project119" href="/httpAuth/app/rest/projects/id:project119"/>
+  <project name="Steam Condenser" id="project172" href="/httpAuth/app/rest/projects/id:project172"/>
+  <project name="Story Teller" id="project5" href="/httpAuth/app/rest/projects/id:project5"/>
+  <project name="StoryQ" id="project123" href="/httpAuth/app/rest/projects/id:project123"/>
+  <project name="StrongChess" id="project109" href="/httpAuth/app/rest/projects/id:project109"/>
+  <project name="Structure Map" id="project4" href="/httpAuth/app/rest/projects/id:project4"/>
+  <project name="StyleCop for ReSharper" id="project19" href="/httpAuth/app/rest/projects/id:project19"/>
+  <project name="SubSonic" id="project68" href="/httpAuth/app/rest/projects/id:project68"/>
+  <project name="Subtext" id="project25" href="/httpAuth/app/rest/projects/id:project25"/>
+  <project name="Tarantino" id="project12" href="/httpAuth/app/rest/projects/id:project12"/>
+  <project name="Taskie" id="project113" href="/httpAuth/app/rest/projects/id:project113"/>
+  <project name="TeamCity.ServiceMessages" id="project155" href="/httpAuth/app/rest/projects/id:project155"/>
+  <project name="Templify" id="project100" href="/httpAuth/app/rest/projects/id:project100"/>
+  <project name="TidyBackups" id="project102" href="/httpAuth/app/rest/projects/id:project102"/>
+  <project name="Timesmart" id="project161" href="/httpAuth/app/rest/projects/id:project161"/>
+  <project name="TimeStream" id="project105" href="/httpAuth/app/rest/projects/id:project105"/>
+  <project name="titiritero" id="project108" href="/httpAuth/app/rest/projects/id:project108"/>
+  <project name="Turmeric Eclipse Extras" id="project126" href="/httpAuth/app/rest/projects/id:project126"/>
+  <project name="Twilio-CSharp" id="project177" href="/httpAuth/app/rest/projects/id:project177"/>
+  <project name="uNhAddIns" id="project45" href="/httpAuth/app/rest/projects/id:project45"/>
+  <project name="WeavingTasks" id="project84" href="/httpAuth/app/rest/projects/id:project84"/>
+  <project name="Who can help me" id="project64" href="/httpAuth/app/rest/projects/id:project64"/>
+  <project name="woko" id="project148" href="/httpAuth/app/rest/projects/id:project148"/>
+  <project name="WS-Man.NET" id="project67" href="/httpAuth/app/rest/projects/id:project67"/>
+  <project name="xUnit.net" id="project23" href="/httpAuth/app/rest/projects/id:project23"/>
+  <project name="yatfram" id="project63" href="/httpAuth/app/rest/projects/id:project63"/>
+  <project name="YouTrackSharp" id="project137" href="/httpAuth/app/rest/projects/id:project137"/>
+  <project name="eXpand" id="project89" href="/httpAuth/app/rest/projects/id:project89"/>
+  <project name="NuPack" id="project101" href="/httpAuth/app/rest/projects/id:project101"/>
+  <project name="RoundhousE" id="project52" href="/httpAuth/app/rest/projects/id:project52"/>
+</projects>
