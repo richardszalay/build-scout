@@ -66,10 +66,10 @@ namespace RichardSzalay.PocketCiTray.AcceptanceTest.Features
         }
         
         [NUnit.Framework.TestAttribute()]
-        [NUnit.Framework.DescriptionAttribute("Successful")]
-        public virtual void Successful()
+        [NUnit.Framework.DescriptionAttribute("Add Successful")]
+        public virtual void AddSuccessful()
         {
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Successful", ((string[])(null)));
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Add Successful", ((string[])(null)));
 #line 6
 this.ScenarioSetup(scenarioInfo);
 #line 7
@@ -77,9 +77,11 @@ this.ScenarioSetup(scenarioInfo);
 #line 8
  testRunner.And("the build server has a job called \"job1\"");
 #line 9
- testRunner.And("my app is running");
+ testRunner.And("my app is clean installed and running");
 #line 10
- testRunner.When("I add a new cruise compatible job \"job1\" on \"buildServer\"");
+ testRunner.When("I add a new build server \"buildServer\"");
+#line 11
+ testRunner.And("I add the \"job1\" job");
 #line hidden
             this.ScenarioCleanup();
         }
@@ -91,19 +93,19 @@ this.ScenarioSetup(scenarioInfo);
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Failed", new string[] {
                         "Ignore"});
-#line 13
-this.ScenarioSetup(scenarioInfo);
 #line 14
- testRunner.Given("I have a build server called \"buildServer\"");
+this.ScenarioSetup(scenarioInfo);
 #line 15
- testRunner.And("the build server has a job called \"job1\"");
+ testRunner.Given("I have a build server called \"buildServer\"");
 #line 16
- testRunner.And("the job\'s last run failed");
+ testRunner.And("the build server has a job called \"job1\"");
 #line 17
- testRunner.And("I am monitoring the job");
+ testRunner.And("the job\'s last run failed");
 #line 18
- testRunner.When("I view the status of my jobs");
+ testRunner.And("I am monitoring the job");
 #line 19
+ testRunner.When("I view the status of my jobs");
+#line 20
  testRunner.Then("the result should indicate the job failed");
 #line hidden
             this.ScenarioCleanup();
@@ -116,19 +118,19 @@ this.ScenarioSetup(scenarioInfo);
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Unavailable", new string[] {
                         "Ignore"});
-#line 22
-this.ScenarioSetup(scenarioInfo);
 #line 23
- testRunner.Given("I have a build server called \"buildServer\"");
+this.ScenarioSetup(scenarioInfo);
 #line 24
- testRunner.And("the build server has a job called \"job1\"");
+ testRunner.Given("I have a build server called \"buildServer\"");
 #line 25
- testRunner.And("the build server is unavailable");
+ testRunner.And("the build server has a job called \"job1\"");
 #line 26
- testRunner.And("I am monitoring the job");
+ testRunner.And("the build server is unavailable");
 #line 27
- testRunner.When("I view the status of my jobs");
+ testRunner.And("I am monitoring the job");
 #line 28
+ testRunner.When("I view the status of my jobs");
+#line 29
  testRunner.Then("the result should indicate the job is unavailable");
 #line hidden
             this.ScenarioCleanup();

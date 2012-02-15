@@ -21,6 +21,7 @@ namespace RichardSzalay.PocketCiTray.AcceptanceTest.Steps
         [Given(@"I am monitoring the job")]
         public void GivenIAmMonitoringTheJob()
         {
+            
         }
     }
 }

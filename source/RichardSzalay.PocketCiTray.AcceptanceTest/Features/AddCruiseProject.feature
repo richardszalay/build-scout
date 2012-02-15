@@ -3,11 +3,12 @@
 	As a developer
 	I want to monitor the state of a cruise job
 
-Scenario: Successful
+Scenario: Add Successful
 	Given I have a build server called "buildServer"
 	And the build server has a job called "job1"
-	And my app is running
-	When I add a new cruise compatible job "job1" on "buildServer"
+	And my app is clean installed and running
+	When I add a new build server "buildServer"
+	And I add the "job1" job
 
 @Ignore
 Scenario: Failed

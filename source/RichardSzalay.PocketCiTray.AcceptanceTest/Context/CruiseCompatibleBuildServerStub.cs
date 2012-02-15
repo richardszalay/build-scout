@@ -13,16 +13,12 @@ namespace RichardSzalay.PocketCiTray.AcceptanceTest.Context
     public class CruiseCompatibleBuildServerStub : BuilderServerStub
     {
         private HttpServiceHost serviceHost;
-        private Uri baseUri;
-
-
+        
         public CruiseCompatibleBuildServerStub(string name)
-            : base(name)
+            : base(name, new Uri("http://localhost:8095/" + name + "/cc.xml"))
         {
-            baseUri = new Uri("http://localhost:4120/" + name + "/");
-
             this.serviceHost = new HttpServiceHost(
-                new CruiseControlWebService(this), baseUri);
+                new CruiseControlWebService(this), BaseUri);
 
             serviceHost.Open();
         }
@@ -45,7 +41,7 @@ namespace RichardSzalay.PocketCiTray.AcceptanceTest.Context
                 this.serverStub = serverStub;
             }
 
-            [WebGet(UriTemplate = "cc.xml")]
+            [WebGet(UriTemplate = "")]
             public HttpResponseMessage GetProjectData()
             {
                 return new HttpResponseMessage
