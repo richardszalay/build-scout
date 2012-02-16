@@ -143,11 +143,8 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="..\RichardSzalay.PocketCiTray\BuildResult.cs">
+    <Compile Include="..\RichardSzalay.PocketCiTray.Common\BuildResult.cs">
       <Link>Linked\BuildResult.cs</Link>
-    </Compile>
-    <Compile Include="..\RichardSzalay.PocketCiTray\JobState.cs">
-      <Link>Linked\JobState.cs</Link>
     </Compile>
     <Compile Include="ApplicationDriver\AddBuildServerDriver.cs" />
     <Compile Include="ApplicationDriver\ApplicationBarDriver.cs" />

@@ -120,6 +120,18 @@
   <data name="AtTime" xml:space="preserve">
     <value>at {1:hh:mm}</value>
   </data>
+  <data name="BackgroundUpdateAgentDescription" xml:space="preserve">
+    <value>Updates the status of build jobs in the background and notifies you of broken builds.</value>
+  </data>
+  <data name="BuildResult_Failed" xml:space="preserve">
+    <value>failed</value>
+  </data>
+  <data name="BuildResult_Success" xml:space="preserve">
+    <value>successful</value>
+  </data>
+  <data name="BuildResult_Unavailable" xml:space="preserve">
+    <value>unavailable</value>
+  </data>
   <data name="LessThanOneMinuteAgo" xml:space="preserve">
     <value>just now</value>
   </data>
@@ -131,6 +143,9 @@
   </data>
   <data name="OneMinuteAgo" xml:space="preserve">
     <value>1 min ago</value>
+  </data>
+  <data name="ShortDatePattern" xml:space="preserve">
+    <value>dd/MM</value>
   </data>
   <data name="ThisWeek" xml:space="preserve">
     <value>on {1:ddd}</value>

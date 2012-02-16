@@ -13,7 +13,7 @@ using Microsoft.Phone.Controls;
 
 namespace RichardSzalay.PocketCiTray.View
 {
-    public partial class AddBuildServer : PhoneApplicationPage
+    public partial class AddBuildServer
     {
         public AddBuildServer()
         {

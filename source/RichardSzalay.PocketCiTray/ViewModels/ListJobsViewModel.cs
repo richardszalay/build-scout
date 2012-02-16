@@ -4,7 +4,7 @@ using System.Collections.ObjectModel;
 using System.Reactive.Concurrency;
 using System.Reactive.Linq;
 using System.Windows.Input;
-using RichardSzalay.PocketCiTray.Extensions;
+using RichardSzalay.PocketCiTray.Extensions.Extensions;
 using RichardSzalay.PocketCiTray.Services;
 
 namespace RichardSzalay.PocketCiTray.ViewModels
@@ -15,9 +15,9 @@ namespace RichardSzalay.PocketCiTray.ViewModels
         private readonly IJobRepository jobRepository;
         private readonly ISchedulerAccessor schedulerAccessor;
         private readonly IJobUpdateService jobUpdateService;
-        private readonly ICommand addJobCommand;
+        private ICommand addJobCommand;
         private ObservableCollection<Job> jobs;
-        private readonly ICommand updateStatusesCommand;
+        private ICommand updateStatusesCommand;
 
         public ListJobsViewModel(INavigationService navigationService, IJobRepository jobRepository, ISchedulerAccessor schedulerAccessor, IJobUpdateService jobUpdateService)
         {
@@ -25,14 +25,12 @@ namespace RichardSzalay.PocketCiTray.ViewModels
             this.jobRepository = jobRepository;
             this.schedulerAccessor = schedulerAccessor;
             this.jobUpdateService = jobUpdateService;
-
-            addJobCommand = CreateCommand(new ObservableCommand(), OnAddJob);
-            updateStatusesCommand = CreateCommand(new ObservableCommand(), OnUpdateStatuses);
         }
 
         public ICommand UpdateStatusesCommand
         {
             get { return updateStatusesCommand; }
+            private set { updateStatusesCommand = value; OnPropertyChanged("UpdateStatusesCommand"); }
         }
 
         public ObservableCollection<Job> Jobs
@@ -45,7 +43,14 @@ namespace RichardSzalay.PocketCiTray.ViewModels
         {
             base.OnNavigatedTo(e);
 
+            AddJobCommand = CreateCommand(new ObservableCommand(), OnAddJob);
+            UpdateStatusesCommand = CreateCommand(new ObservableCommand(), OnUpdateStatuses);
+
+            Disposables.Add(Observable.FromEventPattern(h => jobUpdateService.Started += h, h => jobUpdateService.Started -= h)
+                .Subscribe(_ => StartLoading("refreshing")));
+
             Disposables.Add(Observable.FromEventPattern(h => jobUpdateService.Complete += h, h => jobUpdateService.Complete -= h)
+                .ObserveOn(schedulerAccessor.UserInterface)
                 .Subscribe(_ => RefreshJobs()));
 
             this.RefreshJobs();
@@ -53,15 +58,12 @@ namespace RichardSzalay.PocketCiTray.ViewModels
 
         private void RefreshJobs()
         {
-            schedulerAccessor.Background.Schedule(() =>
-            {
-                ICollection<Job> jobs = jobRepository.GetJobs();
+            StartLoading("refreshing");
 
-                schedulerAccessor.UserInterface.Schedule(() =>
-                {
-                    this.Jobs = new ObservableCollection<Job>(jobs);
-                });
-            });
+            jobRepository.GetJobs()
+                .ObserveOn(schedulerAccessor.UserInterface)
+                .Finally(StopLoading)
+                .Subscribe(jobs => Jobs = new ObservableCollection<Job>(jobs));
         }
 
         private void OnAddJob()
@@ -77,6 +79,7 @@ namespace RichardSzalay.PocketCiTray.ViewModels
         public ICommand AddJobCommand
         {
             get { return addJobCommand; }
+            private set { addJobCommand = value; OnPropertyChanged("AddJobCommand"); }
         }
     }
 }

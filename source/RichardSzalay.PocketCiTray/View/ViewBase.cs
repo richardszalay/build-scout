@@ -29,5 +29,6 @@ namespace RichardSzalay.PocketCiTray.View
 
             base.OnNavigatedTo(e);
         }
+
     }
 }

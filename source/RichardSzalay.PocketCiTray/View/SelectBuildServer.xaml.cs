@@ -2,7 +2,7 @@
 
 namespace RichardSzalay.PocketCiTray.View
 {
-    public partial class SelectBuildServer : PhoneApplicationPage
+    public partial class SelectBuildServer
     {
         public SelectBuildServer()
         {

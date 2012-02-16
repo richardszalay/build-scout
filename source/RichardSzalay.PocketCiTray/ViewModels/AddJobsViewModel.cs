@@ -1,15 +1,12 @@
 ﻿using System;
 using System.Collections.ObjectModel;
 using System.Collections.Specialized;
-using System.Linq;
-using System.Reactive.Concurrency;
-using System.Reactive.Disposables;
 using System.Reactive.Linq;
 using System.Windows.Input;
 using System.Windows.Navigation;
-using RichardSzalay.PocketCiTray.Extensions;
+using RichardSzalay.PocketCiTray.Extensions.Extensions;
 using RichardSzalay.PocketCiTray.Providers;
-using RichardSzalay.PocketCiTray.Providers.Cruise;
+using RichardSzalay.PocketCiTray.Services;
 
 namespace RichardSzalay.PocketCiTray.ViewModels
 {
@@ -46,11 +43,14 @@ namespace RichardSzalay.PocketCiTray.ViewModels
 
             int buildServerId = Int32.Parse(query["buildServerId"]);
 
+            StartLoading("finding jobs");
+
             Observable.Return(buildServerId)
                 .ObserveOn(schedulerAccessor.Background)
-                .Select(id => buildServer = jobRepository.GetBuildServer(buildServerId))
+                .SelectMany(id => jobRepository.GetBuildServer(buildServerId))
                 .SelectMany(server => jobProviderFactory.Get(server.Provider).GetJobsObservableAsync(server))
                 .ObserveOn(schedulerAccessor.UserInterface)
+                .Finally(StopLoading)
                 .Subscribe(loadedJobs =>
                 {
                     this.jobs = new ObservableCollection<Job>(loadedJobs);
@@ -61,17 +61,9 @@ namespace RichardSzalay.PocketCiTray.ViewModels
 
         private void OnAddJobs()
         {
-            schedulerAccessor.Background.Schedule(() =>
-            {
-                jobRepository.AddJobs(selectedJobs);
-
-                schedulerAccessor.UserInterface.Schedule(() =>
-                {
-                    navigationService.RemoveBackEntry();
-                    navigationService.RemoveBackEntry();
-                    navigationService.GoBack();
-                });
-            });
+            jobRepository.AddJobs(selectedJobs)
+                .ObserveOn(schedulerAccessor.UserInterface)
+                .Subscribe(_ => navigationService.GoBackTo(ViewUris.ListJobs));
         }
 
         private string jobSource;
@@ -86,7 +78,6 @@ namespace RichardSzalay.PocketCiTray.ViewModels
         }
 
         private ObservableCollection<Job> jobs;
-        private BuildServer buildServer;
 
         public ObservableCollection<Job> Jobs
         {

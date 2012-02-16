@@ -28,7 +28,8 @@ namespace RichardSzalay.PocketCiTray.TestConsole
 
                 context.CurrentBuildServer.Jobs.Add(new JobBuilder()
                 {
-                    Name = "job1"
+                    Name = "job1",
+                    RandomLastResult = true
                 });
 
                 Console.WriteLine("Build server started at: {0}", context.CurrentBuildServer.BaseUri.AbsoluteUri);

@@ -14,10 +14,10 @@ namespace RichardSzalay.PocketCiTray.Infrastructure
 
         protected override void OnAttached()
         {
-            disposable.Disposable = Observable.FromEventPattern<KeyEventHandler, KeyEventArgs>(
-                h => new KeyEventHandler(h),
-                h => AssociatedObject.KeyDown += h,
-                h => AssociatedObject.KeyDown -= h
+            disposable.Disposable = Observable.FromEventPattern<TextChangedEventHandler, TextChangedEventArgs>(
+                h => new TextChangedEventHandler(h),
+                h => AssociatedObject.TextChanged += h,
+                h => AssociatedObject.TextChanged -= h
                 )
                 .Subscribe(OnEnterPressed);
         }
@@ -27,7 +27,7 @@ namespace RichardSzalay.PocketCiTray.Infrastructure
             disposable.Dispose();
         }
 
-        private void OnEnterPressed(EventPattern<KeyEventArgs> ev)
+        private void OnEnterPressed(EventPattern<TextChangedEventArgs> ev)
         {
             var expr = AssociatedObject.GetBindingExpression(TextBox.TextProperty);
 

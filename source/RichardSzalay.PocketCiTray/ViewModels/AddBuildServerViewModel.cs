@@ -3,9 +3,10 @@ using System.Reactive.Concurrency;
 using System.Reactive.Disposables;
 using System.Reactive.Linq;
 using System.Windows.Input;
-using RichardSzalay.PocketCiTray.Extensions;
+using RichardSzalay.PocketCiTray.Extensions.Extensions;
 using RichardSzalay.PocketCiTray.Providers;
 using RichardSzalay.PocketCiTray.Providers.Cruise;
+using RichardSzalay.PocketCiTray.Services;
 
 namespace RichardSzalay.PocketCiTray.ViewModels
 {
@@ -30,8 +31,8 @@ namespace RichardSzalay.PocketCiTray.ViewModels
 
             Disposables.Add(validateBuildServer);
 
-            addBuildServerCommand = CreateCommand(
-                new ObservableCommand(CanAdd()), OnAddBuildServer);
+            addBuildServerCommand = CreateCommand<string>(
+                new ObservableCommand<string>(CanAdd), OnAddBuildServer);
         }
 
         public string BuildServerUrl
@@ -49,15 +50,18 @@ namespace RichardSzalay.PocketCiTray.ViewModels
             get { return addBuildServerCommand; }
         }
 
-        private void OnAddBuildServer()
+        private void OnAddBuildServer(string buildServerUrl)
         {
             IJobProvider provider = jobProviderFactory.Get(CruiseProvider.ProviderName);
 
-            BuildServer buildServer = BuildServer.FromUri(new Uri(buildServerUrl, UriKind.Absolute));
+            BuildServer buildServer = BuildServer.FromUri(provider.Name, new Uri(buildServerUrl, UriKind.Absolute));
+
+            StartLoading("checking");
 
             validateBuildServer.Disposable = provider.ValidateBuildServer(buildServer)
-                .Select(jobRepository.AddBuildServer)
+                .SelectMany(jobRepository.AddBuildServer)
                 .ObserveOn(uiScheduler)
+                .Finally(StopLoading)
                 .Subscribe(addedBuildServer => navigationService.Navigate(ViewUris.AddJobs(addedBuildServer)),
                            OnAddBuildServerFailed);
         }
@@ -67,12 +71,11 @@ namespace RichardSzalay.PocketCiTray.ViewModels
             //throw new NotImplementedException("AddBuildServerViewModel.OnAddBuildServerFailed", ex);
         }
 
-        private IObservable<bool> CanAdd()
+        private bool CanAdd(string value)
         {
             Uri tempUri;
-            return this.GetPropertyValues(x => x.BuildServerUrl)
-                .Select(s => s.Length > 0 && Uri.TryCreate(s, UriKind.Absolute, out tempUri))
-                .StartWith(false);
+            return !String.IsNullOrEmpty(value) &&
+                Uri.TryCreate(value, UriKind.Absolute, out tempUri);
         }
     }
 }

@@ -1,15 +1,16 @@
 ﻿using System;
-using System.ComponentModel;
 using System.Reactive.Disposables;
 using System.Windows.Input;
 using System.Windows.Navigation;
-using RichardSzalay.PocketCiTray.Extensions;
+using Microsoft.Phone.Shell;
+using RichardSzalay.PocketCiTray.Extensions.Extensions;
 
 namespace RichardSzalay.PocketCiTray.ViewModels
 {
     public abstract class ViewModelBase : PropertyChangeBase
     {
-        private readonly CompositeDisposable disposables = new CompositeDisposable();
+        private CompositeDisposable disposables = new CompositeDisposable();
+        private ProgressIndicator progressIndicator;
 
         protected CompositeDisposable Disposables { get { return disposables; } }
 
@@ -29,10 +30,36 @@ namespace RichardSzalay.PocketCiTray.ViewModels
 
         public virtual void OnNavigatedFrom(NavigationEventArgs e)
         {
+            this.Disposables.Dispose();
+            this.disposables = new CompositeDisposable();
         }
 
         public virtual void OnNavigatedTo(NavigationEventArgs e)
         {
+        }
+
+        protected void StartLoading(string status)
+        {
+            ProgressIndicator = new ProgressIndicator
+            {
+                IsIndeterminate = true,
+                IsVisible = true,
+                Text = status,
+            };
+        }
+
+        protected void StopLoading()
+        {
+            ProgressIndicator = new ProgressIndicator
+            {
+                IsVisible = false
+            };
+        }
+
+        public ProgressIndicator ProgressIndicator
+        {
+            get { return progressIndicator; }
+            protected set { progressIndicator = value; OnPropertyChanged("ProgressIndicator"); }
         }
 
         protected ICommand CreateCommand<TParam>(ObservableCommand<TParam> command, Action<TParam> action)
@@ -40,6 +67,11 @@ namespace RichardSzalay.PocketCiTray.ViewModels
             disposables.Add(command.Subscribe(action));
 
             return command;
+        }
+
+        protected void StartLoading()
+        {
+            StartLoading("");
         }
     }
 }

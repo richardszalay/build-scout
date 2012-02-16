@@ -4,6 +4,11 @@ namespace RichardSzalay.PocketCiTray.ViewModels
 {
     public static class ViewUris
     {
+        public static Uri ListJobs
+        {
+            get { return ViewUri("/View/ListJobs.xaml"); }
+        }
+
         public static Uri AddBuildServer
         {
             get { return ViewUri("/View/AddBuildServer.xaml"); }

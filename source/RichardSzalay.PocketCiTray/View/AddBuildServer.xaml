@@ -1,4 +1,4 @@
-﻿<phone:PhoneApplicationPage 
+﻿<v:ViewBase 
     x:Class="RichardSzalay.PocketCiTray.View.AddBuildServer"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
@@ -6,12 +6,13 @@
     xmlns:shell="clr-namespace:Microsoft.Phone.Shell;assembly=Microsoft.Phone"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
-    xmlns:i="clr-namespace:System.Windows.Interactivity;assembly=System.Windows.Interactivity" xmlns:contribbehav="clr-namespace:WP7Contrib.View.Controls.Behaviors;assembly=WP7Contrib.View.Controls" xmlns:inf="clr-namespace:RichardSzalay.PocketCiTray.Infrastructure" FontFamily="{StaticResource PhoneFontFamilyNormal}"
+    xmlns:i="clr-namespace:System.Windows.Interactivity;assembly=System.Windows.Interactivity" xmlns:inf="clr-namespace:RichardSzalay.PocketCiTray.Infrastructure" xmlns:v="clr-namespace:RichardSzalay.PocketCiTray.View" FontFamily="{StaticResource PhoneFontFamilyNormal}"
     FontSize="{StaticResource PhoneFontSizeNormal}"
     Foreground="{StaticResource PhoneForegroundBrush}"
     SupportedOrientations="Portrait" Orientation="Portrait"
     mc:Ignorable="d" d:DesignHeight="696" d:DesignWidth="480"
     shell:SystemTray.IsVisible="True"
+    shell:SystemTray.ProgressIndicator="{Binding ProgressIndicator}"
     DataContext="{Binding Path=AddBuildServerViewModel,Source={StaticResource ViewModelLocator}}">
 
     <!--LayoutRoot is the root grid where all page content is placed-->
@@ -29,12 +30,15 @@
 
         <!--ContentPanel - place additional content here-->
         <Grid x:Name="ContentPanel" Grid.Row="1" Margin="12,0,12,0">
-            <TextBox Text="{Binding BuildServerUrl, Mode=TwoWay}" Tag="auto:BuildSource">
-                <i:Interaction.Behaviors>
-                    <inf:EnterKeyBehavior Command="{Binding AddBuildServerCommand}" />
-                    <inf:RealtimeTextBoxBindingBehavior />
-                </i:Interaction.Behaviors>
-            </TextBox>
+            <StackPanel>
+                <TextBox x:Name="BuildSource" Text="{Binding BuildServerUrl, Mode=TwoWay}" Tag="auto:BuildSource">
+                    <i:Interaction.Behaviors>
+                        <inf:RealtimeTextBoxBindingBehavior />
+                        <inf:EnterKeyBehavior Command="{Binding AddBuildServerCommand}" />
+                    </i:Interaction.Behaviors>
+                </TextBox>
+                <TextBlock Text="{Binding Text,ElementName=BuildSource}"/>
+            </StackPanel>
         </Grid>
     </Grid>
 
@@ -45,9 +49,10 @@
     </phone:PhoneApplicationPage.ApplicationBar>
 
     <i:Interaction.Behaviors>
-        <contribbehav:ApplicationBarIconButtonCommand TextKey="add"
-                                                      CommandBinding="{Binding AddBuildServerCommand}"
-                                                      />
+        <inf:ApplicationBarIconButtonCommand TextKey="add"
+                                             CommandBinding="{Binding AddBuildServerCommand}"
+                                             CommandParameterBinding="{Binding BuildServerUrl}"
+                                             />
     </i:Interaction.Behaviors>
 
-</phone:PhoneApplicationPage>
+</v:ViewBase>

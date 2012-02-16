@@ -1,4 +1,5 @@
-﻿using System.Net.Browser;
+﻿using System.IO.IsolatedStorage;
+using System.Net.Browser;
 using System.Reactive.Concurrency;
 using RichardSzalay.PocketCiTray.Providers;
 using RichardSzalay.PocketCiTray.Services;
@@ -7,16 +8,20 @@ namespace RichardSzalay.PocketCiTray.ViewModels
 {
     public class ViewModelLocator
     {
-        private readonly IJobRepository jobRepository = new JobRepository();
+        private readonly IJobRepository jobRepository;
         private readonly IJobProviderFactory jobProviderFactory = new JobProviderFactory(WebRequestCreator.ClientHttp, new DateTimeOffsetClock());
         private readonly IJobUpdateService jobUpdateService;
         private readonly SchedulerAccessor schedulerAccessor;
+        private readonly ISettingsFacade settingsFacade;
 
         public ViewModelLocator()
         {
             schedulerAccessor = new SchedulerAccessor(DispatcherScheduler.Instance, Scheduler.ThreadPool);
 
-            jobUpdateService = new JobUpdateService(schedulerAccessor, jobProviderFactory, jobRepository);
+            jobRepository = new JobRepository(schedulerAccessor);
+
+            settingsFacade = new IsolatedStorageSettingsFacade(IsolatedStorageSettings.ApplicationSettings);
+            jobUpdateService = new JobUpdateService(jobProviderFactory, jobRepository, new DateTimeOffsetClock(), settingsFacade);
         }
 
         public ListJobsViewModel ListJobsViewModel
@@ -34,7 +39,11 @@ namespace RichardSzalay.PocketCiTray.ViewModels
 
         public SelectBuildServerViewModel SelectBuildServerViewModel
         {
-            get { return new SelectBuildServerViewModel(jobRepository, jobProviderFactory, new PhoneApplicationFrameNavigationService(((App)App.Current).RootFrame)); }
+            get
+            {
+                return new SelectBuildServerViewModel(jobRepository, jobProviderFactory,
+                    new PhoneApplicationFrameNavigationService(((App) App.Current).RootFrame), schedulerAccessor);
+            }
         }
 
         public AddBuildServerViewModel AddBuildServerViewModel
