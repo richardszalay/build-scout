@@ -1,4 +1,5 @@
-﻿using System.Reactive.Concurrency;
+﻿using System;
+using System.Reactive.Concurrency;
 
 namespace RichardSzalay.PocketCiTray
 {
@@ -15,7 +16,15 @@ namespace RichardSzalay.PocketCiTray
 
         public IScheduler UserInterface
         {
-            get { return userInterface; }
+            get
+            {
+                if (userInterface == null)
+                {
+                    throw new InvalidOperationException("UserInterface thread is not available");
+                }
+
+                return userInterface;
+            }
         }
 
         public IScheduler Background

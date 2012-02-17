@@ -22,13 +22,13 @@ namespace RichardSzalay.PocketCiTray.TestConsole
 
             try
             {
-                BuildServerContext context = new BuildServerContext();
+                var context = new BuildServerContext();
 
                 context.BuildServers.Add(new CruiseCompatibleBuildServerStub("buildServer"));
 
                 context.CurrentBuildServer.Jobs.Add(new JobBuilder()
                 {
-                    Name = "job1",
+                    Name = "job 1",
                     RandomLastResult = true
                 });
 

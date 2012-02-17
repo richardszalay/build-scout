@@ -80,5 +80,10 @@ namespace RichardSzalay.PocketCiTray
                 return (ICollection<BuildServer>)buildServerMap.Values.ToList();
             }, scheduler)();
         }
+
+        public IObservable<Job> GetJob(int jobId)
+        {
+            return Observable.ToAsync(() => jobMap[jobId], scheduler)();
+        }
     }
 }

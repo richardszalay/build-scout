@@ -2,8 +2,10 @@
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
+using System.Reactive.Concurrency;
 using System.Reactive.Disposables;
 using System.Reactive.Linq;
+using System.Threading;
 using RichardSzalay.PocketCiTray.Providers;
 
 namespace RichardSzalay.PocketCiTray.Services
@@ -16,32 +18,56 @@ namespace RichardSzalay.PocketCiTray.Services
         private readonly IJobRepository jobRepository;
         private readonly IClock clock;
         private readonly ISettingsFacade settings;
+        private readonly IMutexService mutexService;
+        private readonly ISchedulerAccessor schedulerAccessor;
 
         private SerialDisposable disposable = new SerialDisposable();
+        private TimeSpan BackgroundAgentTimeout;
 
         public JobUpdateService(IJobProviderFactory jobProviderFactory, IJobRepository jobRepository,
-            IClock clock, ISettingsFacade settings)
+            IClock clock, ISettingsFacade settings, IMutexService mutexService, ISchedulerAccessor schedulerAccessor)
         {
             this.jobProviderFactory = jobProviderFactory;
             this.jobRepository = jobRepository;
             this.clock = clock;
             this.settings = settings;
+            this.mutexService = mutexService;
+            this.schedulerAccessor = schedulerAccessor;
         }
 
         public void UpdateAll()
         {
             OnStarted();
+                
+            Mutex mutex = mutexService.GetOwned(MutexNames.JobUpdateService, TimeSpan.FromMilliseconds(100));
+
+            if (mutex == null)
+            {
+                schedulerAccessor.Background.Schedule(() =>
+                {
+                    BackgroundAgentTimeout = TimeSpan.FromSeconds(20);
+                    mutexService.WaitOne(MutexNames.JobUpdateService, BackgroundAgentTimeout);
+
+                    OnComplete(new ICollection<Job>[0]);
+                });
+
+                return;
+            }
+
+            mutex.ReleaseMutex();
 
             disposable.Disposable = jobRepository.GetJobs()
                 .SelectMany(jobs => jobs.GroupBy(j => j.BuildServer))
                 .SelectMany(group => jobProviderFactory.Get(group.Key.Provider).UpdateAll(group.Key, group))
-                .Finally(OnComplete)
-                .Subscribe(OnJobGroupUpdated);
+                .SelectMany(OnJobGroupUpdated)
+                .Catch(Observable.Empty<ICollection<Job>>())
+                .ToList()
+                .Subscribe(OnComplete);
         }
 
-        private void OnJobGroupUpdated(ICollection<Job> jobs)
+        private IObservable<ICollection<Job>> OnJobGroupUpdated(ICollection<Job> jobs)
         {
-            jobRepository.UpdateAll(jobs);
+            return jobRepository.UpdateAll(jobs);
         }
 
         public event EventHandler Complete;
@@ -68,8 +94,10 @@ namespace RichardSzalay.PocketCiTray.Services
             }
         }
 
-        private void OnComplete()
+        private void OnComplete(IList<ICollection<Job>> updatedJobGroups)
         {
+            var allUpdatedJobs = updatedJobGroups.SelectMany(j => j).ToList();
+
             LastUpdateTime = clock.UtcNow;
 
             var handler = Complete;

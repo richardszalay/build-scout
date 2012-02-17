@@ -15,19 +15,19 @@ namespace RichardSzalay.PocketCiTray.ViewModels
         private readonly IJobProviderFactory jobProviderFactory;
         private readonly IJobRepository jobRepository;
         private readonly INavigationService navigationService;
-        private readonly IScheduler uiScheduler;
+        private readonly ISchedulerAccessor schedulerAccessor;
         private readonly SerialDisposable validateBuildServer = new SerialDisposable();
         private ICommand addBuildServerCommand;
         private string buildServerUrl = "http://localhost:8095/buildServer/cc.xml";
 
         public AddBuildServerViewModel(INavigationService navigationService,
                                        IJobProviderFactory jobProviderFactory, IJobRepository jobRepository,
-                                       IScheduler uiScheduler)
+                                       ISchedulerAccessor schedulerAccessor)
         {
             this.navigationService = navigationService;
             this.jobProviderFactory = jobProviderFactory;
             this.jobRepository = jobRepository;
-            this.uiScheduler = uiScheduler;
+            this.schedulerAccessor = schedulerAccessor;
 
             Disposables.Add(validateBuildServer);
 
@@ -60,7 +60,7 @@ namespace RichardSzalay.PocketCiTray.ViewModels
 
             validateBuildServer.Disposable = provider.ValidateBuildServer(buildServer)
                 .SelectMany(jobRepository.AddBuildServer)
-                .ObserveOn(uiScheduler)
+                .ObserveOn(schedulerAccessor.UserInterface)
                 .Finally(StopLoading)
                 .Subscribe(addedBuildServer => navigationService.Navigate(ViewUris.AddJobs(addedBuildServer)),
                            OnAddBuildServerFailed);

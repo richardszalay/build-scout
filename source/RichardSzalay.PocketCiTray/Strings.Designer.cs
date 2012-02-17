@@ -106,6 +106,15 @@ namespace RichardSzalay.PocketCiTray {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Would you like to enable job status updates while the application is not running? You can change this setting at any time in Settings..
+        /// </summary>
+        internal static string EnableBackgroundTaskPrompt {
+            get {
+                return ResourceManager.GetString("EnableBackgroundTaskPrompt", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to just now.
         /// </summary>
         internal static string LessThanOneMinuteAgo {

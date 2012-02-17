@@ -1,7 +1,11 @@
-﻿using System.Windows;
+﻿using System.Threading;
+using System.Windows;
 using System.Windows.Navigation;
+using Funq;
 using Microsoft.Phone.Controls;
 using Microsoft.Phone.Shell;
+using RichardSzalay.PocketCiTray.Services;
+using RichardSzalay.PocketCiTray.ViewModels;
 
 namespace RichardSzalay.PocketCiTray
 {
@@ -57,24 +61,45 @@ namespace RichardSzalay.PocketCiTray
         // This code will not execute when the application is reactivated
         private void Application_Launching(object sender, LaunchingEventArgs e)
         {
+            var container = ConfigureContainer();
+
+            bootstrap = container.Resolve<Bootstrap>();
+            bootstrap.Startup();
         }
 
         // Code to execute when the application is activated (brought to foreground)
         // This code will not execute when the application is first launched
         private void Application_Activated(object sender, ActivatedEventArgs e)
         {
+            var container = ConfigureContainer();
+
+            bootstrap = container.Resolve<Bootstrap>();
+            bootstrap.Continue();
         }
 
         // Code to execute when the application is deactivated (sent to background)
         // This code will not execute when the application is closing
         private void Application_Deactivated(object sender, DeactivatedEventArgs e)
         {
+            bootstrap.Shutdown();
+        }
+
+        private Container ConfigureContainer()
+        {
+            var container = new Container();
+
+            ApplicationDependencyConfiguration.Configure(container);
+
+            ((ViewModelLocator)Resources["ViewModelLocator"]).Container = container;
+
+            return container;
         }
 
         // Code to execute when the application is closing (eg, user hit Back)
         // This code will not execute when the application is deactivated
         private void Application_Closing(object sender, ClosingEventArgs e)
         {
+            bootstrap.Shutdown();
         }
 
         // Code to execute if a navigation fails
@@ -101,6 +126,8 @@ namespace RichardSzalay.PocketCiTray
 
         // Avoid double-initialization
         private bool phoneApplicationInitialized = false;
+        private Mutex applicationMutex;
+        private Bootstrap bootstrap;
 
         // Do not add any additional code to this method
         private void InitializePhoneApplication()

@@ -11,5 +11,6 @@ namespace RichardSzalay.PocketCiTray
         IObservable<ICollection<Job>> GetJobs();
         IObservable<ICollection<Job>> UpdateAll(ICollection<Job> jobs);
         IObservable<ICollection<BuildServer>> GetBuildServers();
+        IObservable<Job> GetJob(int job);
     }
 }

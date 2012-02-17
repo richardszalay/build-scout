@@ -1,5 +1,10 @@
-﻿using System.Windows;
+﻿using System;
+using System.Diagnostics;
+using System.Threading;
+using System.Windows;
+using Funq;
 using Microsoft.Phone.Scheduler;
+using RichardSzalay.PocketCiTray.Services;
 
 namespace RichardSzalay.PocketCiTray.BackgroundTask
 {
@@ -44,7 +49,21 @@ namespace RichardSzalay.PocketCiTray.BackgroundTask
         /// </remarks>
         protected override void OnInvoke(ScheduledTask task)
         {
-            NotifyComplete();
+            Container container = new Container();
+
+            CommonDependencyConfiguration.Configure(container);
+
+            if (!container.Resolve<IMutexService>().WaitOne(MutexNames.ForegroundApplication))
+            {
+                Debug.WriteLine("Foreground process is running, aborting agent task");
+                NotifyComplete();
+                return;
+            }
+
+            var jobUpdateService = container.Resolve<IJobUpdateService>();
+
+            jobUpdateService.Complete += (s, e) => NotifyComplete();
+            jobUpdateService.UpdateAll();
         }
     }
 }

@@ -15,6 +15,8 @@ namespace RichardSzalay.PocketCiTray
 
         public string Name { get; set; }
 
+        public string Alias { get; set; }
+
         public Uri WebUri { get; set; }
 
         public BuildServer BuildServer { get; set; }
@@ -22,5 +24,10 @@ namespace RichardSzalay.PocketCiTray
         public int Id { get; set; }
 
         public Build LastBuild { get; set; }
+
+        public string DisplayName
+        {
+            get { return String.IsNullOrEmpty(Alias) ? Name : Alias; }
+        }
     }
 }

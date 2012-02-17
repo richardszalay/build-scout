@@ -89,6 +89,13 @@ namespace RichardSzalay.PocketCiTray.ViewModels
             }
         }
 
+        private bool isSelectionEnabled;
+        public bool IsSelectionEnabled
+        {
+            get { return isSelectionEnabled; }
+            set { isSelectionEnabled = value; OnPropertyChanged("IsSelectionEnabled"); }
+        }
+
         private readonly ObservableCollection<Job> selectedJobs = new ObservableCollection<Job>();
         public ObservableCollection<Job> SelectedJobs
         {

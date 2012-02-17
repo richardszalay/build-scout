@@ -9,17 +9,17 @@ using RichardSzalay.PocketCiTray.Services;
 
 namespace RichardSzalay.PocketCiTray.ViewModels
 {
-    public class ListJobsViewModel : ViewModelBase
+    public class ViewJobViewModel : ViewModelBase
     {
         private readonly INavigationService navigationService;
         private readonly IJobRepository jobRepository;
         private readonly ISchedulerAccessor schedulerAccessor;
         private readonly IJobUpdateService jobUpdateService;
         private ICommand addJobCommand;
-        private ObservableCollection<Job> jobs;
+        private Job job;
         private ICommand updateStatusesCommand;
 
-        public ListJobsViewModel(INavigationService navigationService, IJobRepository jobRepository, ISchedulerAccessor schedulerAccessor, IJobUpdateService jobUpdateService)
+        public ViewJobViewModel(INavigationService navigationService, IJobRepository jobRepository, ISchedulerAccessor schedulerAccessor, IJobUpdateService jobUpdateService)
         {
             this.navigationService = navigationService;
             this.jobRepository = jobRepository;
@@ -33,10 +33,10 @@ namespace RichardSzalay.PocketCiTray.ViewModels
             private set { updateStatusesCommand = value; OnPropertyChanged("UpdateStatusesCommand"); }
         }
 
-        public ObservableCollection<Job> Jobs
+        public Job Job
         {
-            get { return jobs; }
-            set { jobs = value; OnPropertyChanged("Jobs"); }
+            get { return job; }
+            private set { job = value; OnPropertyChanged("Job"); }
         }
 
         public override void OnNavigatedTo(System.Windows.Navigation.NavigationEventArgs e)
@@ -46,25 +46,18 @@ namespace RichardSzalay.PocketCiTray.ViewModels
             AddJobCommand = CreateCommand(new ObservableCommand(), OnAddJob);
             UpdateStatusesCommand = CreateCommand(new ObservableCommand(), OnUpdateStatuses);
 
-            Disposables.Add(Observable.FromEventPattern(h => jobUpdateService.Started += h, h => jobUpdateService.Started -= h)
-                .ObserveOn(schedulerAccessor.UserInterface)
-                .Subscribe(_ => StartLoading("refreshing")));
+            var query = e.Uri.GetQueryValues();
 
-            Disposables.Add(Observable.FromEventPattern(h => jobUpdateService.Complete += h, h => jobUpdateService.Complete -= h)
-                .ObserveOn(schedulerAccessor.UserInterface)
-                .Subscribe(_ => RefreshJobs()));
+            if (!query.ContainsKey("jobId"))
+            {
+                navigationService.GoBack();
+                return;
+            }
 
-            this.RefreshJobs();
-        }
+            int jobId = Int32.Parse(query["jobId"]);
 
-        private void RefreshJobs()
-        {
-            StartLoading("refreshing");
-
-            jobRepository.GetJobs()
-                .ObserveOn(schedulerAccessor.UserInterface)
-                .Finally(StopLoading)
-                .Subscribe(jobs => Jobs = new ObservableCollection<Job>(jobs));
+            Disposables.Add(jobRepository.GetJob(jobId)
+                .Subscribe(j => Job = j));
         }
 
         private void OnAddJob()
