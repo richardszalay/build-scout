@@ -14,25 +14,36 @@ using System.Windows.Shapes;
 using Funq;
 using RichardSzalay.PocketCiTray.Providers;
 using RichardSzalay.PocketCiTray.ViewModels;
+using WP7Contrib.Logging;
 
 namespace RichardSzalay.PocketCiTray.Services
 {
     public static class ApplicationDependencyConfiguration
     {
-        public static void Configure(Container container)
+        public static Container Configure()
         {
-            CommonDependencyConfiguration.Configure(container);
+            var container = CommonDependencyConfiguration.Configure();
 
             ConfigureFacades(container);
 
             ConfigureServices(container);
 
-            ConfigureViewModels(container);
+            var child = container.CreateChildContainer();
+            child.DefaultReuse = ReuseScope.None;
+
+            ConfigureViewModels(child);
+
+            return child;
         }
 
         private static void ConfigureServices(Container container)
         {
             container.Register<ISchedulerAccessor>(new SchedulerAccessor(DispatcherScheduler.Instance, Scheduler.ThreadPool));
+
+            var log = new LoggingService(Logging.ApplicationLogName);
+
+            container.Register<ILog>(log);
+            container.Register<ILogManager>(log);
 
             container.Register<IPeriodicJobUpdateService>(l => new PeriodicJobUpdateService(
                 l.Resolve<IJobUpdateService>(),
@@ -49,7 +60,8 @@ namespace RichardSzalay.PocketCiTray.Services
                 l.Resolve<IApplicationSettings>(),
                 l.Resolve<IClock>(),
                 l.Resolve<IMessageBoxFacade>(),
-                l.Resolve<IMutexService>()));
+                l.Resolve<IMutexService>(),
+                l.Resolve<ILogManager>()));
         }
 
         private static void ConfigureViewModels(Container container)
@@ -59,6 +71,14 @@ namespace RichardSzalay.PocketCiTray.Services
                 c.Resolve<IJobRepository>(),
                 c.Resolve<ISchedulerAccessor>(),
                 c.Resolve<IJobUpdateService>()
+                ));
+
+            container.Register(c => new ViewJobViewModel(
+                c.Resolve<INavigationService>(),
+                c.Resolve<IJobRepository>(),
+                c.Resolve<ISchedulerAccessor>(),
+                c.Resolve<IJobUpdateService>(),
+                c.Resolve<IApplicationTileService>()
                 ));
 
             container.Register(c => new SelectBuildServerViewModel(
@@ -72,7 +92,9 @@ namespace RichardSzalay.PocketCiTray.Services
                 c.Resolve<INavigationService>(),
                 c.Resolve<IJobProviderFactory>(), 
                 c.Resolve<IJobRepository>(),
-                c.Resolve<ISchedulerAccessor>()
+                c.Resolve<ISchedulerAccessor>(),
+                c.Resolve<IMessageBoxFacade>(),
+                c.Resolve<INetworkInterfaceFacade>()
                 ));
 
             container.Register(c => new AddJobsViewModel(

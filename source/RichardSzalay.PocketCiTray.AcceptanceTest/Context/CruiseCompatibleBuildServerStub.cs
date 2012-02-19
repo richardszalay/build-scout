@@ -61,6 +61,7 @@ namespace RichardSzalay.PocketCiTray.AcceptanceTest.Context
                     new XAttribute("name", job.Name),
                     new XAttribute("activity", "Sleeping"),
                     new XAttribute("lastBuildStatus", ConvertToCruiseBuildStatus(job.LastResult)),
+                    new XAttribute("lastBuildLabel", "38"),
                     new XAttribute("lastBuildTime", DateTimeOffset.Now.ToString("u")),
                     new XAttribute("nextBuildTime", "2005-10-04T14:31:52.4509248+01:00"),
                     new XAttribute("webUrl", "http://mrtickle/ccnet/")

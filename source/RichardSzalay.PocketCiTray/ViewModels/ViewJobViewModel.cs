@@ -15,22 +15,17 @@ namespace RichardSzalay.PocketCiTray.ViewModels
         private readonly IJobRepository jobRepository;
         private readonly ISchedulerAccessor schedulerAccessor;
         private readonly IJobUpdateService jobUpdateService;
+        private readonly IApplicationTileService applicationTileService;
         private ICommand addJobCommand;
         private Job job;
-        private ICommand updateStatusesCommand;
 
-        public ViewJobViewModel(INavigationService navigationService, IJobRepository jobRepository, ISchedulerAccessor schedulerAccessor, IJobUpdateService jobUpdateService)
+        public ViewJobViewModel(INavigationService navigationService, IJobRepository jobRepository, ISchedulerAccessor schedulerAccessor, IJobUpdateService jobUpdateService, IApplicationTileService applicationTileService)
         {
             this.navigationService = navigationService;
             this.jobRepository = jobRepository;
             this.schedulerAccessor = schedulerAccessor;
             this.jobUpdateService = jobUpdateService;
-        }
-
-        public ICommand UpdateStatusesCommand
-        {
-            get { return updateStatusesCommand; }
-            private set { updateStatusesCommand = value; OnPropertyChanged("UpdateStatusesCommand"); }
+            this.applicationTileService = applicationTileService;
         }
 
         public Job Job
@@ -43,9 +38,6 @@ namespace RichardSzalay.PocketCiTray.ViewModels
         {
             base.OnNavigatedTo(e);
 
-            AddJobCommand = CreateCommand(new ObservableCommand(), OnAddJob);
-            UpdateStatusesCommand = CreateCommand(new ObservableCommand(), OnUpdateStatuses);
-
             var query = e.Uri.GetQueryValues();
 
             if (!query.ContainsKey("jobId"))
@@ -54,26 +46,31 @@ namespace RichardSzalay.PocketCiTray.ViewModels
                 return;
             }
 
+            PinJobCommand = CreateCommand(new ObservableCommand(CanPin()), OnPin);
+
             int jobId = Int32.Parse(query["jobId"]);
 
             Disposables.Add(jobRepository.GetJob(jobId)
+                .ObserveOn(schedulerAccessor.UserInterface)
                 .Subscribe(j => Job = j));
         }
 
-        private void OnAddJob()
+        private ICommand pinJobCommand;
+        public ICommand PinJobCommand
         {
-            navigationService.Navigate(ViewUris.SelectBuildServer);
+            get { return pinJobCommand; }
+            private set { pinJobCommand = value; OnPropertyChanged("PinJobCommand"); }
         }
 
-        private void OnUpdateStatuses()
+        private void OnPin()
         {
-            jobUpdateService.UpdateAll();
+            applicationTileService.AddJobTile(Job);
         }
 
-        public ICommand AddJobCommand
+        private IObservable<bool> CanPin()
         {
-            get { return addJobCommand; }
-            private set { addJobCommand = value; OnPropertyChanged("AddJobCommand"); }
+            return this.GetPropertyValues(x => x.Job)
+                .Select(j => !applicationTileService.IsPinned(j));
         }
     }
 }

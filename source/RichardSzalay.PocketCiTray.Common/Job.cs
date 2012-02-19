@@ -29,5 +29,24 @@ namespace RichardSzalay.PocketCiTray
         {
             get { return String.IsNullOrEmpty(Alias) ? Name : Alias; }
         }
+
+        public override bool Equals(object obj)
+        {
+            Job otherJob = obj as Job;
+
+            if (otherJob == null)
+            {
+                return false;
+            }
+
+            return this.BuildServer.Equals(otherJob.BuildServer) &&
+                this.Name == otherJob.Name;
+        }
+
+        public override int GetHashCode()
+        {
+            return Name.GetHashCode() ^
+                BuildServer.GetHashCode();
+        }
     }
 }

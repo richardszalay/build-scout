@@ -20,12 +20,14 @@ namespace RichardSzalay.PocketCiTray.Services
         private readonly ISettingsFacade settings;
         private readonly IMutexService mutexService;
         private readonly ISchedulerAccessor schedulerAccessor;
+        private readonly IApplicationTileService applicationTileService;
 
         private SerialDisposable disposable = new SerialDisposable();
         private TimeSpan BackgroundAgentTimeout;
 
         public JobUpdateService(IJobProviderFactory jobProviderFactory, IJobRepository jobRepository,
-            IClock clock, ISettingsFacade settings, IMutexService mutexService, ISchedulerAccessor schedulerAccessor)
+            IClock clock, ISettingsFacade settings, IMutexService mutexService,
+            ISchedulerAccessor schedulerAccessor, IApplicationTileService applicationTileService)
         {
             this.jobProviderFactory = jobProviderFactory;
             this.jobRepository = jobRepository;
@@ -33,9 +35,10 @@ namespace RichardSzalay.PocketCiTray.Services
             this.settings = settings;
             this.mutexService = mutexService;
             this.schedulerAccessor = schedulerAccessor;
+            this.applicationTileService = applicationTileService;
         }
 
-        public void UpdateAll()
+        public void UpdateAll(TimeSpan timeout)
         {
             OnStarted();
                 
@@ -48,7 +51,7 @@ namespace RichardSzalay.PocketCiTray.Services
                     BackgroundAgentTimeout = TimeSpan.FromSeconds(20);
                     mutexService.WaitOne(MutexNames.JobUpdateService, BackgroundAgentTimeout);
 
-                    OnComplete(new ICollection<Job>[0]);
+                    OnComplete(new List<Job>());
                 });
 
                 return;
@@ -58,10 +61,17 @@ namespace RichardSzalay.PocketCiTray.Services
 
             disposable.Disposable = jobRepository.GetJobs()
                 .SelectMany(jobs => jobs.GroupBy(j => j.BuildServer))
-                .SelectMany(group => jobProviderFactory.Get(group.Key.Provider).UpdateAll(group.Key, group))
-                .SelectMany(OnJobGroupUpdated)
-                .Catch(Observable.Empty<ICollection<Job>>())
-                .ToList()
+                .SelectMany(group => jobProviderFactory
+                    .Get(group.Key.Provider)
+                    .UpdateAll(group.Key, group)
+                    .Catch<Job, Exception>(ex =>
+                    {
+                        // TODO: Log the error in the provider
+
+                        return Observable.Empty<Job>();
+                    })
+                )
+                .Buffer(timeout).Take(1)
                 .Subscribe(OnComplete);
         }
 
@@ -94,18 +104,23 @@ namespace RichardSzalay.PocketCiTray.Services
             }
         }
 
-        private void OnComplete(IList<ICollection<Job>> updatedJobGroups)
+        private void OnComplete(IList<Job> updatedJobs)
         {
-            var allUpdatedJobs = updatedJobGroups.SelectMany(j => j).ToList();
+            jobRepository.UpdateAll(updatedJobs)
+                .SelectMany(_ => jobRepository.GetJobs())
+                .Subscribe(allJobs =>
+                    {
+                        applicationTileService.UpdateAll(allJobs);
 
-            LastUpdateTime = clock.UtcNow;
+                        LastUpdateTime = clock.UtcNow;
 
-            var handler = Complete;
+                        var handler = Complete;
 
-            if (handler != null)
-            {
-                handler(this, EventArgs.Empty);
-            }
+                        if (handler != null)
+                        {
+                            handler(this, EventArgs.Empty);
+                        }
+                    });
         }
 
         public void Cancel()

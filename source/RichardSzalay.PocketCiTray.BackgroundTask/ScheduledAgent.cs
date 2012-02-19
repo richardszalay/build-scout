@@ -49,9 +49,7 @@ namespace RichardSzalay.PocketCiTray.BackgroundTask
         /// </remarks>
         protected override void OnInvoke(ScheduledTask task)
         {
-            Container container = new Container();
-
-            CommonDependencyConfiguration.Configure(container);
+            Container container = CommonDependencyConfiguration.Configure();            
 
             if (!container.Resolve<IMutexService>().WaitOne(MutexNames.ForegroundApplication))
             {
@@ -63,7 +61,9 @@ namespace RichardSzalay.PocketCiTray.BackgroundTask
             var jobUpdateService = container.Resolve<IJobUpdateService>();
 
             jobUpdateService.Complete += (s, e) => NotifyComplete();
-            jobUpdateService.UpdateAll();
+            jobUpdateService.UpdateAll(UpdateTimeout);
         }
+
+        private static readonly TimeSpan UpdateTimeout = TimeSpan.FromSeconds(10);
     }
 }

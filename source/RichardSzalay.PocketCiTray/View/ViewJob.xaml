@@ -14,8 +14,8 @@
     d:DesignHeight="696" 
     shell:SystemTray.ProgressIndicator="{Binding ProgressIndicator}"
     d:DesignWidth="480" xmlns:i="clr-namespace:System.Windows.Interactivity;assembly=System.Windows.Interactivity" xmlns:v="clr-namespace:RichardSzalay.PocketCiTray.View" xmlns:inf="clr-namespace:RichardSzalay.PocketCiTray.Infrastructure" shell:SystemTray.IsVisible="True"
-    DataContext="{Binding Path=ListJobsViewModel ,Source={StaticResource ViewModelLocator}}"
-    d:DataContext="{d:DesignData /DesignData/ListJobsData.xaml}"
+    DataContext="{Binding Path=ViewJobViewModel, Source={StaticResource ViewModelLocator}}"
+    d:DataContext="{d:DesignData /DesignData/ViewJobData.xaml}"
     >
     
     <v:ViewBase.Resources>
@@ -33,57 +33,39 @@
 
         <!--TitlePanel contains the name of the application and page title-->
         <StackPanel x:Name="TitlePanel" Grid.Row="0" Margin="12,17,0,28">
-            <TextBlock x:Name="ApplicationTitle" Text="MY APPLICATION" Style="{StaticResource PhoneTextNormalStyle}"/>
+            <TextBlock x:Name="ApplicationTitle" Text="{Binding Job.BuildServer.Name}" Style="{StaticResource PhoneTextNormalStyle}"/>
             <TextBlock x:Name="PageTitle" Text="{Binding Job.DisplayName}" Margin="9,-7,0,0" Style="{StaticResource PhoneTextTitle1Style}"/>
         </StackPanel>
 
         <!--ContentPanel - place additional content here-->
         <Grid x:Name="ContentPanel" Grid.Row="1" Margin="12,0,12,0">
-            <ListBox ItemsSource="{Binding Jobs}">
-                <ListBox.ItemTemplate>
-                    <DataTemplate>
-                        <Grid>
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="12" />
-                                <ColumnDefinition Width="*" />
-                                <ColumnDefinition Width="110" />
-                            </Grid.ColumnDefinitions>
-                            <Grid.RowDefinitions>
-                                <RowDefinition Height="Auto" />
-                                <RowDefinition Height="Auto" />
-                            </Grid.RowDefinitions>
-
-                            <Rectangle Fill="{Binding LastBuild.Result, Converter={StaticResource BuildStatusToBrushConverter}}" Grid.RowSpan="2" Margin="0,11,0,4" />
-
-                            <TextBlock Text="{Binding Name}" Style="{StaticResource PhoneTextLargeStyle}" Grid.Column="1" VerticalAlignment="Bottom" Margin="12,0,0,0" />
-                            <TextBlock Text="{Binding LastBuild.Time, Converter={StaticResource RelativeTimeConverter}}" Style="{StaticResource PhoneTextSubtleStyle}" Grid.Column="2" VerticalAlignment="Bottom" HorizontalAlignment="Right" />
-                            <TextBlock Text="{Binding LastBuild.Result, Converter={StaticResource LocalizedBuildStatusConverter}}" Style="{StaticResource PhoneTextSubtleStyle}" Grid.Column="1" Grid.Row="1" />
-                        </Grid>
-                    </DataTemplate>
-                </ListBox.ItemTemplate>
-                <ListBox.ItemContainerStyle>
-                    <Style TargetType="ListBoxItem">
-                        <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
-                        <Setter Property="Margin" Value="0,0,0,8" />
-                    </Style>
-                </ListBox.ItemContainerStyle>
-            </ListBox>
+            <StackPanel>
+                <TextBlock Text="last build" Style="{StaticResource PhoneTextLargeStyle}" />
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="12" />
+                        <ColumnDefinition Width="*" />
+                    </Grid.ColumnDefinitions>
+                    
+                    <Rectangle Fill="{Binding Job.LastBuild.Result, Converter={StaticResource BuildStatusToBrushConverter}}" Grid.RowSpan="2" Margin="0,11,0,4" />
+                    <StackPanel Grid.Column="1">
+                        <TextBlock Text="{Binding Job.LastBuild.Result, Converter={StaticResource LocalizedBuildStatusConverter}}" Style="{StaticResource PhoneTextSubtleStyle}" Grid.Column="1" />
+                        <TextBlock Text="{Binding Job.LastBuild.Time, Converter={StaticResource RelativeTimeConverter}}" Style="{StaticResource PhoneTextSubtleStyle}" Grid.Column="1" />
+                    </StackPanel>
+                </Grid>
+            </StackPanel>
         </Grid>
     </Grid>
  
     <phone:PhoneApplicationPage.ApplicationBar>
         <shell:ApplicationBar IsVisible="True" IsMenuEnabled="True">
-            <shell:ApplicationBarIconButton IconUri="/Images/appbar.add.rest.png" Text="add"/>
-            <shell:ApplicationBarIconButton IconUri="/Images/appbar.refresh.rest.png" Text="refresh"/>
+            <shell:ApplicationBarIconButton IconUri="/Images/appbar.pin.rest.png" Text="pin"/>
         </shell:ApplicationBar>
     </phone:PhoneApplicationPage.ApplicationBar>
     
     <i:Interaction.Behaviors>
-        <inf:ApplicationBarIconButtonCommand TextKey="add"
-                                                      CommandBinding="{Binding AddJobCommand}"
-                                                      />
-        <inf:ApplicationBarIconButtonCommand TextKey="refresh"
-                                                      CommandBinding="{Binding UpdateStatusesCommand}"
+        <inf:ApplicationBarIconButtonCommand TextKey="pin"
+                                                      CommandBinding="{Binding PinJobCommand}"
                                                       />
     </i:Interaction.Behaviors>
 

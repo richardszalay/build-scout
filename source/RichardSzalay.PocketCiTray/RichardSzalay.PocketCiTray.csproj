@@ -59,6 +59,12 @@
       <HintPath>..\packages\SilverlightToolkitWP.4.2011.12.14\lib\sl4-windowsphone71\Microsoft.Phone.Controls.Toolkit.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.Phone.Interop" />
+    <Reference Include="Newtonsoft.Json">
+      <HintPath>..\packages\Newtonsoft.Json.4.0.8\lib\sl4-windowsphone71\Newtonsoft.Json.dll</HintPath>
+    </Reference>
+    <Reference Include="SilverlightSerializer.WP71">
+      <HintPath>..\packages\WP7Contrib.Caching.1.0.0.16\lib\sl4-WindowsPhone71\SilverlightSerializer.WP71.dll</HintPath>
+    </Reference>
     <Reference Include="System.Observable" />
     <Reference Include="System.Reactive">
       <HintPath>..\packages\Rx-Main.1.0.11226\lib\SL3-WP\System.Reactive.dll</HintPath>
@@ -77,17 +83,29 @@
     <Reference Include="WindowsPhoneTestFramework.Client.AutomationClient">
       <HintPath>..\packages\WP7TestClient.0.9.6\lib\sl4-wp71\WindowsPhoneTestFramework.Client.AutomationClient.dll</HintPath>
     </Reference>
+    <Reference Include="WP7Contrib.Caching">
+      <HintPath>..\packages\WP7Contrib.Caching.1.0.0.16\lib\sl4-WindowsPhone71\WP7Contrib.Caching.dll</HintPath>
+    </Reference>
     <Reference Include="WP7Contrib.Collections">
       <HintPath>..\packages\WP7Contrib.Core.1.0.0.16\lib\sl4-wp71\WP7Contrib.Collections.dll</HintPath>
     </Reference>
     <Reference Include="WP7Contrib.Common">
       <HintPath>..\packages\WP7Contrib.Core.1.0.0.16\lib\sl4-wp71\WP7Contrib.Common.dll</HintPath>
     </Reference>
+    <Reference Include="WP7Contrib.Communications">
+      <HintPath>..\packages\WP7Contrib.Net.1.0.0.16\lib\sl4-wp71\WP7Contrib.Communications.dll</HintPath>
+    </Reference>
     <Reference Include="WP7Contrib.Diagnostics">
       <HintPath>..\packages\WP7Contrib.Core.1.0.0.16\lib\sl4-wp71\WP7Contrib.Diagnostics.dll</HintPath>
     </Reference>
     <Reference Include="WP7Contrib.Logging">
       <HintPath>..\packages\WP7Contrib.Core.1.0.0.16\lib\sl4-wp71\WP7Contrib.Logging.dll</HintPath>
+    </Reference>
+    <Reference Include="WP7Contrib.Serialization.Helpers">
+      <HintPath>..\packages\WP7Contrib.Services.1.0.0.16\lib\sl4-wp71\WP7Contrib.Serialization.Helpers.dll</HintPath>
+    </Reference>
+    <Reference Include="WP7Contrib.Services">
+      <HintPath>..\packages\WP7Contrib.Services.1.0.0.16\lib\sl4-wp71\WP7Contrib.Services.dll</HintPath>
     </Reference>
     <Reference Include="WP7Contrib.View.Controls">
       <HintPath>..\packages\WP7Contrib.Controls.1.0.0.16\lib\sl4-wp71\WP7Contrib.View.Controls.dll</HintPath>
@@ -103,15 +121,21 @@
     <Compile Include="Bootstrap.cs" />
     <Compile Include="CcXml\BuildStatus.cs" />
     <Compile Include="CcXml\ProjectActivity.cs" />
+    <Compile Include="Infrastructure\UpperCaseConverter.cs" />
+    <Compile Include="Logging.cs" />
     <Compile Include="Infrastructure\ApplicationBarCommand.cs" />
     <Compile Include="Infrastructure\ApplicationBarIconButtonCommand.cs" />
     <Compile Include="Infrastructure\ApplicationBarMenuItemCommand.cs" />
+    <Compile Include="Infrastructure\AutoSelectionModeBehavior.cs" />
     <Compile Include="Infrastructure\BindSelectedItemsBehavior.cs" />
     <Compile Include="Infrastructure\BuildStatusToBrushConverter.cs" />
+    <Compile Include="Infrastructure\LinqToVisualTree.cs" />
+    <Compile Include="Infrastructure\MultiselectItemBehavior.cs" />
     <Compile Include="Infrastructure\LocalizedBuildStatusConverter.cs" />
     <Compile Include="Infrastructure\RelativeTimeConverter.cs" />
     <Compile Include="Infrastructure\EnterKeyBehavior.cs" />
     <Compile Include="Infrastructure\RealtimeTextBoxBindingBehavior.cs" />
+    <Compile Include="Infrastructure\ListBoxSelectionCommandBehavior.cs" />
     <Compile Include="MainPage.xaml.cs">
       <DependentUpon>MainPage.xaml</DependentUpon>
     </Compile>
@@ -131,13 +155,14 @@
     </Compile>
     <Compile Include="ViewModels\AddJobsViewModel.cs" />
     <Compile Include="ViewModels\AddBuildServerViewModel.cs" />
+    <Compile Include="Infrastructure\EnumValueConverter.cs" />
+    <Compile Include="ViewModels\TransitionMode.cs" />
     <Compile Include="ViewModels\ViewJobViewModel.cs" />
     <Compile Include="ViewModels\ListJobsViewModel.cs" />
     <Compile Include="ViewModels\PropertyChangeBase.cs" />
     <Compile Include="ViewModels\SelectBuildServerViewModel.cs" />
     <Compile Include="ViewModels\ViewModelBase.cs" />
     <Compile Include="ViewModels\ViewModelLocator.cs" />
-    <Compile Include="ViewModels\ViewUris.cs" />
     <Compile Include="View\AddJobs.xaml.cs">
       <DependentUpon>AddJobs.xaml</DependentUpon>
     </Compile>
@@ -163,6 +188,14 @@
     <DesignData Include="DesignData\ListJobsData.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
+    </DesignData>
+    <DesignData Include="DesignData\ViewJobData.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </DesignData>
+    <DesignData Include="DesignData\AddJobsData.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
     </DesignData>
     <Page Include="MainPage.xaml">
       <SubType>Designer</SubType>
@@ -203,8 +236,12 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="Images\appbar.add.rest.png" />
+    <Content Include="Images\appbar.pin.rest.png" />
     <Content Include="Images\appbar.refresh.rest.png" />
     <Content Include="Images\appbar.save.rest.png" />
+    <Content Include="Images\Tiles\Failed.png" />
+    <Content Include="Images\Tiles\Success.png" />
+    <Content Include="Images\Tiles\Unavailable.png" />
     <Content Include="Toolkit.Content\ApplicationBar.Cancel.png" />
     <Content Include="Toolkit.Content\ApplicationBar.Check.png" />
     <Content Include="Toolkit.Content\ApplicationBar.Delete.png" />

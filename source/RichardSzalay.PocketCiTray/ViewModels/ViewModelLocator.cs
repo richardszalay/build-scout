@@ -15,6 +15,11 @@ namespace RichardSzalay.PocketCiTray.ViewModels
             get { return Container.Resolve<ListJobsViewModel>(); }
         }
 
+        public ViewJobViewModel ViewJobViewModel
+        {
+            get { return Container.Resolve<ViewJobViewModel>(); }
+        }
+
         public SelectBuildServerViewModel SelectBuildServerViewModel
         {
             get { return Container.Resolve<SelectBuildServerViewModel>(); }

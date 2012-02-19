@@ -1,0 +1,41 @@
+﻿<vm:AddJobsViewModel x:Class="RichardSzalay.PocketCiTray.DesignData.ListJobsData"
+    xmlns:vm="clr-namespace:RichardSzalay.PocketCiTray.ViewModels"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+    xmlns:domain="clr-namespace:RichardSzalay.PocketCiTray;assembly=RichardSzalay.PocketCiTray.Common" mc:Ignorable="d"
+    >
+
+    <vm:AddJobsViewModel.Jobs>
+        <domain:Job domain:Job.Name="job 1">
+            <domain:Job.BuildServer>
+                <domain:BuildServer Id="1" />
+            </domain:Job.BuildServer>
+            <domain:Job.LastBuild>
+                <domain:Build Result="Success" Time="2012-02-15T18:11:00Z" />
+            </domain:Job.LastBuild>
+        </domain:Job>
+        <domain:Job domain:Job.Name="Deployment Job">
+            <domain:Job.LastBuild>
+                <domain:Build Result="Failed" Time="2012-01-15T18:11:00Z" />
+            </domain:Job.LastBuild>
+        </domain:Job>
+        <domain:Job domain:Job.Name="a_very_long_job_name_that_will_probably_overflow">
+            <domain:Job.LastBuild>
+                <domain:Build Result="Unavailable" Time="2011-12-15T18:11:00Z" />
+            </domain:Job.LastBuild>
+        </domain:Job>
+    </vm:AddJobsViewModel.Jobs>
+    
+    <vm:AddJobsViewModel.SelectedJobs>
+        <domain:Job domain:Job.Name="job 1">
+            <domain:Job.BuildServer>
+                <domain:BuildServer Id="1" />
+            </domain:Job.BuildServer>
+            <domain:Job.LastBuild>
+                <domain:Build Result="Success" Time="2012-02-15T18:11:00Z" />
+            </domain:Job.LastBuild>
+        </domain:Job>
+    </vm:AddJobsViewModel.SelectedJobs>
+    
+</vm:AddJobsViewModel>

@@ -1,0 +1,21 @@
+﻿<vm:ViewJobViewModel x:Class="RichardSzalay.PocketCiTray.DesignData.ListJobsData"
+                     xmlns:vm="clr-namespace:RichardSzalay.PocketCiTray.ViewModels"
+                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+                     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+                     xmlns:domain="clr-namespace:RichardSzalay.PocketCiTray" 
+                     xmlns:pb="clr-namespace:RichardSzalay.PocketCiTray;assembly=RichardSzalay.PocketCiTray.Common" 
+                     mc:Ignorable="d">
+
+    <vm:ViewJobViewModel.Job>
+        <pb:Job DisplayName="Job Name">
+            <pb:Job.BuildServer>
+                <pb:BuildServer Name="vmd-something-build1" />
+            </pb:Job.BuildServer>
+            <pb:Job.LastBuild>
+                <pb:Build Result="Success" Time="2012-02-18T12:37Z" Label="38" />
+            </pb:Job.LastBuild>
+        </pb:Job>
+    </vm:ViewJobViewModel.Job>
+    
+</vm:ViewJobViewModel>

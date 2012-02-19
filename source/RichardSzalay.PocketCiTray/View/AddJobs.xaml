@@ -6,14 +6,21 @@
     xmlns:shell="clr-namespace:Microsoft.Phone.Shell;assembly=Microsoft.Phone"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
-    xmlns:tk="clr-namespace:Microsoft.Phone.Controls;assembly=Microsoft.Phone.Controls.Toolkit" xmlns:v="clr-namespace:RichardSzalay.PocketCiTray.View" xmlns:i="clr-namespace:System.Windows.Interactivity;assembly=System.Windows.Interactivity" xmlns:inf="clr-namespace:RichardSzalay.PocketCiTray.Infrastructure" FontFamily="{StaticResource PhoneFontFamilyNormal}"
+    xmlns:tk="clr-namespace:Microsoft.Phone.Controls;assembly=Microsoft.Phone.Controls.Toolkit" 
+    xmlns:v="clr-namespace:RichardSzalay.PocketCiTray.View" xmlns:i="clr-namespace:System.Windows.Interactivity;assembly=System.Windows.Interactivity" xmlns:inf="clr-namespace:RichardSzalay.PocketCiTray.Infrastructure" FontFamily="{StaticResource PhoneFontFamilyNormal}"
     FontSize="{StaticResource PhoneFontSizeNormal}"
     Foreground="{StaticResource PhoneForegroundBrush}"
     SupportedOrientations="Portrait" Orientation="Portrait"
     mc:Ignorable="d" d:DesignHeight="696" d:DesignWidth="480"
     shell:SystemTray.IsVisible="True"
     shell:SystemTray.ProgressIndicator="{Binding ProgressIndicator}"
-    DataContext="{Binding Path=AddJobsViewModel,Source={StaticResource ViewModelLocator}}">
+    DataContext="{Binding Path=AddJobsViewModel,Source={StaticResource ViewModelLocator}}"
+    d:DataContext="{d:DesignData /DesignData/AddJobsData.xaml}"
+    tk:TiltEffect.IsTiltEnabled="True">
+    
+    <v:ViewBase.Resources>
+        <inf:UpperCaseConverter x:Key="UpperCaseConverter" />
+    </v:ViewBase.Resources>
 
     <!--LayoutRoot is the root grid where all page content is placed-->
     <Grid x:Name="LayoutRoot" Background="Transparent">
@@ -24,14 +31,15 @@
 
         <!--TitlePanel contains the name of the application and page title-->
         <StackPanel x:Name="TitlePanel" Grid.Row="0" Margin="12,17,0,28">
-            <TextBlock x:Name="ApplicationTitle" Text="MY APPLICATION" Style="{StaticResource PhoneTextNormalStyle}"/>
-            <TextBlock x:Name="PageTitle" Text="page name" Margin="9,-7,0,0" Style="{StaticResource PhoneTextTitle1Style}"/>
+            <TextBlock x:Name="ApplicationTitle" Text="{Binding BuildServer.Name, Converter={StaticResource UpperCaseConverter}}" Style="{StaticResource PhoneTextNormalStyle}"/>
+            <TextBlock x:Name="PageTitle" Text="add jobs" Margin="9,-7,0,0" Style="{StaticResource PhoneTextTitle1Style}"/>
         </StackPanel>
 
         <!--ContentPanel - place additional content here-->
         <Grid x:Name="ContentPanel" Grid.Row="1" Margin="12,0,12,0">
             <tk:MultiselectList ItemsSource="{Binding Jobs}">
                 <i:Interaction.Behaviors>
+                    <inf:AutoSelectionModeBehavior />
                     <inf:BindSelectedItemsBehavior BoundList="{Binding SelectedJobs}" />
                 </i:Interaction.Behaviors>
                 <tk:MultiselectList.ItemContainerStyle>
@@ -41,11 +49,15 @@
                 </tk:MultiselectList.ItemContainerStyle>
                 <tk:MultiselectList.ItemTemplate>
                     <DataTemplate>
-                        <StackPanel Margin="0,-14,0,24">
+                        <StackPanel>
+                            <i:Interaction.Behaviors>
+                                <inf:MultiselectItemBehavior />
+                            </i:Interaction.Behaviors>
                             <TextBlock Text="{Binding Name}" 
-                                       Margin="0,0,0,0"
+                                       Margin="0,0,0,20"
                                        Style="{StaticResource PhoneTextLargeStyle}" />
                         </StackPanel>
+                            
                     </DataTemplate>
                 </tk:MultiselectList.ItemTemplate>
             </tk:MultiselectList>
@@ -56,6 +68,7 @@
     <phone:PhoneApplicationPage.ApplicationBar>
         <shell:ApplicationBar IsVisible="True" IsMenuEnabled="True">
             <shell:ApplicationBarIconButton IconUri="/Images/appbar.save.rest.png" Text="add" />
+            <shell:ApplicationBarIconButton IconUri="/Images/appbar.save.rest.png" Text="add all" />
         </shell:ApplicationBar>
     </phone:PhoneApplicationPage.ApplicationBar>
 

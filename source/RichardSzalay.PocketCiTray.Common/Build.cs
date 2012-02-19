@@ -6,5 +6,6 @@ namespace RichardSzalay.PocketCiTray
     {
         public BuildResult Result { get; set; }
         public DateTimeOffset Time { get; set; }
+        public string Label { get; set; }
     }
 }

@@ -13,6 +13,7 @@
     mc:Ignorable="d" d:DesignHeight="696" d:DesignWidth="480"
     shell:SystemTray.IsVisible="True"
     shell:SystemTray.ProgressIndicator="{Binding ProgressIndicator}"
+    xmlns:tk="clr-namespace:Microsoft.Phone.Controls;assembly=Microsoft.Phone.Controls.Toolkit" 
     DataContext="{Binding Path=AddBuildServerViewModel,Source={StaticResource ViewModelLocator}}">
 
     <!--LayoutRoot is the root grid where all page content is placed-->
@@ -24,20 +25,23 @@
 
         <!--TitlePanel contains the name of the application and page title-->
         <StackPanel x:Name="TitlePanel" Grid.Row="0" Margin="12,17,0,28">
-            <TextBlock x:Name="ApplicationTitle" Text="MY APPLICATION" Style="{StaticResource PhoneTextNormalStyle}"/>
+            <TextBlock x:Name="ApplicationTitle" Text="POCKET BUILD" Style="{StaticResource PhoneTextNormalStyle}"/>
             <TextBlock x:Name="PageTitle" Text="add server" Margin="9,-7,0,0" Style="{StaticResource PhoneTextTitle1Style}"/>
         </StackPanel>
 
         <!--ContentPanel - place additional content here-->
         <Grid x:Name="ContentPanel" Grid.Row="1" Margin="12,0,12,0">
             <StackPanel>
+                <TextBlock Text="Server type" Style="{StaticResource PhoneTextSubtleStyle}" />
+                <tk:ListPicker ItemsSource="{Binding Providers}" SelectedItem="{Binding SelectedProvider, Mode=TwoWay}" />
+
+                <TextBlock Text="Build URL" Style="{StaticResource PhoneTextSubtleStyle}" />
                 <TextBox x:Name="BuildSource" Text="{Binding BuildServerUrl, Mode=TwoWay}" Tag="auto:BuildSource">
                     <i:Interaction.Behaviors>
                         <inf:RealtimeTextBoxBindingBehavior />
                         <inf:EnterKeyBehavior Command="{Binding AddBuildServerCommand}" />
                     </i:Interaction.Behaviors>
                 </TextBox>
-                <TextBlock Text="{Binding Text,ElementName=BuildSource}"/>
             </StackPanel>
         </Grid>
     </Grid>
@@ -54,5 +58,7 @@
                                              CommandParameterBinding="{Binding BuildServerUrl}"
                                              />
     </i:Interaction.Behaviors>
+    
+    
 
 </v:ViewBase>

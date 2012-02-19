@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using System.Collections.ObjectModel;
 using System.Collections.Specialized;
 using System.Reactive.Linq;
@@ -7,6 +8,7 @@ using System.Windows.Navigation;
 using RichardSzalay.PocketCiTray.Extensions.Extensions;
 using RichardSzalay.PocketCiTray.Providers;
 using RichardSzalay.PocketCiTray.Services;
+using System.Collections.Generic;
 
 namespace RichardSzalay.PocketCiTray.ViewModels
 {
@@ -23,8 +25,6 @@ namespace RichardSzalay.PocketCiTray.ViewModels
             this.jobProviderFactory = jobProviderFactory;
             this.jobRepository = jobRepository;
             this.schedulerAccessor = schedulerAccessor;
-
-            this.AddJobsCommand = CreateCommand(new ObservableCommand(CanAddJobs()), OnAddJobs);
         }
 
         public ICommand AddJobsCommand { get; private set; }
@@ -32,6 +32,11 @@ namespace RichardSzalay.PocketCiTray.ViewModels
         public override void OnNavigatedTo(NavigationEventArgs e)
         {
             base.OnNavigatedTo(e);
+
+            selectedJobs = new ObservableCollection<Job>();
+
+            this.AddJobsCommand = CreateCommand(new ObservableCommand(CanAddJobs()), OnAddJobs);
+            OnPropertyChanged("AddJobsCommand");
 
             var query = e.Uri.GetQueryValues();
 
@@ -41,6 +46,8 @@ namespace RichardSzalay.PocketCiTray.ViewModels
                 return;
             }
 
+            IsSelectionEnabled = true;
+
             int buildServerId = Int32.Parse(query["buildServerId"]);
 
             StartLoading("finding jobs");
@@ -48,15 +55,29 @@ namespace RichardSzalay.PocketCiTray.ViewModels
             Observable.Return(buildServerId)
                 .ObserveOn(schedulerAccessor.Background)
                 .SelectMany(id => jobRepository.GetBuildServer(buildServerId))
-                .SelectMany(server => jobProviderFactory.Get(server.Provider).GetJobsObservableAsync(server))
+                .Do(server => buildServer = server)
+                .SelectMany(server => jobProviderFactory
+                    .Get(server.Provider)
+                    .GetJobsObservableAsync(server)
+                    .SelectMany(jobs => RemoveExistingJobs(server, jobs))
+                )
                 .ObserveOn(schedulerAccessor.UserInterface)
                 .Finally(StopLoading)
                 .Subscribe(loadedJobs =>
                 {
+                    OnPropertyChanged("BuildServer");
                     this.jobs = new ObservableCollection<Job>(loadedJobs);
                     this.OnPropertyChanged("BuildServer");
                     this.OnPropertyChanged("Jobs");
                 });
+        }
+
+        private IObservable<ICollection<Job>> RemoveExistingJobs(BuildServer buildServer, ICollection<Job> jobs)
+        {
+            return jobRepository.GetJobs()
+                .Select(existingJobs => existingJobs.Where(j => j.BuildServer.Equals(buildServer)))
+                .Select(existingJobs => jobs.Except(existingJobs))
+                .Select(filteredJobs => (ICollection<Job>)filteredJobs.ToList());
         }
 
         private void OnAddJobs()
@@ -96,10 +117,12 @@ namespace RichardSzalay.PocketCiTray.ViewModels
             set { isSelectionEnabled = value; OnPropertyChanged("IsSelectionEnabled"); }
         }
 
-        private readonly ObservableCollection<Job> selectedJobs = new ObservableCollection<Job>();
+        private ObservableCollection<Job> selectedJobs;
+        private PocketCiTray.BuildServer buildServer;
         public ObservableCollection<Job> SelectedJobs
         {
             get { return selectedJobs; }
+            private set { selectedJobs = value; OnPropertyChanged("SelectedJobs"); }
         }
 
         private IObservable<bool> CanAddJobs()
@@ -110,6 +133,12 @@ namespace RichardSzalay.PocketCiTray.ViewModels
                 h => selectedJobs.CollectionChanged -= h
                 )
                 .Select(s => selectedJobs.Count > 0);
+        }
+
+        public BuildServer BuildServer
+        {
+            get { return buildServer; }
+            set { buildServer = value; OnPropertyChanged("BuildServer"); }
         }
     }
 }

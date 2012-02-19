@@ -13,12 +13,12 @@ namespace RichardSzalay.PocketCiTray.TestConsole
         {
             Mutex mutex;
 
-            ConsoleApi.Hide();
+            //ConsoleApi.Hide();
 
             if (!IsOnlyInstanceRunning(out mutex))
                 return;
 
-            ConsoleApi.Show();
+            //ConsoleApi.Show();
 
             try
             {

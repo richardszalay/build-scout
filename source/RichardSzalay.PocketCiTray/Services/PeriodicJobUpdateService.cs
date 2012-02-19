@@ -10,6 +10,8 @@ namespace RichardSzalay.PocketCiTray.Services
     {
         private static readonly TimeSpan TestBackgroundInterval = TimeSpan.FromSeconds(10);
 
+        private static readonly TimeSpan UpdateTimeout = TimeSpan.FromSeconds(30);
+
         private readonly IJobUpdateService jobUpdateService;
         private readonly IScheduler scheduler;
         private readonly IScheduledActionServiceFacade scheduledActionService;
@@ -26,7 +28,7 @@ namespace RichardSzalay.PocketCiTray.Services
         public void Start(TimeSpan dueTime, TimeSpan period)
         {
             subscription.Disposable = Observable.Timer(dueTime, period, scheduler)
-                .Subscribe(_ => jobUpdateService.UpdateAll());
+                .Subscribe(_ => jobUpdateService.UpdateAll(UpdateTimeout));
         }
 
         public void Stop()

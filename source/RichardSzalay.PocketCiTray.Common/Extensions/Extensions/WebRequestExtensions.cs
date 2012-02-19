@@ -12,7 +12,7 @@ namespace RichardSzalay.PocketCiTray.Extensions.Extensions
                 request.BeginGetResponse,
                 result => request.EndGetResponse(result)
                 )()
-                .Finally(request.Abort);
+                .Finally(() => request.Abort());
         }
     }
 }

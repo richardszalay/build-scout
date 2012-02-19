@@ -6,6 +6,7 @@ using Microsoft.Phone.Controls;
 using Microsoft.Phone.Shell;
 using RichardSzalay.PocketCiTray.Services;
 using RichardSzalay.PocketCiTray.ViewModels;
+using WP7Contrib.Logging;
 
 namespace RichardSzalay.PocketCiTray
 {
@@ -22,6 +23,8 @@ namespace RichardSzalay.PocketCiTray
         /// </summary>
         public App()
         {
+            TiltEffect.TiltableItems.Add(typeof(MultiselectItem));
+
             // Global handler for uncaught exceptions. 
             UnhandledException += Application_UnhandledException;
 
@@ -63,6 +66,8 @@ namespace RichardSzalay.PocketCiTray
         {
             var container = ConfigureContainer();
 
+            this.log = container.Resolve<ILog>();
+
             bootstrap = container.Resolve<Bootstrap>();
             bootstrap.Startup();
         }
@@ -72,6 +77,8 @@ namespace RichardSzalay.PocketCiTray
         private void Application_Activated(object sender, ActivatedEventArgs e)
         {
             var container = ConfigureContainer();
+
+            this.log = container.Resolve<ILog>();
 
             bootstrap = container.Resolve<Bootstrap>();
             bootstrap.Continue();
@@ -86,9 +93,7 @@ namespace RichardSzalay.PocketCiTray
 
         private Container ConfigureContainer()
         {
-            var container = new Container();
-
-            ApplicationDependencyConfiguration.Configure(container);
+            var container = ApplicationDependencyConfiguration.Configure();
 
             ((ViewModelLocator)Resources["ViewModelLocator"]).Container = container;
 
@@ -105,6 +110,8 @@ namespace RichardSzalay.PocketCiTray
         // Code to execute if a navigation fails
         private void RootFrame_NavigationFailed(object sender, NavigationFailedEventArgs e)
         {
+            log.Write("Navigation failed", e.Exception);
+
             if (System.Diagnostics.Debugger.IsAttached)
             {
                 // A navigation has failed; break into the debugger
@@ -115,6 +122,8 @@ namespace RichardSzalay.PocketCiTray
         // Code to execute on Unhandled Exceptions
         private void Application_UnhandledException(object sender, ApplicationUnhandledExceptionEventArgs e)
         {
+            log.Write("Unhandled exception", e.ExceptionObject);
+
             if (System.Diagnostics.Debugger.IsAttached)
             {
                 // An unhandled exception has occurred; break into the debugger
@@ -128,6 +137,7 @@ namespace RichardSzalay.PocketCiTray
         private bool phoneApplicationInitialized = false;
         private Mutex applicationMutex;
         private Bootstrap bootstrap;
+        private ILog log;
 
         // Do not add any additional code to this method
         private void InitializePhoneApplication()

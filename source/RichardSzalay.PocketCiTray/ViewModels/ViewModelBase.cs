@@ -9,10 +9,22 @@ namespace RichardSzalay.PocketCiTray.ViewModels
 {
     public abstract class ViewModelBase : PropertyChangeBase
     {
-        private CompositeDisposable disposables = new CompositeDisposable();
+        private CompositeDisposable disposables;
         private ProgressIndicator progressIndicator;
+        private TransitionMode transitionMode;
 
-        protected CompositeDisposable Disposables { get { return disposables; } }
+        protected CompositeDisposable Disposables
+        {
+            get
+            {
+                if (disposables == null)
+                {
+                    throw new InvalidOperationException("Cannot access Disposables before OnNavigatedTo");
+                }
+
+                return disposables;
+            }
+        }
 
         /// <summary>
         /// Convenience method for subscribing to an ObservableCommand and then assigning ICommand to a local field. 
@@ -31,11 +43,12 @@ namespace RichardSzalay.PocketCiTray.ViewModels
         public virtual void OnNavigatedFrom(NavigationEventArgs e)
         {
             this.Disposables.Dispose();
-            this.disposables = new CompositeDisposable();
+            this.disposables = null;
         }
 
         public virtual void OnNavigatedTo(NavigationEventArgs e)
         {
+            this.disposables = new CompositeDisposable();
         }
 
         protected void StartLoading(string status)
@@ -60,6 +73,12 @@ namespace RichardSzalay.PocketCiTray.ViewModels
         {
             get { return progressIndicator; }
             protected set { progressIndicator = value; OnPropertyChanged("ProgressIndicator"); }
+        }
+
+        public TransitionMode TransitionMode
+        {
+            get { return transitionMode; }
+            protected set { transitionMode = value; OnPropertyChanged("TransitionMode"); }
         }
 
         protected ICommand CreateCommand<TParam>(ObservableCommand<TParam> command, Action<TParam> action)

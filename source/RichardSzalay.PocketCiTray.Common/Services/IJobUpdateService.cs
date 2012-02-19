@@ -4,7 +4,7 @@ namespace RichardSzalay.PocketCiTray.Services
 {
     public interface IJobUpdateService
     {
-        void UpdateAll();
+        void UpdateAll(TimeSpan timeout);
 
         event EventHandler Complete;
 

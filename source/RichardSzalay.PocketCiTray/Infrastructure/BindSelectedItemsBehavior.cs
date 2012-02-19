@@ -52,12 +52,17 @@ namespace RichardSzalay.PocketCiTray.Infrastructure
 
         private void SetCollection(IList selectedItemsList)
         {
-            this.selectedItemsList = selectedItemsList;
+            this.selectedItemsList = null;
 
-            foreach(var item in AssociatedObject.SelectedItems)
+            var containerGenerator = AssociatedObject.ItemContainerGenerator;
+
+            foreach (var item in selectedItemsList)
             {
-                selectedItemsList.Add(item);
+                MultiselectItem container = (MultiselectItem)containerGenerator.ContainerFromItem(item);
+                container.IsSelected = true;
             }
+
+            this.selectedItemsList = selectedItemsList;
         }
 
         public IList BoundList

@@ -1,6 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Deployment xmlns="http://schemas.microsoft.com/windowsphone/2009/deployment" AppPlatformVersion="7.1">
-  <App xmlns="" ProductID="{61f8f353-a241-47e4-8de3-2a434cd52e10}" Title="RichardSzalay.PocketCiTray" RuntimeType="Silverlight" Version="1.0.0.0" Genre="apps.normal" Author="RichardSzalay.PocketCiTray author" Description="Sample description" Publisher="RichardSzalay.PocketCiTray">
+  <App xmlns="" ProductID="{61f8f353-a241-47e4-8de3-2a434cd52e10}" Title="Pocket Build Monitor" RuntimeType="Silverlight" Version="1.0.0.0" Genre="apps.normal" Author="Richard Szalay" Description="Sample description" Publisher="Richard Szalay">
     <IconPath IsRelative="true" IsResource="false">ApplicationIcon.png</IconPath>
     <Capabilities>
       <Capability Name="ID_CAP_GAMERSERVICES" />

@@ -19,5 +19,11 @@ namespace RichardSzalay.PocketCiTray.Extensions.Extensions
                 .Select(kvp => kvp.Split('='))
                 .ToDictionary(kvp => Uri.UnescapeDataString(kvp[0]), kvp => Uri.UnescapeDataString(kvp[1]));
         }
+
+        public static bool IsSamePage(this Uri uri, Uri other)
+        {
+            return uri.MakeAbsolute().AbsolutePath ==
+                other.MakeAbsolute().AbsolutePath;
+        }
     }
 }

@@ -7,7 +7,7 @@ namespace RichardSzalay.PocketCiTray.Providers
     {
         IObservable<ICollection<Job>> GetJobsObservableAsync(BuildServer buildServer);
         IObservable<BuildServer> ValidateBuildServer(BuildServer buildServer);
-        IObservable<ICollection<Job>> UpdateAll(BuildServer buildServer, IEnumerable<Job> jobs);
+        IObservable<Job> UpdateAll(BuildServer buildServer, IEnumerable<Job> jobs);
         String Name { get; }
     }
 }

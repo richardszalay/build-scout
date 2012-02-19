@@ -1,10 +1,11 @@
 ﻿using System.Windows.Controls;
 using Microsoft.Phone.Controls;
 using RichardSzalay.PocketCiTray.ViewModels;
+using WP7Contrib.View.Transitions.Animation;
 
 namespace RichardSzalay.PocketCiTray.View
 {
-    public class ViewBase : PhoneApplicationPage
+    public class ViewBase : PhoneApplicationPage //: AnimatedBasePage
     {
         protected override void OnNavigatedFrom(System.Windows.Navigation.NavigationEventArgs e)
         {

@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading;
 using System.Windows;
 using RichardSzalay.PocketCiTray.Services;
+using WP7Contrib.Logging;
 
 namespace RichardSzalay.PocketCiTray
 {
@@ -16,9 +17,13 @@ namespace RichardSzalay.PocketCiTray
         private readonly IClock clock;
         private readonly IMessageBoxFacade messageBox;
         private readonly IMutexService mutexService;
+        private readonly ILogManager logManager;
         private Mutex applicationMutex;
 
-        public Bootstrap(IPeriodicJobUpdateService periodicJobUpdateService, IJobUpdateService jobUpdateService, IApplicationSettings applicationSettings, IClock clock, IMessageBoxFacade messageBox, IMutexService mutexService)
+        public Bootstrap(IPeriodicJobUpdateService periodicJobUpdateService, IJobUpdateService jobUpdateService, 
+            IApplicationSettings applicationSettings, IClock clock, 
+            IMessageBoxFacade messageBox, IMutexService mutexService,
+            ILogManager logManager)
         {
             this.periodicJobUpdateService = periodicJobUpdateService;
             this.jobUpdateService = jobUpdateService;
@@ -26,6 +31,7 @@ namespace RichardSzalay.PocketCiTray
             this.clock = clock;
             this.messageBox = messageBox;
             this.mutexService = mutexService;
+            this.logManager = logManager;
         }
 
         /// <summary>
@@ -43,6 +49,11 @@ namespace RichardSzalay.PocketCiTray
             applicationSettings.Updated += OnSettingsUpdated;
 
             StartPeriodicUpdateService();
+
+            if (applicationSettings.LoggingEnabled)
+            {
+                logManager.Enable();
+            }
         }
 
         public void Continue()
@@ -93,6 +104,8 @@ namespace RichardSzalay.PocketCiTray
 
         public void Shutdown()
         {
+            logManager.Disable();
+
             applicationMutex.ReleaseMutex();
         }
     }
