@@ -2,6 +2,7 @@
 using RichardSzalay.PocketCiTray.Services;
 using System;
 using System.Collections.Generic;
+using WP7Contrib.Logging;
 
 namespace RichardSzalay.PocketCiTray.Providers
 {
@@ -10,12 +11,15 @@ namespace RichardSzalay.PocketCiTray.Providers
         private readonly IWebRequestCreate webRequestCreator;
         private readonly IClock clock;
         private readonly ISchedulerAccessor schedulerAccessor;
+        private readonly ILog log;
 
-        public JobProviderFactory(IWebRequestCreate webRequestCreator, IClock clock, ISchedulerAccessor schedulerAccessor)
+        public JobProviderFactory(IWebRequestCreate webRequestCreator, IClock clock, 
+            ISchedulerAccessor schedulerAccessor, ILog log)
         {
             this.webRequestCreator = webRequestCreator;
             this.clock = clock;
             this.schedulerAccessor = schedulerAccessor;
+            this.log = log;
         }
 
         public ICollection<string> GetProviders()
@@ -36,6 +40,9 @@ namespace RichardSzalay.PocketCiTray.Providers
 
                 case HudsonProvider.ProviderName:
                     return new HudsonProvider(webRequestCreator, clock);
+
+                case TeamCity6Provider.ProviderName:
+                    return new TeamCity6Provider(webRequestCreator, clock, log);
 
                 default:
                     throw new ArgumentException("Invalid provider: " + serverType);

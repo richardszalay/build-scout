@@ -25,5 +25,14 @@ namespace RichardSzalay.PocketCiTray.Extensions.Extensions
             return uri.MakeAbsolute().AbsolutePath ==
                 other.MakeAbsolute().AbsolutePath;
         }
+
+        public static Uri AppendQuery(this Uri uri, string query)
+        {
+            var builder = new UriBuilder(uri);
+
+            builder.Query = (builder.Query + "&" + query).TrimStart('&');
+
+            return builder.Uri;
+        }
     }
 }

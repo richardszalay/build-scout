@@ -23,7 +23,11 @@ namespace RichardSzalay.PocketCiTray
 
         public int Id { get; set; }
 
+        public string RemoteId { get; set; }
+
         public Build LastBuild { get; set; }
+
+        public DateTimeOffset? LastUpdated { get; set; }
 
         public string DisplayName
         {

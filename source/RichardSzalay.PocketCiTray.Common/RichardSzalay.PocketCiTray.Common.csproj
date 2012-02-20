@@ -102,6 +102,7 @@
     <Compile Include="Providers\IJobProvider.cs" />
     <Compile Include="Providers\IJobProviderFactory.cs" />
     <Compile Include="Providers\JobProviderFactory.cs" />
+    <Compile Include="Providers\TeamCity6Provider.cs" />
     <Compile Include="SchedulerAccessor.cs" />
     <Compile Include="Services\ApplicationSettings.cs" />
     <Compile Include="Services\ApplicationTileService.cs" />
