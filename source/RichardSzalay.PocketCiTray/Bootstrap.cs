@@ -46,8 +46,6 @@ namespace RichardSzalay.PocketCiTray
                 PerformFirstRun();
             }
 
-            applicationSettings.Updated += OnSettingsUpdated;
-
             StartPeriodicUpdateService();
 
             if (applicationSettings.LoggingEnabled)
@@ -90,23 +88,11 @@ namespace RichardSzalay.PocketCiTray
             }
         }
 
-        private void OnSettingsUpdated(object sender, EventArgs e)
-        {
-            periodicJobUpdateService.Stop();
-
-            if (!applicationSettings.BackgroundUpdateEnabled)
-            {
-                periodicJobUpdateService.UnregisterBackgroundTask();
-            }
-
-            StartPeriodicUpdateService();
-        }
-
         public void Shutdown()
         {
             logManager.Disable();
 
-            applicationMutex.ReleaseMutex();
+            mutexService.ReleaseMutex(applicationMutex);
         }
     }
 }

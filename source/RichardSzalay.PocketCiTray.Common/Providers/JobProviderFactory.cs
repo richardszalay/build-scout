@@ -27,7 +27,8 @@ namespace RichardSzalay.PocketCiTray.Providers
             return new string[]
             {
                 CruiseProvider.ProviderName,
-                HudsonProvider.ProviderName
+                HudsonProvider.ProviderName,
+                TeamCity6Provider.ProviderName
             };
         }
 

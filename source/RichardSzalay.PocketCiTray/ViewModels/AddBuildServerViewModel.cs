@@ -24,8 +24,8 @@ namespace RichardSzalay.PocketCiTray.ViewModels
         private readonly INetworkInterfaceFacade networkInterface;
 
         private ICommand addBuildServerCommand;
-        private string buildServerUrl = "http://ci.jruby.org";
-        private string selectedProvider;
+        private string buildServerUrl = "http://guest@teamcity.codebetter.com";
+        private string selectedProvider = "teamcity6";
         private ICollection<string> providers;
 
         private bool canRestrictToNetwork = false;

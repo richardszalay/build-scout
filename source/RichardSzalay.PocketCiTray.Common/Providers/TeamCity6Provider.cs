@@ -9,6 +9,8 @@ using RichardSzalay.PocketCiTray.Extensions.Extensions;
 using RichardSzalay.PocketCiTray.Services;
 using System.IO;
 using WP7Contrib.Logging;
+using System.Reactive.Concurrency;
+using System.Reactive;
 
 namespace RichardSzalay.PocketCiTray.Providers
 {
@@ -17,7 +19,7 @@ namespace RichardSzalay.PocketCiTray.Providers
         /// <summary>
         /// 6.x compatible
         /// </summary>
-        public const string ProviderName = "teamcity";
+        public const string ProviderName = "teamcity6";
 
         /// <summary>
         /// 7.0+ compatible with cruise
@@ -30,38 +32,43 @@ namespace RichardSzalay.PocketCiTray.Providers
         private readonly IClock clock;
         private readonly ILog log;
 
+        private IEnumerable<ITeamCity6UpdateStrategy> updateStrategies;
+
         public TeamCity6Provider(IWebRequestCreate webRequestCreate, IClock clock, ILog log)
         {
             this.webRequestCreate = webRequestCreate;
             this.clock = clock;
             this.log = log;
+
+            updateStrategies = new ITeamCity6UpdateStrategy[]
+            {
+                new RecentBuildsTeamCity6UpdateStrategy(webRequestCreate, clock, log),
+                new PerJobTeamCity6UpdateStrategy(webRequestCreate, clock, log)
+            };
         }
 
         public string Name { get { return ProviderName; } }
 
         public IObservable<ICollection<Job>> GetJobsObservableAsync(BuildServer buildServer)
         {
-            Uri jobsUri = new Uri(buildServer.Uri, ApiSuffix + JobQuery);
+            Uri jobsUri = new Uri(buildServer.Uri, "httpAuth/app/rest/buildTypes");
 
-            var request = (HttpWebRequest)webRequestCreate.Create(jobsUri);
-            request.Accept = "text/xml";
+            var request = webRequestCreate.CreateXmlRequest(jobsUri, buildServer.Credential);
 
             return request.GetResponseObservable()
-                .Select(response =>
-                {
-                    using (var stream = response.GetResponseStream())
-                        return MapJobs(buildServer, XDocument.Load(stream));
-                });
+                .ParseXmlResponse()
+                .Select(doc => (ICollection<Job>)MapJobs(doc, buildServer).ToList());
         }
 
         public IObservable<BuildServer> ValidateBuildServer(BuildServer buildServer)
         {
-            var validateUri = new Uri(buildServer.Uri, ApiSuffix + "/httpAuth/app/rest/6.0/version");
+            var validateUri = new Uri(buildServer.Uri, "httpAuth/app/rest/6.0/version");
 
             log.Write("[TeamCity6Provider] Validating server: {0}", validateUri);
 
-            return webRequestCreate.CreateXmlRequest(buildServer.Uri, buildServer.Credential)
-                .GetResponseObservable()
+            var request = webRequestCreate.CreateTextRequest(validateUri, buildServer.Credential);
+            
+            return request.GetResponseObservable()
                 .Select(response =>
                 {
                     using (var stream = response.GetResponseStream())
@@ -91,78 +98,15 @@ namespace RichardSzalay.PocketCiTray.Providers
         {
             log.Write("[TeamCity6Provider] Updating jobs from server: {0}", buildServer.Uri);
 
-            var oldestUpdateTime = GetOldestUpdate(jobs);
+            var remainingJobsSet = jobs.ToDictionary(j => j);
 
-            var firstPageBuilder = new UriBuilder(new Uri(buildServer.Uri, "/httpAuth/app/rest/6.0/builds"));
-
-            if (oldestUpdateTime.HasValue)
+            return this.updateStrategies.Select(strat => Observable.Defer(() =>
             {
-                firstPageBuilder.Query = "sinceDate=" + 
-                    Uri.EscapeUriString(FormatTeamCityDate(oldestUpdateTime.Value));
-            }
-
-            var remainingJobs = new Dictionary<string, Job>();
-
-            Subject<Uri> pages = new Subject<Uri>();
-
-            Func<Uri, IObservable<Job>> loadPage = uri => Observable.Defer(() => 
-                webRequestCreate.CreateXmlRequest(uri, buildServer.Credential)
-                    .GetResponseObservable()
-                    .ParseXmlResponse()
-                    .Select(buildsDoc =>
-                    {
-                        foreach (var buildElement in buildsDoc.Root.Elements("build"))
-                        {
-                            string buildTypeId = buildElement.Attribute("buildTypeId").Value;
-
-                            Job job;
-
-                            if (remainingJobs.TryGetValue(buildTypeId, out job))
-                            {
-                                remainingJobs.Remove()
-                            }
-                        }
-
-                        XAttribute nextHrefAttr = buildsDoc.Root.Attribute("nextHref");
-                        if (nextHrefAttr != null)
-                        {
-                            var nextPageUri = new Uri(buildServer.Uri, nextHrefAttr.Value);
-                            pages.OnNext(nextPageUri);
-                        }
-                    });
-
-            var loadEachPage = pages
-                .StartWith(firstPageBuilder.Uri)
-                .Select(loadPage)
-                .Concat();
-
-
-                
-            return pages.StartWith(firstPageBuilder.Uri)
-
-                .SelectMany(uri => webRequestCreate.CreateXmlRequest(firstPageBuilder.Uri, buildServer.Credential))
-                .SelectMany(latestJobs =>
-                {
-                    var latestJobMap = latestJobs.ToDictionary(j => j.Name);
-
-                    foreach(var job in jobs)
-                    {
-                        if (latestJobMap.ContainsKey(job.Name))
-                        {
-                            job.LastBuild = latestJobMap[job.Name].LastBuild;
-                        }
-                        else
-                        {
-                            job.LastBuild = new Build()
-                            {
-                                Result = BuildResult.Unavailable,
-                                Time = clock.UtcNow
-                            };
-                        }
-                    }
-
-                    return (ICollection<Job>)jobs.ToList();
-                });
+                return remainingJobsSet.Count > 0
+                    ? strat.UpdateAll(buildServer, jobs)
+                    : Observable.Empty<Job>();
+            }))
+            .Concat();
         }
 
         private string FormatTeamCityDate(DateTimeOffset dateTimeOffset)
@@ -179,28 +123,32 @@ namespace RichardSzalay.PocketCiTray.Providers
                 .FirstOrDefault();
         }
 
-        private ICollection<Job> MapJobs(BuildServer buildServer, XDocument cruiseXml)
+        private IEnumerable<Job> MapJobs(XDocument document, BuildServer buildServer)
         {
-            return cruiseXml.Root.Elements("job")
-                .Select(project => new Job
+            return document.Root.Elements("buildType")
+                .Select(jobElement => new Job
                 {
-                    BuildServer = buildServer,
-                    Name = project.Element("name").Value,
-                    WebUri = new Uri(project.Element("url").Value),
-                    LastBuild = new Build
-                    {
-                        Result = ParseBuildResult(project.Element("lastCompletedBuild").Element("result").Value),
-                        Time = ParseBuildTime(project.Element("lastCompletedBuild").Element("timestamp").Value),
-                        Label = project.Element("lastCompletedBuild").Element("number").Value
-                    }
-                })
-                .ToList();
+                    // TODO: It would be nice to use @projectName here somehow
+                    RemoteId = jobElement.Attribute("id").Value,
+                    Name = jobElement.Attribute("name").Value,
+                    WebUri = new Uri(jobElement.Attribute("webUrl").Value),
+                    BuildServer = buildServer
+                });
+        }
+
+        private Build MapBuild(XElement jobElement)
+        {
+            return new Build
+            {
+                Label = jobElement.Attribute("number").Value,
+                Result = ParseBuildResult(jobElement.Attribute("status").Value),
+                Time = ParseBuildTime(jobElement.Attribute("startDate").Value)
+            };
         }
 
         private static DateTimeOffset ParseBuildTime(string value)
         {
-            return new DateTimeOffset(1970, 1, 1, 0, 0, 0, 0, TimeSpan.Zero)
-                + TimeSpan.FromMilliseconds(Int64.Parse(value));
+            return DateTimeOffset.Parse(value);
         }
 
         private static BuildResult ParseBuildResult(string value)
@@ -210,6 +158,7 @@ namespace RichardSzalay.PocketCiTray.Providers
                 case "SUCCESS":
                     return BuildResult.Success;
                 case "FAILURE":
+                case "ERROR":
                     return BuildResult.Failed;
                 default:
                     return BuildResult.Unavailable;
@@ -217,3 +166,4 @@ namespace RichardSzalay.PocketCiTray.Providers
         }
     }
 }
+

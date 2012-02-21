@@ -1,0 +1,164 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>10.0.20506</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{7578A037-A600-4E4E-96B8-42C7AD030D06}</ProjectGuid>
+    <ProjectTypeGuids>{C089C8C0-30E0-4E22-80C0-CE093F111A43};{fae04ec0-301f-11d3-bf4b-00c04f79efbc}</ProjectTypeGuids>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>RichardSzalay.PocketCiTray.Tests</RootNamespace>
+    <AssemblyName>RichardSzalay.PocketCiTray.Tests</AssemblyName>
+    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <SilverlightVersion>$(TargetFrameworkVersion)</SilverlightVersion>
+    <TargetFrameworkProfile>WindowsPhone71</TargetFrameworkProfile>
+    <TargetFrameworkIdentifier>Silverlight</TargetFrameworkIdentifier>
+    <SilverlightApplication>true</SilverlightApplication>
+    <SupportedCultures>
+    </SupportedCultures>
+    <XapOutputs>true</XapOutputs>
+    <GenerateSilverlightManifest>true</GenerateSilverlightManifest>
+    <XapFilename>RichardSzalay.PocketCiTray.Tests.xap</XapFilename>
+    <SilverlightManifestTemplate>Properties\AppManifest.xml</SilverlightManifestTemplate>
+    <SilverlightAppEntry>RichardSzalay.PocketCiTray.Tests.App</SilverlightAppEntry>
+    <ValidateXaml>true</ValidateXaml>
+    <ThrowErrorsInValidation>true</ThrowErrorsInValidation>
+    <SolutionDir Condition="$(SolutionDir) == '' Or $(SolutionDir) == '*Undefined*'">..\..\source\</SolutionDir>
+    <RestorePackages>true</RestorePackages>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>Bin\Debug</OutputPath>
+    <DefineConstants>DEBUG;TRACE;SILVERLIGHT;WINDOWS_PHONE</DefineConstants>
+    <NoStdLib>true</NoStdLib>
+    <NoConfig>true</NoConfig>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>Bin\Release</OutputPath>
+    <DefineConstants>TRACE;SILVERLIGHT;WINDOWS_PHONE</DefineConstants>
+    <NoStdLib>true</NoStdLib>
+    <NoConfig>true</NoConfig>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="Funq">
+      <HintPath>..\libs\Funq\Funq.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Phone" />
+    <Reference Include="Microsoft.Phone.Interop" />
+    <Reference Include="Microsoft.Silverlight.Testing">
+      <HintPath>..\packages\WP7-CI.1.1\lib\sl3-wp\Microsoft.Silverlight.Testing.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.VisualStudio.QualityTools.UnitTesting.Silverlight">
+      <HintPath>..\packages\WP7-CI.1.1\lib\sl3-wp\Microsoft.VisualStudio.QualityTools.UnitTesting.Silverlight.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Observable" />
+    <Reference Include="System.Reactive, Version=1.0.10621.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Rx-Main.1.0.11226\lib\SL3-WP\System.Reactive.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Reactive.Windows.Threading, Version=1.0.10621.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Rx-Xaml.1.0.10621\lib\SL3-WP\System.Reactive.Windows.Threading.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Windows" />
+    <Reference Include="system" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Net" />
+    <Reference Include="System.Xml" />
+    <Reference Include="mscorlib.extensions" />
+    <Reference Include="WP7Contrib.Collections">
+      <HintPath>..\packages\WP7Contrib.Core.1.0.0.16\lib\sl4-wp71\WP7Contrib.Collections.dll</HintPath>
+    </Reference>
+    <Reference Include="WP7Contrib.Common, Version=1.0.0.16, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\WP7Contrib.Core.1.0.0.16\lib\sl4-wp71\WP7Contrib.Common.dll</HintPath>
+    </Reference>
+    <Reference Include="WP7Contrib.Diagnostics">
+      <HintPath>..\packages\WP7Contrib.Core.1.0.0.16\lib\sl4-wp71\WP7Contrib.Diagnostics.dll</HintPath>
+    </Reference>
+    <Reference Include="WP7Contrib.Logging, Version=1.0.0.16, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\WP7Contrib.Core.1.0.0.16\lib\sl4-wp71\WP7Contrib.Logging.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="App.xaml.cs">
+      <DependentUpon>App.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="ApplicationTests\BootstrapSpec.cs" />
+    <Compile Include="ApplicationTests\ViewModels\ListJobsViewModelSpec.cs" />
+    <Compile Include="Infrastructure\BddTestAssembly.cs" />
+    <Compile Include="Infrastructure\BddTestClass.cs" />
+    <Compile Include="Infrastructure\BddTestMethod.cs" />
+    <Compile Include="Infrastructure\BecauseOfAttribute.cs" />
+    <Compile Include="Infrastructure\ContextAttribute.cs" />
+    <Compile Include="Infrastructure\MsTestBddUnitTestProvider.cs" />
+    <Compile Include="Infrastructure\TestDependencyConfiguration.cs" />
+    <Compile Include="MainPage.xaml.cs">
+      <DependentUpon>MainPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Mocks\BlacklistMutexService.cs" />
+    <Compile Include="Mocks\FakeJobRepository.cs" />
+    <Compile Include="Mocks\FakeNavigationService.cs" />
+    <Compile Include="Mocks\MockJobUpdateService.cs" />
+    <Compile Include="Mocks\StubLoggingService.cs" />
+    <Compile Include="Mocks\StubPeriodicJobUpdateService.cs" />
+    <Compile Include="Mocks\StubApplicationSettings.cs" />
+    <Compile Include="Mocks\StubMessageBoxFacade.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <ApplicationDefinition Include="App.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </ApplicationDefinition>
+    <Page Include="MainPage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="packages.config" />
+    <None Include="Properties\AppManifest.xml" />
+    <None Include="Properties\WMAppManifest.xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="ApplicationIcon.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Background.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="README-WP7-CI.txt" />
+    <Content Include="SplashScreenImage.jpg" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\RichardSzalay.PocketCiTray.Common\RichardSzalay.PocketCiTray.Common.csproj">
+      <Project>{B86C7B67-EAAC-4AFA-BB3F-4D8E79B86F86}</Project>
+      <Name>RichardSzalay.PocketCiTray.Common</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\RichardSzalay.PocketCiTray\RichardSzalay.PocketCiTray.csproj">
+      <Project>{86710923-5353-46E9-85B1-060741284DE4}</Project>
+      <Name>RichardSzalay.PocketCiTray</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup />
+  <Import Project="$(MSBuildExtensionsPath)\Microsoft\Silverlight for Phone\$(TargetFrameworkVersion)\Microsoft.Silverlight.$(TargetFrameworkProfile).Overrides.targets" />
+  <Import Project="$(MSBuildExtensionsPath)\Microsoft\Silverlight for Phone\$(TargetFrameworkVersion)\Microsoft.Silverlight.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+  <ProjectExtensions />
+  <Import Project="$(SolutionDir)\.nuget\nuget.targets" />
+  <Import Project="..\packages\WP7-CI.1.1\tools\WP7CI.targets" />
+</Project>

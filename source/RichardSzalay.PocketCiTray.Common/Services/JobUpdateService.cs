@@ -57,6 +57,13 @@ namespace RichardSzalay.PocketCiTray.Services
                 return;
             }
 
+            if (isUpdating)
+            {
+                return;
+            }
+
+            isUpdating = true;
+
             mutex.ReleaseMutex();
 
             disposable.Disposable = jobRepository.GetJobs()
@@ -114,6 +121,8 @@ namespace RichardSzalay.PocketCiTray.Services
 
                         LastUpdateTime = clock.UtcNow;
 
+                        isUpdating = false;
+
                         var handler = Complete;
 
                         if (handler != null)
@@ -129,5 +138,6 @@ namespace RichardSzalay.PocketCiTray.Services
         }
 
         public event EventHandler Started;
+        private bool isUpdating;
     }
 }

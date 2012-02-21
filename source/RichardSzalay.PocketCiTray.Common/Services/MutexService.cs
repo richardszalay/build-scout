@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Threading;
+using System.Collections.Generic;
 
 namespace RichardSzalay.PocketCiTray.Services
 {
@@ -36,6 +37,11 @@ namespace RichardSzalay.PocketCiTray.Services
         private string GetGlobalMutexName(string name)
         {
             return "Global\\" + name;
+        }
+
+        public void ReleaseMutex(Mutex mutex)
+        {
+            mutex.ReleaseMutex();
         }
     }
 }

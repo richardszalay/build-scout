@@ -15,6 +15,7 @@ using Funq;
 using RichardSzalay.PocketCiTray.Providers;
 using RichardSzalay.PocketCiTray.ViewModels;
 using WP7Contrib.Logging;
+using Microsoft.Phone.Controls;
 
 namespace RichardSzalay.PocketCiTray.Services
 {
@@ -28,8 +29,10 @@ namespace RichardSzalay.PocketCiTray.Services
 
             ConfigureServices(container);
 
-            var child = container.CreateChildContainer();
-            child.DefaultReuse = ReuseScope.None;
+            //var child = container.CreateChildContainer();
+            //child.DefaultReuse = ReuseScope.None;
+
+            var child = container;
 
             ConfigureViewModels(child);
 
@@ -51,8 +54,8 @@ namespace RichardSzalay.PocketCiTray.Services
                 l.Resolve<IScheduledActionServiceFacade>()
                 ));
 
-            container.Register<INavigationService>(
-                new PhoneApplicationFrameNavigationService(((App)App.Current).RootFrame));
+            container.Register<INavigationService>(l => 
+                new PhoneApplicationFrameNavigationService(l.Resolve<PhoneApplicationFrame>()));
 
             container.Register<Bootstrap>(l => new Bootstrap(
                 l.Resolve<IPeriodicJobUpdateService>(),
