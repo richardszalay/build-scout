@@ -121,21 +121,22 @@
     <Compile Include="Bootstrap.cs" />
     <Compile Include="CcXml\BuildStatus.cs" />
     <Compile Include="CcXml\ProjectActivity.cs" />
-    <Compile Include="Infrastructure\UpperCaseConverter.cs" />
+    <Compile Include="Infrastructure\Converters\UpperCaseConverter.cs" />
+    <Compile Include="Infrastructure\NotifyPropertyWeaver.cs" />
     <Compile Include="Logging.cs" />
-    <Compile Include="Infrastructure\ApplicationBarCommand.cs" />
-    <Compile Include="Infrastructure\ApplicationBarIconButtonCommand.cs" />
-    <Compile Include="Infrastructure\ApplicationBarMenuItemCommand.cs" />
-    <Compile Include="Infrastructure\AutoSelectionModeBehavior.cs" />
-    <Compile Include="Infrastructure\BindSelectedItemsBehavior.cs" />
-    <Compile Include="Infrastructure\BuildStatusToBrushConverter.cs" />
+    <Compile Include="Infrastructure\Behaviors\ApplicationBarCommand.cs" />
+    <Compile Include="Infrastructure\Behaviors\ApplicationBarIconButtonCommand.cs" />
+    <Compile Include="Infrastructure\Behaviors\ApplicationBarMenuItemCommand.cs" />
+    <Compile Include="Infrastructure\Behaviors\AutoSelectionModeBehavior.cs" />
+    <Compile Include="Infrastructure\Behaviors\BindSelectedItemsBehavior.cs" />
+    <Compile Include="Infrastructure\Converters\BuildStatusToBrushConverter.cs" />
     <Compile Include="Infrastructure\LinqToVisualTree.cs" />
-    <Compile Include="Infrastructure\MultiselectItemBehavior.cs" />
-    <Compile Include="Infrastructure\LocalizedBuildStatusConverter.cs" />
-    <Compile Include="Infrastructure\RelativeTimeConverter.cs" />
-    <Compile Include="Infrastructure\EnterKeyBehavior.cs" />
-    <Compile Include="Infrastructure\RealtimeTextBoxBindingBehavior.cs" />
-    <Compile Include="Infrastructure\ListBoxSelectionCommandBehavior.cs" />
+    <Compile Include="Infrastructure\Behaviors\MultiselectItemBehavior.cs" />
+    <Compile Include="Infrastructure\Converters\LocalizedBuildStatusConverter.cs" />
+    <Compile Include="Infrastructure\Converters\RelativeTimeConverter.cs" />
+    <Compile Include="Infrastructure\Behaviors\EnterKeyBehavior.cs" />
+    <Compile Include="Infrastructure\Behaviors\RealtimeTextBoxBindingBehavior.cs" />
+    <Compile Include="Infrastructure\Behaviors\ListBoxSelectionCommandBehavior.cs" />
     <Compile Include="MainPage.xaml.cs">
       <DependentUpon>MainPage.xaml</DependentUpon>
     </Compile>
@@ -155,7 +156,7 @@
     </Compile>
     <Compile Include="ViewModels\AddJobsViewModel.cs" />
     <Compile Include="ViewModels\AddBuildServerViewModel.cs" />
-    <Compile Include="Infrastructure\EnumValueConverter.cs" />
+    <Compile Include="Infrastructure\Converters\EnumValueConverter.cs" />
     <Compile Include="ViewModels\TransitionMode.cs" />
     <Compile Include="ViewModels\ViewJobViewModel.cs" />
     <Compile Include="ViewModels\ListJobsViewModel.cs" />
@@ -235,8 +236,13 @@
     <Content Include="Background.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
+    <Content Include="Content\Help\AddServerHelp.html" />
+    <Content Include="Content\Help\help.css" />
     <Content Include="Images\appbar.add.rest.png" />
+    <Resource Include="Images\appbar.cancel.rest.png" />
+    <Resource Include="Images\appbar.check.rest.png" />
     <Content Include="Images\appbar.pin.rest.png" />
+    <Resource Include="Images\appbar.questionmark.rest.png" />
     <Content Include="Images\appbar.refresh.rest.png" />
     <Content Include="Images\appbar.save.rest.png" />
     <Content Include="Images\Tiles\Failed.png" />
@@ -277,4 +283,8 @@
   -->
   <ProjectExtensions />
   <Import Project="$(SolutionDir)\.nuget\nuget.targets" />
+  <Target Name="AfterCompile">
+    <NotifyPropertyWeaverMsBuildTask.WeavingTask />
+  </Target>
+  <UsingTask TaskName="NotifyPropertyWeaverMsBuildTask.WeavingTask" AssemblyFile="$(SolutionDir)Tools\NotifyPropertyWeaverMsBuildTask.dll" />
 </Project>

@@ -9,6 +9,7 @@ using RichardSzalay.PocketCiTray.Extensions.Extensions;
 using RichardSzalay.PocketCiTray.Providers;
 using RichardSzalay.PocketCiTray.Services;
 using System.Collections.Generic;
+using RichardSzalay.PocketCiTray.Infrastructure;
 
 namespace RichardSzalay.PocketCiTray.ViewModels
 {
@@ -27,16 +28,13 @@ namespace RichardSzalay.PocketCiTray.ViewModels
             this.schedulerAccessor = schedulerAccessor;
         }
 
-        public ICommand AddJobsCommand { get; private set; }
-
         public override void OnNavigatedTo(NavigationEventArgs e)
         {
             base.OnNavigatedTo(e);
 
-            selectedJobs = new ObservableCollection<Job>();
+            SelectedJobs = new ObservableCollection<Job>();
 
-            this.AddJobsCommand = CreateCommand(new ObservableCommand(CanAddJobs()), OnAddJobs);
-            OnPropertyChanged("AddJobsCommand");
+            AddJobsCommand = CreateCommand(new ObservableCommand(CanAddJobs()), OnAddJobs);
 
             var query = e.Uri.GetQueryValues();
 
@@ -55,7 +53,7 @@ namespace RichardSzalay.PocketCiTray.ViewModels
             Observable.Return(buildServerId)
                 .ObserveOn(schedulerAccessor.Background)
                 .SelectMany(id => jobRepository.GetBuildServer(buildServerId))
-                .Do(server => buildServer = server)
+                .Do(server => BuildServer = server)
                 .SelectMany(server => jobProviderFactory
                     .Get(server.Provider)
                     .GetJobsObservableAsync(server)
@@ -63,13 +61,7 @@ namespace RichardSzalay.PocketCiTray.ViewModels
                 )
                 .ObserveOn(schedulerAccessor.UserInterface)
                 .Finally(StopLoading)
-                .Subscribe(loadedJobs =>
-                {
-                    OnPropertyChanged("BuildServer");
-                    this.jobs = new ObservableCollection<Job>(loadedJobs);
-                    this.OnPropertyChanged("BuildServer");
-                    this.OnPropertyChanged("Jobs");
-                });
+                .Subscribe(loadedJobs => Jobs = new ObservableCollection<Job>(loadedJobs));
         }
 
         private IObservable<ICollection<Job>> RemoveExistingJobs(BuildServer buildServer, ICollection<Job> jobs)
@@ -82,63 +74,53 @@ namespace RichardSzalay.PocketCiTray.ViewModels
 
         private void OnAddJobs()
         {
-            jobRepository.AddJobs(selectedJobs)
+            jobRepository.AddJobs(SelectedJobs)
                 .ObserveOn(schedulerAccessor.UserInterface)
                 .Subscribe(_ => navigationService.GoBackTo(ViewUris.ListJobs));
         }
 
-        private string jobSource;
-        public string JobSource
-        {
-            get { return jobSource; }
-            set
-            {
-                jobSource = value;
-                OnPropertyChanged("JobSource");
-            }
-        }
+        [NotifyProperty]
+        public ICommand AddJobsCommand { get; private set; }
 
-        private ObservableCollection<Job> jobs;
+        [NotifyProperty]
+        public string JobSource { get; private set; }
 
-        public ObservableCollection<Job> Jobs
-        {
-            get { return jobs; }
-            private set
-            {
-                jobs = value;
-                OnPropertyChanged("Jobs");
-            }
-        }
+        [NotifyProperty(AlsoNotifyFor = new string[] { "BuildServer" })]
+        public ObservableCollection<Job> Jobs { get; private set; }
 
-        private bool isSelectionEnabled;
-        public bool IsSelectionEnabled
-        {
-            get { return isSelectionEnabled; }
-            set { isSelectionEnabled = value; OnPropertyChanged("IsSelectionEnabled"); }
-        }
-
-        private ObservableCollection<Job> selectedJobs;
-        private PocketCiTray.BuildServer buildServer;
-        public ObservableCollection<Job> SelectedJobs
-        {
-            get { return selectedJobs; }
-            private set { selectedJobs = value; OnPropertyChanged("SelectedJobs"); }
-        }
+        [NotifyProperty]
+        public ObservableCollection<Job> SelectedJobs { get; private set; }
 
         private IObservable<bool> CanAddJobs()
         {
-            return Observable.FromEventPattern<NotifyCollectionChangedEventHandler, NotifyCollectionChangedEventArgs>(
-                h => new NotifyCollectionChangedEventHandler(h), 
-                h => selectedJobs.CollectionChanged += h,
-                h => selectedJobs.CollectionChanged -= h
-                )
-                .Select(s => selectedJobs.Count > 0);
+            return this.GetPropertyValues(x => x.SelectedJobs)
+                .Where(selectedJobs => selectedJobs != null)
+                .Select(selectedJobs => Observable.FromEventPattern<NotifyCollectionChangedEventHandler, NotifyCollectionChangedEventArgs>(
+                    h => new NotifyCollectionChangedEventHandler(h), 
+                    h => selectedJobs.CollectionChanged += h,
+                    h => selectedJobs.CollectionChanged -= h
+                ))
+                .Switch()
+                .Select(s => SelectedJobs.Count > 0);
         }
 
-        public BuildServer BuildServer
+        [DoNotNotify]
+        public BuildServer BuildServer { get; private set; }
+
+        [NotifyProperty]
+        public bool IsSelectionEnabled { get; set; }
+    }
+
+    public class AvailableJob
+    {
+        public AvailableJob(Job job)
         {
-            get { return buildServer; }
-            set { buildServer = value; OnPropertyChanged("BuildServer"); }
+            this.Job = job;
         }
+
+        [NotifyProperty]
+        public bool IsSelected { get; set; }
+
+        public Job Job { get; private set; }
     }
 }

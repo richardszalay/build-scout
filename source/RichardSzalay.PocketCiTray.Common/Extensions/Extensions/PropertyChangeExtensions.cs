@@ -20,7 +20,8 @@ namespace RichardSzalay.PocketCiTray.Extensions.Extensions
                 h => source.PropertyChanged -= h
                 )
                 .Where(e => e.EventArgs.PropertyName == expression.Member.Name)
-                .Select(x => accesor(source)));
+                .Select(x => accesor(source))
+                .StartWith(accesor(source)));
         }
     }
 }

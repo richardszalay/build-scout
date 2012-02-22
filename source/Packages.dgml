@@ -1,0 +1,101 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<DirectedGraph GraphDirection="LeftToRight" xmlns="http://schemas.microsoft.com/vs/2009/dgml">
+  <Nodes>
+    <Node Id="RichardSzalay.PocketCiTray.Common" Label="RichardSzalay.PocketCiTray.Common" Category="Project" />
+    <Node Id="Rx-Main 1.0.11226" Label="Rx-Main 1.0.11226" Category="Package" />
+    <Node Id="Rx-Xaml 1.0.10621" Label="Rx-Xaml 1.0.10621" Category="Package" />
+    <Node Id="SharpGIS.GZipWebClient 1.2" Label="SharpGIS.GZipWebClient 1.2" Category="Package" />
+    <Node Id="WP7Contrib.Core 1.0.0.16" Label="WP7Contrib.Core 1.0.0.16" Category="Package" />
+    <Node Id="RichardSzalay.PocketCiTray.TestConsole" Label="RichardSzalay.PocketCiTray.TestConsole" Category="Project" />
+    <Node Id="HttpClient 0.6.0" Label="HttpClient 0.6.0" Category="Package" />
+    <Node Id="JsonValue 0.6.0" Label="JsonValue 0.6.0" Category="Package" />
+    <Node Id="WebApi 0.6.0" Label="WebApi 0.6.0" Category="Package" />
+    <Node Id="WebApi.All 0.6.0" Label="WebApi.All 0.6.0" Category="Package" />
+    <Node Id="WebApi.Enhancements 0.6.0" Label="WebApi.Enhancements 0.6.0" Category="Package" />
+    <Node Id="WebApi.OData 0.6.0" Label="WebApi.OData 0.6.0" Category="Package" />
+    <Node Id="RichardSzalay.PocketCiTray.AcceptanceTest" Label="RichardSzalay.PocketCiTray.AcceptanceTest" Category="Project" />
+    <Node Id="HttpClient 0.6.0" Label="HttpClient 0.6.0" Category="Package" />
+    <Node Id="JsonValue 0.6.0" Label="JsonValue 0.6.0" Category="Package" />
+    <Node Id="NUnit 2.5.10.11092" Label="NUnit 2.5.10.11092" Category="Package" />
+    <Node Id="SpecFlow 1.8.1" Label="SpecFlow 1.8.1" Category="Package" />
+    <Node Id="WebApi 0.6.0" Label="WebApi 0.6.0" Category="Package" />
+    <Node Id="WebApi.All 0.6.0" Label="WebApi.All 0.6.0" Category="Package" />
+    <Node Id="WebApi.Enhancements 0.6.0" Label="WebApi.Enhancements 0.6.0" Category="Package" />
+    <Node Id="WebApi.OData 0.6.0" Label="WebApi.OData 0.6.0" Category="Package" />
+    <Node Id="WP7Test 0.9.6" Label="WP7Test 0.9.6" Category="Package" />
+    <Node Id="RichardSzalay.PocketCiTray" Label="RichardSzalay.PocketCiTray" Category="Project" />
+    <Node Id="Newtonsoft.Json 4.0.8" Label="Newtonsoft.Json 4.0.8" Category="Package" />
+    <Node Id="Rx-Main 1.0.11226" Label="Rx-Main 1.0.11226" Category="Package" />
+    <Node Id="Rx-Xaml 1.0.10621" Label="Rx-Xaml 1.0.10621" Category="Package" />
+    <Node Id="SilverlightToolkitWP 4.2011.12.14" Label="SilverlightToolkitWP 4.2011.12.14" Category="Package" />
+    <Node Id="WP7Contrib.Caching 1.0.0.16" Label="WP7Contrib.Caching 1.0.0.16" Category="Package" />
+    <Node Id="WP7Contrib.Controls 1.0.0.16" Label="WP7Contrib.Controls 1.0.0.16" Category="Package" />
+    <Node Id="WP7Contrib.Core 1.0.0.16" Label="WP7Contrib.Core 1.0.0.16" Category="Package" />
+    <Node Id="WP7Contrib.Net 1.0.0.16" Label="WP7Contrib.Net 1.0.0.16" Category="Package" />
+    <Node Id="WP7Contrib.Services 1.0.0.16" Label="WP7Contrib.Services 1.0.0.16" Category="Package" />
+    <Node Id="WP7TestClient 0.9.6" Label="WP7TestClient 0.9.6" Category="Package" />
+  </Nodes>
+  <Links>
+    <Link Source="Rx-Xaml 1.0.10621" Target="Rx-Main 1.0.11226" Category="Package Dependency" />
+    <Link Source="WP7Contrib.Core 1.0.0.16" Target="Rx-Main 1.0.11226" Category="Package Dependency" />
+    <Link Source="WP7Contrib.Core 1.0.0.16" Target="Rx-Xaml 1.0.10621" Category="Package Dependency" />
+    <Link Source="RichardSzalay.PocketCiTray.Common" Target="SharpGIS.GZipWebClient 1.2" Category="Installed Package" />
+    <Link Source="RichardSzalay.PocketCiTray.Common" Target="WP7Contrib.Core 1.0.0.16" Category="Installed Package" />
+    <Link Source="HttpClient 0.6.0" Target="JsonValue 0.6.0" Category="Package Dependency" />
+    <Link Source="WebApi 0.6.0" Target="HttpClient 0.6.0" Category="Package Dependency" />
+    <Link Source="WebApi.All 0.6.0" Target="WebApi.Enhancements 0.6.0" Category="Package Dependency" />
+    <Link Source="WebApi.All 0.6.0" Target="WebApi.OData 0.6.0" Category="Package Dependency" />
+    <Link Source="WebApi.Enhancements 0.6.0" Target="WebApi 0.6.0" Category="Package Dependency" />
+    <Link Source="WebApi.OData 0.6.0" Target="WebApi 0.6.0" Category="Package Dependency" />
+    <Link Source="RichardSzalay.PocketCiTray.TestConsole" Target="WebApi.All 0.6.0" Category="Installed Package" />
+    <Link Source="HttpClient 0.6.0" Target="JsonValue 0.6.0" Category="Package Dependency" />
+    <Link Source="WebApi 0.6.0" Target="HttpClient 0.6.0" Category="Package Dependency" />
+    <Link Source="WebApi.All 0.6.0" Target="WebApi.Enhancements 0.6.0" Category="Package Dependency" />
+    <Link Source="WebApi.All 0.6.0" Target="WebApi.OData 0.6.0" Category="Package Dependency" />
+    <Link Source="WebApi.Enhancements 0.6.0" Target="WebApi 0.6.0" Category="Package Dependency" />
+    <Link Source="WebApi.OData 0.6.0" Target="WebApi 0.6.0" Category="Package Dependency" />
+    <Link Source="WP7Test 0.9.6" Target="SpecFlow 1.8.1" Category="Package Dependency" />
+    <Link Source="WP7Test 0.9.6" Target="NUnit 2.5.10.11092" Category="Package Dependency" />
+    <Link Source="WP7Test 0.9.6" Target="HttpClient 0.6.0" Category="Package Dependency" />
+    <Link Source="WP7Test 0.9.6" Target="JsonValue 0.6.0" Category="Package Dependency" />
+    <Link Source="WP7Test 0.9.6" Target="WebApi 0.6.0" Category="Package Dependency" />
+    <Link Source="RichardSzalay.PocketCiTray.AcceptanceTest" Target="WebApi.All 0.6.0" Category="Installed Package" />
+    <Link Source="RichardSzalay.PocketCiTray.AcceptanceTest" Target="WP7Test 0.9.6" Category="Installed Package" />
+    <Link Source="Rx-Xaml 1.0.10621" Target="Rx-Main 1.0.11226" Category="Package Dependency" />
+    <Link Source="WP7Contrib.Caching 1.0.0.16" Target="Rx-Main 1.0.11226" Category="Package Dependency" />
+    <Link Source="WP7Contrib.Caching 1.0.0.16" Target="Rx-Xaml 1.0.10621" Category="Package Dependency" />
+    <Link Source="WP7Contrib.Controls 1.0.0.16" Target="Rx-Main 1.0.11226" Category="Package Dependency" />
+    <Link Source="WP7Contrib.Controls 1.0.0.16" Target="Rx-Xaml 1.0.10621" Category="Package Dependency" />
+    <Link Source="WP7Contrib.Controls 1.0.0.16" Target="SilverlightToolkitWP 4.2011.12.14" Category="Package Dependency" />
+    <Link Source="WP7Contrib.Controls 1.0.0.16" Target="WP7Contrib.Core 1.0.0.16" Category="Package Dependency" />
+    <Link Source="WP7Contrib.Core 1.0.0.16" Target="Rx-Main 1.0.11226" Category="Package Dependency" />
+    <Link Source="WP7Contrib.Core 1.0.0.16" Target="Rx-Xaml 1.0.10621" Category="Package Dependency" />
+    <Link Source="WP7Contrib.Net 1.0.0.16" Target="Rx-Main 1.0.11226" Category="Package Dependency" />
+    <Link Source="WP7Contrib.Net 1.0.0.16" Target="Rx-Xaml 1.0.10621" Category="Package Dependency" />
+    <Link Source="WP7Contrib.Net 1.0.0.16" Target="Newtonsoft.Json 4.0.8" Category="Package Dependency" />
+    <Link Source="WP7Contrib.Net 1.0.0.16" Target="WP7Contrib.Core 1.0.0.16" Category="Package Dependency" />
+    <Link Source="WP7Contrib.Services 1.0.0.16" Target="Rx-Main 1.0.11226" Category="Package Dependency" />
+    <Link Source="WP7Contrib.Services 1.0.0.16" Target="Rx-Xaml 1.0.10621" Category="Package Dependency" />
+    <Link Source="WP7Contrib.Services 1.0.0.16" Target="Newtonsoft.Json 4.0.8" Category="Package Dependency" />
+    <Link Source="WP7Contrib.Services 1.0.0.16" Target="WP7Contrib.Core 1.0.0.16" Category="Package Dependency" />
+    <Link Source="WP7Contrib.Services 1.0.0.16" Target="WP7Contrib.Net 1.0.0.16" Category="Package Dependency" />
+    <Link Source="WP7Contrib.Services 1.0.0.16" Target="WP7Contrib.Caching 1.0.0.16" Category="Package Dependency" />
+    <Link Source="RichardSzalay.PocketCiTray" Target="WP7Contrib.Controls 1.0.0.16" Category="Installed Package" />
+    <Link Source="RichardSzalay.PocketCiTray" Target="WP7Contrib.Services 1.0.0.16" Category="Installed Package" />
+    <Link Source="RichardSzalay.PocketCiTray" Target="WP7TestClient 0.9.6" Category="Installed Package" />
+  </Links>
+  <Categories>
+    <Category Id="Project" />
+    <Category Id="Package" />
+  </Categories>
+  <Styles>
+    <Style TargetType="Node" GroupLabel="Project" ValueLabel="True">
+      <Condition Expression="HasCategory('Project')" />
+      <Setter Property="Background" Value="Blue" />
+    </Style>
+    <Style TargetType="Link" GroupLabel="Package Dependency" ValueLabel="True">
+      <Condition Expression="HasCategory('Package Dependency')" />
+      <Setter Property="Background" Value="Yellow" />
+    </Style>
+  </Styles>
+</DirectedGraph>

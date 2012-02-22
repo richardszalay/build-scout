@@ -7,6 +7,7 @@ using System.Windows.Input;
 using RichardSzalay.PocketCiTray.Extensions.Extensions;
 using RichardSzalay.PocketCiTray.Services;
 using System.Windows.Navigation;
+using RichardSzalay.PocketCiTray.Infrastructure;
 
 namespace RichardSzalay.PocketCiTray.ViewModels
 {
@@ -16,10 +17,6 @@ namespace RichardSzalay.PocketCiTray.ViewModels
         private readonly IJobRepository jobRepository;
         private readonly ISchedulerAccessor schedulerAccessor;
         private readonly IJobUpdateService jobUpdateService;
-        private ICommand addJobCommand;
-        private ObservableCollection<Job> jobs;
-        private ICommand updateStatusesCommand;
-        private ICommand viewJobCommand;
 
         public ListJobsViewModel(INavigationService navigationService, IJobRepository jobRepository, ISchedulerAccessor schedulerAccessor, IJobUpdateService jobUpdateService)
         {
@@ -27,24 +24,6 @@ namespace RichardSzalay.PocketCiTray.ViewModels
             this.jobRepository = jobRepository;
             this.schedulerAccessor = schedulerAccessor;
             this.jobUpdateService = jobUpdateService;
-        }
-
-        public ICommand UpdateStatusesCommand
-        {
-            get { return updateStatusesCommand; }
-            private set { updateStatusesCommand = value; OnPropertyChanged("UpdateStatusesCommand"); }
-        }
-
-        public ICommand ViewJobCommand
-        {
-            get { return viewJobCommand; }
-            private set { viewJobCommand = value; OnPropertyChanged("ViewJobCommand"); }
-        }
-
-        public ObservableCollection<Job> Jobs
-        {
-            get { return jobs; }
-            set { jobs = value; OnPropertyChanged("Jobs"); }
         }
 
         public override void OnNavigatedTo(NavigationEventArgs e)
@@ -105,11 +84,17 @@ namespace RichardSzalay.PocketCiTray.ViewModels
             jobUpdateService.UpdateAll(UpdateTimeout);
         }
 
-        public ICommand AddJobCommand
-        {
-            get { return addJobCommand; }
-            private set { addJobCommand = value; OnPropertyChanged("AddJobCommand"); }
-        }
+        [NotifyProperty]
+        public ICommand UpdateStatusesCommand { get; set; }
+
+        [NotifyProperty]
+        public ICommand ViewJobCommand { get; set; }
+
+        [NotifyProperty]
+        public ObservableCollection<Job> Jobs { get; set; }
+
+        [NotifyProperty]
+        public ICommand AddJobCommand { get; private set; }
 
         private static readonly TimeSpan UpdateTimeout = TimeSpan.FromSeconds(30);
     }
