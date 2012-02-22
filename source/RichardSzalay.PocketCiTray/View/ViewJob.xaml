@@ -16,12 +16,16 @@
     d:DesignWidth="480" xmlns:i="clr-namespace:System.Windows.Interactivity;assembly=System.Windows.Interactivity" xmlns:v="clr-namespace:RichardSzalay.PocketCiTray.View" xmlns:inf="clr-namespace:RichardSzalay.PocketCiTray.Infrastructure" shell:SystemTray.IsVisible="True"
     DataContext="{Binding Path=ViewJobViewModel, Source={StaticResource ViewModelLocator}}"
     d:DataContext="{d:DesignData /DesignData/ViewJobData.xaml}"
+    xmlns:tk="clr-namespace:Microsoft.Phone.Controls;assembly=Microsoft.Phone.Controls.Toolkit"
+    tk:TiltEffect.IsTiltEnabled="True"
     >
     
     <v:ViewBase.Resources>
         <inf:RelativeTimeConverter x:Key="RelativeTimeConverter" />
         <inf:BuildStatusToBrushConverter x:Key="BuildStatusToBrushConverter" />
         <inf:LocalizedBuildStatusConverter x:Key="LocalizedBuildStatusConverter" />
+        <inf:UpperCaseConverter x:Key="UpperCaseConverter" />
+        
     </v:ViewBase.Resources>
 
     <!--LayoutRoot is the root grid where all page content is placed-->
@@ -33,28 +37,34 @@
 
         <!--TitlePanel contains the name of the application and page title-->
         <StackPanel x:Name="TitlePanel" Grid.Row="0" Margin="12,17,0,28">
-            <TextBlock x:Name="ApplicationTitle" Text="{Binding Job.BuildServer.Name}" Style="{StaticResource PhoneTextNormalStyle}"/>
-            <TextBlock x:Name="PageTitle" Text="{Binding Job.DisplayName}" Margin="9,-7,0,0" Style="{StaticResource PhoneTextTitle1Style}"/>
+            <TextBlock x:Name="ApplicationTitle" Text="{Binding Job.DisplayName, Converter={StaticResource UpperCaseConverter}}" Style="{StaticResource PhoneTextNormalStyle}"/>
+            <TextBlock x:Name="PageTitle" Text="{Binding Job.BuildServer.Name}" Margin="9,-7,0,0" Style="{StaticResource PhoneTextTitle1Style}"/>
         </StackPanel>
 
         <!--ContentPanel - place additional content here-->
-        <Grid x:Name="ContentPanel" Grid.Row="1" Margin="12,0,12,0">
-            <StackPanel>
-                <TextBlock Text="last build" Style="{StaticResource PhoneTextLargeStyle}" />
-                <Grid>
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="12" />
-                        <ColumnDefinition Width="*" />
-                    </Grid.ColumnDefinitions>
-                    
-                    <Rectangle Fill="{Binding Job.LastBuild.Result, Converter={StaticResource BuildStatusToBrushConverter}}" Grid.RowSpan="2" Margin="0,11,0,4" />
-                    <StackPanel Grid.Column="1">
-                        <TextBlock Text="{Binding Job.LastBuild.Result, Converter={StaticResource LocalizedBuildStatusConverter}}" Style="{StaticResource PhoneTextSubtleStyle}" Grid.Column="1" />
-                        <TextBlock Text="{Binding Job.LastBuild.Time, Converter={StaticResource RelativeTimeConverter}}" Style="{StaticResource PhoneTextSubtleStyle}" Grid.Column="1" />
-                    </StackPanel>
-                </Grid>
-            </StackPanel>
-        </Grid>
+        <StackPanel x:Name="ContentPanel" Grid.Row="1" Margin="12,0,12,0">
+            <Grid Margin="12,0,0,0">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="12" />
+                    <ColumnDefinition Width="*" />
+                </Grid.ColumnDefinitions>
+
+                <Rectangle Fill="{Binding Job.LastBuild.Result, Converter={StaticResource BuildStatusToBrushConverter}}" Margin="0,11,0,4" />
+
+                <StackPanel Grid.Column="1">
+                    <TextBlock Text="last build" Style="{StaticResource PhoneTextLargeStyle}" />
+                    <TextBlock Text="{Binding Job.LastBuild.Result, Converter={StaticResource LocalizedBuildStatusConverter}}" Style="{StaticResource PhoneTextSubtleStyle}" Margin="12,-4,0,0" />
+                    <TextBlock Text="{Binding Job.LastBuild.Time, StringFormat=f}" Style="{StaticResource PhoneTextNormalStyle}" Grid.Column="1" />
+                </StackPanel>
+            </Grid>
+
+            <Button Command="{Binding ViewWebUrlCommand}" Margin="12,24,0,0" tk:TiltEffect.IsTiltEnabled="True" Style="{StaticResource NoChromeButton}">
+                <StackPanel>
+                    <TextBlock Text="view website" Style="{StaticResource PhoneTextLargeStyle}" />
+                    <TextBlock Text="{Binding Job.WebUri.AbsoluteUri}" Style="{StaticResource PhoneTextAccentStyle}" Margin="12,-6,0,0" TextWrapping="Wrap" />
+                </StackPanel>
+            </Button>
+        </StackPanel>
     </Grid>
  
     <phone:PhoneApplicationPage.ApplicationBar>

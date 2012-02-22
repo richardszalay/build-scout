@@ -8,9 +8,35 @@
     <!--Application Resources-->
     <Application.Resources>
         <vm:ViewModelLocator x:Key="ViewModelLocator" />
-        <SolidColorBrush x:Key="BuildResultSuccessBrush" Color="Green" />
+        <SolidColorBrush x:Key="BuildResultSuccessBrush" Color="#339933" />
         <SolidColorBrush x:Key="BuildResultUnavailableBrush" Color="Gray" />
-        <SolidColorBrush x:Key="BuildResultFailedBrush" Color="Red" />
+        <SolidColorBrush x:Key="BuildResultFailedBrush" Color="#E51400" />
+        <Style x:Key="NoChromeButton" TargetType="Button">
+            <Setter Property="Background" Value="Transparent"/>
+            <Setter Property="BorderBrush" Value="{StaticResource PhoneForegroundBrush}"/>
+            <Setter Property="Foreground" Value="{StaticResource PhoneForegroundBrush}"/>
+            <Setter Property="BorderThickness" Value="{StaticResource PhoneBorderThickness}"/>
+            <Setter Property="FontFamily" Value="{StaticResource PhoneFontFamilySemiBold}"/>
+            <Setter Property="FontSize" Value="{StaticResource PhoneFontSizeMediumLarge}"/>
+            <Setter Property="Padding" Value="10,3,10,5"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Grid Background="Transparent">
+                            <VisualStateManager.VisualStateGroups>
+                                <VisualStateGroup x:Name="CommonStates">
+                                    <VisualState x:Name="Normal"/>
+                                    <VisualState x:Name="MouseOver"/>
+                                    <VisualState x:Name="Pressed"/>
+                                    <VisualState x:Name="Disabled"/>
+                                </VisualStateGroup>
+                            </VisualStateManager.VisualStateGroups>
+                            <ContentControl x:Name="ContentContainer" ContentTemplate="{TemplateBinding ContentTemplate}" Content="{TemplateBinding Content}" Foreground="{TemplateBinding Foreground}" HorizontalContentAlignment="{TemplateBinding HorizontalContentAlignment}" Padding="{TemplateBinding Padding}" VerticalContentAlignment="{TemplateBinding VerticalContentAlignment}" Margin="0" HorizontalAlignment="Left"/>
+                        </Grid>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
     </Application.Resources>
 
     <Application.ApplicationLifetimeObjects>

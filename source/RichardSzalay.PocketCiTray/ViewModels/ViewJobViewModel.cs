@@ -6,6 +6,7 @@ using System.Reactive.Linq;
 using System.Windows.Input;
 using RichardSzalay.PocketCiTray.Extensions.Extensions;
 using RichardSzalay.PocketCiTray.Services;
+using RichardSzalay.PocketCiTray.Infrastructure;
 
 namespace RichardSzalay.PocketCiTray.ViewModels
 {
@@ -16,16 +17,21 @@ namespace RichardSzalay.PocketCiTray.ViewModels
         private readonly ISchedulerAccessor schedulerAccessor;
         private readonly IJobUpdateService jobUpdateService;
         private readonly IApplicationTileService applicationTileService;
+        private readonly IWebBrowserTaskFacade webBrowserTask;
+
         private ICommand addJobCommand;
         private Job job;
 
-        public ViewJobViewModel(INavigationService navigationService, IJobRepository jobRepository, ISchedulerAccessor schedulerAccessor, IJobUpdateService jobUpdateService, IApplicationTileService applicationTileService)
+        public ViewJobViewModel(INavigationService navigationService, IJobRepository jobRepository, 
+            ISchedulerAccessor schedulerAccessor, IJobUpdateService jobUpdateService, 
+            IApplicationTileService applicationTileService, IWebBrowserTaskFacade webBrowserTask)
         {
             this.navigationService = navigationService;
             this.jobRepository = jobRepository;
             this.schedulerAccessor = schedulerAccessor;
             this.jobUpdateService = jobUpdateService;
             this.applicationTileService = applicationTileService;
+            this.webBrowserTask = webBrowserTask;
         }
 
         public Job Job
@@ -47,6 +53,7 @@ namespace RichardSzalay.PocketCiTray.ViewModels
             }
 
             PinJobCommand = CreateCommand(new ObservableCommand(CanPin()), OnPin);
+            ViewWebUrlCommand = CreateCommand(new ObservableCommand(CanViewWebUrl()), OnViewWebUrl);
 
             int jobId = Int32.Parse(query["jobId"]);
 
@@ -62,15 +69,32 @@ namespace RichardSzalay.PocketCiTray.ViewModels
             private set { pinJobCommand = value; OnPropertyChanged("PinJobCommand"); }
         }
 
+        [NotifyProperty]
+        public ICommand ViewWebUrlCommand { get; set; }
+
         private void OnPin()
         {
             applicationTileService.AddJobTile(Job);
         }
 
+        private void OnViewWebUrl()
+        {
+            webBrowserTask.Show(Job.WebUri);
+        }
+
         private IObservable<bool> CanPin()
         {
             return this.GetPropertyValues(x => x.Job)
+                .Where(x => x != null)
                 .Select(j => !applicationTileService.IsPinned(j));
+        }
+
+        private IObservable<bool> CanViewWebUrl()
+        {
+            return this.GetPropertyValues(x => x.Job)
+                .Where(x => x != null)
+                .Select(j => j.WebUri != null)
+                .StartWith(false);
         }
     }
 }

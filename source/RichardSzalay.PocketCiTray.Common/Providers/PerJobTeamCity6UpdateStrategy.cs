@@ -98,7 +98,7 @@ namespace RichardSzalay.PocketCiTray.Providers
         private static DateTimeOffset ParseBuildTime(string value)
         {
             return DateTimeOffset.ParseExact(ConvertToDotNetCompatibleDateString(value),
-                "yyyyMMddThhmmsszzz", CultureInfo.InvariantCulture);
+                "yyyyMMddTHHmmsszzz", CultureInfo.InvariantCulture);
         }
 
         private static string ConvertToDotNetCompatibleDateString(string teamCityDateString)

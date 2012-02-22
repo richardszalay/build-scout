@@ -81,7 +81,8 @@ namespace RichardSzalay.PocketCiTray.Services
                 c.Resolve<IJobRepository>(),
                 c.Resolve<ISchedulerAccessor>(),
                 c.Resolve<IJobUpdateService>(),
-                c.Resolve<IApplicationTileService>()
+                c.Resolve<IApplicationTileService>(),
+                c.Resolve<IWebBrowserTaskFacade>()
                 ));
 
             container.Register(c => new SelectBuildServerViewModel(
@@ -112,6 +113,7 @@ namespace RichardSzalay.PocketCiTray.Services
         {
             container.Register<IScheduledActionServiceFacade>(new ScheduledActionServiceFacade());
             container.Register<IMessageBoxFacade>(new MessageBoxFacade());
+            container.Register<IWebBrowserTaskFacade>(new WebBrowserTaskFacade());
         }
     }
 }

@@ -9,17 +9,17 @@
     <vm:ListJobsViewModel.Jobs>
         <PocketCiTray:Job PocketCiTray:Job.Name="job 1">
             <PocketCiTray:Job.LastBuild>
-                <domain:Build Result="Success" Time="2012-02-15T18:11:00Z" />
+                <PocketCiTray:Build Result="Success" Time="2012-02-15T18:11:00Z" />
             </PocketCiTray:Job.LastBuild>
         </PocketCiTray:Job>
         <PocketCiTray:Job PocketCiTray:Job.Name="Deployment Job">
             <PocketCiTray:Job.LastBuild>
-                <domain:Build Result="Failed" Time="2012-01-15T18:11:00Z" />
+                <PocketCiTray:Build Result="Failed" Time="2012-01-15T18:11:00Z" />
             </PocketCiTray:Job.LastBuild>
         </PocketCiTray:Job>
         <PocketCiTray:Job PocketCiTray:Job.Name="a_very_long_job_name_that_will_probably_overflow">
             <PocketCiTray:Job.LastBuild>
-                <domain:Build Result="Unavailable" Time="2011-12-15T18:11:00Z" />
+                <PocketCiTray:Build Result="Unavailable" Time="2011-12-15T18:11:00Z" />
             </PocketCiTray:Job.LastBuild>
         </PocketCiTray:Job>
     </vm:ListJobsViewModel.Jobs>

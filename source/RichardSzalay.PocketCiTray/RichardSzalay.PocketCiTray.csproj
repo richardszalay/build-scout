@@ -55,6 +55,7 @@
     </Reference>
     <Reference Include="Microsoft.Expression.Interactions, Version=3.8.5.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL" />
     <Reference Include="Microsoft.Phone" />
+    <Reference Include="Microsoft.Phone.Controls, Version=7.0.0.0, Culture=neutral, PublicKeyToken=24eec0d8c86cda1e, processorArchitecture=MSIL" />
     <Reference Include="Microsoft.Phone.Controls.Toolkit, Version=7.0.0.0, Culture=neutral, PublicKeyToken=b772ad94eb9ca604, processorArchitecture=MSIL">
       <HintPath>..\packages\SilverlightToolkitWP.4.2011.12.14\lib\sl4-windowsphone71\Microsoft.Phone.Controls.Toolkit.dll</HintPath>
     </Reference>
@@ -145,6 +146,7 @@
     <Compile Include="Services\INavigationService.cs" />
     <Compile Include="Services\IPeriodicJobUpdateService.cs" />
     <Compile Include="Services\IScheduledActionServiceFacade.cs" />
+    <Compile Include="Services\IWebBrowserTaskFacade.cs" />
     <Compile Include="Services\MessageBoxFacade.cs" />
     <Compile Include="Services\PeriodicJobUpdateService.cs" />
     <Compile Include="Services\PhoneApplicationFrameNavigationService.cs" />

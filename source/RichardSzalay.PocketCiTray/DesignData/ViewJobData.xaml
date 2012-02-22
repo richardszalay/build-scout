@@ -8,9 +8,10 @@
                      mc:Ignorable="d">
 
     <vm:ViewJobViewModel.Job>
-        <pb:Job DisplayName="Job Name">
+        <pb:Job DisplayName="Command Line Processing Library for .NET 4.0"
+                WebUri="http://yempuri.org/something/something2/something3">
             <pb:Job.BuildServer>
-                <pb:BuildServer Name="vmd-something-build1" />
+                <pb:BuildServer Name="teamcity.codebetter.com" />
             </pb:Job.BuildServer>
             <pb:Job.LastBuild>
                 <pb:Build Result="Success" Time="2012-02-18T12:37Z" Label="38" />
