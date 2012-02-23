@@ -11,5 +11,10 @@ namespace RichardSzalay.PocketCiTray.View
         {
             InitializeComponent();
         }
+
+        private void TextBox_BindingValidationError(object sender, ValidationErrorEventArgs e)
+        {
+
+        }
     }
 }

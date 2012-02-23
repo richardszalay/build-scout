@@ -22,7 +22,7 @@
 
     
     <Grid x:Name="LayoutRoot" Background="Transparent">
-        <ms:WebBrowser Source="/Content/Help/AddServer.html" />
+        <ms:WebBrowser Source="{Binding HelpUri}" />
     </Grid>
 
 </v:ViewBase>

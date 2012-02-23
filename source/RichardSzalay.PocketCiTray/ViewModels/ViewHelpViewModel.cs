@@ -12,30 +12,39 @@ namespace RichardSzalay.PocketCiTray.ViewModels
 {
     public class ViewHelpViewModel : ViewModelBase
     {
-        private const string HelpUriTemplate = "/Content/Help/{0}.html";
+        private readonly INavigationService navigationService;
+        private readonly IHelpService helpService;
 
-        private INavigationService navigationService;
-
-        public ViewHelpViewModel(INavigationService navigationService)
+        public ViewHelpViewModel(INavigationService navigationService, IHelpService helpService)
         {
             this.navigationService = navigationService;
+            this.helpService = helpService;
         }
 
         public override void OnNavigatedTo(System.Windows.Navigation.NavigationEventArgs e)
         {
             base.OnNavigatedTo(e);
 
-            var query = e.Uri.GetQueryValues();
+            string helpKey = GetHelpKey(e.Uri);
+
+            if (String.IsNullOrEmpty(helpKey))
+            {
+                navigationService.GoBack();
+            }
+
+            this.HelpUri = helpService.GetHelpUri(helpKey);
+        }
+
+        private string GetHelpKey(Uri uri)
+        {
+            var query = uri.GetQueryValues();
 
             if (!query.ContainsKey("key"))
             {
-                navigationService.GoBack();
-                return;
+                return null;
             }
 
-            string helpKey = query["key"];
-
-            this.HelpUri = new Uri(String.Format(HelpUriTemplate, helpKey));
+            return query["key"];
         }
 
         [NotifyProperty]

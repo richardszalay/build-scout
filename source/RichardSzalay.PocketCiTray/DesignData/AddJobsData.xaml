@@ -7,35 +7,40 @@
     >
 
     <vm:AddJobsViewModel.Jobs>
-        <domain:Job domain:Job.Name="job 1">
-            <domain:Job.BuildServer>
-                <domain:BuildServer Id="1" />
-            </domain:Job.BuildServer>
-            <domain:Job.LastBuild>
-                <domain:Build Result="Success" Time="2012-02-15T18:11:00Z" />
-            </domain:Job.LastBuild>
-        </domain:Job>
-        <domain:Job domain:Job.Name="Deployment Job">
-            <domain:Job.LastBuild>
-                <domain:Build Result="Failed" Time="2012-01-15T18:11:00Z" />
-            </domain:Job.LastBuild>
-        </domain:Job>
-        <domain:Job domain:Job.Name="a_very_long_job_name_that_will_probably_overflow">
-            <domain:Job.LastBuild>
-                <domain:Build Result="Unavailable" Time="2011-12-15T18:11:00Z" />
-            </domain:Job.LastBuild>
-        </domain:Job>
+        <vm:AvailableJob>
+            <vm:AvailableJob.Job>
+                <domain:Job domain:Job.Name="job 1">
+                    <domain:Job.BuildServer>
+                        <domain:BuildServer Id="1" />
+                    </domain:Job.BuildServer>
+                    <domain:Job.LastBuild>
+                        <domain:Build Result="Success" Time="2012-02-15T18:11:00Z" />
+                    </domain:Job.LastBuild>
+                </domain:Job>
+            </vm:AvailableJob.Job>
+        </vm:AvailableJob>
+        <vm:AvailableJob IsSelected="True">
+            <vm:AvailableJob.Job>
+                <domain:Job domain:Job.Name="Deployment Job">
+                    <domain:Job.LastBuild>
+                        <domain:Build Result="Failed" Time="2012-01-15T18:11:00Z" />
+                    </domain:Job.LastBuild>
+                </domain:Job>
+            </vm:AvailableJob.Job>
+        </vm:AvailableJob>
+        <vm:AvailableJob>
+            <vm:AvailableJob.Job>
+                <domain:Job domain:Job.Name="a_very_long_job_name_that_will_probably_overflow">
+                    <domain:Job.LastBuild>
+                        <domain:Build Result="Unavailable" Time="2011-12-15T18:11:00Z" />
+                    </domain:Job.LastBuild>
+                </domain:Job>
+            </vm:AvailableJob.Job>
+        </vm:AvailableJob>
     </vm:AddJobsViewModel.Jobs>
     
-    <vm:AddJobsViewModel.SelectedJobs>
-        <domain:Job domain:Job.Name="job 1">
-            <domain:Job.BuildServer>
-                <domain:BuildServer Id="1" />
-            </domain:Job.BuildServer>
-            <domain:Job.LastBuild>
-                <domain:Build Result="Success" Time="2012-02-15T18:11:00Z" />
-            </domain:Job.LastBuild>
-        </domain:Job>
-    </vm:AddJobsViewModel.SelectedJobs>
+    <vm:AddJobsViewModel.BuildServer>
+        <domain:BuildServer Name="buildserver.company.com" />
+    </vm:AddJobsViewModel.BuildServer>
     
 </vm:AddJobsViewModel>

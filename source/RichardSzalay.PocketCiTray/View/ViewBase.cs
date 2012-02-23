@@ -31,5 +31,17 @@ namespace RichardSzalay.PocketCiTray.View
             base.OnNavigatedTo(e);
         }
 
+        protected override void OnBackKeyPress(System.ComponentModel.CancelEventArgs e)
+        {
+            var vm = DataContext as ViewModelBase;
+
+            if (vm != null)
+            {
+                vm.OnBackKeyPress(e);
+            }
+
+            base.OnBackKeyPress(e);
+        }
+
     }
 }

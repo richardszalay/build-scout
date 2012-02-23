@@ -20,10 +20,26 @@
     
     <v:ViewBase.Resources>
         <inf:UpperCaseConverter x:Key="UpperCaseConverter" />
+        <inf:BooleanValueConverter x:Key="FilterTextStateConverter" TrueValue="Filtered" FalseValue="Unfiltered" />
     </v:ViewBase.Resources>
 
-    <!--LayoutRoot is the root grid where all page content is placed-->
     <Grid x:Name="LayoutRoot" Background="Transparent">
+        <i:Interaction.Behaviors>
+            <inf:VisualStateBindingBehavior State="{Binding ShowFilter, Converter={StaticResource FilterTextStateConverter}}" />
+        </i:Interaction.Behaviors>
+        
+        <VisualStateManager.VisualStateGroups>
+            <VisualStateGroup x:Name="FilterMode">
+                <VisualState x:Name="Filtered">
+                    <Storyboard>
+                    </Storyboard>
+                </VisualState>
+                <VisualState x:Name="Unfiltered">
+
+                </VisualState>
+            </VisualStateGroup>
+        </VisualStateManager.VisualStateGroups>
+        
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="*"/>
@@ -35,41 +51,44 @@
             <TextBlock x:Name="PageTitle" Text="add jobs" Margin="9,-7,0,0" Style="{StaticResource PhoneTextTitle1Style}"/>
         </StackPanel>
 
+        <TextBox Text="{Binding FilterText}" Grid.Row="0" VerticalAlignment="Top" Opacity="0" Visibility="Collapsed"> <!-- Visibility="{Binding ShowFilter, Converter={StaticResource BooleanVisibilityConverter}}"> -->
+            <i:Interaction.Behaviors>
+                <inf:RealtimeTextBoxBindingBehavior />
+            </i:Interaction.Behaviors>
+        </TextBox>
+
         <!--ContentPanel - place additional content here-->
         <Grid x:Name="ContentPanel" Grid.Row="1" Margin="12,0,12,0">
-            <tk:MultiselectList ItemsSource="{Binding Jobs}">
-                <i:Interaction.Behaviors>
-                    <inf:AutoSelectionModeBehavior />
-                    <inf:BindSelectedItemsBehavior BoundList="{Binding SelectedJobs}" />
-                </i:Interaction.Behaviors>
-                <tk:MultiselectList.ItemContainerStyle>
-                    <Style TargetType="tk:MultiselectItem">
-                        <Setter Property="HintPanelHeight" Value="90"/>
-                    </Style>
-                </tk:MultiselectList.ItemContainerStyle>
-                <tk:MultiselectList.ItemTemplate>
+            <ListBox ItemsSource="{Binding Jobs}">
+                <ListBox.ItemTemplate>
                     <DataTemplate>
-                        <StackPanel>
+                        <StackPanel Orientation="Horizontal">
                             <i:Interaction.Behaviors>
-                                <inf:MultiselectItemBehavior />
+                                <inf:TapCommandBehavior Command="{Binding ToggleSelectionCommand}" />
                             </i:Interaction.Behaviors>
-                            <TextBlock Text="{Binding Name}" 
-                                       TextWrapping="Wrap"
-                                       Margin="0,0,0,20"
-                                       Style="{StaticResource PhoneTextLargeStyle}" />
+                            <Grid>
+                                <CheckBox IsChecked="{Binding IsSelected, Mode=TwoWay}" />
+                                <Rectangle Fill="Transparent" />
+                            </Grid>
+
+                            <TextBlock Text="{Binding Job.Name}" 
+                                        TextWrapping="Wrap"
+                                        Margin="0,10"
+                                        Style="{StaticResource PhoneTextLargeStyle}" />
                         </StackPanel>
                             
                     </DataTemplate>
-                </tk:MultiselectList.ItemTemplate>
-            </tk:MultiselectList>
+                </ListBox.ItemTemplate>
+            </ListBox>
         </Grid>
     </Grid>
- 
+
     <!--Sample code showing usage of ApplicationBar-->
     <phone:PhoneApplicationPage.ApplicationBar>
         <shell:ApplicationBar IsVisible="True" IsMenuEnabled="True">
             <shell:ApplicationBarIconButton IconUri="/Images/appbar.save.rest.png" Text="add" />
-            <shell:ApplicationBarIconButton IconUri="/Images/appbar.save.rest.png" Text="add all" />
+            <shell:ApplicationBarIconButton IconUri="/Toolkit.Content/ApplicationBar.Select.png" Text="select all" />
+            <shell:ApplicationBarIconButton IconUri="/Images/appbar.feature.search.rest.png" Text="find" />
         </shell:ApplicationBar>
     </phone:PhoneApplicationPage.ApplicationBar>
 
@@ -77,6 +96,16 @@
         <inf:ApplicationBarIconButtonCommand TextKey="add"
                                                       Text="add jobs"
                                                       CommandBinding="{Binding AddJobsCommand}"
+                                                      />
+
+        <inf:ApplicationBarIconButtonCommand TextKey="select all"
+                                                      Text="select all"
+                                                      CommandBinding="{Binding SelectAllJobsCommand}"
+                                                      />
+
+        <inf:ApplicationBarIconButtonCommand TextKey="find"
+                                                      Text="find"
+                                                      CommandBinding="{Binding FilterJobsCommand}"
                                                       />
     </i:Interaction.Behaviors>
 

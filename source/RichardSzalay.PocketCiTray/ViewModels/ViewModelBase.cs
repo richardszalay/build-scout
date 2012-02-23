@@ -1,4 +1,5 @@
 ﻿using System;
+using System.ComponentModel;
 using System.Reactive.Disposables;
 using System.Windows.Input;
 using System.Windows.Navigation;
@@ -91,6 +92,10 @@ namespace RichardSzalay.PocketCiTray.ViewModels
         protected void StartLoading()
         {
             StartLoading("");
+        }
+
+        public virtual void OnBackKeyPress(CancelEventArgs e)
+        {
         }
     }
 }

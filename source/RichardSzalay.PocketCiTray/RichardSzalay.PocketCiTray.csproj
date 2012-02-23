@@ -122,6 +122,10 @@
     <Compile Include="Bootstrap.cs" />
     <Compile Include="CcXml\BuildStatus.cs" />
     <Compile Include="CcXml\ProjectActivity.cs" />
+    <Compile Include="Infrastructure\Behaviors\VisualStateBindingBehavior.cs" />
+    <Compile Include="Infrastructure\Behaviors\TapCommandBehavior.cs" />
+    <Compile Include="Infrastructure\Converters\BooleanVisibilityConverter.cs" />
+    <Compile Include="Infrastructure\Converters\BooleanValueConverter.cs" />
     <Compile Include="Infrastructure\Converters\UpperCaseConverter.cs" />
     <Compile Include="Infrastructure\NotifyPropertyWeaver.cs" />
     <Compile Include="Logging.cs" />
@@ -143,6 +147,9 @@
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Services\ApplicationDependencyConfiguration.cs" />
+    <Compile Include="Services\IApplicationResourceFacade.cs" />
+    <Compile Include="Services\IHelpService.cs" />
+    <Compile Include="Services\IIsolatedStorageFacade.cs" />
     <Compile Include="Services\INavigationService.cs" />
     <Compile Include="Services\IPeriodicJobUpdateService.cs" />
     <Compile Include="Services\IScheduledActionServiceFacade.cs" />
@@ -247,14 +254,17 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="Content\Help\AddServer.html" />
-    <Content Include="Content\Help\help.css" />
+    <Content Include="Content\Help\shared\help.css" />
     <Content Include="Images\appbar.add.rest.png" />
     <Content Include="Images\appbar.cancel.rest.png" />
     <Content Include="Images\appbar.check.rest.png" />
+    <Content Include="Images\appbar.edit.rest.png" />
+    <Content Include="Images\appbar.feature.search.rest.png" />
     <Content Include="Images\appbar.pin.rest.png" />
     <Content Include="Images\appbar.questionmark.rest.png" />
     <Content Include="Images\appbar.refresh.rest.png" />
     <Content Include="Images\appbar.save.rest.png" />
+    <Content Include="Images\appbar.transport.play.rest.png" />
     <Content Include="Images\Tiles\Failed.png" />
     <Content Include="Images\Tiles\Success.png" />
     <Content Include="Images\Tiles\Unavailable.png" />

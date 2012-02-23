@@ -2,6 +2,7 @@
 using System.Linq;
 using System.Collections.ObjectModel;
 using System.Collections.Specialized;
+using System.Reactive;
 using System.Reactive.Linq;
 using System.Windows.Input;
 using System.Windows.Navigation;
@@ -35,6 +36,8 @@ namespace RichardSzalay.PocketCiTray.ViewModels
             SelectedJobs = new ObservableCollection<Job>();
 
             AddJobsCommand = CreateCommand(new ObservableCommand(CanAddJobs()), OnAddJobs);
+            SelectAllJobsCommand = CreateCommand(new ObservableCommand(), OnSelectAllJobs);
+            FilterJobsCommand = CreateCommand(new ObservableCommand(), OnFilterJobs);
 
             var query = e.Uri.GetQueryValues();
 
@@ -61,7 +64,18 @@ namespace RichardSzalay.PocketCiTray.ViewModels
                 )
                 .ObserveOn(schedulerAccessor.UserInterface)
                 .Finally(StopLoading)
-                .Subscribe(loadedJobs => Jobs = new ObservableCollection<Job>(loadedJobs));
+                .Subscribe(loadedJobs => Jobs = new ObservableCollection<AvailableJob>(loadedJobs.Select(CreateAvailableJob)));
+        }
+
+        public override void OnBackKeyPress(System.ComponentModel.CancelEventArgs e)
+        {
+            base.OnBackKeyPress(e);
+
+            if (ShowFilter)
+            {
+                e.Cancel = true;
+                ShowFilter = false;
+            }
         }
 
         private IObservable<ICollection<Job>> RemoveExistingJobs(BuildServer buildServer, ICollection<Job> jobs)
@@ -79,14 +93,73 @@ namespace RichardSzalay.PocketCiTray.ViewModels
                 .Subscribe(_ => navigationService.GoBackTo(ViewUris.ListJobs));
         }
 
+        private void OnSelectAllJobs()
+        {
+            if (SelectedJobs.Count == 0)
+            {
+                SelectedJobs = new ObservableCollection<Job>(Jobs.Select(j => j.Job));
+
+                foreach (var availableJob in Jobs)
+                {
+                    availableJob.IsSelected = true;
+                }
+            }
+            else
+            {
+                SelectedJobs.Clear();
+
+                foreach (var availableJob in Jobs)
+                {
+                    availableJob.IsSelected = false;
+                }
+            }
+        }
+
+        private void OnFilterJobs()
+        {
+            ShowFilter = true;
+        }
+
+        private AvailableJob CreateAvailableJob(Job job)
+        {
+            var availableJob = new AvailableJob(job);
+
+            availableJob.SelectionChanged += OnJobSelectionChanged;
+
+            return availableJob;
+        }
+
+        private void OnJobSelectionChanged(object sender, EventArgs e)
+        {
+            var availableJob = (AvailableJob) sender;
+
+            if (availableJob.IsSelected)
+            {
+                SelectedJobs.Add(availableJob.Job);
+            }
+            else
+            {
+                SelectedJobs.Remove(availableJob.Job);
+            }
+        }
+
+        [NotifyProperty]
+        public bool ShowFilter { get; private set; }
+
         [NotifyProperty]
         public ICommand AddJobsCommand { get; private set; }
 
         [NotifyProperty]
+        public ICommand SelectAllJobsCommand { get; private set; }
+
+        [NotifyProperty]
+        public ICommand FilterJobsCommand { get; private set; }
+
+        [NotifyProperty]
         public string JobSource { get; private set; }
 
-        [NotifyProperty(AlsoNotifyFor = new string[] { "BuildServer" })]
-        public ObservableCollection<Job> Jobs { get; private set; }
+        [NotifyProperty(AlsoNotifyFor = new[] { "BuildServer" })]
+        public ObservableCollection<AvailableJob> Jobs { get; private set; }
 
         [NotifyProperty]
         public ObservableCollection<Job> SelectedJobs { get; private set; }
@@ -111,15 +184,45 @@ namespace RichardSzalay.PocketCiTray.ViewModels
         public bool IsSelectionEnabled { get; set; }
     }
 
-    public class AvailableJob
+    public class AvailableJob : PropertyChangeBase
     {
         public AvailableJob(Job job)
         {
             this.Job = job;
+
+            var cmd =new ObservableCommand();
+            cmd.Subscribe(_ => OnToggleSelection());
+
+            this.ToggleSelectionCommand = cmd;
         }
 
+        private bool isSelected;
+
         [NotifyProperty]
-        public bool IsSelected { get; set; }
+        public bool IsSelected
+        {
+            get { return isSelected; }
+            set { isSelected = value; OnSelectionChanged(); }
+        }
+
+        public ICommand ToggleSelectionCommand { get; private set; }
+
+        public event EventHandler SelectionChanged;
+
+        private void OnSelectionChanged()
+        {
+            var handler = SelectionChanged;
+
+            if (handler != null)
+            {
+                handler(this, EventArgs.Empty);
+            }
+        }
+
+        private void OnToggleSelection()
+        {
+            IsSelected = !isSelected;
+        }
 
         public Job Job { get; private set; }
     }

@@ -65,6 +65,11 @@ namespace RichardSzalay.PocketCiTray.Services
                 l.Resolve<IMessageBoxFacade>(),
                 l.Resolve<IMutexService>(),
                 l.Resolve<ILogManager>()));
+
+            container.Register<IHelpService>(c => new HelpService(
+                c.Resolve<IIsolatedStorageFacade>(),
+                c.Resolve<IApplicationResourceFacade>()
+                ));
         }
 
         private static void ConfigureViewModels(Container container)
@@ -109,7 +114,8 @@ namespace RichardSzalay.PocketCiTray.Services
                 ));
 
             container.Register(c => new ViewHelpViewModel(
-                c.Resolve<INavigationService>()
+                c.Resolve<INavigationService>(),
+                c.Resolve<IHelpService>()
                 ));
         }
 
@@ -118,6 +124,10 @@ namespace RichardSzalay.PocketCiTray.Services
             container.Register<IScheduledActionServiceFacade>(new ScheduledActionServiceFacade());
             container.Register<IMessageBoxFacade>(new MessageBoxFacade());
             container.Register<IWebBrowserTaskFacade>(new WebBrowserTaskFacade());
+            container.Register<IIsolatedStorageFacade>(new IsolatedStorageFacade(
+                IsolatedStorageFile.GetUserStoreForApplication()
+                ));
+            container.Register<IApplicationResourceFacade>(new ApplicationResourceFacade());
         }
     }
 }
