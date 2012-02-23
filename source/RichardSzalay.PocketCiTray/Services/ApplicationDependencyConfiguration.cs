@@ -107,6 +107,10 @@ namespace RichardSzalay.PocketCiTray.Services
                 c.Resolve<IJobRepository>(),
                 c.Resolve<ISchedulerAccessor>()
                 ));
+
+            container.Register(c => new ViewHelpViewModel(
+                c.Resolve<INavigationService>()
+                ));
         }
 
         private static void ConfigureFacades(Container container)

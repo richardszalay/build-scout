@@ -159,6 +159,7 @@
     <Compile Include="ViewModels\AddJobsViewModel.cs" />
     <Compile Include="ViewModels\AddBuildServerViewModel.cs" />
     <Compile Include="Infrastructure\Converters\EnumValueConverter.cs" />
+    <Compile Include="ViewModels\ViewHelpViewModel.cs" />
     <Compile Include="ViewModels\TransitionMode.cs" />
     <Compile Include="ViewModels\ViewJobViewModel.cs" />
     <Compile Include="ViewModels\ListJobsViewModel.cs" />
@@ -171,6 +172,9 @@
     </Compile>
     <Compile Include="View\AddBuildServer.xaml.cs">
       <DependentUpon>AddBuildServer.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\ViewHelp.xaml.cs">
+      <DependentUpon>ViewHelp.xaml</DependentUpon>
     </Compile>
     <Compile Include="View\ViewJob.xaml.cs">
       <DependentUpon>ViewJob.xaml</DependentUpon>
@@ -212,6 +216,10 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
+    <Page Include="View\ViewHelp.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
     <Page Include="View\ViewJob.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -238,13 +246,13 @@
     <Content Include="Background.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="Content\Help\AddServerHelp.html" />
+    <Content Include="Content\Help\AddServer.html" />
     <Content Include="Content\Help\help.css" />
     <Content Include="Images\appbar.add.rest.png" />
-    <Resource Include="Images\appbar.cancel.rest.png" />
-    <Resource Include="Images\appbar.check.rest.png" />
+    <Content Include="Images\appbar.cancel.rest.png" />
+    <Content Include="Images\appbar.check.rest.png" />
     <Content Include="Images\appbar.pin.rest.png" />
-    <Resource Include="Images\appbar.questionmark.rest.png" />
+    <Content Include="Images\appbar.questionmark.rest.png" />
     <Content Include="Images\appbar.refresh.rest.png" />
     <Content Include="Images\appbar.save.rest.png" />
     <Content Include="Images\Tiles\Failed.png" />

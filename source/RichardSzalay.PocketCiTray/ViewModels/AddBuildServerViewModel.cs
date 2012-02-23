@@ -10,11 +10,14 @@ using RichardSzalay.PocketCiTray.Services;
 using System.Windows;
 using System.Collections.Generic;
 using Microsoft.Phone.Net.NetworkInformation;
+using RichardSzalay.PocketCiTray.Infrastructure;
 
 namespace RichardSzalay.PocketCiTray.ViewModels
 {
     public class AddBuildServerViewModel : ViewModelBase
     {
+        private const string AddServerHelpKey = "AddServer";
+
         private readonly IJobProviderFactory jobProviderFactory;
         private readonly IJobRepository jobRepository;
         private readonly INavigationService navigationService;
@@ -57,6 +60,8 @@ namespace RichardSzalay.PocketCiTray.ViewModels
             AddBuildServerCommand = CreateCommand<string>(
                 new ObservableCommand<string>(CanAdd), OnAddBuildServer);
 
+            ViewHelpCommand = CreateCommand(new ObservableCommand(), OnViewHelp);
+
             Disposables.Add(Observable.FromEventPattern<NetworkNotificationEventArgs>(
                 h => networkInterface.NetworkChanged += h,
                 h => networkInterface.NetworkChanged -= h
@@ -93,6 +98,9 @@ namespace RichardSzalay.PocketCiTray.ViewModels
             set { addBuildServerCommand = value; OnPropertyChanged("AddBuildServerCommand"); }
         }
 
+        [NotifyProperty]
+        public ICommand ViewHelpCommand { get; set; }
+
         public string SelectedProvider
         {
             get { return selectedProvider; }
@@ -119,6 +127,11 @@ namespace RichardSzalay.PocketCiTray.ViewModels
                 .Finally(StopLoading)
                 .Subscribe(addedBuildServer => navigationService.Navigate(ViewUris.AddJobs(addedBuildServer)),
                            OnAddBuildServerFailed);
+        }
+
+        private void OnViewHelp()
+        {
+            navigationService.Navigate(ViewUris.Help(AddServerHelpKey));
         }
 
         private void OnAddBuildServerFailed(Exception ex)
