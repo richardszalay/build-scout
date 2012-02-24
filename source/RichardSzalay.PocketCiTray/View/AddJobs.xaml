@@ -17,29 +17,50 @@
     DataContext="{Binding Path=AddJobsViewModel,Source={StaticResource ViewModelLocator}}"
     d:DataContext="{d:DesignData /DesignData/AddJobsData.xaml}"
     tk:TiltEffect.IsTiltEnabled="True">
-    
+
     <v:ViewBase.Resources>
         <inf:UpperCaseConverter x:Key="UpperCaseConverter" />
         <inf:BooleanValueConverter x:Key="FilterTextStateConverter" TrueValue="Filtered" FalseValue="Unfiltered" />
     </v:ViewBase.Resources>
 
     <Grid x:Name="LayoutRoot" Background="Transparent">
-        <i:Interaction.Behaviors>
-            <inf:VisualStateBindingBehavior State="{Binding ShowFilter, Converter={StaticResource FilterTextStateConverter}}" />
-        </i:Interaction.Behaviors>
-        
         <VisualStateManager.VisualStateGroups>
             <VisualStateGroup x:Name="FilterMode">
+                <VisualStateGroup.Transitions>
+                    <VisualTransition GeneratedDuration="0">
+                        <VisualTransition.GeneratedEasingFunction>
+                            <SineEase EasingMode="EaseOut"/>
+                        </VisualTransition.GeneratedEasingFunction>
+                    </VisualTransition>
+                </VisualStateGroup.Transitions>
+                <VisualState x:Name="Unfiltered"/>
                 <VisualState x:Name="Filtered">
                     <Storyboard>
+                        <ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="(UIElement.Visibility)" Storyboard.TargetName="textBox">
+                            <DiscreteObjectKeyFrame KeyTime="0">
+                                <DiscreteObjectKeyFrame.Value>
+                                    <Visibility>Visible</Visibility>
+                                </DiscreteObjectKeyFrame.Value>
+                            </DiscreteObjectKeyFrame>
+                            <DiscreteObjectKeyFrame KeyTime="0:0:0.3">
+                                <DiscreteObjectKeyFrame.Value>
+                                    <Visibility>Visible</Visibility>
+                                </DiscreteObjectKeyFrame.Value>
+                            </DiscreteObjectKeyFrame>
+                        </ObjectAnimationUsingKeyFrames>
+                        <DoubleAnimationUsingKeyFrames Storyboard.TargetProperty="(UIElement.Opacity)" Storyboard.TargetName="textBox">
+                            <EasingDoubleKeyFrame KeyTime="0" Value="0"/>
+                            <EasingDoubleKeyFrame KeyTime="0:0:0.3" Value="1"/>
+                        </DoubleAnimationUsingKeyFrames>
+                        <DoubleAnimation Duration="0:0:0.3" To="0" Storyboard.TargetProperty="(UIElement.Opacity)" Storyboard.TargetName="ApplicationTitle" d:IsOptimized="True"/>
+                        <DoubleAnimationUsingKeyFrames Storyboard.TargetProperty="(UIElement.RenderTransform).(CompositeTransform.TranslateY)" Storyboard.TargetName="textBox">
+                            <EasingDoubleKeyFrame KeyTime="0" Value="-105" />
+                            <EasingDoubleKeyFrame KeyTime="0:0:0.3" Value="0" />
+                        </DoubleAnimationUsingKeyFrames>
                     </Storyboard>
-                </VisualState>
-                <VisualState x:Name="Unfiltered">
-
                 </VisualState>
             </VisualStateGroup>
         </VisualStateManager.VisualStateGroups>
-        
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="*"/>
@@ -51,9 +72,13 @@
             <TextBlock x:Name="PageTitle" Text="add jobs" Margin="9,-7,0,0" Style="{StaticResource PhoneTextTitle1Style}"/>
         </StackPanel>
 
-        <TextBox Text="{Binding FilterText}" Grid.Row="0" VerticalAlignment="Top" Opacity="0" Visibility="Collapsed"> <!-- Visibility="{Binding ShowFilter, Converter={StaticResource BooleanVisibilityConverter}}"> -->
+        <TextBox x:Name="textBox" Text="{Binding FilterText}" Grid.Row="0" VerticalAlignment="Top" Opacity="0" Visibility="Collapsed" RenderTransformOrigin="0.5,0.5">
+        	<TextBox.RenderTransform>
+        		<CompositeTransform/>
+        	</TextBox.RenderTransform> <!-- Visibility="{Binding ShowFilter, Converter={StaticResource BooleanVisibilityConverter}}"> -->
             <i:Interaction.Behaviors>
                 <inf:RealtimeTextBoxBindingBehavior />
+                <inf:FocusBindingBehavior IsFocussed="{Binding ShowFilter}" />
             </i:Interaction.Behaviors>
         </TextBox>
 
@@ -93,6 +118,7 @@
     </phone:PhoneApplicationPage.ApplicationBar>
 
     <i:Interaction.Behaviors>
+        <inf:VisualStateBindingBehavior State="{Binding ShowFilter, Converter={StaticResource FilterTextStateConverter}}" />
         <inf:ApplicationBarIconButtonCommand TextKey="add"
                                                       Text="add jobs"
                                                       CommandBinding="{Binding AddJobsCommand}"

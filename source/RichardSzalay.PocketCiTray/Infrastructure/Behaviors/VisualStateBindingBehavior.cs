@@ -2,6 +2,7 @@
 using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Interactivity;
+using System.Diagnostics;
 
 namespace RichardSzalay.PocketCiTray.Infrastructure
 {
@@ -21,7 +22,12 @@ namespace RichardSzalay.PocketCiTray.Infrastructure
         {
             var behavior = (VisualStateBindingBehavior) d;
 
-            VisualStateManager.GoToState(behavior.AssociatedObject, (string)e.NewValue, true);
+            if (behavior.AssociatedObject != null)
+            {
+                bool result = VisualStateManager.GoToState(behavior.AssociatedObject, (string)e.NewValue, true);
+
+                Debug.WriteLine(result);
+            }
         }
     }
 }

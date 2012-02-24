@@ -122,6 +122,7 @@
     <Compile Include="Bootstrap.cs" />
     <Compile Include="CcXml\BuildStatus.cs" />
     <Compile Include="CcXml\ProjectActivity.cs" />
+    <Compile Include="Infrastructure\Behaviors\FocusBindingBehavior.cs" />
     <Compile Include="Infrastructure\Behaviors\VisualStateBindingBehavior.cs" />
     <Compile Include="Infrastructure\Behaviors\TapCommandBehavior.cs" />
     <Compile Include="Infrastructure\Converters\BooleanVisibilityConverter.cs" />
