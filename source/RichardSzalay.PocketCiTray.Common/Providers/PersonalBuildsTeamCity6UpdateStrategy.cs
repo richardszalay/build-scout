@@ -15,7 +15,7 @@ using System.Globalization;
 
 namespace RichardSzalay.PocketCiTray.Providers
 {
-    public class RecentBuildsTeamCity6UpdateStrategy : RichardSzalay.PocketCiTray.Providers.ITeamCity6UpdateStrategy
+    public class PersonalBuildsTeamCity6UpdateStrategy : RichardSzalay.PocketCiTray.Providers.ITeamCity6UpdateStrategy
     {
         private const string TeamCityDateFormat = "yyyyMMddThhmmsszzz";
 
@@ -23,37 +23,27 @@ namespace RichardSzalay.PocketCiTray.Providers
         private readonly IClock clock;
         private readonly ILog log;
 
-        public RecentBuildsTeamCity6UpdateStrategy(IWebRequestCreate webRequestCreate, IClock clock, ILog log)
+        public PersonalBuildsTeamCity6UpdateStrategy(IWebRequestCreate webRequestCreate, IClock clock, ILog log)
         {
             this.webRequestCreate = webRequestCreate;
             this.clock = clock;
             this.log = log;
         }
 
-        public IObservable<Job> UpdateAll(BuildServer buildServer, IEnumerable<Job> jobs)
+        public IObservable<Job> UpdateAll (BuildServer buildServer, IEnumerable<Job> jobs)
         {
-            log.Write("[RecentBuildsTeamCity6UpdateStrategy] Updating jobs from server: {0}", buildServer.Uri);
+            log.Write("[PersonalBuildsTeamCity6UpdateStrategy] Updating jobs from server: {0}", buildServer.Uri);
 
-            var oldestUpdateTime = GetOldestUpdate(jobs);
-
-            var firstPageBuilder = new UriBuilder(new Uri(buildServer.Uri, "/httpAuth/app/rest/6.0/builds"));
-
-            if (oldestUpdateTime.HasValue && oldestUpdateTime.Value != DateTimeOffset.MinValue)
-            {
-                firstPageBuilder.Query = "sinceDate=" + 
-                    Uri.EscapeUriString(FormatTeamCityDate(oldestUpdateTime.Value));
-            }
-
-            firstPageBuilder.Query = (firstPageBuilder.Query + "&count=200").TrimStart('&');
+            var personalBuildsUri = new Uri(buildServer.Uri, "/httpAuth/app/rest/6.0/builds?locator=personal:true");
 
             var indexedJobs = jobs.ToDictionary(x => x.RemoteId);
 
-            return webRequestCreate.CreateXmlRequest(firstPageBuilder.Uri, buildServer.Credential)
+            return webRequestCreate.CreateXmlRequest(personalBuildsUri, buildServer.Credential)
                 .GetResponseObservable()
                 .ParseXmlResponse()
                 .SelectMany(buildsDoc =>
                 {
-                    List<Job> updatedJobs = new List<Job>();
+                    var updatedJobs = new List<Job>();
 
                     foreach (var buildElement in buildsDoc.Root.Elements("build"))
                     {
@@ -72,25 +62,11 @@ namespace RichardSzalay.PocketCiTray.Providers
                         }
                     }
 
-                    log.Write("[RecentBuildsTeamCity6UpdateStrategy] Updated {0} jobs using recent builds list",
+                    log.Write("[PersonalBuildsTeamCity6UpdateStrategy] Updated {0} jobs using recent builds list",
                         updatedJobs.Count);
 
                     return updatedJobs;
                 });
-        }
-
-        private string FormatTeamCityDate(DateTimeOffset dateTimeOffset)
-        {
-            return dateTimeOffset.ToString(TeamCityDateFormat)
-                .Replace(":", "");
-        }
-
-        private DateTimeOffset? GetOldestUpdate(IEnumerable<Job> jobs)
-        {
-            return jobs.Select(j => j.LastBuild)
-                .OrderBy(b => b == null ? DateTimeOffset.MinValue : b.Time)
-                .Select(b => b == null ? null : (DateTimeOffset?)b.Time)
-                .FirstOrDefault();
         }
 
         private Build MapBuild(XElement jobElement)

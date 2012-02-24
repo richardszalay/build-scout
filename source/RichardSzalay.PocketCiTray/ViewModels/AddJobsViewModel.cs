@@ -20,6 +20,7 @@ namespace RichardSzalay.PocketCiTray.ViewModels
         private readonly IJobProviderFactory jobProviderFactory;
         private readonly IJobRepository jobRepository;
         private readonly ISchedulerAccessor schedulerAccessor;
+        private ObservableCollection<AvailableJob> allJobs;
 
         public AddJobsViewModel(INavigationService navigationService, IJobProviderFactory jobProviderFactory, IJobRepository jobRepository, ISchedulerAccessor schedulerAccessor)
         {
@@ -38,6 +39,9 @@ namespace RichardSzalay.PocketCiTray.ViewModels
             AddJobsCommand = CreateCommand(new ObservableCommand(CanAddJobs()), OnAddJobs);
             SelectAllJobsCommand = CreateCommand(new ObservableCommand(), OnSelectAllJobs);
             FilterJobsCommand = CreateCommand(new ObservableCommand(), OnFilterJobs);
+
+            Disposables.Add(this.GetPropertyValues(x => x.FilterText)
+                .Subscribe(OnUpdateFilter));
 
             var query = e.Uri.GetQueryValues();
 
@@ -64,8 +68,11 @@ namespace RichardSzalay.PocketCiTray.ViewModels
                 )
                 .ObserveOn(schedulerAccessor.UserInterface)
                 .Finally(StopLoading)
-                .Subscribe(loadedJobs => Jobs = new ObservableCollection<AvailableJob>(loadedJobs.Select(CreateAvailableJob)));
+                .Subscribe(loadedJobs => allJobs = Jobs = new ObservableCollection<AvailableJob>(loadedJobs.Select(CreateAvailableJob)));
         }
+
+        [NotifyProperty]
+        public string FilterText { get; set; }
 
         public override void OnBackKeyPress(System.ComponentModel.CancelEventArgs e)
         {
@@ -118,6 +125,11 @@ namespace RichardSzalay.PocketCiTray.ViewModels
         private void OnFilterJobs()
         {
             ShowFilter = true;
+        }
+
+        private void OnUpdateFilter(string filter)
+        {
+            
         }
 
         private AvailableJob CreateAvailableJob(Job job)

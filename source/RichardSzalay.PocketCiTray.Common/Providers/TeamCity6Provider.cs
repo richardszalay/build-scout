@@ -42,7 +42,7 @@ namespace RichardSzalay.PocketCiTray.Providers
 
             updateStrategies = new ITeamCity6UpdateStrategy[]
             {
-                new RecentBuildsTeamCity6UpdateStrategy(webRequestCreate, clock, log),
+                new PersonalBuildsTeamCity6UpdateStrategy(webRequestCreate, clock, log),
                 new PerJobTeamCity6UpdateStrategy(webRequestCreate, clock, log)
             };
         }

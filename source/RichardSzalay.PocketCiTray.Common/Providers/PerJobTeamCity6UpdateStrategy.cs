@@ -35,7 +35,7 @@ namespace RichardSzalay.PocketCiTray.Providers
             log.Write("[PerJobTeamCity6UpdateStrategy] Updating jobs from server: {0}", buildServer.Uri);
 
             return PrioritiseJobUpdates(jobs)
-                .Select(j => Observable.Return<Job>(j))
+                .Select(Observable.Return)
                 .ToObservable()
                 .Merge(2)
                 .SelectMany(job =>
