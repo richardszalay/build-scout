@@ -24,9 +24,7 @@ namespace RichardSzalay.PocketCiTray.Infrastructure
 
             if (behavior.AssociatedObject != null)
             {
-                bool result = VisualStateManager.GoToState(behavior.AssociatedObject, (string)e.NewValue, true);
-
-                Debug.WriteLine(result);
+                VisualStateManager.GoToState(behavior.AssociatedObject, (string)e.NewValue, true);
             }
         }
     }

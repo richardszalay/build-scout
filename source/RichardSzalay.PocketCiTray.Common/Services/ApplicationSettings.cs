@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using System.Globalization;
 
 namespace RichardSzalay.PocketCiTray.Services
@@ -7,8 +8,8 @@ namespace RichardSzalay.PocketCiTray.Services
     {
         private readonly ISettingsFacade settings;
 
-        private static readonly TimeSpan DefaultForegroundInterval = TimeSpan.FromSeconds(30);
-        private static readonly TimeSpan DefaultBackgroundInterval = TimeSpan.FromMinutes(15);
+        private static readonly TimeSpan DefaultForegroundInterval = TimeSpan.FromMinutes(1);
+        private static readonly TimeSpan DefaultBackgroundInterval = TimeSpan.FromMinutes(30);
 
 
         public ApplicationSettings(ISettingsFacade settings)
@@ -25,6 +26,11 @@ namespace RichardSzalay.PocketCiTray.Services
         private const string SuccessTileUriKey = "ApplicationSettings.SuccessTileUriKey";
         private const string FailureTileUriKey = "ApplicationSettings.FailureTileUriKey";
         private const string UnavailableTileUriKey = "ApplicationSettings.UnavailableTileUriKey";
+        
+        private const string NotificationPreferenceKey = "ApplicationSettings.NotificationPreference";
+        private const string NotificationStartKey = "ApplicationSettings.NotificationStart";
+        private const string NotificationEndKey = "ApplicationSettings.NotificationEnd";
+        private const string NotificationDaysKey = "ApplicationSettings.NotificationDays";
 
         public TimeSpan ApplicationUpdateInterval
         {
@@ -134,6 +140,73 @@ namespace RichardSzalay.PocketCiTray.Services
                 return (T)value;
             }
             return defaultValue;
+        }
+
+
+        public NotificationReason NotificationPreference
+        {
+            get
+            {
+                return (NotificationReason)GetValue(NotificationPreferenceKey, (int)NotificationReason.All);
+            }
+            set { settings[NotificationPreferenceKey] = value; }
+        }
+
+
+        public TimeSpan NotificationStart
+        {
+            get
+            {
+                return new TimeSpan(GetValue(NotificationStartKey, new TimeSpan(9, 0, 0).Ticks));
+            }
+            set
+            {
+                settings[NotificationStartKey] = value;
+            }
+        }
+
+        public TimeSpan NotificationEnd
+        {
+            get
+            {
+                return new TimeSpan(GetValue(NotificationEndKey, new TimeSpan(17, 0, 0).Ticks));
+            }
+            set
+            {
+                settings[NotificationEndKey] = value;
+            }
+        }
+
+        public DayOfWeek[] NotificationDays
+        {
+            get
+            {
+                int storedValue = GetValue(NotificationDaysKey, DefaultDaysOfWeek);
+
+                return UnshrinkDaysOfWeek(storedValue);
+            }
+            set
+            {
+                settings[NotificationDaysKey] = ShrinkDaysOfWeek(value);
+            }
+        }
+
+        public static int ShrinkDaysOfWeek(params DayOfWeek[] daysOfWeek)
+        {
+            return daysOfWeek.Aggregate(0, (v, d) => v | (1 << (int)d));
+        }
+
+        private static int DefaultDaysOfWeek = ShrinkDaysOfWeek(DayOfWeek.Monday, DayOfWeek.Tuesday,
+            DayOfWeek.Wednesday, DayOfWeek.Thursday, DayOfWeek.Friday);
+
+        public static DayOfWeek[] UnshrinkDaysOfWeek(int value)
+        {
+            var allDays = new[] { DayOfWeek.Sunday, DayOfWeek.Monday, DayOfWeek.Tuesday, DayOfWeek.Wednesday, 
+                    DayOfWeek.Thursday, DayOfWeek.Friday, DayOfWeek.Saturday };
+
+            return allDays
+                .Where(day => (value & (1 << (int)day)) != 0)
+                .ToArray();
         }
     }
 }

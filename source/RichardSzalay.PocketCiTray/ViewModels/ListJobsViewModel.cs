@@ -33,6 +33,7 @@ namespace RichardSzalay.PocketCiTray.ViewModels
             AddJobCommand = CreateCommand(new ObservableCommand(), OnAddJob);
             UpdateStatusesCommand = CreateCommand(new ObservableCommand(), OnUpdateStatuses);
             ViewJobCommand = CreateCommand<Job>(new ObservableCommand<Job>(), OnViewJob);
+            EditSettingsCommand = CreateCommand(new ObservableCommand(), OnEditSettings);
 
             Disposables.Add(Observable.FromEventPattern(h => jobUpdateService.Started += h, h => jobUpdateService.Started -= h)
                 .ObserveOn(schedulerAccessor.UserInterface)
@@ -84,11 +85,19 @@ namespace RichardSzalay.PocketCiTray.ViewModels
             jobUpdateService.UpdateAll(UpdateTimeout);
         }
 
+        private void OnEditSettings()
+        {
+            navigationService.Navigate(ViewUris.EditSettings);
+        }
+
         [NotifyProperty]
         public ICommand UpdateStatusesCommand { get; set; }
 
         [NotifyProperty]
         public ICommand ViewJobCommand { get; set; }
+
+        [NotifyProperty]
+        public ICommand EditSettingsCommand { get; set; }
 
         [NotifyProperty]
         public ObservableCollection<Job> Jobs { get; set; }

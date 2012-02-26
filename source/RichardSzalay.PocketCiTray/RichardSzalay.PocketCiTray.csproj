@@ -122,9 +122,13 @@
     <Compile Include="Bootstrap.cs" />
     <Compile Include="CcXml\BuildStatus.cs" />
     <Compile Include="CcXml\ProjectActivity.cs" />
+    <Compile Include="Infrastructure\Behaviors\ListPickerBoundSelectedItemsBehavior.cs" />
     <Compile Include="Infrastructure\Behaviors\FocusBindingBehavior.cs" />
+    <Compile Include="Infrastructure\Behaviors\RecurringDaysArrayBindingBehavior.cs" />
+    <Compile Include="Infrastructure\Behaviors\TextBlockHighlightBehavior.cs" />
     <Compile Include="Infrastructure\Behaviors\VisualStateBindingBehavior.cs" />
     <Compile Include="Infrastructure\Behaviors\TapCommandBehavior.cs" />
+    <Compile Include="Infrastructure\Controls\HighlightingTextBlock.cs" />
     <Compile Include="Infrastructure\Converters\BooleanVisibilityConverter.cs" />
     <Compile Include="Infrastructure\Converters\BooleanValueConverter.cs" />
     <Compile Include="Infrastructure\Converters\UpperCaseConverter.cs" />
@@ -167,6 +171,7 @@
     <Compile Include="ViewModels\AddJobsViewModel.cs" />
     <Compile Include="ViewModels\AddBuildServerViewModel.cs" />
     <Compile Include="Infrastructure\Converters\EnumValueConverter.cs" />
+    <Compile Include="ViewModels\EditSettingsViewModel.cs" />
     <Compile Include="ViewModels\ViewHelpViewModel.cs" />
     <Compile Include="ViewModels\TransitionMode.cs" />
     <Compile Include="ViewModels\ViewJobViewModel.cs" />
@@ -180,6 +185,9 @@
     </Compile>
     <Compile Include="View\AddBuildServer.xaml.cs">
       <DependentUpon>AddBuildServer.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\EditSettings.xaml.cs">
+      <DependentUpon>EditSettings.xaml</DependentUpon>
     </Compile>
     <Compile Include="View\ViewHelp.xaml.cs">
       <DependentUpon>ViewHelp.xaml</DependentUpon>
@@ -223,6 +231,10 @@
     <Page Include="View\AddBuildServer.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
+    </Page>
+    <Page Include="View\EditSettings.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="View\ViewHelp.xaml">
       <Generator>MSBuild:Compile</Generator>

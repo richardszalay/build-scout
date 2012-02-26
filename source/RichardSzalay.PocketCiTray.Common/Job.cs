@@ -6,7 +6,9 @@ namespace RichardSzalay.PocketCiTray
     {
         public Job()
         {
-            this.LastBuild = new Build
+            this.NotificationPreference = NotificationReason.All;
+
+            this.lastBuild = new Build
             {
                 Result = BuildResult.Unavailable,
                 Time = DateTimeOffset.MinValue
@@ -19,13 +21,23 @@ namespace RichardSzalay.PocketCiTray
 
         public Uri WebUri { get; set; }
 
-        public BuildServer BuildServer { get; set; }
-
         public int Id { get; set; }
 
         public string RemoteId { get; set; }
 
-        public Build LastBuild { get; set; }
+        public BuildServer BuildServer { get; set; }
+        
+        private Build lastBuild;
+        public Build LastBuild
+        {
+            get { return lastBuild; }
+            set
+            {
+                value.Change = Build.GetBuildResultChange(lastBuild.Result, value.Result);
+
+                lastBuild = value;
+            }
+        }
 
         public DateTimeOffset? LastUpdated { get; set; }
 
@@ -52,5 +64,7 @@ namespace RichardSzalay.PocketCiTray
             return Name.GetHashCode() ^
                 BuildServer.GetHashCode();
         }
+
+        public NotificationReason NotificationPreference { get; set; }
     }
 }

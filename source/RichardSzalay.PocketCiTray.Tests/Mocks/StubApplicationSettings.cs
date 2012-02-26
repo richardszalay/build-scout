@@ -85,5 +85,19 @@ namespace RichardSzalay.PocketCiTray.Tests.Mocks
             get;
             set;
         }
+
+
+        public NotificationReason NotificationPreference
+        {
+            get;
+            set;
+        }
+
+
+        public TimeSpan NotificationStart { get; set; }
+
+        public TimeSpan NotificationEnd { get; set; }
+
+        public DayOfWeek[] NotificationDays { get; set; }
     }
 }

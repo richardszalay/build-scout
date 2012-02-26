@@ -21,13 +21,18 @@ namespace RichardSzalay.PocketCiTray.Services
         private readonly IMutexService mutexService;
         private readonly ISchedulerAccessor schedulerAccessor;
         private readonly IApplicationTileService applicationTileService;
+        private readonly IJobNotificationService jobNotificationService;
+
+        public event EventHandler Started;
+        private bool isUpdating;        
 
         private SerialDisposable disposable = new SerialDisposable();
         private TimeSpan BackgroundAgentTimeout;
 
         public JobUpdateService(IJobProviderFactory jobProviderFactory, IJobRepository jobRepository,
             IClock clock, ISettingsFacade settings, IMutexService mutexService,
-            ISchedulerAccessor schedulerAccessor, IApplicationTileService applicationTileService)
+            ISchedulerAccessor schedulerAccessor, IApplicationTileService applicationTileService,
+            IJobNotificationService jobNotificationService)
         {
             this.jobProviderFactory = jobProviderFactory;
             this.jobRepository = jobRepository;
@@ -36,6 +41,7 @@ namespace RichardSzalay.PocketCiTray.Services
             this.mutexService = mutexService;
             this.schedulerAccessor = schedulerAccessor;
             this.applicationTileService = applicationTileService;
+            this.jobNotificationService = jobNotificationService;
         }
 
         public void UpdateAll(TimeSpan timeout)
@@ -119,6 +125,8 @@ namespace RichardSzalay.PocketCiTray.Services
                     {
                         applicationTileService.UpdateAll(allJobs);
 
+                        jobNotificationService.Notify(updatedJobs);
+
                         LastUpdateTime = clock.UtcNow;
 
                         isUpdating = false;
@@ -137,7 +145,6 @@ namespace RichardSzalay.PocketCiTray.Services
             disposable.Dispose();
         }
 
-        public event EventHandler Started;
-        private bool isUpdating;
+        
     }
 }

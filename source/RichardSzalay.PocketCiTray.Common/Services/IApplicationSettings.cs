@@ -17,5 +17,11 @@ namespace RichardSzalay.PocketCiTray.Services
         void Save();
 
         bool LoggingEnabled { get; set; }
+
+        NotificationReason NotificationPreference { get; set; }
+
+        TimeSpan NotificationStart { get; set; }
+        TimeSpan NotificationEnd { get; set; }
+        DayOfWeek[] NotificationDays { get; set; }
     }
 }

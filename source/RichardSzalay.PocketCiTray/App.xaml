@@ -3,7 +3,9 @@
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"       
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:phone="clr-namespace:Microsoft.Phone.Controls;assembly=Microsoft.Phone"
-    xmlns:shell="clr-namespace:Microsoft.Phone.Shell;assembly=Microsoft.Phone" xmlns:vm="clr-namespace:RichardSzalay.PocketCiTray.ViewModels">
+    xmlns:shell="clr-namespace:Microsoft.Phone.Shell;assembly=Microsoft.Phone" 
+    xmlns:vm="clr-namespace:RichardSzalay.PocketCiTray.ViewModels"
+    xmlns:local="clr-namespace:RichardSzalay.PocketCiTray.Infrastructure.Controls">
 
     <!--Application Resources-->
     <Application.Resources>
@@ -11,6 +13,16 @@
         <SolidColorBrush x:Key="BuildResultSuccessBrush" Color="#339933" />
         <SolidColorBrush x:Key="BuildResultUnavailableBrush" Color="Gray" />
         <SolidColorBrush x:Key="BuildResultFailedBrush" Color="#E51400" />
+        <Style TargetType="local:HighlightingTextBlock">
+            <Setter Property="HighlightBrush" Value="Blue" />
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="local:HighlightingTextBlock">
+                        <TextBlock x:Name="Text" />
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
         <Style x:Key="NoChromeButton" TargetType="Button">
             <Setter Property="Background" Value="Transparent"/>
             <Setter Property="BorderBrush" Value="{StaticResource PhoneForegroundBrush}"/>

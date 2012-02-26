@@ -7,6 +7,7 @@ namespace RichardSzalay.PocketCiTray.Services
     public interface ISettingsFacade : IDictionary<string, object>
     {
         void Save();
+        void Reload();
     }
 
     public class IsolatedStorageSettingsFacade : ISettingsFacade
@@ -23,6 +24,10 @@ namespace RichardSzalay.PocketCiTray.Services
         void ISettingsFacade.Save()
         {
             settings.Save();
+        }
+
+        void ISettingsFacade.Reload()
+        {
         }
 
         #endregion

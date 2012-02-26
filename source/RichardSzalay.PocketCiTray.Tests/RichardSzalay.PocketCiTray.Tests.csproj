@@ -93,6 +93,7 @@
     </Compile>
     <Compile Include="ApplicationTests\BootstrapSpec.cs" />
     <Compile Include="ApplicationTests\ViewModels\ListJobsViewModelSpec.cs" />
+    <Compile Include="CommonTests\Services\ApplicationSettingsSpec.cs" />
     <Compile Include="Infrastructure\BddTestAssembly.cs" />
     <Compile Include="Infrastructure\BddTestClass.cs" />
     <Compile Include="Infrastructure\BddTestMethod.cs" />

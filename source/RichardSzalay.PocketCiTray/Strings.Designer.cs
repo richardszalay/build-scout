@@ -178,6 +178,69 @@ namespace RichardSzalay.PocketCiTray {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to 1 day.
+        /// </summary>
+        internal static string UpdateIntervalDay {
+            get {
+                return ResourceManager.GetString("UpdateIntervalDay", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to {0} day.
+        /// </summary>
+        internal static string UpdateIntervalDays {
+            get {
+                return ResourceManager.GetString("UpdateIntervalDays", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to 1 hour.
+        /// </summary>
+        internal static string UpdateIntervalHour {
+            get {
+                return ResourceManager.GetString("UpdateIntervalHour", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to {0} hours.
+        /// </summary>
+        internal static string UpdateIntervalHours {
+            get {
+                return ResourceManager.GetString("UpdateIntervalHours", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to 1 minute.
+        /// </summary>
+        internal static string UpdateIntervalMinute {
+            get {
+                return ResourceManager.GetString("UpdateIntervalMinute", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to {0} minutes.
+        /// </summary>
+        internal static string UpdateIntervalMinutes {
+            get {
+                return ResourceManager.GetString("UpdateIntervalMinutes", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to never.
+        /// </summary>
+        internal static string UpdateIntervalNever {
+            get {
+                return ResourceManager.GetString("UpdateIntervalNever", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to yesterday.
         /// </summary>
         internal static string Yesterday {

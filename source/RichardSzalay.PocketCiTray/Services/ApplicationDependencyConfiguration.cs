@@ -117,6 +117,12 @@ namespace RichardSzalay.PocketCiTray.Services
                 c.Resolve<INavigationService>(),
                 c.Resolve<IHelpService>()
                 ));
+
+            container.Register(c => new EditSettingsViewModel(
+                c.Resolve<INavigationService>(),
+                c.Resolve<ISchedulerAccessor>(),
+                c.Resolve<IApplicationSettings>()
+                ));
         }
 
         private static void ConfigureFacades(Container container)

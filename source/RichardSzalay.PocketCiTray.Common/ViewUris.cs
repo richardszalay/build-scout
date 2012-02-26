@@ -48,5 +48,10 @@ namespace RichardSzalay.PocketCiTray
         {
             return ViewUri("/View/ViewHelp.xaml?key=" + key);
         }
+
+        public static Uri EditSettings
+        {
+            get { return ViewUri("/View/EditSettings.xaml"); }
+        }
     }
 }

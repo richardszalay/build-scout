@@ -40,6 +40,11 @@ namespace RichardSzalay.PocketCiTray.ViewModels
             get { return Container.Resolve<ViewHelpViewModel>(); }
         }
 
+        public EditSettingsViewModel EditSettingsViewModel
+        {
+            get { return Container.Resolve<EditSettingsViewModel>(); }
+        }
+
         public Container Container { get; set; }
     }
 }

@@ -41,7 +41,12 @@ namespace RichardSzalay.PocketCiTray.ViewModels
             FilterJobsCommand = CreateCommand(new ObservableCommand(), OnFilterJobs);
 
             Disposables.Add(this.GetPropertyValues(x => x.FilterText)
-                .Subscribe(OnUpdateFilter));
+                .Skip(1)
+                .Select(filter => Observable.ToAsync(() => OnUpdateFilter(filter), schedulerAccessor.Background)())
+                .Switch()
+                .Select(jobs => new ObservableCollection<AvailableJob>(jobs))
+                .ObserveOn(schedulerAccessor.UserInterface)
+                .Subscribe(jobs => Jobs = jobs));
 
             var query = e.Uri.GetQueryValues();
 
@@ -104,8 +109,6 @@ namespace RichardSzalay.PocketCiTray.ViewModels
         {
             if (SelectedJobs.Count == 0)
             {
-                SelectedJobs = new ObservableCollection<Job>(Jobs.Select(j => j.Job));
-
                 foreach (var availableJob in Jobs)
                 {
                     availableJob.IsSelected = true;
@@ -113,12 +116,11 @@ namespace RichardSzalay.PocketCiTray.ViewModels
             }
             else
             {
-                SelectedJobs.Clear();
-
                 foreach (var availableJob in Jobs)
                 {
                     availableJob.IsSelected = false;
                 }
+
             }
         }
 
@@ -127,9 +129,16 @@ namespace RichardSzalay.PocketCiTray.ViewModels
             ShowFilter = true;
         }
 
-        private void OnUpdateFilter(string filter)
+        private ICollection<AvailableJob> OnUpdateFilter(string filter)
         {
-            
+            if (filter == null)
+            {
+                return allJobs;
+            }
+
+            var filteredJobs = allJobs.Where(j => 
+                j.Job.Name.IndexOf(filter, StringComparison.InvariantCultureIgnoreCase) != -1);
+            return new ObservableCollection<AvailableJob>(filteredJobs);
         }
 
         private AvailableJob CreateAvailableJob(Job job)
@@ -155,8 +164,25 @@ namespace RichardSzalay.PocketCiTray.ViewModels
             }
         }
 
+        private bool showFilter;
+
         [NotifyProperty]
-        public bool ShowFilter { get; private set; }
+        public bool ShowFilter
+        {
+            get
+            {
+                return showFilter;
+            }
+            private set
+            {
+                showFilter = value;
+
+                if (!value)
+                {
+                    FilterText = null;
+                }
+            }
+        }
 
         [NotifyProperty]
         public ICommand AddJobsCommand { get; private set; }

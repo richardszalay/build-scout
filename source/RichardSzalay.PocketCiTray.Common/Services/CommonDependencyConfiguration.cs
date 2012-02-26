@@ -48,11 +48,16 @@ namespace RichardSzalay.PocketCiTray.Services
                 l.Resolve<ISettingsFacade>(),
                 l.Resolve<IMutexService>(),
                 l.Resolve<ISchedulerAccessor>(),
-                l.Resolve<IApplicationTileService>()));
+                l.Resolve<IApplicationTileService>(),
+                l.Resolve<IJobNotificationService>()));
 
             container.Register<IApplicationTileService>(l => new ApplicationTileService(
                 l.Resolve<IApplicationSettings>(),
                 l.Resolve<IShellTileService>()));
+
+            container.Register<IJobNotificationService>(l => new JobNotificationService(
+                l.Resolve<IApplicationSettings>(),
+                l.Resolve<IShellToastFacade>()));
         }
 
         private static void ConfigureFacades(Container container)
@@ -61,6 +66,7 @@ namespace RichardSzalay.PocketCiTray.Services
             container.Register<ISettingsFacade>(new IsolatedStorageSettingsFacade(IsolatedStorageSettings.ApplicationSettings));
 
             container.Register<IShellTileService>(new ShellTileService());
+            container.Register<IShellToastFacade>(new ShellToastFacade());
 
             container.Register<INetworkInterfaceFacade>(new NetworkInterfaceFacade());
             

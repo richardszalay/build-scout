@@ -117,67 +117,22 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="AtTime" xml:space="preserve">
-    <value>at {1:hh:mm}</value>
+  <data name="JobFailed" xml:space="preserve">
+    <value>Job failed</value>
   </data>
-  <data name="BackgroundUpdateAgentDescription" xml:space="preserve">
-    <value>Updates the status of build jobs in the background and notifies you of broken builds.</value>
+  <data name="JobFixed" xml:space="preserve">
+    <value>Job fixed</value>
   </data>
-  <data name="BuildResult_Failed" xml:space="preserve">
-    <value>failed</value>
+  <data name="JobName" xml:space="preserve">
+    <value>{0}</value>
   </data>
-  <data name="BuildResult_Success" xml:space="preserve">
-    <value>successful</value>
+  <data name="JobNameWithOneOther" xml:space="preserve">
+    <value>{0} and 1 other</value>
   </data>
-  <data name="BuildResult_Unavailable" xml:space="preserve">
-    <value>unavailable</value>
+  <data name="JobNameWithOthers" xml:space="preserve">
+    <value>{0} and {1} others</value>
   </data>
-  <data name="EnableBackgroundTaskPrompt" xml:space="preserve">
-    <value>Would you like to enable job status updates while the application is not running? You can change this setting at any time in Settings.</value>
-  </data>
-  <data name="ErrorValidatingBuildServer" xml:space="preserve">
-    <value>Error validating build server</value>
-  </data>
-  <data name="LessThanOneMinuteAgo" xml:space="preserve">
-    <value>just now</value>
-  </data>
-  <data name="MinutesAgo" xml:space="preserve">
-    <value>{0} mins ago</value>
-  </data>
-  <data name="OnDate" xml:space="preserve">
-    <value>on {1:d}</value>
-  </data>
-  <data name="OneMinuteAgo" xml:space="preserve">
-    <value>1 min ago</value>
-  </data>
-  <data name="ShortDatePattern" xml:space="preserve">
-    <value>dd/MM</value>
-  </data>
-  <data name="ThisWeek" xml:space="preserve">
-    <value>on {1:ddd}</value>
-  </data>
-  <data name="UpdateIntervalDay" xml:space="preserve">
-    <value>1 day</value>
-  </data>
-  <data name="UpdateIntervalDays" xml:space="preserve">
-    <value>{0} day</value>
-  </data>
-  <data name="UpdateIntervalHour" xml:space="preserve">
-    <value>1 hour</value>
-  </data>
-  <data name="UpdateIntervalHours" xml:space="preserve">
-    <value>{0} hours</value>
-  </data>
-  <data name="UpdateIntervalMinute" xml:space="preserve">
-    <value>1 minute</value>
-  </data>
-  <data name="UpdateIntervalMinutes" xml:space="preserve">
-    <value>{0} minutes</value>
-  </data>
-  <data name="UpdateIntervalNever" xml:space="preserve">
-    <value>never</value>
-  </data>
-  <data name="Yesterday" xml:space="preserve">
-    <value>yesterday</value>
+  <data name="JobUnavailable" xml:space="preserve">
+    <value>Job unavailable</value>
   </data>
 </root>
