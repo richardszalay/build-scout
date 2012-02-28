@@ -12,5 +12,7 @@ namespace RichardSzalay.PocketCiTray
         IObservable<ICollection<Job>> UpdateAll(ICollection<Job> jobs);
         IObservable<ICollection<BuildServer>> GetBuildServers();
         IObservable<Job> GetJob(int job);
+        IObservable<bool> DeleteJob(Job job);
+        IObservable<bool> DeleteBuildServer(BuildServer buildServer);
     }
 }

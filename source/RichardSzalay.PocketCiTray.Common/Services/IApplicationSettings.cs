@@ -6,7 +6,9 @@ namespace RichardSzalay.PocketCiTray.Services
     {
         TimeSpan ApplicationUpdateInterval { get; set; }
         TimeSpan BackgroundUpdateInterval { get; set; }
-        bool BackgroundUpdateEnabled { get; set; }
+
+        bool RunUnderLockScreen { get; set; }
+        bool BackgroundUpdateEnabled { get; }
         bool FirstRun { get; set; }
 
         Uri SuccessTileUri { get; set; }
@@ -23,5 +25,9 @@ namespace RichardSzalay.PocketCiTray.Services
         TimeSpan NotificationStart { get; set; }
         TimeSpan NotificationEnd { get; set; }
         DayOfWeek[] NotificationDays { get; set; }
+        
+        string SuccessColorResource { get; set; }
+        string FailedColorResource { get; set; }
+        string UnavailableColorResource { get; set; }
     }
 }

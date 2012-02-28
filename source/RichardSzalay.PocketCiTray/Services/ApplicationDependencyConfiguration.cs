@@ -1,16 +1,4 @@
-﻿using System;
-using System.IO.IsolatedStorage;
-using System.Net;
-using System.Net.Browser;
-using System.Reactive.Concurrency;
-using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Documents;
-using System.Windows.Ink;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Animation;
-using System.Windows.Shapes;
+﻿using System.Reactive.Concurrency;
 using Funq;
 using RichardSzalay.PocketCiTray.Providers;
 using RichardSzalay.PocketCiTray.ViewModels;
@@ -57,14 +45,12 @@ namespace RichardSzalay.PocketCiTray.Services
             container.Register<INavigationService>(l => 
                 new PhoneApplicationFrameNavigationService(l.Resolve<PhoneApplicationFrame>()));
 
-            container.Register<Bootstrap>(l => new Bootstrap(
-                l.Resolve<IPeriodicJobUpdateService>(),
-                l.Resolve<IJobUpdateService>(),
-                l.Resolve<IApplicationSettings>(),
+            container.Register<Bootstrap>(l => new Bootstrap(l.Resolve<IApplicationSettings>(),
                 l.Resolve<IClock>(),
                 l.Resolve<IMessageBoxFacade>(),
                 l.Resolve<IMutexService>(),
-                l.Resolve<ILogManager>()));
+                l.Resolve<ILogManager>(),
+                l.Resolve<ISettingsApplier>()));
 
             container.Register<IHelpService>(c => new HelpService(
                 c.Resolve<IIsolatedStorageFacade>(),
@@ -78,24 +64,20 @@ namespace RichardSzalay.PocketCiTray.Services
                 c.Resolve<INavigationService>(),
                 c.Resolve<IJobRepository>(),
                 c.Resolve<ISchedulerAccessor>(),
-                c.Resolve<IJobUpdateService>()
-                ));
+                c.Resolve<IJobUpdateService>(), c.Resolve<IApplicationTileService>(), c.Resolve<IMessageBoxFacade>()));
 
             container.Register(c => new ViewJobViewModel(
                 c.Resolve<INavigationService>(),
                 c.Resolve<IJobRepository>(),
                 c.Resolve<ISchedulerAccessor>(),
-                c.Resolve<IJobUpdateService>(),
                 c.Resolve<IApplicationTileService>(),
-                c.Resolve<IWebBrowserTaskFacade>()
-                ));
+                c.Resolve<IWebBrowserTaskFacade>(), c.Resolve<IMessageBoxFacade>()));
 
             container.Register(c => new SelectBuildServerViewModel(
                 c.Resolve<IJobRepository>(),
                 c.Resolve<IJobProviderFactory>(),
                 c.Resolve<INavigationService>(),
-                c.Resolve<ISchedulerAccessor>()
-                ));
+                c.Resolve<ISchedulerAccessor>(), c.Resolve<IMessageBoxFacade>()));
 
             container.Register(c => new AddBuildServerViewModel(
                 c.Resolve<INavigationService>(),
@@ -121,8 +103,8 @@ namespace RichardSzalay.PocketCiTray.Services
             container.Register(c => new EditSettingsViewModel(
                 c.Resolve<INavigationService>(),
                 c.Resolve<ISchedulerAccessor>(),
-                c.Resolve<IApplicationSettings>()
-                ));
+                c.Resolve<IApplicationSettings>(),
+                c.Resolve<IApplicationResourceFacade>(), c.Resolve<ISettingsApplier>()));
         }
 
         private static void ConfigureFacades(Container container)
@@ -130,9 +112,7 @@ namespace RichardSzalay.PocketCiTray.Services
             container.Register<IScheduledActionServiceFacade>(new ScheduledActionServiceFacade());
             container.Register<IMessageBoxFacade>(new MessageBoxFacade());
             container.Register<IWebBrowserTaskFacade>(new WebBrowserTaskFacade());
-            container.Register<IIsolatedStorageFacade>(new IsolatedStorageFacade(
-                IsolatedStorageFile.GetUserStoreForApplication()
-                ));
+            
             container.Register<IApplicationResourceFacade>(new ApplicationResourceFacade());
         }
     }

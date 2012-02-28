@@ -1,8 +1,7 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.Reactive.Concurrency;
 using System.Reactive.Linq;
+using System.Windows;
 using System.Windows.Input;
 using RichardSzalay.PocketCiTray.Extensions.Extensions;
 using RichardSzalay.PocketCiTray.Services;
@@ -17,13 +16,19 @@ namespace RichardSzalay.PocketCiTray.ViewModels
         private readonly IJobRepository jobRepository;
         private readonly ISchedulerAccessor schedulerAccessor;
         private readonly IJobUpdateService jobUpdateService;
+        private readonly IApplicationTileService applicationTileService;
+        private readonly IMessageBoxFacade messageBoxFacade;
 
-        public ListJobsViewModel(INavigationService navigationService, IJobRepository jobRepository, ISchedulerAccessor schedulerAccessor, IJobUpdateService jobUpdateService)
+        public ListJobsViewModel(INavigationService navigationService, IJobRepository jobRepository, 
+            ISchedulerAccessor schedulerAccessor, IJobUpdateService jobUpdateService,
+            IApplicationTileService applicationTileService, IMessageBoxFacade messageBoxFacade)
         {
             this.navigationService = navigationService;
             this.jobRepository = jobRepository;
             this.schedulerAccessor = schedulerAccessor;
             this.jobUpdateService = jobUpdateService;
+            this.applicationTileService = applicationTileService;
+            this.messageBoxFacade = messageBoxFacade;
         }
 
         public override void OnNavigatedTo(NavigationEventArgs e)
@@ -31,13 +36,16 @@ namespace RichardSzalay.PocketCiTray.ViewModels
             base.OnNavigatedTo(e);
 
             AddJobCommand = CreateCommand(new ObservableCommand(), OnAddJob);
-            UpdateStatusesCommand = CreateCommand(new ObservableCommand(), OnUpdateStatuses);
-            ViewJobCommand = CreateCommand<Job>(new ObservableCommand<Job>(), OnViewJob);
+            UpdateStatusesCommand = CreateCommand(new ObservableCommand(CanUpdateStatuses()), OnUpdateStatuses);
+            ViewJobCommand = CreateCommand(new ObservableCommand<Job>(), OnViewJob);
             EditSettingsCommand = CreateCommand(new ObservableCommand(), OnEditSettings);
+
+            PinJobCommand = CreateCommand(new ObservableCommand<Job>(CanPinJob), OnPinJob);
+            DeleteJobCommand = CreateCommand(new ObservableCommand<Job>(), OnDeleteJob);
 
             Disposables.Add(Observable.FromEventPattern(h => jobUpdateService.Started += h, h => jobUpdateService.Started -= h)
                 .ObserveOn(schedulerAccessor.UserInterface)
-                .Subscribe(_ => StartLoading("refreshing")));
+                .Subscribe(_ => StartLoading(Strings.UpdatingStatusMessage)));
 
             Disposables.Add(Observable.FromEventPattern(h => jobUpdateService.Complete += h, h => jobUpdateService.Complete -= h)
                 .ObserveOn(schedulerAccessor.UserInterface)
@@ -46,9 +54,43 @@ namespace RichardSzalay.PocketCiTray.ViewModels
             this.RefreshJobs();
         }
 
+        private IObservable<bool> CanUpdateStatuses()
+        {
+            return this.GetPropertyValues(x => x.HasJobs);
+        }
+
+        [NotifyProperty]
+        public ICommand DeleteJobCommand { get; set; }
+
+        [NotifyProperty]
+        public ICommand PinJobCommand { get; set; }
+
+        private void OnDeleteJob(Job job)
+        {
+            var result = messageBoxFacade.Show(Strings.DeleteJobConfirmationMessage, 
+                Strings.DeleteJobConfirmationDescription, MessageBoxButton.OKCancel);
+
+            if (result ==  MessageBoxResult.OK)
+            {
+                this.jobRepository.DeleteJob(job)
+                    .ObserveOn(schedulerAccessor.UserInterface)
+                    .Subscribe(_ => RefreshJobs());
+            }
+        }
+
+        private void OnPinJob(Job job)
+        {
+            applicationTileService.AddJobTile(job);
+        }
+
+        private bool CanPinJob(Job job)
+        {
+            return job != null && !applicationTileService.IsPinned(job);
+        }
+
         private void RefreshJobs()
         {
-            StartLoading("refreshing");
+            StartLoading(Strings.LoadingStatusMessage);
 
             jobRepository.GetJobs()
                 .ObserveOn(schedulerAccessor.UserInterface)
@@ -99,11 +141,16 @@ namespace RichardSzalay.PocketCiTray.ViewModels
         [NotifyProperty]
         public ICommand EditSettingsCommand { get; set; }
 
-        [NotifyProperty]
+        [NotifyProperty(AlsoNotifyFor = new[] { "HasJobs" })]
         public ObservableCollection<Job> Jobs { get; set; }
 
         [NotifyProperty]
         public ICommand AddJobCommand { get; private set; }
+
+        public bool HasJobs
+        {
+            get { return Jobs == null || Jobs.Count > 0; }
+        }
 
         private static readonly TimeSpan UpdateTimeout = TimeSpan.FromSeconds(30);
     }

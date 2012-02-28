@@ -17,7 +17,7 @@ namespace RichardSzalay.PocketCiTray.Services
         private IJobProviderFactory jobProviderFactory;
         private readonly IJobRepository jobRepository;
         private readonly IClock clock;
-        private readonly ISettingsFacade settings;
+        private readonly ISettingsService settingsService;
         private readonly IMutexService mutexService;
         private readonly ISchedulerAccessor schedulerAccessor;
         private readonly IApplicationTileService applicationTileService;
@@ -30,14 +30,14 @@ namespace RichardSzalay.PocketCiTray.Services
         private TimeSpan BackgroundAgentTimeout;
 
         public JobUpdateService(IJobProviderFactory jobProviderFactory, IJobRepository jobRepository,
-            IClock clock, ISettingsFacade settings, IMutexService mutexService,
+            IClock clock, ISettingsService settingsService, IMutexService mutexService,
             ISchedulerAccessor schedulerAccessor, IApplicationTileService applicationTileService,
             IJobNotificationService jobNotificationService)
         {
             this.jobProviderFactory = jobProviderFactory;
             this.jobRepository = jobRepository;
             this.clock = clock;
-            this.settings = settings;
+            this.settingsService = settingsService;
             this.mutexService = mutexService;
             this.schedulerAccessor = schedulerAccessor;
             this.applicationTileService = applicationTileService;
@@ -99,12 +99,14 @@ namespace RichardSzalay.PocketCiTray.Services
         {
             get
             {
+                var settings = this.settingsService.GetSettings();
+
                 return settings.ContainsKey(LastUpdateKey)
-                           ? DateTimeOffset.Parse((string)settings[LastUpdateKey], CultureInfo.InvariantCulture)
+                           ? (DateTimeOffset)settings[LastUpdateKey]
                            : (DateTimeOffset?)null;
             }
 
-            private set { settings[LastUpdateKey] = value.Value.ToString(CultureInfo.InvariantCulture); settings.Save(); }
+            private set { settingsService.SaveSettings(new Dictionary<string, object> { { LastUpdateKey, value }}); }
         }
 
         private void OnStarted()

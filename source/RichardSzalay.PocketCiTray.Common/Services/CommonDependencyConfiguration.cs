@@ -30,7 +30,7 @@ namespace RichardSzalay.PocketCiTray.Services
             container.Register<IMutexService>(new MutexService());
 
             container.Register<IApplicationSettings>(l => new ApplicationSettings(
-                l.Resolve<ISettingsFacade>()));
+                l.Resolve<ISettingsService>()));
 
             container.Register<IJobProviderFactory>(l => new JobProviderFactory(
                 l.Resolve<IWebRequestCreate>(),
@@ -45,7 +45,7 @@ namespace RichardSzalay.PocketCiTray.Services
                 l.Resolve<IJobProviderFactory>(),
                 l.Resolve<IJobRepository>(),
                 l.Resolve<IClock>(),
-                l.Resolve<ISettingsFacade>(),
+                l.Resolve<ISettingsService>(),
                 l.Resolve<IMutexService>(),
                 l.Resolve<ISchedulerAccessor>(),
                 l.Resolve<IApplicationTileService>(),
@@ -58,12 +58,24 @@ namespace RichardSzalay.PocketCiTray.Services
             container.Register<IJobNotificationService>(l => new JobNotificationService(
                 l.Resolve<IApplicationSettings>(),
                 l.Resolve<IShellToastFacade>()));
+
+            container.Register<ISettingsDictionarySerializer>(c => new SettingsDictionarySerializer());
+
+            container.Register<ISettingsService>(c => new IsolatedStorageFileSettingsService(
+                c.Resolve<ISettingsDictionarySerializer>(),
+                c.Resolve<IIsolatedStorageFacade>(),
+                c.Resolve<IMutexService>(),
+                c.Resolve<ILog>()
+                ));
         }
 
         private static void ConfigureFacades(Container container)
         {
             container.Register<IClock>(new DateTimeOffsetClock());
-            container.Register<ISettingsFacade>(new IsolatedStorageSettingsFacade(IsolatedStorageSettings.ApplicationSettings));
+
+            container.Register<IIsolatedStorageFacade>(new IsolatedStorageFacade(
+                IsolatedStorageFile.GetUserStoreForApplication()
+                ));
 
             container.Register<IShellTileService>(new ShellTileService());
             container.Register<IShellToastFacade>(new ShellToastFacade());

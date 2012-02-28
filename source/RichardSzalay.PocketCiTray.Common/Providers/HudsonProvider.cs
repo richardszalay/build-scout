@@ -27,6 +27,8 @@ namespace RichardSzalay.PocketCiTray.Providers
 
         public string Name { get { return ProviderName; } }
 
+        public JobProviderFeature Features { get { return JobProviderFeature.JobDiscoveryIncludesStatus; } }
+
         public IObservable<ICollection<Job>> GetJobsObservableAsync(BuildServer buildServer)
         {
             Uri jobsUri = new Uri(buildServer.Uri, ApiSuffix + JobQuery);

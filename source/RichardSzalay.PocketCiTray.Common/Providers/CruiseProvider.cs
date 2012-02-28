@@ -24,6 +24,8 @@ namespace RichardSzalay.PocketCiTray.Providers
 
         public string Name { get { return ProviderName; } }
 
+        public JobProviderFeature Features { get { return JobProviderFeature.JobDiscoveryIncludesStatus; } }
+
         public IObservable<ICollection<Job>> GetJobsObservableAsync(BuildServer buildServer)
         {
             var request = (HttpWebRequest)webRequestCreate.Create(buildServer.Uri);

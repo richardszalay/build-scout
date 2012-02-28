@@ -11,27 +11,24 @@ namespace RichardSzalay.PocketCiTray
 {
     public class Bootstrap
     {
-        private readonly IPeriodicJobUpdateService periodicJobUpdateService;
-        private readonly IJobUpdateService jobUpdateService;
         private readonly IApplicationSettings applicationSettings;
         private readonly IClock clock;
         private readonly IMessageBoxFacade messageBox;
         private readonly IMutexService mutexService;
         private readonly ILogManager logManager;
+        private readonly ISettingsApplier settingsApplier;
         private Mutex applicationMutex;
 
-        public Bootstrap(IPeriodicJobUpdateService periodicJobUpdateService, IJobUpdateService jobUpdateService, 
-            IApplicationSettings applicationSettings, IClock clock, 
+        public Bootstrap(IApplicationSettings applicationSettings, IClock clock, 
             IMessageBoxFacade messageBox, IMutexService mutexService,
-            ILogManager logManager)
+            ILogManager logManager, ISettingsApplier settingsApplier)
         {
-            this.periodicJobUpdateService = periodicJobUpdateService;
-            this.jobUpdateService = jobUpdateService;
             this.applicationSettings = applicationSettings;
             this.clock = clock;
             this.messageBox = messageBox;
             this.mutexService = mutexService;
             this.logManager = logManager;
+            this.settingsApplier = settingsApplier;
         }
 
         /// <summary>
@@ -45,12 +42,9 @@ namespace RichardSzalay.PocketCiTray
             {
                 PerformFirstRun();
             }
-
-            StartPeriodicUpdateService();
-
-            if (applicationSettings.LoggingEnabled)
+            else
             {
-                logManager.Enable();
+                settingsApplier.ApplyToSession(applicationSettings);
             }
         }
 
@@ -63,29 +57,15 @@ namespace RichardSzalay.PocketCiTray
         {
             var result = messageBox.Show(Strings.EnableBackgroundTaskPrompt, String.Empty, MessageBoxButton.OKCancel);
 
-            if (result == MessageBoxResult.OK)
+            if (result != MessageBoxResult.OK)
             {
-                applicationSettings.BackgroundUpdateEnabled = true;
+                applicationSettings.BackgroundUpdateInterval = TimeSpan.Zero;
             }
 
             applicationSettings.FirstRun = false;
             applicationSettings.Save();
-        }
 
-        private void StartPeriodicUpdateService()
-        {
-            if (applicationSettings.ApplicationUpdateInterval > TimeSpan.Zero)
-            {
-                TimeSpan firstUpdate = PeriodicTaskHelper.GetNextRunInterval(jobUpdateService.LastUpdateTime,
-                    applicationSettings.ApplicationUpdateInterval, clock.UtcNow);
-
-                periodicJobUpdateService.Start(firstUpdate, applicationSettings.ApplicationUpdateInterval);
-            }
-
-            if (applicationSettings.BackgroundUpdateEnabled)
-            {
-                periodicJobUpdateService.RegisterBackgroundTask();
-            }
+            settingsApplier.ApplyToSession(applicationSettings);
         }
 
         public void Shutdown()

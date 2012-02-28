@@ -85,5 +85,30 @@ namespace RichardSzalay.PocketCiTray
         {
             return Observable.ToAsync(() => jobMap[jobId], scheduler)();
         }
+
+        public IObservable<bool> DeleteJob(Job job)
+        {
+            return Observable.ToAsync(() => jobMap.Remove(job.Id), scheduler)();
+        }
+
+        public IObservable<bool> DeleteBuildServer(BuildServer buildServer)
+        {
+            return Observable.ToAsync(() =>
+            {
+                if (buildServerMap.Remove(buildServer.Id))
+                {
+                    foreach(Job job in jobMap.Values.ToList().Where(j => j.BuildServer.Id == buildServer.Id))
+                    {
+                        jobMap.Remove(job.Id);
+                    }
+
+                    return true;
+                }
+                else
+                {
+                    return false;
+                }
+            }, scheduler)();
+        }
     }
 }

@@ -9,5 +9,6 @@ namespace RichardSzalay.PocketCiTray.Providers
         IObservable<BuildServer> ValidateBuildServer(BuildServer buildServer);
         IObservable<Job> UpdateAll(BuildServer buildServer, IEnumerable<Job> jobs);
         String Name { get; }
+        JobProviderFeature Features { get; }
     }
 }

@@ -103,6 +103,18 @@ namespace RichardSzalay.PocketCiTray.Tests.Mocks
             return Observable.Throw<Job>(new ArgumentException("Invalid job id"));
         }
 
+        public IObservable<bool> DeleteJob(Job job)
+        {
+            DeleteJobCalls.Add(job);
+
+            return Observable.Return(jobs.Remove(job.Id));
+        }
+
+        public IObservable<bool> DeleteBuildServer(BuildServer buildServer)
+        {
+            throw new NotImplementedException();
+        }
+
         public List<int> GetJobCalls = new List<int>();
         public int GetJobsCalls = 0;
         public int GetBuildServersCalls = 0;
@@ -110,5 +122,6 @@ namespace RichardSzalay.PocketCiTray.Tests.Mocks
         public List<BuildServer> AddBuildServerCalls = new List<BuildServer>();
         public List<ICollection<Job>> AddJobsCalls = new List<ICollection<Job>>();
         public List<ICollection<Job>> UpdateAllCalls = new List<ICollection<Job>>();
+        public List<Job> DeleteJobCalls = new List<Job>();
     }
 }

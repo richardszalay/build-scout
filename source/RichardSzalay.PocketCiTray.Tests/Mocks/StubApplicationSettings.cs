@@ -27,6 +27,8 @@ namespace RichardSzalay.PocketCiTray.Tests.Mocks
             set;
         }
 
+        public bool RunUnderLockScreen { get; set; }
+
         public bool BackgroundUpdateEnabled
         {
             get;
@@ -99,5 +101,9 @@ namespace RichardSzalay.PocketCiTray.Tests.Mocks
         public TimeSpan NotificationEnd { get; set; }
 
         public DayOfWeek[] NotificationDays { get; set; }
+
+        public string SuccessColorResource { get; set; }
+        public string FailedColorResource { get; set; }
+        public string UnavailableColorResource { get; set; }
     }
 }

@@ -6,7 +6,6 @@
     xmlns:shell="clr-namespace:Microsoft.Phone.Shell;assembly=Microsoft.Phone"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-    xmlns:contribbehav="clr-namespace:WP7Contrib.View.Controls.Behaviors;assembly=WP7Contrib.View.Controls"
     FontFamily="{StaticResource PhoneFontFamilyNormal}"
     FontSize="{StaticResource PhoneFontSizeNormal}"
     Foreground="{StaticResource PhoneForegroundBrush}"
@@ -29,6 +28,7 @@
         <inf:RelativeTimeConverter x:Key="RelativeTimeConverter" />
         <inf:BuildStatusToBrushConverter x:Key="BuildStatusToBrushConverter" />
         <inf:LocalizedBuildStatusConverter x:Key="LocalizedBuildStatusConverter" />
+        <inf:BooleanVisibilityConverter x:Key="BooleanVisibilityConverter" />
         <inf:EnumValueConverter x:Key="ForwardOutTransitionConverter">
             <inf:EnumValue Key="ItemDetails">
                 <tk:TurnstileTransition Mode="ForwardOut" />
@@ -62,13 +62,28 @@
 
         <!--ContentPanel - place additional content here-->
         <Grid x:Name="ContentPanel" Grid.Row="1" Margin="12,0,0,0">
-            <ListBox ItemsSource="{Binding Jobs}" x:Name="JobsList">
+            <TextBlock Text="No jobs" Style="{StaticResource PhoneTextSubtleStyle}" FontSize="{StaticResource PhoneFontSizeLarge}"
+                       Visibility="{Binding HasJobs, Converter={StaticResource BooleanVisibilityConverter}, ConverterParameter=!}"/>
+            <ListBox ItemsSource="{Binding Jobs}" x:Name="JobsList"
+                     Visibility="{Binding HasJobs, Converter={StaticResource BooleanVisibilityConverter}}">
                 <i:Interaction.Behaviors>
                     <inf:ListBoxSelectionCommandBehavior Command="{Binding ViewJobCommand}" />
                 </i:Interaction.Behaviors>
                 <ListBox.ItemTemplate>
                     <DataTemplate>
                         <Grid Margin="12,0,0,0">
+                            <tk:ContextMenuService.ContextMenu>
+                                <tk:ContextMenu>
+                                    <tk:MenuItem Header="pin to start" 
+                                                 Command="{Binding DataContext.PinJobCommand, ElementName=ContentPanel}"
+                                                 CommandParameter="{Binding}" />
+
+                                    <tk:MenuItem Header="delete" 
+                                                 Command="{Binding DataContext.DeleteJobCommand, ElementName=ContentPanel}"
+                                                 CommandParameter="{Binding}" />
+                                </tk:ContextMenu>
+                            </tk:ContextMenuService.ContextMenu>
+                            
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition Width="12" />
                                 <ColumnDefinition Width="*" />

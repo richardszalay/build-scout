@@ -5,6 +5,8 @@ using System.Collections.ObjectModel;
 using System.Reactive.Concurrency;
 using System.Reactive.Linq;
 using System.Windows.Input;
+using System.Windows.Media;
+using System.Windows.Navigation;
 using RichardSzalay.PocketCiTray.Extensions.Extensions;
 using RichardSzalay.PocketCiTray.Services;
 using RichardSzalay.PocketCiTray.Infrastructure;
@@ -17,23 +19,36 @@ namespace RichardSzalay.PocketCiTray.ViewModels
         private readonly INavigationService navigationService;
         private readonly ISchedulerAccessor schedulerAccessor;
         private readonly IApplicationSettings applicationSettings;
+        private readonly IApplicationResourceFacade applicationResources;
+        private readonly ISettingsApplier settingsApplier;
 
         public EditSettingsViewModel(INavigationService navigationService, ISchedulerAccessor schedulerAccessor, 
-            IApplicationSettings applicationSettings)
+            IApplicationSettings applicationSettings, IApplicationResourceFacade applicationResources,
+            ISettingsApplier settingsApplier)
         {
             this.navigationService = navigationService;
             this.schedulerAccessor = schedulerAccessor;
             this.applicationSettings = applicationSettings;
+            this.applicationResources = applicationResources;
+            this.settingsApplier = settingsApplier;
         }
 
-        public override void OnNavigatedTo(System.Windows.Navigation.NavigationEventArgs e)
+        public override void OnNavigatedTo(NavigationEventArgs e)
         {
             base.OnNavigatedTo(e);
 
+            bool isReturningFromSelectorPage = (e.NavigationMode == NavigationMode.Back && e.IsNavigationInitiator);
+
+            if (isReturningFromSelectorPage)
+            {
+                return;
+            }
+
             string[] dayNames = CultureInfo.CurrentCulture.DateTimeFormat.DayNames;
 
-            NotificationDays = new ObservableCollection<string>(applicationSettings.NotificationDays
-                .Select(d => dayNames[(int)d % dayNames.Length]));
+            NotificationDays = applicationSettings.NotificationDays
+                .Select(d => dayNames[(int) d%dayNames.Length])
+                .ToList();
 
             NotificationStart = DateTime.Today + applicationSettings.NotificationStart;
             NotificationEnd = DateTime.Today + applicationSettings.NotificationEnd;
@@ -55,13 +70,50 @@ namespace RichardSzalay.PocketCiTray.ViewModels
                 TimeSpan.FromHours(6),
                 TimeSpan.FromDays(1)
             }.Select(CreateUpdateInterval).ToList();
+
+            ColourOptions = AvailableColourResourceNames
+                .Select(CreateResourceColor).ToList();
+
+            SuccessfulColor = ColourOptions.First(x => x.Key == applicationSettings.SuccessColorResource);
+            FailedColor = ColourOptions.First(x => x.Key == applicationSettings.FailedColorResource);
+            UnavailableColor = ColourOptions.First(x => x.Key == applicationSettings.UnavailableColorResource);
         }
 
-        public override void OnNavigatedFrom(System.Windows.Navigation.NavigationEventArgs e)
+        [NotifyProperty]
+        public ResourceColor UnavailableColor { get; set; }
+
+        [NotifyProperty]
+        public ResourceColor FailedColor { get; set; }
+
+        [NotifyProperty]
+        public ResourceColor SuccessfulColor { get; set; }
+
+        public override void OnNavigatedFrom(NavigationEventArgs e)
         {
             base.OnNavigatedFrom(e);
 
-            applicationSettings.Save();
+            if (e.NavigationMode == NavigationMode.Back)
+            {
+                this.ApplyChanges();
+                applicationSettings.Save();
+
+                settingsApplier.Rebuild(applicationSettings);
+            }
+        }
+
+        private void ApplyChanges()
+        {
+            string[] dayNames = CultureInfo.CurrentCulture.DateTimeFormat.DayNames;
+
+            applicationSettings.NotificationStart = NotificationStart.TimeOfDay;
+            applicationSettings.NotificationEnd = NotificationEnd.TimeOfDay;
+            applicationSettings.NotificationDays = NotificationDays
+                .Select(s => (DayOfWeek) Array.IndexOf(dayNames, s))
+                .ToArray();
+
+            applicationSettings.SuccessColorResource = SuccessfulColor.Key;
+            applicationSettings.FailedColorResource = FailedColor.Key;
+            applicationSettings.UnavailableColorResource = UnavailableColor.Key;
         }
 
         public IApplicationSettings ApplicationSettings
@@ -70,13 +122,16 @@ namespace RichardSzalay.PocketCiTray.ViewModels
         }
 
         [NotifyProperty]
-        public ObservableCollection<string> NotificationDays { get; private set; }
+        public List<ResourceColor> ColourOptions { get; set; }
 
         [NotifyProperty]
-        public DateTime NotificationStart { get; private set; }        
+        public IList<string> NotificationDays { get; set; }
 
         [NotifyProperty]
-        public DateTime NotificationEnd { get; private set; }
+        public DateTime NotificationStart { get; set; }
+
+        [NotifyProperty]
+        public DateTime NotificationEnd { get; set; }
 
         public UpdateInterval ForegroundUpdateInterval
         {
@@ -87,15 +142,7 @@ namespace RichardSzalay.PocketCiTray.ViewModels
         public UpdateInterval BackgroundUpdateInterval
         {
             get { return BackgroundUpdateOptions.First(x => x.Interval == applicationSettings.BackgroundUpdateInterval); }
-            set 
-            { 
-                applicationSettings.BackgroundUpdateInterval = value.Interval;
-
-                if (value.Interval == TimeSpan.Zero)
-                {
-                    applicationSettings.BackgroundUpdateEnabled = false;
-                }
-            }
+            set { applicationSettings.BackgroundUpdateInterval = value.Interval; }
         }
 
         [NotifyProperty(AlsoNotifyFor=new[] { "ForegroundUpdateInterval" })]
@@ -127,6 +174,12 @@ namespace RichardSzalay.PocketCiTray.ViewModels
             return new UpdateInterval(timeSpan);
         }
 
+        private ResourceColor CreateResourceColor(string resource)
+        {
+            return new ResourceColor(resource, Strings.ResourceManager.GetString(resource), 
+                applicationResources.GetResource<SolidColorBrush>(resource));
+        }
+
         private bool GetNotificationFlag(NotificationReason reason)
         {
             return (applicationSettings.NotificationPreference & reason) != 0;
@@ -143,6 +196,14 @@ namespace RichardSzalay.PocketCiTray.ViewModels
                 applicationSettings.NotificationPreference = (applicationSettings.NotificationPreference | reason) ^ reason;
             }
         }
+
+        private static readonly string[] AvailableColourResourceNames = new[]
+        {
+            "PhoneAccentBrush", "MagentaAccentBrush", "PurpleAccentBrush",
+            "TealAccentBrush", "LimeAccentBrush", "BrownAccentBrush", 
+            "PinkAccentBrush", "MangoAccentBrush", "BlueAccentBrush", 
+            "RedAccentBrush", "GreenAccentBrush", "GrayAccentBrush" 
+        };
     }
 
     public class UpdateInterval
@@ -185,7 +246,7 @@ namespace RichardSzalay.PocketCiTray.ViewModels
 
         public override bool Equals(object obj)
         {
-            UpdateInterval updateInterval = obj as UpdateInterval;
+            var updateInterval = obj as UpdateInterval;
 
             if (updateInterval == null)
             {
@@ -198,6 +259,42 @@ namespace RichardSzalay.PocketCiTray.ViewModels
         public override int GetHashCode()
         {
             return Interval.GetHashCode();
+        }
+    }
+
+    public class ResourceColor
+    {
+        public ResourceColor(string key, string name, SolidColorBrush brush)
+        {
+            this.Key = key;
+            this.Brush = brush;
+            this.Name = name;
+        }
+
+        public SolidColorBrush Brush { get; set; }
+
+        public string Key { get; set; }
+
+        public string Name { get; set; }
+
+        public override bool Equals(object obj)
+        {
+            if (ReferenceEquals(null, obj)) return false;
+            if (ReferenceEquals(this, obj)) return true;
+            if (obj.GetType() != typeof (ResourceColor)) return false;
+            return Equals((ResourceColor) obj);
+        }
+
+        public bool Equals(ResourceColor other)
+        {
+            if (ReferenceEquals(null, other)) return false;
+            if (ReferenceEquals(this, other)) return true;
+            return Equals(other.Name, Name);
+        }
+
+        public override int GetHashCode()
+        {
+            return (Name != null ? Name.GetHashCode() : 0);
         }
     }
 }

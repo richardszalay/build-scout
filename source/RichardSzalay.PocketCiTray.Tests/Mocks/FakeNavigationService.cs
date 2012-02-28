@@ -34,5 +34,10 @@ namespace RichardSzalay.PocketCiTray.Tests.Mocks
         {
             throw new NotImplementedException();
         }
+
+        public void GoBackToAny(params Uri[] pageUris)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

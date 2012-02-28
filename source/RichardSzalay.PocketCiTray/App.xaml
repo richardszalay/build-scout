@@ -5,10 +5,12 @@
     xmlns:phone="clr-namespace:Microsoft.Phone.Controls;assembly=Microsoft.Phone"
     xmlns:shell="clr-namespace:Microsoft.Phone.Shell;assembly=Microsoft.Phone" 
     xmlns:vm="clr-namespace:RichardSzalay.PocketCiTray.ViewModels"
-    xmlns:local="clr-namespace:RichardSzalay.PocketCiTray.Infrastructure.Controls">
+    xmlns:local="clr-namespace:RichardSzalay.PocketCiTray.Infrastructure.Controls" 
+    xmlns:res="clr-namespace:RichardSzalay.PocketCiTray">
 
     <!--Application Resources-->
     <Application.Resources>
+        <res:LocalizedResources x:Key="LocalizedResources" />
         <vm:ViewModelLocator x:Key="ViewModelLocator" />
         <SolidColorBrush x:Key="BuildResultSuccessBrush" Color="#339933" />
         <SolidColorBrush x:Key="BuildResultUnavailableBrush" Color="Gray" />
@@ -49,6 +51,17 @@
                 </Setter.Value>
             </Setter>
         </Style>
+        <SolidColorBrush x:Key="MagentaAccentBrush" Color="#FFD80073" />
+        <SolidColorBrush x:Key="PurpleAccentBrush" Color="#FFA200FF" />
+        <SolidColorBrush x:Key="TealAccentBrush" Color="#FF00ABA9" />
+        <SolidColorBrush x:Key="LimeAccentBrush" Color="#FFA2C139" />
+        <SolidColorBrush x:Key="BrownAccentBrush" Color="#FFA05000" />
+        <SolidColorBrush x:Key="PinkAccentBrush" Color="#FFE671B8" />
+        <SolidColorBrush x:Key="MangoAccentBrush" Color="#FFF09609" />
+        <SolidColorBrush x:Key="BlueAccentBrush" Color="#FF1BA1E2" />
+        <SolidColorBrush x:Key="RedAccentBrush" Color="#FFE51400" />
+        <SolidColorBrush x:Key="GreenAccentBrush" Color="#FF339933" />
+        <SolidColorBrush x:Key="GrayAccentBrush" Color="#FF5D5D5D" />
     </Application.Resources>
 
     <Application.ApplicationLifetimeObjects>

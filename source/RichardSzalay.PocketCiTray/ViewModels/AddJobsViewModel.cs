@@ -3,6 +3,7 @@ using System.Linq;
 using System.Collections.ObjectModel;
 using System.Collections.Specialized;
 using System.Reactive;
+using System.Reactive.Disposables;
 using System.Reactive.Linq;
 using System.Windows.Input;
 using System.Windows.Navigation;
@@ -16,11 +17,14 @@ namespace RichardSzalay.PocketCiTray.ViewModels
 {
     public class AddJobsViewModel : ViewModelBase
     {
+        private const string BuildServerIdKey = "buildServerId";
         private readonly INavigationService navigationService;
         private readonly IJobProviderFactory jobProviderFactory;
         private readonly IJobRepository jobRepository;
         private readonly ISchedulerAccessor schedulerAccessor;
         private ObservableCollection<AvailableJob> allJobs;
+
+        private SerialDisposable addJobsSubscrition;
 
         public AddJobsViewModel(INavigationService navigationService, IJobProviderFactory jobProviderFactory, IJobRepository jobRepository, ISchedulerAccessor schedulerAccessor)
         {
@@ -34,7 +38,10 @@ namespace RichardSzalay.PocketCiTray.ViewModels
         {
             base.OnNavigatedTo(e);
 
+            Jobs = new ObservableCollection<AvailableJob>();
             SelectedJobs = new ObservableCollection<Job>();
+
+            Disposables.Add(addJobsSubscrition = new SerialDisposable());
 
             AddJobsCommand = CreateCommand(new ObservableCommand(CanAddJobs()), OnAddJobs);
             SelectAllJobsCommand = CreateCommand(new ObservableCommand(), OnSelectAllJobs);
@@ -50,7 +57,7 @@ namespace RichardSzalay.PocketCiTray.ViewModels
 
             var query = e.Uri.GetQueryValues();
 
-            if (!query.ContainsKey("buildServerId"))
+            if (!query.ContainsKey(BuildServerIdKey))
             {
                 navigationService.GoBack();
                 return;
@@ -58,9 +65,9 @@ namespace RichardSzalay.PocketCiTray.ViewModels
 
             IsSelectionEnabled = true;
 
-            int buildServerId = Int32.Parse(query["buildServerId"]);
+            int buildServerId = Int32.Parse(query[BuildServerIdKey]);
 
-            StartLoading("finding jobs");
+            StartLoading(Strings.FindingJobsStatusMessage);
 
             Observable.Return(buildServerId)
                 .ObserveOn(schedulerAccessor.Background)
@@ -88,6 +95,10 @@ namespace RichardSzalay.PocketCiTray.ViewModels
                 e.Cancel = true;
                 ShowFilter = false;
             }
+            else
+            {
+                navigationService.GoBackToAny(ViewUris.SelectBuildServer, ViewUris.ListJobs);
+            }
         }
 
         private IObservable<ICollection<Job>> RemoveExistingJobs(BuildServer buildServer, ICollection<Job> jobs)
@@ -100,8 +111,20 @@ namespace RichardSzalay.PocketCiTray.ViewModels
 
         private void OnAddJobs()
         {
-            jobRepository.AddJobs(SelectedJobs)
+            var provider = jobProviderFactory.Get(BuildServer.Provider);
+
+            bool jobsAlreadyHaveStatuses = (provider.Features & JobProviderFeature.JobDiscoveryIncludesStatus) != 0;
+
+            IObservable<IList<Job>> jobsWithStatuses = (jobsAlreadyHaveStatuses)
+                ? Observable.Return((IList<Job>)SelectedJobs)
+                : provider.UpdateAll(BuildServer, SelectedJobs).ToList();
+
+            StartLoading(Strings.UpdatingStatusMessage);
+
+            addJobsSubscrition.Disposable = jobsWithStatuses
+                .SelectMany(jobRepository.AddJobs)
                 .ObserveOn(schedulerAccessor.UserInterface)
+                .Finally(StopLoading)
                 .Subscribe(_ => navigationService.GoBackTo(ViewUris.ListJobs));
         }
 
@@ -204,7 +227,10 @@ namespace RichardSzalay.PocketCiTray.ViewModels
 
         private IObservable<bool> CanAddJobs()
         {
-            return this.GetPropertyValues(x => x.SelectedJobs)
+            IObservable<bool> isNotLoading = this.GetPropertyValues(x => x.ProgressIndicator)
+                .Select(p => p == null || !p.IsVisible);
+
+            IObservable<bool> hasSelection = this.GetPropertyValues(x => x.SelectedJobs)
                 .Where(selectedJobs => selectedJobs != null)
                 .Select(selectedJobs => Observable.FromEventPattern<NotifyCollectionChangedEventHandler, NotifyCollectionChangedEventArgs>(
                     h => new NotifyCollectionChangedEventHandler(h), 
@@ -213,6 +239,8 @@ namespace RichardSzalay.PocketCiTray.ViewModels
                 ))
                 .Switch()
                 .Select(s => SelectedJobs.Count > 0);
+
+            return isNotLoading.CombineLatest(hasSelection, (l,r) => l && r);
         }
 
         [DoNotNotify]

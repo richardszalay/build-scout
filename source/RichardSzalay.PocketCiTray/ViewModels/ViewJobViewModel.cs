@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Reactive.Concurrency;
 using System.Reactive.Linq;
+using System.Windows;
 using System.Windows.Input;
 using RichardSzalay.PocketCiTray.Extensions.Extensions;
 using RichardSzalay.PocketCiTray.Services;
@@ -15,23 +16,22 @@ namespace RichardSzalay.PocketCiTray.ViewModels
         private readonly INavigationService navigationService;
         private readonly IJobRepository jobRepository;
         private readonly ISchedulerAccessor schedulerAccessor;
-        private readonly IJobUpdateService jobUpdateService;
         private readonly IApplicationTileService applicationTileService;
         private readonly IWebBrowserTaskFacade webBrowserTask;
+        private readonly IMessageBoxFacade messageBoxFacade;
 
-        private ICommand addJobCommand;
         private Job job;
 
         public ViewJobViewModel(INavigationService navigationService, IJobRepository jobRepository, 
-            ISchedulerAccessor schedulerAccessor, IJobUpdateService jobUpdateService, 
-            IApplicationTileService applicationTileService, IWebBrowserTaskFacade webBrowserTask)
+            ISchedulerAccessor schedulerAccessor, IApplicationTileService applicationTileService, 
+            IWebBrowserTaskFacade webBrowserTask, IMessageBoxFacade messageBoxFacade)
         {
             this.navigationService = navigationService;
             this.jobRepository = jobRepository;
             this.schedulerAccessor = schedulerAccessor;
-            this.jobUpdateService = jobUpdateService;
             this.applicationTileService = applicationTileService;
             this.webBrowserTask = webBrowserTask;
+            this.messageBoxFacade = messageBoxFacade;
         }
 
         public Job Job
@@ -53,6 +53,7 @@ namespace RichardSzalay.PocketCiTray.ViewModels
             }
 
             PinJobCommand = CreateCommand(new ObservableCommand(CanPin()), OnPin);
+            DeleteJobCommand = CreateCommand(new ObservableCommand(), OnDelete);
             ViewWebUrlCommand = CreateCommand(new ObservableCommand(CanViewWebUrl()), OnViewWebUrl);
 
             int jobId = Int32.Parse(query["jobId"]);
@@ -62,12 +63,11 @@ namespace RichardSzalay.PocketCiTray.ViewModels
                 .Subscribe(j => Job = j));
         }
 
-        private ICommand pinJobCommand;
-        public ICommand PinJobCommand
-        {
-            get { return pinJobCommand; }
-            private set { pinJobCommand = value; OnPropertyChanged("PinJobCommand"); }
-        }
+        [NotifyProperty]
+        public ICommand PinJobCommand { get; set; }
+
+        [NotifyProperty]
+        public ICommand DeleteJobCommand { get; set; }
 
         [NotifyProperty]
         public ICommand ViewWebUrlCommand { get; set; }
@@ -75,6 +75,19 @@ namespace RichardSzalay.PocketCiTray.ViewModels
         private void OnPin()
         {
             applicationTileService.AddJobTile(Job);
+        }
+
+        private void OnDelete()
+        {
+            var result = messageBoxFacade.Show(Strings.DeleteJobConfirmationMessage,
+                Strings.DeleteJobConfirmationDescription, MessageBoxButton.OKCancel);
+
+            if (result == MessageBoxResult.OK)
+            {
+                this.jobRepository.DeleteJob(job)
+                    .ObserveOn(schedulerAccessor.UserInterface)
+                    .Subscribe(_ => navigationService.GoBack());
+            }
         }
 
         private void OnViewWebUrl()

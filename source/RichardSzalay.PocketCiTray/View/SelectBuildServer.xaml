@@ -13,6 +13,7 @@
     shell:SystemTray.IsVisible="True"
     xmlns:contribbehav="clr-namespace:WP7Contrib.View.Controls.Behaviors;assembly=WP7Contrib.View.Controls"
     DataContext="{Binding Path=SelectBuildServerViewModel,Source={StaticResource ViewModelLocator}}"
+    d:DataContext="{d:DesignData /DesignData/SelectBuildServerData.xaml}"
     xmlns:tk="clr-namespace:Microsoft.Phone.Controls;assembly=Microsoft.Phone.Controls.Toolkit"
     tk:TiltEffect.IsTiltEnabled="True">
 
@@ -34,7 +35,15 @@
             <ListBox ItemsSource="{Binding BuildServers}" SelectedItem="{Binding SelectedBuildServer, Mode=TwoWay}">
                 <ListBox.ItemTemplate>
                     <DataTemplate>
-                        <StackPanel>
+                        <StackPanel Margin="0,0,0,6">
+                            <tk:ContextMenuService.ContextMenu>
+                                <tk:ContextMenu>
+                                    <tk:MenuItem Header="delete" 
+                                                 Command="{Binding DataContext.DeleteBuildServerCommand, ElementName=ContentPanel}"
+                                                 CommandParameter="{Binding}" />
+                                </tk:ContextMenu>
+                            </tk:ContextMenuService.ContextMenu>
+                            
                             <TextBlock Text="{Binding Name}" Style="{StaticResource PhoneTextLargeStyle}" Grid.Column="1" VerticalAlignment="Bottom" Margin="12,0,0,0" />
                             <TextBlock Text="{Binding Provider}" Style="{StaticResource PhoneTextSubtleStyle}" Grid.Column="1" VerticalAlignment="Bottom" Margin="12,0,0,0" />
                         </StackPanel>

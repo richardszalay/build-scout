@@ -72,13 +72,20 @@
     <phone:PhoneApplicationPage.ApplicationBar>
         <shell:ApplicationBar IsVisible="True" IsMenuEnabled="True">
             <shell:ApplicationBarIconButton IconUri="/Images/appbar.pin.rest.png" Text="pin"/>
+            <shell:ApplicationBar.MenuItems>
+                <shell:ApplicationBarMenuItem Text="delete" />
+            </shell:ApplicationBar.MenuItems>
         </shell:ApplicationBar>
     </phone:PhoneApplicationPage.ApplicationBar>
     
     <i:Interaction.Behaviors>
         <inf:ApplicationBarIconButtonCommand TextKey="pin"
-                                                      CommandBinding="{Binding PinJobCommand}"
-                                                      />
+                                             CommandBinding="{Binding PinJobCommand}"
+                                             />
+
+        <inf:ApplicationBarMenuItemCommand TextKey="delete"
+                                           CommandBinding="{Binding DeleteJobCommand}"
+                                           />
     </i:Interaction.Behaviors>
 
 </v:ViewBase>

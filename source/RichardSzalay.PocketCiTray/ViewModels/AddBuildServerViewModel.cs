@@ -119,19 +119,23 @@ namespace RichardSzalay.PocketCiTray.ViewModels
 
             BuildServer buildServer = BuildServer.FromUri(provider.Name, new Uri(buildServerUrl, UriKind.Absolute));
 
-            StartLoading("checking");
+            StartLoading(Strings.ValidatingBuildServerStatusMessage);
 
             validateBuildServer.Disposable = provider.ValidateBuildServer(buildServer)
                 .SelectMany(jobRepository.AddBuildServer)
                 .ObserveOn(schedulerAccessor.UserInterface)
                 .Finally(StopLoading)
-                .Subscribe(addedBuildServer => navigationService.Navigate(ViewUris.AddJobs(addedBuildServer)),
-                           OnAddBuildServerFailed);
+                .Subscribe(OnAddBuildSucceeded, OnAddBuildServerFailed);
         }
 
         private void OnViewHelp()
         {
             navigationService.Navigate(ViewUris.Help(AddServerHelpKey));
+        }
+
+        private void OnAddBuildSucceeded(BuildServer addedBuildServer)
+        {
+            navigationService.Navigate(ViewUris.AddJobs(addedBuildServer));
         }
 
         private void OnAddBuildServerFailed(Exception ex)

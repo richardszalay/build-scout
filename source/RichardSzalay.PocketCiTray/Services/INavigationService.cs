@@ -8,5 +8,6 @@ namespace RichardSzalay.PocketCiTray.Services
         void GoBack();
         void RemoveBackEntry();
         void GoBackTo(Uri pageUri);
+        void GoBackToAny(params Uri[] pageUris);
     }
 }

@@ -1,6 +1,6 @@
 ﻿using System;
-using System.Threading;
 using System.Windows;
+using System.Windows.Controls;
 using System.Windows.Navigation;
 using Funq;
 using Microsoft.Phone.Controls;
@@ -8,6 +8,8 @@ using Microsoft.Phone.Shell;
 using RichardSzalay.PocketCiTray.Services;
 using RichardSzalay.PocketCiTray.ViewModels;
 using WP7Contrib.Logging;
+using System.Diagnostics;
+using Microsoft.Phone.Info;
 
 namespace RichardSzalay.PocketCiTray
 {
@@ -25,6 +27,7 @@ namespace RichardSzalay.PocketCiTray
         public App()
         {
             TiltEffect.TiltableItems.Add(typeof(MultiselectItem));
+            //TiltEffect.TiltableItems.Add(typeof(CheckBox));
 
             // Global handler for uncaught exceptions. 
             UnhandledException += Application_UnhandledException;
@@ -108,6 +111,8 @@ namespace RichardSzalay.PocketCiTray
         private void Application_Closing(object sender, ClosingEventArgs e)
         {
             bootstrap.Shutdown();
+
+            Debug.WriteLine("Max memory used: {0}", DeviceStatus.ApplicationPeakMemoryUsage);
         }
 
         // Code to execute if a navigation fails
@@ -138,7 +143,6 @@ namespace RichardSzalay.PocketCiTray
 
         // Avoid double-initialization
         private bool phoneApplicationInitialized = false;
-        private Mutex applicationMutex;
         private Bootstrap bootstrap;
         private ILog log;
 

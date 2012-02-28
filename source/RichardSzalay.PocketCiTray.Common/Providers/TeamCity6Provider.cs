@@ -49,6 +49,8 @@ namespace RichardSzalay.PocketCiTray.Providers
 
         public string Name { get { return ProviderName; } }
 
+        public JobProviderFeature Features { get { return JobProviderFeature.None; } }
+
         public IObservable<ICollection<Job>> GetJobsObservableAsync(BuildServer buildServer)
         {
             Uri jobsUri = new Uri(buildServer.Uri, "httpAuth/app/rest/buildTypes");

@@ -31,11 +31,16 @@ namespace RichardSzalay.PocketCiTray.Services
 
         public void GoBackTo(Uri pageUri)
         {
+            GoBackToAny(pageUri);
+        }
+
+        public void GoBackToAny(params Uri[] pageUris)
+        {
             while (rootVisual.CanGoBack)
             {
                 var journeyEntry = rootVisual.BackStack.First();
 
-                if (journeyEntry.Source.MakeAbsolute().AbsolutePath == pageUri.MakeAbsolute().AbsolutePath)
+                if (pageUris.Any(pageUri => journeyEntry.Source.MakeAbsolute().AbsolutePath == pageUri.MakeAbsolute().AbsolutePath))
                 {
                     rootVisual.GoBack();
                     return;
