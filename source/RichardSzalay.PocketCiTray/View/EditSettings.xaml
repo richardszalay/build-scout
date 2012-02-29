@@ -44,7 +44,7 @@
                     <tk:ListPicker Margin="12,0,12,12" ItemsSource="{Binding ForegroundUpdateOptions}" SelectedItem="{Binding ForegroundUpdateInterval, Mode=TwoWay}" DisplayMemberPath="Display" />
                     
                     <StackPanel Orientation="Horizontal" Margin="0,-12,0,5">
-                        <CheckBox HorizontalAlignment="Left" HorizontalContentAlignment="Left">
+                        <CheckBox IsChecked="{Binding applicationSettings.RunUnderLockScreen, Mode=TwoWay}" HorizontalAlignment="Left" HorizontalContentAlignment="Left">
                             <TextBlock Text="Continue to update when the phone is locked" 
                                    TextWrapping="Wrap"
                                    Style="{StaticResource PhoneTextNormalStyle}" Margin="0,0,0,0" HorizontalAlignment="Left" />
