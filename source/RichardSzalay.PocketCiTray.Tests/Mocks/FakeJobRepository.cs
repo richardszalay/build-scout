@@ -115,6 +115,8 @@ namespace RichardSzalay.PocketCiTray.Tests.Mocks
             throw new NotImplementedException();
         }
 
+        public DateTimeOffset LastUpdateDate { get; set; }
+
         public List<int> GetJobCalls = new List<int>();
         public int GetJobsCalls = 0;
         public int GetBuildServersCalls = 0;

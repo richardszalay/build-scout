@@ -83,6 +83,8 @@ namespace RichardSzalay.PocketCiTray.ViewModels
                 .Subscribe(loadedJobs => allJobs = Jobs = new ObservableCollection<AvailableJob>(loadedJobs.Select(CreateAvailableJob)));
         }
 
+        private string previousFilterText;
+
         [NotifyProperty]
         public string FilterText { get; set; }
 
@@ -156,11 +158,20 @@ namespace RichardSzalay.PocketCiTray.ViewModels
         {
             if (filter == null)
             {
+                previousFilterText = null;
+
                 return allJobs;
             }
 
-            var filteredJobs = allJobs.Where(j => 
-                j.Job.Name.IndexOf(filter, StringComparison.InvariantCultureIgnoreCase) != -1);
+            var filterSource = (previousFilterText != null && filter.StartsWith(previousFilterText))
+                ? Jobs
+                : allJobs;
+
+            previousFilterText = filter;
+
+            var filteredJobs = filterSource.Where(j => j.Job.Name.IndexOf(
+                filter, StringComparison.InvariantCultureIgnoreCase) != -1);
+
             return new ObservableCollection<AvailableJob>(filteredJobs);
         }
 

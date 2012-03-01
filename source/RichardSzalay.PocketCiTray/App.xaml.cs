@@ -64,11 +64,13 @@ namespace RichardSzalay.PocketCiTray
 
         }
 
+        private Container container;
+
         // Code to execute when the application is launching (eg, from Start)
         // This code will not execute when the application is reactivated
         private void Application_Launching(object sender, LaunchingEventArgs e)
         {
-            var container = ConfigureContainer();
+            container = ConfigureContainer();
 
             this.log = container.Resolve<ILog>();
 
@@ -80,7 +82,10 @@ namespace RichardSzalay.PocketCiTray
         // This code will not execute when the application is first launched
         private void Application_Activated(object sender, ActivatedEventArgs e)
         {
-            var container = ConfigureContainer();
+            if (!e.IsApplicationInstancePreserved)
+            {
+                container = ConfigureContainer();
+            }
 
             this.log = container.Resolve<ILog>();
 
@@ -152,9 +157,8 @@ namespace RichardSzalay.PocketCiTray
             if (phoneApplicationInitialized)
                 return;
 
-            // Create the frame but don't set it as RootVisual yet; this allows the splash
-            // screen to remain active until the application is ready to render.
-            RootFrame = new PhoneApplicationFrame();
+            //RootFrame = new PhoneApplicationFrame();
+            RootFrame = new TransitionFrame();
             RootFrame.Navigated += CompleteInitializePhoneApplication;
 
             // Handle navigation failures

@@ -45,6 +45,12 @@ namespace RichardSzalay.PocketCiTray.Services
             container.Register<INavigationService>(l => 
                 new PhoneApplicationFrameNavigationService(l.Resolve<PhoneApplicationFrame>()));
 
+            container.Register<ISettingsApplier>(c => new SettingsApplier(
+                c.Resolve<ILogManager>(),
+                c.Resolve<IJobUpdateService>(),
+                c.Resolve<IPeriodicJobUpdateService>(),
+                c.Resolve<IClock>()));
+
             container.Register<Bootstrap>(l => new Bootstrap(l.Resolve<IApplicationSettings>(),
                 l.Resolve<IClock>(),
                 l.Resolve<IMessageBoxFacade>(),

@@ -16,6 +16,20 @@
     d:DataContext="{d:DesignData /DesignData/SelectBuildServerData.xaml}"
     xmlns:tk="clr-namespace:Microsoft.Phone.Controls;assembly=Microsoft.Phone.Controls.Toolkit"
     tk:TiltEffect.IsTiltEnabled="True">
+    
+    <v:ViewBase.Resources>
+        <inf:ContinuumTransition x:Key="ContinuumInTransition" Mode="BackwardIn" />
+        <inf:ContinuumTransition x:Key="ContinuumOutTransition" Mode="ForwardOut" />
+        <inf:EnumValueConverter x:Key="ForwardOutTransitionConverter">
+            <inf:EnumValue Key="ItemDetails" Value="{StaticResource ContinuumOutTransition}" />
+        </inf:EnumValueConverter>
+        <inf:EnumValueConverter x:Key="BackwardInTransitionConverter">
+            <inf:EnumValue Key="ItemDetails" Value="{StaticResource ContinuumInTransition}" />
+            <inf:EnumValue Key="NewItem">
+                <tk:SlideTransition Mode="SlideUpFadeIn" />
+            </inf:EnumValue>
+        </inf:EnumValueConverter>
+    </v:ViewBase.Resources>
 
     <!--LayoutRoot is the root grid where all page content is placed-->
     <Grid x:Name="LayoutRoot" Background="Transparent">
@@ -32,7 +46,7 @@
 
         <!--ContentPanel - place additional content here-->
         <Grid x:Name="ContentPanel" Grid.Row="1" Margin="12,0,12,0">
-            <ListBox ItemsSource="{Binding BuildServers}" SelectedItem="{Binding SelectedBuildServer, Mode=TwoWay}">
+            <ListBox x:Name="BuildServerList" ItemsSource="{Binding BuildServers}" SelectedItem="{Binding SelectedBuildServer, Mode=TwoWay}">
                 <ListBox.ItemTemplate>
                     <DataTemplate>
                         <StackPanel Margin="0,0,0,6">
@@ -64,5 +78,16 @@
                                                       CommandBinding="{Binding AddBuildServerCommand}"
                                                       />
     </i:Interaction.Behaviors>
+
+    <tk:TransitionService.NavigationInTransition>
+        <tk:NavigationInTransition Backward="{Binding TransitionMode, Converter={StaticResource BackwardInTransitionConverter}}" >
+            <tk:NavigationInTransition.Forward>
+                <tk:SlideTransition Mode="SlideDownFadeIn" />
+            </tk:NavigationInTransition.Forward>
+        </tk:NavigationInTransition>
+    </tk:TransitionService.NavigationInTransition>
+    <tk:TransitionService.NavigationOutTransition>
+        <tk:NavigationOutTransition Forward="{Binding TransitionMode, Converter={StaticResource ForwardOutTransitionConverter}}" />
+    </tk:TransitionService.NavigationOutTransition>
 
 </v:ViewBase>

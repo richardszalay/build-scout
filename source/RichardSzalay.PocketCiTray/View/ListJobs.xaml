@@ -29,26 +29,32 @@
         <inf:BuildStatusToBrushConverter x:Key="BuildStatusToBrushConverter" />
         <inf:LocalizedBuildStatusConverter x:Key="LocalizedBuildStatusConverter" />
         <inf:BooleanVisibilityConverter x:Key="BooleanVisibilityConverter" />
+        <inf:ContinuumTransition x:Key="ContinuumInTransition" Mode="BackwardIn" />
+        <inf:ContinuumTransition x:Key="ContinuumOutTransition" Mode="ForwardOut" />
         <inf:EnumValueConverter x:Key="ForwardOutTransitionConverter">
-            <inf:EnumValue Key="ItemDetails">
-                <tk:TurnstileTransition Mode="ForwardOut" />
-            </inf:EnumValue>
+            <inf:EnumValue Key="ItemDetails" Value="{StaticResource ContinuumOutTransition}" />
             <inf:EnumValue Key="UnrelatedSection">
                 <tk:TurnstileTransition Mode="ForwardOut" />
             </inf:EnumValue>
         </inf:EnumValueConverter>
         <inf:EnumValueConverter x:Key="BackwardsInTransitionConverter">
-            <inf:EnumValue Key="ItemDetails">
-                <tk:TurnstileTransition Mode="BackwardIn" />
+            <inf:EnumValue Key="ItemDetails" Value="{StaticResource ContinuumInTransition}" />
+            <inf:EnumValue Key="NewItem">
+                <tk:SlideTransition Mode="SlideUpFadeIn" />
             </inf:EnumValue>
             <inf:EnumValue Key="UnrelatedSection">
                 <tk:TurnstileTransition Mode="BackwardIn" />
             </inf:EnumValue>
         </inf:EnumValueConverter>
+
+        
     </v:ViewBase.Resources>
 
     <!--LayoutRoot is the root grid where all page content is placed-->
     <Grid x:Name="LayoutRoot" Background="Transparent">
+        <Grid.RenderTransform>
+            <CompositeTransform />
+        </Grid.RenderTransform>
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="*"/>
@@ -142,10 +148,6 @@
         </tk:NavigationInTransition>
     </tk:TransitionService.NavigationInTransition>
     <tk:TransitionService.NavigationOutTransition>
-        <tk:NavigationOutTransition Forward="{Binding TransitionMode, Converter={StaticResource ForwardOutTransitionConverter}}" >
-            <tk:NavigationOutTransition.Backward>
-                <tk:TurnstileTransition Mode="BackwardOut" />
-            </tk:NavigationOutTransition.Backward>
-        </tk:NavigationOutTransition>
+        <tk:NavigationOutTransition Forward="{Binding TransitionMode, Converter={StaticResource ForwardOutTransitionConverter}}" />
     </tk:TransitionService.NavigationOutTransition>
 </v:ViewBase>

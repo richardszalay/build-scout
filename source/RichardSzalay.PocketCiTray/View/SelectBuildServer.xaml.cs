@@ -1,4 +1,4 @@
-﻿using Microsoft.Phone.Controls;
+﻿using RichardSzalay.PocketCiTray.Infrastructure;
 
 namespace RichardSzalay.PocketCiTray.View
 {
@@ -7,6 +7,9 @@ namespace RichardSzalay.PocketCiTray.View
         public SelectBuildServer()
         {
             InitializeComponent();
+
+            ((ContinuumTransition)Resources["ContinuumOutTransition"]).ContinuumElement = BuildServerList;
+            ((ContinuumTransition)Resources["ContinuumInTransition"]).ContinuumElement = BuildServerList;
         }
     }
 }

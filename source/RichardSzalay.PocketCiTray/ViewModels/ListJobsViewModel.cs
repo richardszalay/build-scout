@@ -18,6 +18,7 @@ namespace RichardSzalay.PocketCiTray.ViewModels
         private readonly IJobUpdateService jobUpdateService;
         private readonly IApplicationTileService applicationTileService;
         private readonly IMessageBoxFacade messageBoxFacade;
+        private DateTimeOffset? lastUpdateDate;
 
         public ListJobsViewModel(INavigationService navigationService, IJobRepository jobRepository, 
             ISchedulerAccessor schedulerAccessor, IJobUpdateService jobUpdateService,
@@ -51,7 +52,10 @@ namespace RichardSzalay.PocketCiTray.ViewModels
                 .ObserveOn(schedulerAccessor.UserInterface)
                 .Subscribe(_ => RefreshJobs()));
 
-            this.RefreshJobs();
+            if (lastUpdateDate == null || lastUpdateDate.Value < jobRepository.LastUpdateDate)
+            {
+                this.RefreshJobs();
+            }
         }
 
         private IObservable<bool> CanUpdateStatuses()
@@ -129,6 +133,7 @@ namespace RichardSzalay.PocketCiTray.ViewModels
 
         private void OnEditSettings()
         {
+            TransitionMode = ViewModels.TransitionMode.UnrelatedSection;
             navigationService.Navigate(ViewUris.EditSettings);
         }
 

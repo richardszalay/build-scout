@@ -27,7 +27,8 @@
         <inf:BuildStatusToBrushConverter x:Key="BuildStatusToBrushConverter" />
         <inf:LocalizedBuildStatusConverter x:Key="LocalizedBuildStatusConverter" />
         <inf:UpperCaseConverter x:Key="UpperCaseConverter" />
-        
+        <inf:ContinuumTransition x:Key="ContinuumInTransition" Mode="ForwardIn" />
+        <inf:ContinuumTransition x:Key="ContinuumOutTransition" Mode="BackwardOut" />
     </v:ViewBase.Resources>
 
     <!--LayoutRoot is the root grid where all page content is placed-->
@@ -87,5 +88,12 @@
                                            CommandBinding="{Binding DeleteJobCommand}"
                                            />
     </i:Interaction.Behaviors>
+
+    <tk:TransitionService.NavigationInTransition>
+        <tk:NavigationInTransition Forward="{StaticResource ContinuumInTransition}" />
+    </tk:TransitionService.NavigationInTransition>
+    <tk:TransitionService.NavigationOutTransition>
+        <tk:NavigationOutTransition Backward="{StaticResource ContinuumOutTransition}" />
+    </tk:TransitionService.NavigationOutTransition>
 
 </v:ViewBase>

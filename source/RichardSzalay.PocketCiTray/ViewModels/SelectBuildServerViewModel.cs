@@ -67,6 +67,7 @@ namespace RichardSzalay.PocketCiTray.ViewModels
 
                 if (value != null)
                 {
+                    TransitionMode = TransitionMode.ItemDetails;
                     navigationService.Navigate(ViewUris.AddJobs(value));
                 }
             }
@@ -80,12 +81,8 @@ namespace RichardSzalay.PocketCiTray.ViewModels
 
         public void OnAddNewBuildServer()
         {
+            TransitionMode = TransitionMode.NewItem;
             navigationService.Navigate(ViewUris.AddBuildServer);
-        }
-
-        public void OnSelectBuildServer()
-        {
-            navigationService.Navigate(ViewUris.AddJobs(SelectedBuildServer));
         }
 
         private void OnDeleteBuildServer(BuildServer buildServer)

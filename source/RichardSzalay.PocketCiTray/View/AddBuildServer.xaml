@@ -63,7 +63,20 @@
                                              CommandBinding="{Binding ViewHelpCommand}"
                                              />
     </i:Interaction.Behaviors>
-    
-    
+
+    <tk:TransitionService.NavigationInTransition>
+        <tk:NavigationInTransition>
+            <tk:NavigationInTransition.Forward>
+                <tk:SlideTransition Mode="SlideDownFadeIn" />
+            </tk:NavigationInTransition.Forward>
+        </tk:NavigationInTransition>
+    </tk:TransitionService.NavigationInTransition>
+    <tk:TransitionService.NavigationOutTransition>
+        <tk:NavigationOutTransition>
+            <tk:NavigationOutTransition.Backward>
+                <tk:SlideTransition Mode="SlideDownFadeOut" />
+            </tk:NavigationOutTransition.Backward>
+        </tk:NavigationOutTransition>
+    </tk:TransitionService.NavigationOutTransition>
 
 </v:ViewBase>

@@ -51,7 +51,12 @@ namespace RichardSzalay.PocketCiTray.Infrastructure
     public class EnumValue
     {
         public string Key { get; set; }
-        
-        public object Value { get; set; }
+
+        private object value;
+        public object Value
+        {
+            get { return value; }
+            set { this.value = value; }
+        }
     }
 }

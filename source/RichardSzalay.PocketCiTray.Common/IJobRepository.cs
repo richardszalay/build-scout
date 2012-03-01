@@ -14,5 +14,6 @@ namespace RichardSzalay.PocketCiTray
         IObservable<Job> GetJob(int job);
         IObservable<bool> DeleteJob(Job job);
         IObservable<bool> DeleteBuildServer(BuildServer buildServer);
+        DateTimeOffset LastUpdateDate { get; }
     }
 }

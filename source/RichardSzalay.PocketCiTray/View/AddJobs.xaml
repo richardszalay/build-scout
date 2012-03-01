@@ -21,6 +21,8 @@
     <v:ViewBase.Resources>
         <inf:UpperCaseConverter x:Key="UpperCaseConverter" />
         <inf:BooleanValueConverter x:Key="FilterTextStateConverter" TrueValue="Filtered" FalseValue="Unfiltered" />
+        <inf:ContinuumTransition x:Key="ContinuumInTransition" Mode="ForwardIn" />
+        <inf:ContinuumTransition x:Key="ContinuumOutTransition" Mode="BackwardOut" />
     </v:ViewBase.Resources>
 
 	<v:ViewBase.FontFamily>
@@ -155,28 +157,35 @@
             <ListBox ItemsSource="{Binding Jobs}">
                 <ListBox.ItemTemplate>
                     <DataTemplate>
-                        <StackPanel Orientation="Horizontal">
-                            <i:Interaction.Behaviors>
-                                <inf:TapCommandBehavior Command="{Binding ToggleSelectionCommand}" />
-                            </i:Interaction.Behaviors>
-                            <Grid>
-                                <CheckBox IsChecked="{Binding IsSelected, Mode=TwoWay}" />
-                                <Rectangle Fill="Transparent" />
-                            </Grid>
-
-                            <TextBlock Margin="0,10" Style="{StaticResource PhoneTextLargeStyle}">
-                                <i:Interaction.Behaviors>
-                                    <inf:TextBlockHighlightBehavior Text="{Binding Job.Name}" 
-                                                                    HighlightText="{Binding DataContext.FilterText, ElementName=ContentPanel}"
-                                                                    HighlightBrush="{StaticResource PhoneAccentBrush}" />
-                                </i:Interaction.Behaviors>
-                            </TextBlock>
-                        </StackPanel>
-                            
+                        <Grid>
+                            <CheckBox IsChecked="{Binding IsSelected, Mode=TwoWay}">
+                                <TextBlock Margin="0,10" Style="{StaticResource PhoneTextLargeStyle}">
+                                    <i:Interaction.Behaviors>
+                                        <inf:TextBlockHighlightBehavior Text="{Binding Job.Name}" 
+                                                                        HighlightText="{Binding DataContext.FilterText, ElementName=ContentPanel}"
+                                                                        HighlightBrush="{StaticResource PhoneAccentBrush}" />
+                                    </i:Interaction.Behaviors>
+                                </TextBlock>
+                            </CheckBox>
+                        </Grid>
                     </DataTemplate>
                 </ListBox.ItemTemplate>
+                <ListBox.ItemContainerStyle>
+                    <Style TargetType="ListBoxItem">
+                        <Setter Property="HorizontalAlignment" Value="Stretch"/>
+                        <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
+                        <Setter Property="Margin" Value="0,0,0,0" />
+                    </Style>
+                </ListBox.ItemContainerStyle>
             </ListBox>
         </Grid>
     </Grid>
+
+    <tk:TransitionService.NavigationInTransition>
+        <tk:NavigationInTransition Forward="{StaticResource ContinuumInTransition}" />
+    </tk:TransitionService.NavigationInTransition>
+    <tk:TransitionService.NavigationOutTransition>
+        <tk:NavigationOutTransition Backward="{StaticResource ContinuumOutTransition}" />
+    </tk:TransitionService.NavigationOutTransition>
 
 </v:ViewBase>

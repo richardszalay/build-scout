@@ -1,4 +1,5 @@
-﻿using WP7Contrib.View.Transitions.Animation;
+﻿using RichardSzalay.PocketCiTray.Infrastructure;
+using WP7Contrib.View.Transitions.Animation;
 using System;
 namespace RichardSzalay.PocketCiTray.View
 {
@@ -8,7 +9,8 @@ namespace RichardSzalay.PocketCiTray.View
         {
             InitializeComponent();
 
-            //AnimationContext = LayoutRoot;
+            ((ContinuumTransition) Resources["ContinuumOutTransition"]).ContinuumElement = JobsList;
+            ((ContinuumTransition)Resources["ContinuumInTransition"]).ContinuumElement = JobsList;
         }
 
         /*

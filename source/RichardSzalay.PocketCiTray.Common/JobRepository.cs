@@ -4,11 +4,13 @@ using System.Linq;
 using System.Reactive.Concurrency;
 using System.Reactive.Linq;
 using System.Threading;
+using RichardSzalay.PocketCiTray.Services;
 
 namespace RichardSzalay.PocketCiTray
 {
     public class JobRepository : IJobRepository
     {
+        private readonly IClock clock;
         private static int nextBuildServerId = 0;
         private static int nextJobId = 0;
 
@@ -16,15 +18,20 @@ namespace RichardSzalay.PocketCiTray
         private Dictionary<int, Job> jobMap = new Dictionary<int, Job>();
         private IScheduler scheduler;
 
-        public JobRepository(ISchedulerAccessor schedulerAccessor)
+        public JobRepository(ISchedulerAccessor schedulerAccessor, IClock clock)
         {
+            this.clock = clock;
             scheduler = schedulerAccessor.Background;
+
+            this.Touch();
         }
 
         public IObservable<BuildServer> AddBuildServer(BuildServer buildServer)
         {
             return Observable.ToAsync(() =>
             {
+                Touch();
+
                 buildServer.Id = Interlocked.Increment(ref nextBuildServerId);
 
                 buildServerMap[buildServer.Id] = buildServer;
@@ -45,6 +52,8 @@ namespace RichardSzalay.PocketCiTray
         {
             return Observable.ToAsync(() =>
             {
+                Touch();
+
                 foreach (Job job in jobs)
                 {
                     job.Id = Interlocked.Increment(ref nextJobId);
@@ -66,6 +75,8 @@ namespace RichardSzalay.PocketCiTray
         {
             return Observable.ToAsync(() =>
             {
+                Touch();
+
                 foreach (var job in jobs)
                     jobMap[job.Id] = job;
 
@@ -88,7 +99,11 @@ namespace RichardSzalay.PocketCiTray
 
         public IObservable<bool> DeleteJob(Job job)
         {
-            return Observable.ToAsync(() => jobMap.Remove(job.Id), scheduler)();
+            return Observable.ToAsync(() =>
+            {
+                Touch();
+                return jobMap.Remove(job.Id);
+            }, scheduler)();
         }
 
         public IObservable<bool> DeleteBuildServer(BuildServer buildServer)
@@ -102,6 +117,8 @@ namespace RichardSzalay.PocketCiTray
                         jobMap.Remove(job.Id);
                     }
 
+                    Touch();
+
                     return true;
                 }
                 else
@@ -110,5 +127,12 @@ namespace RichardSzalay.PocketCiTray
                 }
             }, scheduler)();
         }
+
+        private void Touch()
+        {
+            this.LastUpdateDate = clock.UtcNow;
+        }
+
+        public DateTimeOffset LastUpdateDate { get; private set; }
     }
 }

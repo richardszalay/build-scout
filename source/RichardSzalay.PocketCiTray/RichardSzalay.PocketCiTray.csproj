@@ -134,6 +134,7 @@
     <Compile Include="Infrastructure\Converters\BooleanValueConverter.cs" />
     <Compile Include="Infrastructure\Converters\UpperCaseConverter.cs" />
     <Compile Include="Infrastructure\NotifyPropertyWeaver.cs" />
+    <Compile Include="Infrastructure\Transitions\ContinuumTransition.cs" />
     <Compile Include="Logging.cs" />
     <Compile Include="Infrastructure\Behaviors\ApplicationBarCommand.cs" />
     <Compile Include="Infrastructure\Behaviors\ApplicationBarIconButtonCommand.cs" />
@@ -264,6 +265,7 @@
     <None Include="packages.config" />
     <None Include="Properties\AppManifest.xml" />
     <None Include="Properties\WMAppManifest.xml" />
+    <None Include="RichardSzalay.PocketCiTray_2012_02_29_12_03_08.sap" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="ApplicationIcon.png">
