@@ -70,7 +70,11 @@ namespace RichardSzalay.PocketCiTray.Services
                 c.Resolve<INavigationService>(),
                 c.Resolve<IJobRepository>(),
                 c.Resolve<ISchedulerAccessor>(),
-                c.Resolve<IJobUpdateService>(), c.Resolve<IApplicationTileService>(), c.Resolve<IMessageBoxFacade>()));
+                c.Resolve<IJobUpdateService>(), 
+                c.Resolve<IApplicationTileService>(), 
+                c.Resolve<IMessageBoxFacade>(),
+                c.Resolve<IApplicationSettings>(),
+                c.Resolve<IApplicationResourceFacade>()));
 
             container.Register(c => new ViewJobViewModel(
                 c.Resolve<INavigationService>(),

@@ -6,6 +6,10 @@
     xmlns:shell="clr-namespace:Microsoft.Phone.Shell;assembly=Microsoft.Phone"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:i="clr-namespace:System.Windows.Interactivity;assembly=System.Windows.Interactivity" 
+    xmlns:v="clr-namespace:RichardSzalay.PocketCiTray.View" 
+    xmlns:inf="clr-namespace:RichardSzalay.PocketCiTray.Infrastructure" 
+    xmlns:tk="clr-namespace:Microsoft.Phone.Controls;assembly=Microsoft.Phone.Controls.Toolkit"
     FontFamily="{StaticResource PhoneFontFamilyNormal}"
     FontSize="{StaticResource PhoneFontSizeNormal}"
     Foreground="{StaticResource PhoneForegroundBrush}"
@@ -14,19 +18,14 @@
     d:DesignHeight="696" 
     shell:SystemTray.ProgressIndicator="{Binding ProgressIndicator}"
     d:DesignWidth="480" 
-    xmlns:i="clr-namespace:System.Windows.Interactivity;assembly=System.Windows.Interactivity" 
-    xmlns:v="clr-namespace:RichardSzalay.PocketCiTray.View" 
-    xmlns:inf="clr-namespace:RichardSzalay.PocketCiTray.Infrastructure" 
     shell:SystemTray.IsVisible="True"
     DataContext="{Binding Path=ListJobsViewModel ,Source={StaticResource ViewModelLocator}}"
-    d:DataContext="{d:DesignData /DesignData/ListJobsData.xaml}"
-    xmlns:tk="clr-namespace:Microsoft.Phone.Controls;assembly=Microsoft.Phone.Controls.Toolkit"
+    d:DataContext="{d:DesignData /DesignData/ListJobsData.xaml}"    
     tk:TiltEffect.IsTiltEnabled="True"
     >
     
     <v:ViewBase.Resources>
         <inf:RelativeTimeConverter x:Key="RelativeTimeConverter" />
-        <inf:BuildStatusToBrushConverter x:Key="BuildStatusToBrushConverter" />
         <inf:LocalizedBuildStatusConverter x:Key="LocalizedBuildStatusConverter" />
         <inf:BooleanVisibilityConverter x:Key="BooleanVisibilityConverter" />
         <inf:ContinuumTransition x:Key="ContinuumInTransition" Mode="BackwardIn" />

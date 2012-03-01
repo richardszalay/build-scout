@@ -7,6 +7,7 @@ using RichardSzalay.PocketCiTray.Extensions.Extensions;
 using RichardSzalay.PocketCiTray.Services;
 using System.Windows.Navigation;
 using RichardSzalay.PocketCiTray.Infrastructure;
+using System.Windows.Media;
 
 namespace RichardSzalay.PocketCiTray.ViewModels
 {
@@ -18,11 +19,15 @@ namespace RichardSzalay.PocketCiTray.ViewModels
         private readonly IJobUpdateService jobUpdateService;
         private readonly IApplicationTileService applicationTileService;
         private readonly IMessageBoxFacade messageBoxFacade;
+        private readonly IApplicationSettings applicationSettings;
+        private readonly IApplicationResourceFacade applicationResourceFacade;
+
         private DateTimeOffset? lastUpdateDate;
 
         public ListJobsViewModel(INavigationService navigationService, IJobRepository jobRepository, 
             ISchedulerAccessor schedulerAccessor, IJobUpdateService jobUpdateService,
-            IApplicationTileService applicationTileService, IMessageBoxFacade messageBoxFacade)
+            IApplicationTileService applicationTileService, IMessageBoxFacade messageBoxFacade,
+            IApplicationSettings applicationSettings, IApplicationResourceFacade applicationResourceFacade)
         {
             this.navigationService = navigationService;
             this.jobRepository = jobRepository;
@@ -30,6 +35,8 @@ namespace RichardSzalay.PocketCiTray.ViewModels
             this.jobUpdateService = jobUpdateService;
             this.applicationTileService = applicationTileService;
             this.messageBoxFacade = messageBoxFacade;
+            this.applicationSettings = applicationSettings;
+            this.applicationResourceFacade = applicationResourceFacade;
         }
 
         public override void OnNavigatedTo(NavigationEventArgs e)
@@ -40,6 +47,10 @@ namespace RichardSzalay.PocketCiTray.ViewModels
             UpdateStatusesCommand = CreateCommand(new ObservableCommand(CanUpdateStatuses()), OnUpdateStatuses);
             ViewJobCommand = CreateCommand(new ObservableCommand<Job>(), OnViewJob);
             EditSettingsCommand = CreateCommand(new ObservableCommand(), OnEditSettings);
+
+            SuccessBrush = applicationResourceFacade.GetResource<Brush>(applicationSettings.SuccessColorResource);
+            FailedBrush = applicationResourceFacade.GetResource<Brush>(applicationSettings.FailedColorResource);
+            UnavailableBrush = applicationResourceFacade.GetResource<Brush>(applicationSettings.UnavailableColorResource);
 
             PinJobCommand = CreateCommand(new ObservableCommand<Job>(CanPinJob), OnPinJob);
             DeleteJobCommand = CreateCommand(new ObservableCommand<Job>(), OnDeleteJob);
@@ -158,5 +169,14 @@ namespace RichardSzalay.PocketCiTray.ViewModels
         }
 
         private static readonly TimeSpan UpdateTimeout = TimeSpan.FromSeconds(30);
+
+        [NotifyProperty]
+        public Brush SuccessBrush { get; private set; }
+
+        [NotifyProperty]
+        public Brush FailedBrush { get; private set; }
+
+        [NotifyProperty]
+        public Brush UnavailableBrush { get; private set; }
     }
 }
