@@ -4,6 +4,7 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
     xmlns:domain="clr-namespace:RichardSzalay.PocketCiTray" xmlns:PocketCiTray="clr-namespace:RichardSzalay.PocketCiTray;assembly=RichardSzalay.PocketCiTray.Common" mc:Ignorable="d"
+    HasJobs="True"
     >
     
     <vm:ListJobsViewModel.Jobs>

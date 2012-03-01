@@ -44,6 +44,8 @@ namespace RichardSzalay.PocketCiTray.Infrastructure
             base.OnDetaching();
 
             AssociatedObject.SelectionChanged -= OnSelectionChanged;
+
+
         }
 
         private void OnSelectionChanged(object sender, SelectionChangedEventArgs e)

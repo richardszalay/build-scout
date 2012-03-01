@@ -135,7 +135,6 @@
     <Compile Include="Infrastructure\Converters\UpperCaseConverter.cs" />
     <Compile Include="Infrastructure\NotifyPropertyWeaver.cs" />
     <Compile Include="Infrastructure\Transitions\ContinuumTransition.cs" />
-    <Compile Include="Logging.cs" />
     <Compile Include="Infrastructure\Behaviors\ApplicationBarCommand.cs" />
     <Compile Include="Infrastructure\Behaviors\ApplicationBarIconButtonCommand.cs" />
     <Compile Include="Infrastructure\Behaviors\ApplicationBarMenuItemCommand.cs" />
@@ -166,6 +165,7 @@
     <Compile Include="Services\PhoneApplicationFrameNavigationService.cs" />
     <Compile Include="Services\ScheduledActionServiceFacade.cs" />
     <Compile Include="Services\SettingsApplier.cs" />
+    <Compile Include="Services\TileImageCreator.cs" />
     <Compile Include="Strings.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -265,7 +265,6 @@
     <None Include="packages.config" />
     <None Include="Properties\AppManifest.xml" />
     <None Include="Properties\WMAppManifest.xml" />
-    <None Include="RichardSzalay.PocketCiTray_2012_02_29_12_03_08.sap" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="ApplicationIcon.png">
@@ -289,6 +288,7 @@
     <Content Include="Images\appbar.transport.play.rest.png" />
     <Content Include="Images\Tiles\Failed.png" />
     <Content Include="Images\Tiles\Success.png" />
+    <Resource Include="Images\Tiles\Template.png" />
     <Content Include="Images\Tiles\Unavailable.png" />
     <Content Include="Toolkit.Content\ApplicationBar.Cancel.png" />
     <Content Include="Toolkit.Content\ApplicationBar.Check.png" />

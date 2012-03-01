@@ -47,8 +47,14 @@
       <HintPath>..\libs\Funq\Funq.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.Phone" />
+    <Reference Include="Newtonsoft.Json">
+      <HintPath>..\packages\Newtonsoft.Json.4.0.8\lib\sl4-windowsphone71\Newtonsoft.Json.dll</HintPath>
+    </Reference>
     <Reference Include="SharpGIS.GZipWebClient">
       <HintPath>..\packages\SharpGIS.GZipWebClient.1.2\lib\sl40-wp71\SharpGIS.GZipWebClient.dll</HintPath>
+    </Reference>
+    <Reference Include="SilverlightSerializer.WP71">
+      <HintPath>..\packages\WP7Contrib.Caching.1.0.0.16\lib\sl4-WindowsPhone71\SilverlightSerializer.WP71.dll</HintPath>
     </Reference>
     <Reference Include="System.Observable" />
     <Reference Include="System.Reactive">
@@ -64,17 +70,29 @@
     <Reference Include="System.Net" />
     <Reference Include="mscorlib.extensions" />
     <Reference Include="System.Xml.Linq" />
+    <Reference Include="WP7Contrib.Caching">
+      <HintPath>..\packages\WP7Contrib.Caching.1.0.0.16\lib\sl4-WindowsPhone71\WP7Contrib.Caching.dll</HintPath>
+    </Reference>
     <Reference Include="WP7Contrib.Collections">
       <HintPath>..\packages\WP7Contrib.Core.1.0.0.16\lib\sl4-wp71\WP7Contrib.Collections.dll</HintPath>
     </Reference>
     <Reference Include="WP7Contrib.Common">
       <HintPath>..\packages\WP7Contrib.Core.1.0.0.16\lib\sl4-wp71\WP7Contrib.Common.dll</HintPath>
     </Reference>
+    <Reference Include="WP7Contrib.Communications">
+      <HintPath>..\packages\WP7Contrib.Net.1.0.0.16\lib\sl4-wp71\WP7Contrib.Communications.dll</HintPath>
+    </Reference>
     <Reference Include="WP7Contrib.Diagnostics">
       <HintPath>..\packages\WP7Contrib.Core.1.0.0.16\lib\sl4-wp71\WP7Contrib.Diagnostics.dll</HintPath>
     </Reference>
     <Reference Include="WP7Contrib.Logging">
       <HintPath>..\packages\WP7Contrib.Core.1.0.0.16\lib\sl4-wp71\WP7Contrib.Logging.dll</HintPath>
+    </Reference>
+    <Reference Include="WP7Contrib.Serialization.Helpers">
+      <HintPath>..\packages\WP7Contrib.Services.1.0.0.16\lib\sl4-wp71\WP7Contrib.Serialization.Helpers.dll</HintPath>
+    </Reference>
+    <Reference Include="WP7Contrib.Services">
+      <HintPath>..\packages\WP7Contrib.Services.1.0.0.16\lib\sl4-wp71\WP7Contrib.Services.dll</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup>
@@ -96,6 +114,7 @@
     <Compile Include="JobRepository.cs" />
     <Compile Include="JobTile.cs" />
     <Compile Include="BuildResultChange.cs" />
+    <Compile Include="Logging.cs" />
     <Compile Include="NotificationReason.cs" />
     <Compile Include="NotificationStrings.Designer.cs">
       <AutoGen>True</AutoGen>

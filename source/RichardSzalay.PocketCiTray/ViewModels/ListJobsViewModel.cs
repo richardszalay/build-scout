@@ -71,7 +71,12 @@ namespace RichardSzalay.PocketCiTray.ViewModels
 
         private IObservable<bool> CanUpdateStatuses()
         {
-            return this.GetPropertyValues(x => x.HasJobs);
+            var hasJobs = this.GetPropertyValues(x => x.HasJobs);
+
+            var isLoading = this.GetPropertyValues(x => x.ProgressIndicator)
+                .Select(p => p != null && p.IsVisible);
+
+            return hasJobs.CombineLatest(isLoading, (j, l) => j && !l);
         }
 
         [NotifyProperty]
@@ -98,6 +103,10 @@ namespace RichardSzalay.PocketCiTray.ViewModels
             applicationTileService.AddJobTile(job);
         }
 
+        private void OnSelectJob(Job job)
+        {
+        }
+
         private bool CanPinJob(Job job)
         {
             return job != null && !applicationTileService.IsPinned(job);
@@ -110,7 +119,11 @@ namespace RichardSzalay.PocketCiTray.ViewModels
             jobRepository.GetJobs()
                 .ObserveOn(schedulerAccessor.UserInterface)
                 .Finally(StopLoading)
-                .Subscribe(jobs => Jobs = new ObservableCollection<Job>(jobs));
+                .Subscribe(jobs =>
+                    {
+                        lastUpdateDate = jobRepository.LastUpdateDate;
+                        Jobs = new ObservableCollection<Job>(jobs);
+                    });
         }
 
         private void OnViewJob(Job job)

@@ -49,7 +49,8 @@ namespace RichardSzalay.PocketCiTray.Services
                 c.Resolve<ILogManager>(),
                 c.Resolve<IJobUpdateService>(),
                 c.Resolve<IPeriodicJobUpdateService>(),
-                c.Resolve<IClock>()));
+                c.Resolve<IClock>(),
+                c.Resolve<IApplicationResourceFacade>()));
 
             container.Register<Bootstrap>(l => new Bootstrap(l.Resolve<IApplicationSettings>(),
                 l.Resolve<IClock>(),

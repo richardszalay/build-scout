@@ -36,7 +36,7 @@
                 <tk:ListPicker ItemsSource="{Binding Providers}" SelectedItem="{Binding SelectedProvider, Mode=TwoWay}" />
 
                 <TextBlock Text="Build URL" Style="{StaticResource PhoneTextSubtleStyle}" Margin="12,12,12,0" />
-                <TextBox x:Name="BuildSource" Text="{Binding BuildServerUrl, Mode=TwoWay}" Tag="auto:BuildSource">
+                <TextBox x:Name="BuildSource" Text="{Binding BuildServerUrl, Mode=TwoWay}" InputScope="Url" Tag="auto:BuildSource">
                     <i:Interaction.Behaviors>
                         <inf:RealtimeTextBoxBindingBehavior />
                         <inf:EnterKeyBehavior Command="{Binding AddBuildServerCommand}" />

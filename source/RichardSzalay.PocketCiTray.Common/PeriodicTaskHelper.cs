@@ -6,6 +6,8 @@ namespace RichardSzalay.PocketCiTray
     {
         public static TimeSpan GetNextRunInterval(DateTimeOffset? lastRunTime, TimeSpan runInterval, DateTimeOffset now)
         {
+            lastRunTime = NormalizeLastRunTime(lastRunTime, now);
+
             TimeSpan firstUpdate = (lastRunTime.HasValue)
                     ? (lastRunTime.Value + runInterval) - now
                     : TimeSpan.Zero;
@@ -16,6 +18,13 @@ namespace RichardSzalay.PocketCiTray
             }
 
             return firstUpdate;
+        }
+
+        private static DateTimeOffset? NormalizeLastRunTime(DateTimeOffset? lastRunTime, DateTimeOffset now)
+        {
+            return (lastRunTime.HasValue && lastRunTime.Value > now)
+                ? (DateTimeOffset?)now
+                : null;
         }
 
     }

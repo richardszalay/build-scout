@@ -10,7 +10,8 @@
     <vm:AddJobsViewModel.Jobs>
         <vm:AvailableJob IsSelected="True">
             <vm:AvailableJob.Job>
-                <domain:Job domain:Job.Name="job 1">
+                <domain:Job>
+                    <domain:Job.Name>job 1</domain:Job.Name>
                     <domain:Job.BuildServer>
                         <domain:BuildServer Id="1" />
                     </domain:Job.BuildServer>

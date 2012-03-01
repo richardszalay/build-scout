@@ -49,7 +49,12 @@ namespace RichardSzalay.PocketCiTray.BackgroundTask
         /// </remarks>
         protected override void OnInvoke(ScheduledTask task)
         {
-            Container container = CommonDependencyConfiguration.Configure();            
+            Container container = CommonDependencyConfiguration.Configure();
+
+            var log = new LoggingService(Logging.ApplicationLogName);
+
+            container.Register<ILog>(log);
+            container.Register<ILogManager>(log);
 
             if (!container.Resolve<IMutexService>().WaitOne(MutexNames.ForegroundApplication))
             {

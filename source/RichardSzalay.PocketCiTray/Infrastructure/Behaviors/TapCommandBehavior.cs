@@ -12,6 +12,20 @@ namespace RichardSzalay.PocketCiTray.Infrastructure
             set { SetValue(CommandProperty, value); }
         }
 
+
+
+        public object CommandParameter
+        {
+            get { return (object)GetValue(CommandParameterProperty); }
+            set { SetValue(CommandParameterProperty, value); }
+        }
+
+        // Using a DependencyProperty as the backing store for CommandParameter.  This enables animation, styling, binding, etc...
+        public static readonly DependencyProperty CommandParameterProperty =
+            DependencyProperty.Register("CommandParameter", typeof(object), typeof(TapCommandBehavior), new PropertyMetadata(null));
+
+
+
         // Using a DependencyProperty as the backing store for Command.  This enables animation, styling, binding, etc...
         public static readonly DependencyProperty CommandProperty =
             DependencyProperty.Register("Command", typeof(ICommand), typeof(TapCommandBehavior), new PropertyMetadata(null));
@@ -28,9 +42,9 @@ namespace RichardSzalay.PocketCiTray.Infrastructure
 
         private void OnTap(object sender, System.Windows.Input.GestureEventArgs e)
         {
-            if (Command != null)
+            if (Command != null && Command.CanExecute(CommandParameter))
             {
-                Command.Execute(null);
+                Command.Execute(CommandParameter);
             }
         }
     }

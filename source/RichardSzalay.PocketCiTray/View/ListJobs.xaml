@@ -30,6 +30,7 @@
         <inf:BooleanVisibilityConverter x:Key="BooleanVisibilityConverter" />
         <inf:ContinuumTransition x:Key="ContinuumInTransition" Mode="BackwardIn" />
         <inf:ContinuumTransition x:Key="ContinuumOutTransition" Mode="ForwardOut" />
+        <inf:BuildStatusToBrushConverter x:Key="BuildStatusToBrushConverter" />
         <inf:EnumValueConverter x:Key="ForwardOutTransitionConverter">
             <inf:EnumValue Key="ItemDetails" Value="{StaticResource ContinuumOutTransition}" />
             <inf:EnumValue Key="UnrelatedSection">
@@ -71,12 +72,15 @@
                        Visibility="{Binding HasJobs, Converter={StaticResource BooleanVisibilityConverter}, ConverterParameter=!}"/>
             <ListBox ItemsSource="{Binding Jobs}" x:Name="JobsList"
                      Visibility="{Binding HasJobs, Converter={StaticResource BooleanVisibilityConverter}}">
-                <i:Interaction.Behaviors>
+                <!--<i:Interaction.Behaviors>
                     <inf:ListBoxSelectionCommandBehavior Command="{Binding ViewJobCommand}" />
-                </i:Interaction.Behaviors>
+                </i:Interaction.Behaviors>-->
                 <ListBox.ItemTemplate>
                     <DataTemplate>
                         <Grid Margin="12,0,0,0">
+                            <i:Interaction.Behaviors>
+                                <inf:TapCommandBehavior Command="{Binding DataContext.ViewJobCommand, ElementName=JobsList}" CommandParameter="{Binding}" />
+                            </i:Interaction.Behaviors>
                             <tk:ContextMenuService.ContextMenu>
                                 <tk:ContextMenu>
                                     <tk:MenuItem Header="pin to start" 

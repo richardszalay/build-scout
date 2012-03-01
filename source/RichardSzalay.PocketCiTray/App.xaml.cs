@@ -76,6 +76,8 @@ namespace RichardSzalay.PocketCiTray
 
             bootstrap = container.Resolve<Bootstrap>();
             bootstrap.Startup();
+
+            EnableLoggingForDebug();
         }
 
         // Code to execute when the application is activated (brought to foreground)
@@ -91,6 +93,14 @@ namespace RichardSzalay.PocketCiTray
 
             bootstrap = container.Resolve<Bootstrap>();
             bootstrap.Continue();
+
+            EnableLoggingForDebug();
+        }
+
+        [Conditional("DEBUG")]
+        private void EnableLoggingForDebug()
+        {
+            container.Resolve<ILogManager>().Enable();
         }
 
         // Code to execute when the application is deactivated (sent to background)
