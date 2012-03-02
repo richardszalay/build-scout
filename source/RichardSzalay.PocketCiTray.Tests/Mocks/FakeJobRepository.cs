@@ -22,7 +22,7 @@ namespace RichardSzalay.PocketCiTray.Tests.Mocks
         private int buildServerId = 0;
         private int jobId = 0;
 
-        public IObservable<BuildServer> AddBuildServer(BuildServer buildServer)
+        public BuildServer AddBuildServer(BuildServer buildServer)
         {
             AddBuildServerCalls.Add(buildServer);
 
@@ -30,10 +30,10 @@ namespace RichardSzalay.PocketCiTray.Tests.Mocks
 
             buildServers.Add(buildServer.Id, buildServer);
 
-            return Observable.Return(buildServer);
+            return buildServer;
         }
 
-        public IObservable<BuildServer> GetBuildServer(int buildServerId)
+        public BuildServer GetBuildServer(int buildServerId)
         {
             GetBuildServerCalls.Add(buildServerId);
 
@@ -41,13 +41,13 @@ namespace RichardSzalay.PocketCiTray.Tests.Mocks
 
             if (buildServers.TryGetValue(buildServerId, out server))
             {
-                return Observable.Return(server);
+                return server;
             }
 
-            return Observable.Throw<BuildServer>(new ArgumentException("Invalid build server id"));
+            throw new ArgumentException("Invalid build server id");
         }
 
-        public IObservable<System.Collections.Generic.IEnumerable<Job>> AddJobs(System.Collections.Generic.IEnumerable<Job> jobs)
+        public IEnumerable<Job> AddJobs(IEnumerable<Job> jobs)
         {
             AddJobsCalls.Add(jobs.ToList());
 
@@ -58,17 +58,17 @@ namespace RichardSzalay.PocketCiTray.Tests.Mocks
                 this.jobs[job.Id] = job;
             }
 
-            return Observable.Return(jobs);
+            return jobs;
         }
 
-        public IObservable<System.Collections.Generic.ICollection<Job>> GetJobs()
+        public ICollection<Job> GetJobs()
         {
             GetJobsCalls++;
 
-            return Observable.Return((ICollection<Job>)jobs.Values);
+            return jobs.Values;
         }
 
-        public IObservable<System.Collections.Generic.ICollection<Job>> UpdateAll(System.Collections.Generic.ICollection<Job> jobs)
+        public ICollection<Job> UpdateAll(ICollection<Job> jobs)
         {
             UpdateAllCalls.Add(jobs);
 
@@ -79,17 +79,17 @@ namespace RichardSzalay.PocketCiTray.Tests.Mocks
                 this.jobs[job.Id] = job;
             }
 
-            return Observable.Return(jobs);
+            return jobs;
         }
 
-        public IObservable<System.Collections.Generic.ICollection<BuildServer>> GetBuildServers()
+        public ICollection<BuildServer> GetBuildServers()
         {
             GetBuildServersCalls++;
 
-            return Observable.Return((ICollection<BuildServer>)buildServers.Values);
+            return buildServers.Values;
         }
 
-        public IObservable<Job> GetJob(int jobId)
+        public Job GetJob(int jobId)
         {
             GetJobCalls.Add(jobId);
 
@@ -97,20 +97,20 @@ namespace RichardSzalay.PocketCiTray.Tests.Mocks
 
             if (jobs.TryGetValue(jobId, out job))
             {
-                return Observable.Return(job);
+                return job;
             }
 
-            return Observable.Throw<Job>(new ArgumentException("Invalid job id"));
+            throw new ArgumentException("Invalid job id");
         }
 
-        public IObservable<bool> DeleteJob(Job job)
+        public bool DeleteJob(Job job)
         {
             DeleteJobCalls.Add(job);
 
-            return Observable.Return(jobs.Remove(job.Id));
+            return jobs.Remove(job.Id);
         }
 
-        public IObservable<bool> DeleteBuildServer(BuildServer buildServer)
+        public bool DeleteBuildServer(BuildServer buildServer)
         {
             throw new NotImplementedException();
         }

@@ -92,7 +92,7 @@ namespace RichardSzalay.PocketCiTray.ViewModels
 
             if (result ==  MessageBoxResult.OK)
             {
-                this.jobRepository.DeleteJob(job)
+                Observable.ToAsync(() => this.jobRepository.DeleteJob(job), schedulerAccessor.Background)()
                     .ObserveOn(schedulerAccessor.UserInterface)
                     .Subscribe(_ => RefreshJobs());
             }

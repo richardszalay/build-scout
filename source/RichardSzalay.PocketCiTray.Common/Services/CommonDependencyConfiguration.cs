@@ -38,9 +38,7 @@ namespace RichardSzalay.PocketCiTray.Services
                 l.Resolve<ISchedulerAccessor>(),
                 l.Resolve<ILog>()));
 
-            container.Register<IJobRepository>(l => new JobRepository(
-                l.Resolve<ISchedulerAccessor>(),
-                l.Resolve<IClock>()));
+            container.Register<IJobRepository>(l => new InMemoryJobRepository(l.Resolve<IClock>()));
 
             container.Register<IJobUpdateService>(l => new JobUpdateService(
                 l.Resolve<IJobProviderFactory>(),

@@ -1,8 +1,10 @@
 ﻿using System;
+using System.Data.Linq.Mapping;
 using System.Net;
 
 namespace RichardSzalay.PocketCiTray
 {
+    [Table]
     public class BuildServer
     {
         public int Id { get; set; }

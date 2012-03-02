@@ -62,25 +62,25 @@ namespace RichardSzalay.PocketCiTray.Services
 
         public bool FirstRun
         {
-            get { return GetValue(FirstRunKey, false); }
+            get { return GetValue(FirstRunKey, true); }
             set { writeThroughValues[FirstRunKey] = value; }
         }
 
         public Uri SuccessTileUri
         {
-            get { return new Uri(GetValue(FirstRunKey, "Images/Tiles/Success.png"), UriKind.Relative); }
+            get { return new Uri(GetValue(SuccessTileUriKey, "Images/Tiles/Success.png"), UriKind.RelativeOrAbsolute); }
             set { writeThroughValues[SuccessTileUriKey] = value.OriginalString; }
         }
 
         public Uri FailureTileUri
         {
-            get { return new Uri(GetValue(FirstRunKey, "Images/Tiles/Failed.png"), UriKind.Relative); }
+            get { return new Uri(GetValue(FailureTileUriKey, "Images/Tiles/Failed.png"), UriKind.RelativeOrAbsolute); }
             set { writeThroughValues[FailureTileUriKey] = value.OriginalString; }
         }
 
         public Uri UnavailableTileUri
         {
-            get { return new Uri(GetValue(FirstRunKey, "Images/Tiles/Unavailable.png"), UriKind.Relative); }
+            get { return new Uri(GetValue(UnavailableTileUriKey, "Images/Tiles/Unavailable.png"), UriKind.RelativeOrAbsolute); }
             set { writeThroughValues[UnavailableTileUriKey] = value.OriginalString; }
         }
 

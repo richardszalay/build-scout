@@ -56,6 +56,7 @@
     <Reference Include="SilverlightSerializer.WP71">
       <HintPath>..\packages\WP7Contrib.Caching.1.0.0.16\lib\sl4-WindowsPhone71\SilverlightSerializer.WP71.dll</HintPath>
     </Reference>
+    <Reference Include="system.data.linq" />
     <Reference Include="System.Observable" />
     <Reference Include="System.Reactive">
       <HintPath>..\packages\Rx-Main.1.0.11226\lib\SL3-WP\System.Reactive.dll</HintPath>
@@ -104,6 +105,10 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>CommonStrings.resx</DependentUpon>
     </Compile>
+    <Compile Include="Data\BuildServerEntity.cs" />
+    <Compile Include="Data\JobDataContext.cs" />
+    <Compile Include="Data\JobEntity.cs" />
+    <Compile Include="DbJobRepository.cs" />
     <Compile Include="Extensions\Extensions\ObservableCommand.cs" />
     <Compile Include="Extensions\Extensions\PropertyChangeExtensions.cs" />
     <Compile Include="Extensions\Extensions\UriExtensions.cs" />
@@ -111,7 +116,7 @@
     <Compile Include="IJobRepository.cs" />
     <Compile Include="ISchedulerAccessor.cs" />
     <Compile Include="Job.cs" />
-    <Compile Include="JobRepository.cs" />
+    <Compile Include="InMemoryJobRepository.cs" />
     <Compile Include="JobTile.cs" />
     <Compile Include="BuildResultChange.cs" />
     <Compile Include="Logging.cs" />
@@ -141,6 +146,7 @@
     <Compile Include="Services\IApplicationSettings.cs" />
     <Compile Include="Services\IApplicationTileService.cs" />
     <Compile Include="Services\IClock.cs" />
+    <Compile Include="Services\IDataEncryptor.cs" />
     <Compile Include="Services\IIsolatedStorageFacade.cs" />
     <Compile Include="Services\IJobNotificationService.cs" />
     <Compile Include="Services\IJobUpdateService.cs" />

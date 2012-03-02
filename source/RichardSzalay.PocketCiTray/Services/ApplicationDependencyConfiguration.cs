@@ -46,13 +46,18 @@ namespace RichardSzalay.PocketCiTray.Services
             container.Register<INavigationService>(l => 
                 new PhoneApplicationFrameNavigationService(l.Resolve<PhoneApplicationFrame>()));
 
+            container.Register<ITileImageGenerator>(c => new TileImageGenerator(
+                c.Resolve<IApplicationResourceFacade>()));
+
             container.Register<ISettingsApplier>(c => new SettingsApplier(
                 c.Resolve<ILogManager>(),
                 c.Resolve<IJobUpdateService>(),
                 c.Resolve<IPeriodicJobUpdateService>(),
                 c.Resolve<IClock>(),
                 c.Resolve<IApplicationResourceFacade>(),
-                c.Resolve<IPhoneApplicationServiceFacade>()));
+                c.Resolve<IPhoneApplicationServiceFacade>(),
+                c.Resolve<ITileImageGenerator>(),
+                c.Resolve<IIsolatedStorageFacade>()));
 
             container.Register<Bootstrap>(l => new Bootstrap(l.Resolve<IApplicationSettings>(),
                 l.Resolve<IClock>(),

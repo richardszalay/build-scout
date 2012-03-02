@@ -92,7 +92,7 @@ namespace RichardSzalay.PocketCiTray.ViewModels
 
             if (result == MessageBoxResult.OK)
             {
-                this.jobRepository.DeleteBuildServer(buildServer)
+                Observable.ToAsync(() => this.jobRepository.DeleteBuildServer(buildServer), schedulerAccessor.Background)()
                     .ObserveOn(schedulerAccessor.UserInterface)
                     .Subscribe(_ =>
                     {

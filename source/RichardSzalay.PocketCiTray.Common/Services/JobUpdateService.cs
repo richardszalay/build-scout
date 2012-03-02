@@ -72,8 +72,11 @@ namespace RichardSzalay.PocketCiTray.Services
 
             mutex.ReleaseMutex();
 
-            disposable.Disposable = jobRepository.GetJobs()
-                .SelectMany(jobs => jobs.GroupBy(j => j.BuildServer))
+            var serverGroups = jobRepository.GetJobs()
+                .GroupBy(j => j.BuildServer);
+
+            disposable.Disposable = serverGroups
+                .ToObservable(schedulerAccessor.Background)
                 .SelectMany(group => jobProviderFactory
                     .Get(group.Key.Provider)
                     .UpdateAll(group.Key, group)
@@ -86,11 +89,6 @@ namespace RichardSzalay.PocketCiTray.Services
                 )
                 .Buffer(timeout).Take(1)
                 .Subscribe(OnComplete);
-        }
-
-        private IObservable<ICollection<Job>> OnJobGroupUpdated(ICollection<Job> jobs)
-        {
-            return jobRepository.UpdateAll(jobs);
         }
 
         public event EventHandler Complete;
@@ -121,25 +119,23 @@ namespace RichardSzalay.PocketCiTray.Services
 
         private void OnComplete(IList<Job> updatedJobs)
         {
-            jobRepository.UpdateAll(updatedJobs)
-                .SelectMany(_ => jobRepository.GetJobs())
-                .Subscribe(allJobs =>
-                    {
-                        applicationTileService.UpdateAll(allJobs);
+            jobRepository.UpdateAll(updatedJobs);
 
-                        jobNotificationService.Notify(updatedJobs);
+            var allJobs = jobRepository.GetJobs();
+            applicationTileService.UpdateAll(allJobs);
 
-                        LastUpdateTime = clock.UtcNow;
+            jobNotificationService.Notify(updatedJobs);
 
-                        isUpdating = false;
+            LastUpdateTime = clock.UtcNow;
 
-                        var handler = Complete;
+            isUpdating = false;
 
-                        if (handler != null)
-                        {
-                            handler(this, EventArgs.Empty);
-                        }
-                    });
+            var handler = Complete;
+
+            if (handler != null)
+            {
+                handler(this, EventArgs.Empty);
+            }
         }
 
         public void Cancel()

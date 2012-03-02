@@ -98,6 +98,7 @@ namespace RichardSzalay.PocketCiTray.ViewModels
                 applicationSettings.Save();
 
                 settingsApplier.Rebuild(applicationSettings);
+                settingsApplier.ApplyToSession(applicationSettings);
             }
         }
 
