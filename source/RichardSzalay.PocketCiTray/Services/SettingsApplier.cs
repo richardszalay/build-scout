@@ -1,6 +1,7 @@
 ﻿using System;
 using WP7Contrib.Logging;
 using System.Windows.Media;
+using Microsoft.Phone.Shell;
 
 namespace RichardSzalay.PocketCiTray.Services
 {
@@ -17,16 +18,18 @@ namespace RichardSzalay.PocketCiTray.Services
         private readonly IPeriodicJobUpdateService periodicJobUpdateService;
         private readonly IClock clock;
         private readonly IApplicationResourceFacade applicationResourceFacade;
+        private readonly IPhoneApplicationServiceFacade phoneApplicationService;
 
         public SettingsApplier(ILogManager logManager, IJobUpdateService jobUpdateService,
             IPeriodicJobUpdateService periodicJobUpdateService, IClock clock,
-            IApplicationResourceFacade applicationResourceFacade)
+            IApplicationResourceFacade applicationResourceFacade, IPhoneApplicationServiceFacade phoneApplicationService)
         {
             this.logManager = logManager;
             this.jobUpdateService = jobUpdateService;
             this.periodicJobUpdateService = periodicJobUpdateService;
             this.clock = clock;
             this.applicationResourceFacade = applicationResourceFacade;
+            this.phoneApplicationService = phoneApplicationService;
         }
 
         public void ApplyToSession(IApplicationSettings applicationSettings)
@@ -41,6 +44,10 @@ namespace RichardSzalay.PocketCiTray.Services
             CopyColorFrom(applicationSettings.SuccessColorResource, "BuildResultSuccessBrush");
             CopyColorFrom(applicationSettings.FailedColorResource, "BuildResultFailedBrush");
             CopyColorFrom(applicationSettings.UnavailableColorResource, "BuildResultUnavailableBrush");
+
+            phoneApplicationService.ApplicationIdleDetectionMode = (applicationSettings.RunUnderLockScreen)
+                ? IdleDetectionMode.Disabled
+                : IdleDetectionMode.Enabled;
         }
 
         private void CopyColorFrom(string fromResource, string toResource)

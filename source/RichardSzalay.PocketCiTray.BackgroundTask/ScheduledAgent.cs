@@ -5,6 +5,7 @@ using System.Windows;
 using Funq;
 using Microsoft.Phone.Scheduler;
 using RichardSzalay.PocketCiTray.Services;
+using WP7Contrib.Logging;
 
 namespace RichardSzalay.PocketCiTray.BackgroundTask
 {

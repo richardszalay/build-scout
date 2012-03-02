@@ -158,11 +158,13 @@
     <Compile Include="Services\IHelpService.cs" />
     <Compile Include="Services\INavigationService.cs" />
     <Compile Include="Services\IPeriodicJobUpdateService.cs" />
+    <Compile Include="Services\IPhoneApplicationServiceFacade.cs" />
     <Compile Include="Services\IScheduledActionServiceFacade.cs" />
     <Compile Include="Services\IWebBrowserTaskFacade.cs" />
     <Compile Include="Services\MessageBoxFacade.cs" />
     <Compile Include="Services\PeriodicJobUpdateService.cs" />
     <Compile Include="Services\PhoneApplicationFrameNavigationService.cs" />
+    <Compile Include="Services\PhoneApplicationServiceFacade.cs" />
     <Compile Include="Services\ScheduledActionServiceFacade.cs" />
     <Compile Include="Services\SettingsApplier.cs" />
     <Compile Include="Services\TileImageCreator.cs" />

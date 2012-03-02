@@ -4,6 +4,7 @@ using RichardSzalay.PocketCiTray.Providers;
 using RichardSzalay.PocketCiTray.ViewModels;
 using WP7Contrib.Logging;
 using Microsoft.Phone.Controls;
+using Microsoft.Phone.Shell;
 
 namespace RichardSzalay.PocketCiTray.Services
 {
@@ -50,7 +51,8 @@ namespace RichardSzalay.PocketCiTray.Services
                 c.Resolve<IJobUpdateService>(),
                 c.Resolve<IPeriodicJobUpdateService>(),
                 c.Resolve<IClock>(),
-                c.Resolve<IApplicationResourceFacade>()));
+                c.Resolve<IApplicationResourceFacade>(),
+                c.Resolve<IPhoneApplicationServiceFacade>()));
 
             container.Register<Bootstrap>(l => new Bootstrap(l.Resolve<IApplicationSettings>(),
                 l.Resolve<IClock>(),
@@ -125,6 +127,9 @@ namespace RichardSzalay.PocketCiTray.Services
             container.Register<IWebBrowserTaskFacade>(new WebBrowserTaskFacade());
             
             container.Register<IApplicationResourceFacade>(new ApplicationResourceFacade());
+
+            container.Register<IPhoneApplicationServiceFacade>(c => new PhoneApplicationServiceFacade(
+                PhoneApplicationService.Current));
         }
     }
 }

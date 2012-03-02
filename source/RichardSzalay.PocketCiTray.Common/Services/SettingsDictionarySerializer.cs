@@ -11,6 +11,7 @@ namespace RichardSzalay.PocketCiTray.Services
             { ValueType.String, r => r.ReadString() },
             { ValueType.Int32, r => r.ReadInt32() },
             { ValueType.Int64, r => r.ReadInt64() },
+            { ValueType.Boolean, r => r.ReadBoolean() },
             { ValueType.DateTimeOffset, r => new DateTimeOffset(r.ReadInt64(), new TimeSpan(r.ReadInt64())) },
         };
 
@@ -23,7 +24,8 @@ namespace RichardSzalay.PocketCiTray.Services
             {
                 w.Write(((DateTimeOffset) v).Ticks);
                 w.Write(((DateTimeOffset) v).Offset.Ticks);
-            } }
+            } },
+            { ValueType.Boolean, (w,v) => w.Write((bool)v) }
         };
 
         public void Serialize(IDictionary<string, object> settings, Stream stream)
@@ -70,6 +72,7 @@ namespace RichardSzalay.PocketCiTray.Services
             if (value is Int32) return ValueType.Int32;
             if (value is Int64) return ValueType.Int64;
             if (value is DateTimeOffset) return ValueType.DateTimeOffset;
+            if (value is bool) return ValueType.Boolean;
             
             throw new NotSupportedException(value == null ? "null" : value.GetType().FullName);
         }
@@ -79,7 +82,8 @@ namespace RichardSzalay.PocketCiTray.Services
             String = 0,
             Int32 = 1,
             Int64 = 2,
-            DateTimeOffset = 3
+            DateTimeOffset = 3,
+            Boolean = 4
         }
     }
 }
