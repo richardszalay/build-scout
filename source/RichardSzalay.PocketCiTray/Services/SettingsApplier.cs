@@ -9,7 +9,7 @@ namespace RichardSzalay.PocketCiTray.Services
     public interface ISettingsApplier
     {
         void ApplyToSession(IApplicationSettings applicationSettings);
-        void Rebuild(IApplicationSettings applicationSettings);
+        void RebuildSharedResources(IApplicationSettings applicationSettings);
     }
 
     public class SettingsApplier : ISettingsApplier
@@ -51,14 +51,21 @@ namespace RichardSzalay.PocketCiTray.Services
                 ? IdleDetectionMode.Disabled
                 : IdleDetectionMode.Enabled;
 
-            UpdateTiles(applicationSettings);
+            ApplyBuildResultColors(applicationSettings);
         }
 
-        private void UpdateTiles(IApplicationSettings applicationSettings)
+        private void ApplyBuildResultColors(IApplicationSettings applicationSettings)
         {
-            var successColor = CopyColorFrom(applicationSettings.SuccessColorResource, "BuildResultSuccessBrush");
-            var failedColor = CopyColorFrom(applicationSettings.FailedColorResource, "BuildResultFailedBrush");
-            var unavailableColor = CopyColorFrom(applicationSettings.UnavailableColorResource, "BuildResultUnavailableBrush");
+            CopyColorFrom(applicationSettings.SuccessColorResource, "BuildResultSuccessBrush");
+            CopyColorFrom(applicationSettings.FailedColorResource, "BuildResultFailedBrush");
+            CopyColorFrom(applicationSettings.UnavailableColorResource, "BuildResultUnavailableBrush");
+        }
+
+        private void UpdateTileImages(IApplicationSettings applicationSettings)
+        {
+            var successColor = applicationResourceFacade.GetResource<SolidColorBrush>("BuildResultSuccessBrush").Color;
+            var failedColor = applicationResourceFacade.GetResource<SolidColorBrush>("BuildResultFailedBrush").Color;
+            var unavailableColor = applicationResourceFacade.GetResource<SolidColorBrush>("BuildResultUnavailableBrush").Color;
 
             applicationSettings.SuccessTileUri = UpdateTileImage(successColor, @"Shared\ShellContent\SuccessTile.png");
             applicationSettings.FailureTileUri = UpdateTileImage(failedColor, @"Shared\ShellContent\FailedTile.png");
@@ -69,11 +76,6 @@ namespace RichardSzalay.PocketCiTray.Services
         private Uri UpdateTileImage(Color color, string path)
         {
             string directory = Path.GetDirectoryName(path);
-
-            if (!isolatedStorageFacade.DirectoryExists(directory))
-            {
-                isolatedStorageFacade.CreateDirectory(directory);
-            }
 
             using (var output = isolatedStorageFacade.CreateFile(path))
             {
@@ -109,9 +111,9 @@ namespace RichardSzalay.PocketCiTray.Services
             }
         }
 
-        public void Rebuild(IApplicationSettings applicationSettings)
+        public void RebuildSharedResources(IApplicationSettings applicationSettings)
         {
-            ApplyToSession(applicationSettings);
+            UpdateTileImages(applicationSettings);
         }
 
     }

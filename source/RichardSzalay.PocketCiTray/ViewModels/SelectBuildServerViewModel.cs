@@ -45,10 +45,8 @@ namespace RichardSzalay.PocketCiTray.ViewModels
 
         private void LoadBuildServers()
         {
-            jobRepository.GetBuildServers()
-                .ObserveOn(schedulerAccessor.UserInterface)
-                .Finally(StopLoading)
-                .Subscribe(result => BuildServers = new ObservableCollection<BuildServer>(result));
+            var buildServers = jobRepository.GetBuildServers();
+            BuildServers = new ObservableCollection<BuildServer>(buildServers);
         }
 
         [NotifyProperty]

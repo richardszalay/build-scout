@@ -125,5 +125,16 @@ namespace RichardSzalay.PocketCiTray.Tests.Mocks
         public List<ICollection<Job>> AddJobsCalls = new List<ICollection<Job>>();
         public List<ICollection<Job>> UpdateAllCalls = new List<ICollection<Job>>();
         public List<Job> DeleteJobCalls = new List<Job>();
+
+
+        public ICollection<Job> GetJobs(BuildServer buildServer)
+        {
+            throw new NotImplementedException();
+        }
+
+
+        public void Initialize()
+        {
+        }
     }
 }

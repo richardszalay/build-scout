@@ -122,7 +122,7 @@ namespace RichardSzalay.PocketCiTray.ViewModels
             StartLoading(Strings.ValidatingBuildServerStatusMessage);
 
             validateBuildServer.Disposable = provider.ValidateBuildServer(buildServer)
-                .SelectMany(jobRepository.AddBuildServer)
+                .Select(jobRepository.AddBuildServer)
                 .ObserveOn(schedulerAccessor.UserInterface)
                 .Finally(StopLoading)
                 .Subscribe(OnAddBuildSucceeded, OnAddBuildServerFailed);

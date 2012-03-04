@@ -23,6 +23,7 @@ namespace RichardSzalay.PocketCiTray.Tests.Infrastructure
             container.Register<IApplicationSettings>(new StubApplicationSettings());
             container.Register<IMutexService>(new BlacklistMutexService());
             container.Register<INavigationService>(new FakeNavigationService());
+            container.Register<ISettingsApplier>(new MockSettingsApplier());
 
             return container;
         }

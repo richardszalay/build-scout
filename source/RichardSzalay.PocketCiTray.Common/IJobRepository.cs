@@ -15,5 +15,9 @@ namespace RichardSzalay.PocketCiTray
         bool DeleteJob(Job job);
         bool DeleteBuildServer(BuildServer buildServer);
         DateTimeOffset LastUpdateDate { get; }
+
+        ICollection<Job> GetJobs(BuildServer buildServer);
+
+        void Initialize();
     }
 }

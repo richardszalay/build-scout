@@ -58,9 +58,7 @@ namespace RichardSzalay.PocketCiTray.ViewModels
 
             int jobId = Int32.Parse(query["jobId"]);
 
-            Disposables.Add(jobRepository.GetJob(jobId)
-                .ObserveOn(schedulerAccessor.UserInterface)
-                .Subscribe(j => Job = j));
+            Job = jobRepository.GetJob(jobId);
         }
 
         [NotifyProperty]

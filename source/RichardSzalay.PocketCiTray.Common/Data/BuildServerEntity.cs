@@ -4,9 +4,11 @@ using System.Data.Linq.Mapping;
 using System.Net;
 using System.Security.Cryptography;
 using RichardSzalay.PocketCiTray.Services;
+using System.Data.Linq;
 
 namespace RichardSzalay.PocketCiTray.Data
 {
+    [Table(Name = "BuildServer")]
     public class BuildServerEntity
     {
         private int id;
@@ -14,6 +16,14 @@ namespace RichardSzalay.PocketCiTray.Data
         private string name;
         private string provider;
         private string uri;
+
+        public BuildServerEntity()
+        {
+            jobs = new EntitySet<JobEntity>(
+                j => j.BuildServer = this,
+                j => j.BuildServer = null
+                );
+        }
 
         [Column(IsPrimaryKey = true, IsDbGenerated = true, DbType = "INT NOT NULL IDENTITY", CanBeNull = false, AutoSync = AutoSync.OnInsert)]
         public int Id
@@ -87,6 +97,18 @@ namespace RichardSzalay.PocketCiTray.Data
                     uri = value;
                     NotifyPropertyChanged("Uri");
                 }
+            }
+        }
+
+        private EntitySet<JobEntity> jobs;
+
+        [Association(ThisKey = "Id", OtherKey = "BuildServerId", Storage = "jobs", DeleteRule = "CASCADE")]
+        public EntitySet<JobEntity> Jobs
+        {
+            get { return jobs; }
+            set
+            {
+                jobs.Assign(value);
             }
         }
 

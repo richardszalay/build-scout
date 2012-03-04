@@ -24,13 +24,17 @@ namespace RichardSzalay.PocketCiTray.Tests.ApplicationTests
         public class when_starting
         {
             private BlacklistMutexService mutexService;
+            private MockSettingsApplier settingsApplier;
+
             [ClassInitialize]
             public void because_of()
             {
                 this.mutexService = new BlacklistMutexService();
+                this.settingsApplier = new MockSettingsApplier();
 
                 Container container = TestDependencyConfiguration.Configure();
                 container.Register<IMutexService>(mutexService);
+                container.Register<ISettingsApplier>(settingsApplier);
 
                 var bootstrap = container.Resolve<Bootstrap>();
 
@@ -42,6 +46,12 @@ namespace RichardSzalay.PocketCiTray.Tests.ApplicationTests
             {
                 mutexService.TakenMutexes.Contains(MutexNames.ForegroundApplication);
             }
+
+            [TestMethod]
+            public void it_should_apply_settings_to_the_session()
+            {
+                Assert.AreEqual(1, settingsApplier.TimedAppliedToSession);
+            }
         }
 
         [TestClass]
@@ -49,10 +59,14 @@ namespace RichardSzalay.PocketCiTray.Tests.ApplicationTests
         {
             private StubApplicationSettings applicationSettings;
             private StubMessageBoxFacade messageBoxFacade;
+            private MockSettingsApplier settingsApplier;
+
             [ClassInitialize]
             public void because_of()
             {
                 this.messageBoxFacade = new StubMessageBoxFacade(MessageBoxResult.Cancel);
+
+                settingsApplier = new MockSettingsApplier();
 
                 this.applicationSettings = new StubApplicationSettings();
                 this.applicationSettings.FirstRun = true;
@@ -60,6 +74,7 @@ namespace RichardSzalay.PocketCiTray.Tests.ApplicationTests
                 Container container = TestDependencyConfiguration.Configure();
                 container.Register<IApplicationSettings>(applicationSettings);
                 container.Register<IMessageBoxFacade>(messageBoxFacade);
+                container.Register<ISettingsApplier>(settingsApplier);
 
                 var bootstrap = container.Resolve<Bootstrap>();
 
@@ -83,13 +98,21 @@ namespace RichardSzalay.PocketCiTray.Tests.ApplicationTests
             {
                 Assert.IsTrue(applicationSettings.TimesSaved > 0);
             }
+
+            [TestMethod]
+            public void it_should_apply_application_settings()
+            {
+                Assert.IsTrue(applicationSettings.TimesSaved > 0);
+            }
         }
 
         [TestClass]
         public class when_accepting_background_updates_on_first_run
         {
+            private TimeSpan startingBackgroundInterval = TimeSpan.FromSeconds(5);
             private StubApplicationSettings applicationSettings;
             private StubMessageBoxFacade messageBoxFacade;
+            
 
             [ClassInitialize]
             public void because_of()
@@ -98,6 +121,7 @@ namespace RichardSzalay.PocketCiTray.Tests.ApplicationTests
 
                 this.applicationSettings = new StubApplicationSettings();
                 this.applicationSettings.FirstRun = true;
+                this.applicationSettings.BackgroundUpdateInterval = startingBackgroundInterval;
 
                 Container container = TestDependencyConfiguration.Configure();
                 container.Register<IApplicationSettings>(applicationSettings);
@@ -109,12 +133,12 @@ namespace RichardSzalay.PocketCiTray.Tests.ApplicationTests
             }
 
             [TestMethod]
-            public void it_should_enable_background_updates()
+            public void it_should_not_disable_background_updates()
             {
                 Assert.IsTrue(applicationSettings.BackgroundUpdateEnabled);
             }
         }
-
+        
         [TestClass]
         public class when_opting_out_of_background_updates_on_first_run
         {
@@ -139,177 +163,9 @@ namespace RichardSzalay.PocketCiTray.Tests.ApplicationTests
             }
 
             [TestMethod]
-            public void it_should_not_enable_background_updates()
+            public void it_should_disable_background_updates()
             {
                 Assert.IsFalse(applicationSettings.BackgroundUpdateEnabled);
-            }
-        }
-
-        [TestClass]
-        public class when_starting_with_foreground_updates_enabled
-        {
-            private StubApplicationSettings applicationSettings;
-            private StubPeriodicJobUpdateService periodicUpdateService;
-
-            [ClassInitialize]
-            public void because_of()
-            {
-                this.applicationSettings = new StubApplicationSettings();
-                this.applicationSettings.ApplicationUpdateInterval = TimeSpan.FromMinutes(5);
-
-                this.periodicUpdateService = new StubPeriodicJobUpdateService();
-
-                Container container = TestDependencyConfiguration.Configure();
-                container.Register<IApplicationSettings>(applicationSettings);
-                container.Register<IPeriodicJobUpdateService>(periodicUpdateService);
-
-                container.Resolve<Bootstrap>().Startup();
-            }
-
-            [TestMethod]
-            public void it_should_start_the_job_update_service()
-            {
-                Assert.IsTrue(periodicUpdateService.IsRunning);
-            }
-        }
-
-        [TestClass]
-        public class when_starting_with_foreground_updates_disabled
-        {
-            private StubApplicationSettings applicationSettings;
-            private StubPeriodicJobUpdateService periodicUpdateService;
-
-            [ClassInitialize]
-            public void because_of()
-            {
-                this.applicationSettings = new StubApplicationSettings();
-                this.applicationSettings.ApplicationUpdateInterval = TimeSpan.Zero;
-
-                this.periodicUpdateService = new StubPeriodicJobUpdateService();
-
-                Container container = TestDependencyConfiguration.Configure();
-                container.Register<IApplicationSettings>(applicationSettings);
-                container.Register<IPeriodicJobUpdateService>(periodicUpdateService);
-
-                container.Resolve<Bootstrap>().Startup();
-            }
-
-            [TestMethod]
-            public void it_should_start_the_job_update_service()
-            {
-                Assert.IsFalse(periodicUpdateService.IsRunning);
-            }
-        }
-
-        [TestClass]
-        public class when_starting_with_background_updates_enabled
-        {
-            private StubApplicationSettings applicationSettings;
-            private StubPeriodicJobUpdateService periodicUpdateService;
-
-            [ClassInitialize]
-            public void because_of()
-            {
-                this.applicationSettings = new StubApplicationSettings();
-                this.applicationSettings.BackgroundUpdateEnabled = true;
-
-                this.periodicUpdateService = new StubPeriodicJobUpdateService();
-
-                Container container = TestDependencyConfiguration.Configure();
-                container.Register<IApplicationSettings>(applicationSettings);
-                container.Register<IPeriodicJobUpdateService>(periodicUpdateService);
-
-                container.Resolve<Bootstrap>().Startup();
-            }
-
-            [TestMethod]
-            public void it_should_register_the_background_update_service()
-            {
-                Assert.IsTrue(periodicUpdateService.IsBackgroundServiceRegistered);
-            }
-        }
-
-        [TestClass]
-        public class when_starting_with_background_updates_disabled
-        {
-            private StubApplicationSettings applicationSettings;
-            private StubPeriodicJobUpdateService periodicUpdateService;
-
-            [ClassInitialize]
-            public void because_of()
-            {
-                this.applicationSettings = new StubApplicationSettings();
-                this.applicationSettings.BackgroundUpdateEnabled = false;
-
-                this.periodicUpdateService = new StubPeriodicJobUpdateService();
-
-                Container container = TestDependencyConfiguration.Configure();
-                container.Register<IApplicationSettings>(applicationSettings);
-                container.Register<IPeriodicJobUpdateService>(periodicUpdateService);
-
-                container.Resolve<Bootstrap>().Startup();
-            }
-
-            [TestMethod]
-            public void it_should_not_register_the_background_update_service()
-            {
-                Assert.IsFalse(periodicUpdateService.IsBackgroundServiceRegistered);
-            }
-        }
-
-        [TestClass]
-        public class when_starting_with_logging_enabled
-        {
-            private StubApplicationSettings applicationSettings;
-            private StubLoggingService loggingService;
-
-            [ClassInitialize]
-            public void because_of()
-            {
-                this.applicationSettings = new StubApplicationSettings();
-                this.applicationSettings.LoggingEnabled = true;
-
-                this.loggingService = new StubLoggingService();
-
-                Container container = TestDependencyConfiguration.Configure();
-                container.Register<IApplicationSettings>(applicationSettings);
-                container.Register<ILogManager>(loggingService);
-
-                container.Resolve<Bootstrap>().Startup();
-            }
-
-            [TestMethod]
-            public void it_should_enable_the_logging_service()
-            {
-                Assert.IsTrue(loggingService.IsEnabled);
-            }
-        }
-
-        [TestClass]
-        public class when_starting_with_logging_disabled
-        {
-            private StubApplicationSettings applicationSettings;
-            private StubLoggingService loggingService;
-
-            [ClassInitialize]
-            public void because_of()
-            {
-                this.applicationSettings = new StubApplicationSettings();
-                this.applicationSettings.LoggingEnabled = false;
-
-                this.loggingService = new StubLoggingService();
-
-                Container container = TestDependencyConfiguration.Configure();
-                container.Register<IApplicationSettings>(applicationSettings);
-                container.Register<ILogManager>(loggingService);
-
-                container.Resolve<Bootstrap>().Startup();
-            }
-
-            [TestMethod]
-            public void it_should_not_enable_the_logging_service()
-            {
-                Assert.IsFalse(loggingService.IsEnabled);
             }
         }
 

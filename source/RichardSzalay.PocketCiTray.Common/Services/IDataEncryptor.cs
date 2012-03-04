@@ -8,13 +8,13 @@ using System.Text;
 
 namespace RichardSzalay.PocketCiTray.Services
 {
-    internal interface ICredentialEncryptor
+    public interface ICredentialEncryptor
     {
         NetworkCredential Decrypt(byte[] encryptedData);
         byte[] Encrypt(NetworkCredential credential);
     }
 
-    internal class CredentialEncryptor : ICredentialEncryptor
+    public class CredentialEncryptor : ICredentialEncryptor
     {
         public NetworkCredential Decrypt(byte[] encryptedData)
         {

@@ -6,18 +6,18 @@ using System.ComponentModel;
 namespace RichardSzalay.PocketCiTray.Data
 {
     [Table(Name = "Job")]
-    internal class JobEntity : INotifyPropertyChanged, INotifyPropertyChanging
+    public class JobEntity : INotifyPropertyChanged, INotifyPropertyChanging
     {
         private int id;
         private string alias;
-        private DateTimeOffset? lastUpdated;
+        private DateTime? lastUpdated;
         private string name;
         private int notificationPreference;
         private string remoteId;
         private string webUri;
         private string lastBuildLabel;
         private int lastBuildResult;
-        private DateTimeOffset lastBuildTime;
+        private DateTime lastBuildTime;
         private int buildServerId;
         private EntityRef<BuildServerEntity> buildServer;
 
@@ -37,7 +37,7 @@ namespace RichardSzalay.PocketCiTray.Data
         }
 
         [Column]
-        public DateTimeOffset? LastUpdated
+        public DateTime? LastUpdated
         {
             get { return lastUpdated; }
             set
@@ -157,7 +157,7 @@ namespace RichardSzalay.PocketCiTray.Data
         }
 
         [Column]
-        public DateTimeOffset LastBuildTime
+        public DateTime LastBuildTime
         {
             get { return lastBuildTime; }
             set
@@ -181,15 +181,13 @@ namespace RichardSzalay.PocketCiTray.Data
                 {
                     NotifyPropertyChanging("BuildServerId");
                     buildServerId = value;
-                    NotifyPropertyChanged("BuildServerId");
+                    NotifyPropertyChanged("BuildServerId");                  
                 }
             }
         }
 
-        
-
-        [Column]
-        [Association(ThisKey = "BuildServerId", OtherKey = "Id")]
+        [Association(ThisKey = "BuildServerId", OtherKey = "Id", IsForeignKey = true, 
+            Storage = "buildServer")]
         public BuildServerEntity BuildServer
         {
             get { return buildServer.Entity; }
@@ -216,10 +214,12 @@ namespace RichardSzalay.PocketCiTray.Data
             WebUri = job.WebUri.AbsoluteUri;
             NotificationPreference = (int) job.NotificationPreference;
             RemoteId = job.RemoteId;
-            LastUpdated = job.LastUpdated;
+            LastUpdated = job.LastUpdated.HasValue
+                ? (DateTime?)ToDbDate(job.LastUpdated.Value)
+                : null;
             LastBuildLabel = job.LastBuild.Label;
             LastBuildResult = (int)job.LastBuild.Result;
-            LastBuildTime = job.LastBuild.Time;
+            LastBuildTime = job.LastBuild.Time.ToUniversalTime().DateTime;
         }
 
         public Job ToJob(BuildServer actualBuildServer)
@@ -234,7 +234,9 @@ namespace RichardSzalay.PocketCiTray.Data
                 WebUri = (WebUri == null)
                              ? null
                              : new Uri(WebUri, UriKind.Absolute),
-                LastUpdated = lastUpdated,
+                LastUpdated = lastUpdated.HasValue
+                    ? (DateTimeOffset?)FromDbDate(lastUpdated.Value)
+                    : null,
                 LastBuild = new Build
                 {
                     Label = lastBuildLabel,
@@ -275,6 +277,16 @@ namespace RichardSzalay.PocketCiTray.Data
             {
                 handler(this, new PropertyChangingEventArgs(property));
             }
+        }
+
+        private static DateTime ToDbDate(DateTimeOffset dto)
+        {
+            return dto.UtcDateTime;
+        }
+
+        private static DateTimeOffset FromDbDate(DateTime dt)
+        {
+            return new DateTimeOffset(dt, TimeSpan.Zero);
         }
 
         public event PropertyChangedEventHandler PropertyChanged;

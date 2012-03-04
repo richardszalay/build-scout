@@ -1,25 +1,41 @@
 ﻿using System;
 using System.Data.Linq;
+using Microsoft.Phone.Data.Linq;
+using System.Data.Linq.Mapping;
 
 namespace RichardSzalay.PocketCiTray.Data
 {
-    internal interface IJobDataContext : IDisposable
+    public interface IJobDataContext : IDisposable
     {
-        Table<JobEntity> Jobs { get; set; }
-        Table<BuildServerEntity> BuildServers { get; set; }
+        Table<JobEntity> Jobs { get; }
+        Table<BuildServerEntity> BuildServers { get; }
 
         void SubmitChanges();
+
+        bool DatabaseExists();
+
+        void CreateDatabase();
+
+        DatabaseSchemaUpdater CreateDatabaseSchemaUpdater();
     }
 
-    internal class JobDataContext : DataContext, IJobDataContext
+    public class JobDataContext : DataContext, IJobDataContext
     {
         public JobDataContext(string connectionString)
             : base(connectionString)
         {
         }
 
-        public Table<JobEntity> Jobs { get; set; }
+        // Public for auto-injection purposes
+        public Table<JobEntity> jobs;
+        public Table<BuildServerEntity> buildServers;
 
-        public Table<BuildServerEntity> BuildServers { get; set; }
+        public Table<JobEntity> Jobs { get { return jobs; } }
+        public Table<BuildServerEntity> BuildServers { get { return buildServers; } }
+
+        DatabaseSchemaUpdater IJobDataContext.CreateDatabaseSchemaUpdater()
+        {
+            return this.CreateDatabaseSchemaUpdater();
+        }
     }
 }

@@ -17,17 +17,20 @@ namespace RichardSzalay.PocketCiTray
         private readonly IMutexService mutexService;
         private readonly ILogManager logManager;
         private readonly ISettingsApplier settingsApplier;
+        private readonly IJobRepository jobRepository;
         private Mutex applicationMutex;
 
         public Bootstrap(IApplicationSettings applicationSettings, IClock clock, 
             IMessageBoxFacade messageBox, IMutexService mutexService,
-            ILogManager logManager, ISettingsApplier settingsApplier)
+            ILogManager logManager, ISettingsApplier settingsApplier,
+            IJobRepository jobRepository)
         {
             this.applicationSettings = applicationSettings;
             this.clock = clock;
             this.messageBox = messageBox;
             this.mutexService = mutexService;
             this.logManager = logManager;
+            this.jobRepository = jobRepository;
             this.settingsApplier = settingsApplier;
         }
 
@@ -38,14 +41,14 @@ namespace RichardSzalay.PocketCiTray
         {
             applicationMutex = mutexService.GetOwned(MutexNames.ForegroundApplication, TimeSpan.FromMilliseconds(100));
 
+            jobRepository.Initialize();
+
             if (applicationSettings.FirstRun)
             {
                 PerformFirstRun();
             }
-            else
-            {
-                settingsApplier.ApplyToSession(applicationSettings);
-            }
+
+            settingsApplier.ApplyToSession(applicationSettings);
         }
 
         public void Continue()
@@ -64,8 +67,6 @@ namespace RichardSzalay.PocketCiTray
 
             applicationSettings.FirstRun = false;
             applicationSettings.Save();
-
-            settingsApplier.ApplyToSession(applicationSettings);
         }
 
         public void Shutdown()

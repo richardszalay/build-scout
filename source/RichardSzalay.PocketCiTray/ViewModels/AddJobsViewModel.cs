@@ -69,18 +69,16 @@ namespace RichardSzalay.PocketCiTray.ViewModels
 
             StartLoading(Strings.FindingJobsStatusMessage);
 
-            Observable.Return(buildServerId)
-                .ObserveOn(schedulerAccessor.Background)
-                .SelectMany(id => jobRepository.GetBuildServer(buildServerId))
-                .Do(server => BuildServer = server)
-                .SelectMany(server => jobProviderFactory
-                    .Get(server.Provider)
-                    .GetJobsObservableAsync(server)
-                    .SelectMany(jobs => RemoveExistingJobs(server, jobs))
-                )
+            BuildServer = jobRepository.GetBuildServer(buildServerId);
+
+            jobProviderFactory
+                .Get(BuildServer.Provider)
+                .GetJobsObservableAsync(BuildServer)
+                .Select(jobs => RemoveExistingJobs(BuildServer, jobs))
                 .ObserveOn(schedulerAccessor.UserInterface)
                 .Finally(StopLoading)
-                .Subscribe(loadedJobs => allJobs = Jobs = new ObservableCollection<AvailableJob>(loadedJobs.Select(CreateAvailableJob)));
+                .Subscribe(loadedJobs => allJobs = Jobs = 
+                    new ObservableCollection<AvailableJob>(loadedJobs.Select(CreateAvailableJob)));
         }
 
         private string previousFilterText;
@@ -103,12 +101,12 @@ namespace RichardSzalay.PocketCiTray.ViewModels
             }
         }
 
-        private IObservable<ICollection<Job>> RemoveExistingJobs(BuildServer buildServer, ICollection<Job> jobs)
+        private ICollection<Job> RemoveExistingJobs(BuildServer buildServer, ICollection<Job> jobs)
         {
-            return jobRepository.GetJobs()
-                .Select(existingJobs => existingJobs.Where(j => j.BuildServer.Equals(buildServer)))
-                .Select(existingJobs => jobs.Except(existingJobs))
-                .Select(filteredJobs => (ICollection<Job>)filteredJobs.ToList());
+            var existingJobs = jobRepository.GetJobs(buildServer);
+
+            return jobs.Except(existingJobs)
+                .ToList();
         }
 
         private void OnAddJobs()

@@ -116,14 +116,9 @@ namespace RichardSzalay.PocketCiTray.ViewModels
         {
             StartLoading(Strings.LoadingStatusMessage);
 
-            jobRepository.GetJobs()
-                .ObserveOn(schedulerAccessor.UserInterface)
-                .Finally(StopLoading)
-                .Subscribe(jobs =>
-                    {
-                        lastUpdateDate = jobRepository.LastUpdateDate;
-                        Jobs = new ObservableCollection<Job>(jobs);
-                    });
+            var jobs = jobRepository.GetJobs();
+            Jobs = new ObservableCollection<Job>(jobs);
+            var lastUpdateDate = jobRepository.LastUpdateDate;
         }
 
         private void OnViewJob(Job job)
@@ -137,17 +132,14 @@ namespace RichardSzalay.PocketCiTray.ViewModels
         {
             TransitionMode = ViewModels.TransitionMode.NewItem;
 
-            jobRepository.GetBuildServers()
-                .Select(lst => lst.Count > 0)
-                .ObserveOn(schedulerAccessor.UserInterface)
-                .Subscribe(hasBuildServers =>
-                    {
-                        Uri uri = hasBuildServers 
-                            ? ViewUris.SelectBuildServer 
-                            : ViewUris.AddBuildServer;
+            var buildServers = jobRepository.GetBuildServers();
+            var hasBuildServers = buildServers.Count > 0;
+            
+            Uri uri = hasBuildServers 
+                ? ViewUris.SelectBuildServer 
+                : ViewUris.AddBuildServer;
 
-                        navigationService.Navigate(uri);
-                    });
+            navigationService.Navigate(uri);
         }
 
         private void OnUpdateStatuses()

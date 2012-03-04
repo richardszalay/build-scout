@@ -31,8 +31,7 @@ namespace RichardSzalay.PocketCiTray.Tests.Mocks
 
         public bool BackgroundUpdateEnabled
         {
-            get;
-            set;
+            get { return BackgroundUpdateInterval != TimeSpan.Zero; }
         }
 
         public bool FirstRun

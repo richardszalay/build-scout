@@ -109,5 +109,18 @@ namespace RichardSzalay.PocketCiTray
         }
 
         public DateTimeOffset LastUpdateDate { get; private set; }
+
+
+        public ICollection<Job> GetJobs(BuildServer buildServer)
+        {
+            return jobMap.Values
+                .Where(j => j.BuildServer == buildServer)
+                .ToList();
+        }
+
+
+        public void Initialize()
+        {
+        }
     }
 }

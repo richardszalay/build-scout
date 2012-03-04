@@ -64,7 +64,8 @@ namespace RichardSzalay.PocketCiTray.Services
                 l.Resolve<IMessageBoxFacade>(),
                 l.Resolve<IMutexService>(),
                 l.Resolve<ILogManager>(),
-                l.Resolve<ISettingsApplier>()));
+                l.Resolve<ISettingsApplier>(),
+                l.Resolve<IJobRepository>()));
 
             container.Register<IHelpService>(c => new HelpService(
                 c.Resolve<IIsolatedStorageFacade>(),

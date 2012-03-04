@@ -11,6 +11,7 @@ using RichardSzalay.PocketCiTray.Extensions.Extensions;
 using RichardSzalay.PocketCiTray.Services;
 using RichardSzalay.PocketCiTray.Infrastructure;
 using System.Globalization;
+using System.Reactive.Disposables;
 
 namespace RichardSzalay.PocketCiTray.ViewModels
 {
@@ -21,6 +22,8 @@ namespace RichardSzalay.PocketCiTray.ViewModels
         private readonly IApplicationSettings applicationSettings;
         private readonly IApplicationResourceFacade applicationResources;
         private readonly ISettingsApplier settingsApplier;
+
+        private SerialDisposable updateDisposable;
 
         public EditSettingsViewModel(INavigationService navigationService, ISchedulerAccessor schedulerAccessor, 
             IApplicationSettings applicationSettings, IApplicationResourceFacade applicationResources,
@@ -45,6 +48,8 @@ namespace RichardSzalay.PocketCiTray.ViewModels
             }
 
             string[] dayNames = CultureInfo.CurrentCulture.DateTimeFormat.DayNames;
+
+            updateDisposable = new SerialDisposable();
 
             NotificationDays = applicationSettings.NotificationDays
                 .Select(d => dayNames[(int) d%dayNames.Length])
@@ -91,15 +96,25 @@ namespace RichardSzalay.PocketCiTray.ViewModels
         public override void OnNavigatedFrom(NavigationEventArgs e)
         {
             base.OnNavigatedFrom(e);
+        }
 
-            if (e.NavigationMode == NavigationMode.Back)
+        public override void OnBackKeyPress(System.ComponentModel.CancelEventArgs e)
+        {
+            base.OnBackKeyPress(e);
+
+            StartLoading(Strings.UpdatingStatusMessage);
+
+            updateDisposable.Disposable = Observable.ToAsync(() =>
             {
                 this.ApplyChanges();
                 applicationSettings.Save();
 
-                settingsApplier.Rebuild(applicationSettings);
+                settingsApplier.RebuildSharedResources(applicationSettings);
                 settingsApplier.ApplyToSession(applicationSettings);
-            }
+            }, schedulerAccessor.Background)()
+            .ObserveOn(schedulerAccessor.UserInterface)
+            .Finally(StopLoading)
+            .Subscribe(_ => navigationService.GoBack());
         }
 
         private void ApplyChanges()

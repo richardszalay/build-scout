@@ -61,6 +61,7 @@
     <Reference Include="Microsoft.VisualStudio.QualityTools.UnitTesting.Silverlight">
       <HintPath>..\packages\WP7-CI.1.1\lib\sl3-wp\Microsoft.VisualStudio.QualityTools.UnitTesting.Silverlight.dll</HintPath>
     </Reference>
+    <Reference Include="system.data.linq" />
     <Reference Include="System.Observable" />
     <Reference Include="System.Reactive, Version=1.0.10621.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <HintPath>..\packages\Rx-Main.1.0.11226\lib\SL3-WP\System.Reactive.dll</HintPath>
@@ -91,9 +92,7 @@
     <Compile Include="App.xaml.cs">
       <DependentUpon>App.xaml</DependentUpon>
     </Compile>
-    <Compile Include="ApplicationTests\BootstrapSpec.cs" />
-    <Compile Include="ApplicationTests\ViewModels\ListJobsViewModelSpec.cs" />
-    <Compile Include="CommonTests\Services\ApplicationSettingsSpec.cs" />
+    <Compile Include="CommonTests\Services\DbJobRepositorySpec.cs" />
     <Compile Include="Infrastructure\BddTestAssembly.cs" />
     <Compile Include="Infrastructure\BddTestClass.cs" />
     <Compile Include="Infrastructure\BddTestMethod.cs" />
@@ -105,13 +104,19 @@
       <DependentUpon>MainPage.xaml</DependentUpon>
     </Compile>
     <Compile Include="Mocks\BlacklistMutexService.cs" />
+    <Compile Include="Mocks\FakeApplicationResourceFacade.cs" />
     <Compile Include="Mocks\FakeJobRepository.cs" />
     <Compile Include="Mocks\FakeNavigationService.cs" />
+    <Compile Include="Mocks\MockIsolatedStorageFacade.cs" />
     <Compile Include="Mocks\MockJobUpdateService.cs" />
+    <Compile Include="Mocks\MockSettingsApplier.cs" />
+    <Compile Include="Mocks\MockTileImageGenerator.cs" />
+    <Compile Include="Mocks\StubClock.cs" />
     <Compile Include="Mocks\StubLoggingService.cs" />
     <Compile Include="Mocks\StubPeriodicJobUpdateService.cs" />
     <Compile Include="Mocks\StubApplicationSettings.cs" />
     <Compile Include="Mocks\StubMessageBoxFacade.cs" />
+    <Compile Include="Mocks\StubPhoneApplicationServiceFacade.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -161,5 +166,4 @@
   -->
   <ProjectExtensions />
   <Import Project="$(SolutionDir)\.nuget\nuget.targets" />
-  
 </Project>

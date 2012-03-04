@@ -5,11 +5,14 @@ using System.Reactive.Concurrency;
 using Funq;
 using RichardSzalay.PocketCiTray.Providers;
 using WP7Contrib.Logging;
+using RichardSzalay.PocketCiTray.Data;
 
 namespace RichardSzalay.PocketCiTray.Services
 {
     public static class CommonDependencyConfiguration
     {
+        private const string JobDbConnectionString = "isostore:/jobs.sdf";
+
         public static Container Configure()
         {
             var container = new Container();
@@ -38,7 +41,14 @@ namespace RichardSzalay.PocketCiTray.Services
                 l.Resolve<ISchedulerAccessor>(),
                 l.Resolve<ILog>()));
 
-            container.Register<IJobRepository>(l => new InMemoryJobRepository(l.Resolve<IClock>()));
+            //container.Register<IJobRepository>(l => new InMemoryJobRepository(l.Resolve<IClock>()));
+
+            container.Register<ICredentialEncryptor>(c => new CredentialEncryptor());
+            
+            container.Register<IJobRepository>(l => new DbJobRepository(
+                () => new JobDataContext(JobDbConnectionString),
+                l.Resolve<ICredentialEncryptor>(),
+                l.Resolve<IClock>()));
 
             container.Register<IJobUpdateService>(l => new JobUpdateService(
                 l.Resolve<IJobProviderFactory>(),

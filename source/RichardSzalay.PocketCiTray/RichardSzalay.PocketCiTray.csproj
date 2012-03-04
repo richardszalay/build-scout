@@ -163,6 +163,7 @@
     <Compile Include="Services\IPhoneApplicationServiceFacade.cs" />
     <Compile Include="Services\IScheduledActionServiceFacade.cs" />
     <Compile Include="Services\IWebBrowserTaskFacade.cs" />
+    <Compile Include="Services\JobService.cs" />
     <Compile Include="Services\MessageBoxFacade.cs" />
     <Compile Include="Services\PeriodicJobUpdateService.cs" />
     <Compile Include="Services\PhoneApplicationFrameNavigationService.cs" />

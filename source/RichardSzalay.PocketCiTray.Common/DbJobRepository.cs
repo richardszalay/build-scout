@@ -3,10 +3,11 @@ using System.Linq;
 using System.Collections.Generic;
 using RichardSzalay.PocketCiTray.Data;
 using RichardSzalay.PocketCiTray.Services;
+using Microsoft.Phone.Data.Linq;
 
 namespace RichardSzalay.PocketCiTray
 {
-    internal class DbJobRepository : IJobRepository
+    public class DbJobRepository : IJobRepository
     {
         private readonly Func<IJobDataContext> dataContextFactory;
         private readonly ICredentialEncryptor credentialEncryptor;
@@ -48,14 +49,18 @@ namespace RichardSzalay.PocketCiTray
         {
             using (var dataContext = dataContextFactory())
             {
-                var buildServer = jobs.First().BuildServer;
+                var buildServerEntity = dataContext.BuildServers.First(x => x.Id == jobs.First().BuildServer.Id);
 
-                var entities = jobs.Select(JobEntity.FromJob).ToList();
+                var entities = jobs.Select(j => JobEntity.FromJob(j)).ToList();
+
+                buildServerEntity.Jobs.AddRange(entities);
                 
                 dataContext.Jobs.InsertAllOnSubmit(entities);
                 dataContext.SubmitChanges();
 
                 Touch();
+
+                var buildServer = jobs.First().BuildServer;
 
                 return entities.Select(j => j.ToJob(buildServer)).ToList();
             }
@@ -97,10 +102,16 @@ namespace RichardSzalay.PocketCiTray
 
         public ICollection<BuildServer> GetBuildServers()
         {
+            return GetBuildServerEntities()
+                .Select(s => s.ToBuildServer(credentialEncryptor))
+                .ToList();
+        }
+
+        private ICollection<BuildServerEntity> GetBuildServerEntities()
+        {
             using (var dataContext = dataContextFactory())
             {
                 return dataContext.BuildServers
-                    .Select(s => s.ToBuildServer(credentialEncryptor))
                     .ToList();
             }
         }
@@ -156,6 +167,35 @@ namespace RichardSzalay.PocketCiTray
         {
             get;
             private set;
+        }
+
+
+        public ICollection<Job> GetJobs(BuildServer buildServer)
+        {
+            using (var dataContext = dataContextFactory())
+            {
+                return dataContext.Jobs
+                    .Where(j => j.BuildServerId == buildServer.Id)
+                    .Select(j => j.ToJob(buildServer))
+                    .ToList();
+            }
+        }
+
+        private const int DbVersion = 1;
+
+        public void Initialize()
+        {
+            using (var dataContext = dataContextFactory())
+            {
+                if (!dataContext.DatabaseExists())
+                {
+                    dataContext.CreateDatabase();
+
+                    DatabaseSchemaUpdater dbUpdater = dataContext.CreateDatabaseSchemaUpdater();
+                    dbUpdater.DatabaseSchemaVersion = DbVersion;
+                    dbUpdater.Execute();
+                }
+            }
         }
     }
 }
