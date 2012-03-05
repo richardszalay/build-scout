@@ -12,6 +12,7 @@ using RichardSzalay.PocketCiTray.Services;
 using RichardSzalay.PocketCiTray.Infrastructure;
 using System.Globalization;
 using System.Reactive.Disposables;
+using System.ComponentModel;
 
 namespace RichardSzalay.PocketCiTray.ViewModels
 {
@@ -24,6 +25,10 @@ namespace RichardSzalay.PocketCiTray.ViewModels
         private readonly ISettingsApplier settingsApplier;
 
         private SerialDisposable updateDisposable;
+
+        private bool isActive = false;
+
+        private List<String> changedProperties;
 
         public EditSettingsViewModel(INavigationService navigationService, ISchedulerAccessor schedulerAccessor, 
             IApplicationSettings applicationSettings, IApplicationResourceFacade applicationResources,
@@ -40,12 +45,16 @@ namespace RichardSzalay.PocketCiTray.ViewModels
         {
             base.OnNavigatedTo(e);
 
+            isActive = true;
+
             bool isReturningFromSelectorPage = (e.NavigationMode == NavigationMode.Back && e.IsNavigationInitiator);
 
             if (isReturningFromSelectorPage)
             {
                 return;
             }
+
+            changedProperties = new List<string>();
 
             string[] dayNames = CultureInfo.CurrentCulture.DateTimeFormat.DayNames;
 
@@ -82,6 +91,8 @@ namespace RichardSzalay.PocketCiTray.ViewModels
             SuccessfulColor = ColourOptions.First(x => x.Key == applicationSettings.SuccessColorResource);
             FailedColor = ColourOptions.First(x => x.Key == applicationSettings.FailedColorResource);
             UnavailableColor = ColourOptions.First(x => x.Key == applicationSettings.UnavailableColorResource);
+
+            applicationSettings.PropertyChanged += OnApplicationSettingChanged;
         }
 
         [NotifyProperty]
@@ -102,21 +113,37 @@ namespace RichardSzalay.PocketCiTray.ViewModels
         {
             base.OnBackKeyPress(e);
 
-            e.Cancel = true;
+            if (!isActive)
+            {
+                return;
+            }
 
             StartLoading(Strings.UpdatingStatusMessage);
 
-            updateDisposable.Disposable = Observable.ToAsync(() =>
-            {
-                this.ApplyChanges();
-                applicationSettings.Save();
+            this.ApplyChanges();
+            applicationSettings.Save();
 
-                settingsApplier.RebuildSharedResources(applicationSettings);
-                settingsApplier.ApplyToSession(applicationSettings);
-            }, schedulerAccessor.Background)()
-            .ObserveOn(schedulerAccessor.UserInterface)
-            .Finally(StopLoading)
-            .Subscribe(_ => navigationService.GoBack());
+            settingsApplier.RebuildSharedResources(applicationSettings);
+            settingsApplier.ApplyToSession(applicationSettings);
+
+            StopLoading();
+
+            isActive = false;
+        }
+
+        private void OnApplicationSettingChanged(object sender, PropertyChangedEventArgs e)
+        {
+            if (!changedProperties.Contains(e.PropertyName))
+            {
+                changedProperties.Add(e.PropertyName);
+            }
+        }
+
+        private bool ShouldRebuildSharedResources()
+        {
+            return changedProperties.Contains("SuccessColorResource") ||
+                changedProperties.Contains("FailedColorResource") ||
+                changedProperties.Contains("UnavailableColorResource");
         }
 
         private void ApplyChanges()
@@ -313,6 +340,10 @@ namespace RichardSzalay.PocketCiTray.ViewModels
         public override int GetHashCode()
         {
             return (Name != null ? Name.GetHashCode() : 0);
+        }
+
+        private enum SettingChange
+        {
         }
     }
 }

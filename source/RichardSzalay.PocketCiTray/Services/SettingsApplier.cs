@@ -3,6 +3,8 @@ using System.IO;
 using WP7Contrib.Logging;
 using System.Windows.Media;
 using Microsoft.Phone.Shell;
+using System.Reactive;
+using System.Reactive.Linq;
 
 namespace RichardSzalay.PocketCiTray.Services
 {

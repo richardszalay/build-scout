@@ -114,6 +114,7 @@
     <Compile Include="Extensions\Extensions\UriExtensions.cs" />
     <Compile Include="Extensions\Extensions\WebRequestExtensions.cs" />
     <Compile Include="IJobRepository.cs" />
+    <Compile Include="Infrastructure\NotifyPropertyWeaver.cs" />
     <Compile Include="ISchedulerAccessor.cs" />
     <Compile Include="Job.cs" />
     <Compile Include="InMemoryJobRepository.cs" />
@@ -190,4 +191,8 @@
   <Target Name="AfterBuild">
   </Target>
   -->
+  <UsingTask TaskName="NotifyPropertyWeaverMsBuildTask.WeavingTask" AssemblyFile="$(SolutionDir)Tools\NotifyPropertyWeaverMsBuildTask.dll" />
+  <Target Name="AfterCompile">
+    <NotifyPropertyWeaverMsBuildTask.WeavingTask />
+  </Target>
 </Project>

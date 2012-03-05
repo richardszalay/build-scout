@@ -16,6 +16,7 @@ namespace RichardSzalay.PocketCiTray.Services
         private readonly IApplicationSettings applicationSettings;
         private readonly IShellToastFacade shellToastFacade;
         private readonly ResourceManager resourceManager;
+        private readonly IClock clock;
 
         private Dictionary<BuildResultChange, string> titleResouceKeys = new Dictionary<BuildResultChange, string>
         {
@@ -25,16 +26,20 @@ namespace RichardSzalay.PocketCiTray.Services
         };        
 
         public JobNotificationService(IApplicationSettings applicationSettings,
-            IShellToastFacade shellToastFacade)
+            IShellToastFacade shellToastFacade, IClock clock)
         {
             this.applicationSettings = applicationSettings;
             this.resourceManager = NotificationStrings.ResourceManager;
             this.shellToastFacade = shellToastFacade;
+            this.clock = clock;
         }
 
         public void Notify(ICollection<Job> updatedJobs)
         {
-            if (updatedJobs.Count == 0 || applicationSettings.NotificationPreference == NotificationReason.None)
+            bool jobsHaveBeenUpdated = updatedJobs.Count > 0;
+            bool notificationsAreDisabled = applicationSettings.NotificationPreference == NotificationReason.None;
+
+            if (!jobsHaveBeenUpdated || notificationsAreDisabled || !IsValidTimeForNotifications(clock.UtcNow))
             {
                 return;
             }
@@ -56,6 +61,13 @@ namespace RichardSzalay.PocketCiTray.Services
                     GetNotificationUri(mostRelevantChange, changeGroups.Count)
                     );
             }
+        }
+
+        private bool IsValidTimeForNotifications(DateTimeOffset now)
+        {
+            return applicationSettings.NotificationDays.Contains(now.DayOfWeek) &&
+                now.TimeOfDay >= applicationSettings.NotificationStart &&
+                now.TimeOfDay < applicationSettings.NotificationEnd;
         }
 
         private Uri GetNotificationUri(IGrouping<BuildResultChange, Job> mostRelevantChange, int changeGroupCount)

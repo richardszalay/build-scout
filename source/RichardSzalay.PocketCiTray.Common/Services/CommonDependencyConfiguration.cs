@@ -67,7 +67,8 @@ namespace RichardSzalay.PocketCiTray.Services
 
             container.Register<IJobNotificationService>(l => new JobNotificationService(
                 l.Resolve<IApplicationSettings>(),
-                l.Resolve<IShellToastFacade>()));
+                l.Resolve<IShellToastFacade>(),
+                l.Resolve<IClock>()));
 
             container.Register<ISettingsDictionarySerializer>(c => new SettingsDictionarySerializer());
 

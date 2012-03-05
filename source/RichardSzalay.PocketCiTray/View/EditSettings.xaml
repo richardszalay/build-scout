@@ -16,6 +16,7 @@
     Foreground="{StaticResource PhoneForegroundBrush}"
     SupportedOrientations="Portrait"  Orientation="Portrait"
     shell:SystemTray.IsVisible="True"
+    shell:SystemTray.ProgressIndicator="{Binding ProgressIndicator}"
     DataContext="{Binding Path=EditSettingsViewModel ,Source={StaticResource ViewModelLocator}}"
     tk:TiltEffect.IsTiltEnabled="True">
     

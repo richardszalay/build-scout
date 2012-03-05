@@ -134,7 +134,6 @@
     <Compile Include="Infrastructure\Converters\BooleanValueConverter.cs" />
     <Compile Include="Infrastructure\Converters\UpperCaseConverter.cs" />
     <Compile Include="Infrastructure\Crc.cs" />
-    <Compile Include="Infrastructure\NotifyPropertyWeaver.cs" />
     <Compile Include="Infrastructure\PngExtensions.cs" />
     <Compile Include="Infrastructure\Transitions\ContinuumTransition.cs" />
     <Compile Include="Infrastructure\Behaviors\ApplicationBarCommand.cs" />

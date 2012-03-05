@@ -12,6 +12,13 @@ namespace RichardSzalay.PocketCiTray.Services
 
     public class ApplicationResourceFacade : IApplicationResourceFacade
     {
+        private ResourceDictionary resources;
+
+        public ApplicationResourceFacade()
+        {
+            this.resources = Application.Current.Resources;
+        }
+
         public Stream GetResourceStream(Uri resourceUri)
         {
             return Application.GetResourceStream(resourceUri).Stream;
@@ -19,7 +26,7 @@ namespace RichardSzalay.PocketCiTray.Services
 
         public T GetResource<T>(string key)
         {
-            return (T)Application.Current.Resources[key];
+            return (T)resources[key];
         }
     }
 }

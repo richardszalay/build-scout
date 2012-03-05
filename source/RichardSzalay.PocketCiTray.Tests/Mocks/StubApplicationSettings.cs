@@ -104,5 +104,7 @@ namespace RichardSzalay.PocketCiTray.Tests.Mocks
         public string SuccessColorResource { get; set; }
         public string FailedColorResource { get; set; }
         public string UnavailableColorResource { get; set; }
+
+        public event System.ComponentModel.PropertyChangedEventHandler PropertyChanged;
     }
 }

@@ -1,8 +1,9 @@
 ﻿using System;
+using System.ComponentModel;
 
 namespace RichardSzalay.PocketCiTray.Services
 {
-    public interface IApplicationSettings
+    public interface IApplicationSettings : INotifyPropertyChanged
     {
         TimeSpan ApplicationUpdateInterval { get; set; }
         TimeSpan BackgroundUpdateInterval { get; set; }

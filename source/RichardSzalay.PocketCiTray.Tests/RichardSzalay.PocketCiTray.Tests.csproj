@@ -92,6 +92,7 @@
     <Compile Include="App.xaml.cs">
       <DependentUpon>App.xaml</DependentUpon>
     </Compile>
+    <Compile Include="CommonTests\Infrastructure\ApplicationSettingsSpec.cs" />
     <Compile Include="CommonTests\Services\DbJobRepositorySpec.cs" />
     <Compile Include="Infrastructure\BddTestAssembly.cs" />
     <Compile Include="Infrastructure\BddTestClass.cs" />
@@ -117,6 +118,7 @@
     <Compile Include="Mocks\StubApplicationSettings.cs" />
     <Compile Include="Mocks\StubMessageBoxFacade.cs" />
     <Compile Include="Mocks\StubPhoneApplicationServiceFacade.cs" />
+    <Compile Include="Mocks\StubSettingsService.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

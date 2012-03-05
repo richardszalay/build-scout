@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Globalization;
+using RichardSzalay.PocketCiTray.Infrastructure;
 
 namespace RichardSzalay.PocketCiTray.Services
 {
@@ -37,6 +38,7 @@ namespace RichardSzalay.PocketCiTray.Services
         private const string NotificationEndKey = "ApplicationSettings.NotificationEnd";
         private const string NotificationDaysKey = "ApplicationSettings.NotificationDays";
 
+        [NotifyProperty]
         public TimeSpan ApplicationUpdateInterval
         {
             get { return new TimeSpan(GetValue(ApplicationUpdateIntervalKey, DefaultForegroundInterval.Ticks)); }
@@ -192,6 +194,18 @@ namespace RichardSzalay.PocketCiTray.Services
             return allDays
                 .Where(day => (value & (1 << (int)day)) != 0)
                 .ToArray();
+        }
+
+        public event System.ComponentModel.PropertyChangedEventHandler PropertyChanged;
+
+        private void OnNotifyPropertyChanged(string property)
+        {
+            var handler = PropertyChanged;
+
+            if (handler != null)
+            {
+                handler(this, new System.ComponentModel.PropertyChangedEventArgs(property));
+            }
         }
     }
 }
