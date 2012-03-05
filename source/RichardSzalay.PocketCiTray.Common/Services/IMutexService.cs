@@ -7,8 +7,6 @@ namespace RichardSzalay.PocketCiTray.Services
     {
         bool WaitOne(string name);
         bool WaitOne(string name, TimeSpan timeout);
-        Mutex GetOwned(string name, TimeSpan timeout);
-
-        void ReleaseMutex(Mutex mutex);
+        IDisposable GetOwned(string name, TimeSpan timeout);
     }
 }

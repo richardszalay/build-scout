@@ -11,8 +11,6 @@ namespace RichardSzalay.PocketCiTray.Services
 {
     public static class CommonDependencyConfiguration
     {
-        private const string JobDbConnectionString = "isostore:/jobs.sdf";
-
         public static Container Configure()
         {
             var container = new Container();
@@ -44,9 +42,12 @@ namespace RichardSzalay.PocketCiTray.Services
             //container.Register<IJobRepository>(l => new InMemoryJobRepository(l.Resolve<IClock>()));
 
             container.Register<ICredentialEncryptor>(c => new CredentialEncryptor());
+
+            container.Register<IJobDataContextFactory>(c => new JobDataContextFactory(
+                c.Resolve<IMutexService>()));
             
             container.Register<IJobRepository>(l => new DbJobRepository(
-                () => new JobDataContext(JobDbConnectionString),
+                l.Resolve<IJobDataContextFactory>(),
                 l.Resolve<ICredentialEncryptor>(),
                 l.Resolve<IClock>()));
 

@@ -18,7 +18,7 @@ namespace RichardSzalay.PocketCiTray
         private readonly ILogManager logManager;
         private readonly ISettingsApplier settingsApplier;
         private readonly IJobRepository jobRepository;
-        private Mutex applicationMutex;
+        private IDisposable applicationMutex;
 
         public Bootstrap(IApplicationSettings applicationSettings, IClock clock, 
             IMessageBoxFacade messageBox, IMutexService mutexService,
@@ -73,7 +73,7 @@ namespace RichardSzalay.PocketCiTray
         {
             logManager.Disable();
 
-            mutexService.ReleaseMutex(applicationMutex);
+            applicationMutex.Dispose();
         }
     }
 }

@@ -9,11 +9,11 @@ namespace RichardSzalay.PocketCiTray
 {
     public class DbJobRepository : IJobRepository
     {
-        private readonly Func<IJobDataContext> dataContextFactory;
+        private readonly IJobDataContextFactory dataContextFactory;
         private readonly ICredentialEncryptor credentialEncryptor;
         private readonly IClock clock;
 
-        public DbJobRepository(Func<IJobDataContext> dataContextFactory, ICredentialEncryptor credentialEncryptor,
+        public DbJobRepository(IJobDataContextFactory dataContextFactory, ICredentialEncryptor credentialEncryptor,
             IClock clock)
         {
             this.dataContextFactory = dataContextFactory;
@@ -23,7 +23,7 @@ namespace RichardSzalay.PocketCiTray
 
         public BuildServer AddBuildServer(BuildServer buildServer)
         {
-            using (var dataContext = dataContextFactory())
+            using (var dataContext = dataContextFactory.Create())
             {
                 var entity = BuildServerEntity.FromBuildServer(buildServer, credentialEncryptor);
                 dataContext.BuildServers.InsertOnSubmit(entity);
@@ -38,7 +38,7 @@ namespace RichardSzalay.PocketCiTray
 
         public BuildServer GetBuildServer(int buildServerId)
         {
-            using (var dataContext = dataContextFactory())
+            using (var dataContext = dataContextFactory.Create())
             {
                 return dataContext.BuildServers.First(x => x.Id == buildServerId)
                     .ToBuildServer(credentialEncryptor);
@@ -47,7 +47,7 @@ namespace RichardSzalay.PocketCiTray
 
         public IEnumerable<Job> AddJobs(IEnumerable<Job> jobs)
         {
-            using (var dataContext = dataContextFactory())
+            using (var dataContext = dataContextFactory.Create())
             {
                 var buildServerEntity = dataContext.BuildServers.First(x => x.Id == jobs.First().BuildServer.Id);
 
@@ -71,7 +71,7 @@ namespace RichardSzalay.PocketCiTray
             var buildServers = GetBuildServers()
                 .ToDictionary(s => s.Id);
 
-            using (var dataContext = dataContextFactory())
+            using (var dataContext = dataContextFactory.Create())
             {
                 return dataContext.Jobs.Select(j => j.ToJob(
                     buildServers[j.BuildServerId]))
@@ -81,7 +81,7 @@ namespace RichardSzalay.PocketCiTray
 
         public ICollection<Job> UpdateAll(ICollection<Job> jobs)
         {
-            using (var dataContext = dataContextFactory())
+            using (var dataContext = dataContextFactory.Create())
             {
                 var allJobs = dataContext.Jobs.ToList();
 
@@ -109,7 +109,7 @@ namespace RichardSzalay.PocketCiTray
 
         private ICollection<BuildServerEntity> GetBuildServerEntities()
         {
-            using (var dataContext = dataContextFactory())
+            using (var dataContext = dataContextFactory.Create())
             {
                 return dataContext.BuildServers
                     .ToList();
@@ -118,7 +118,7 @@ namespace RichardSzalay.PocketCiTray
 
         public Job GetJob(int job)
         {
-            using (var dataContext = dataContextFactory())
+            using (var dataContext = dataContextFactory.Create())
             {
                 return dataContext.Jobs
                     .Where(x => x.Id == job)
@@ -129,7 +129,7 @@ namespace RichardSzalay.PocketCiTray
 
         public bool DeleteJob(Job job)
         {
-            using (var dataContext = dataContextFactory())
+            using (var dataContext = dataContextFactory.Create())
             {
                 dataContext.Jobs.DeleteOnSubmit(
                     dataContext.Jobs.First(j => j.Id == job.Id));
@@ -144,7 +144,7 @@ namespace RichardSzalay.PocketCiTray
 
         public bool DeleteBuildServer(BuildServer buildServer)
         {
-            using (var dataContext = dataContextFactory())
+            using (var dataContext = dataContextFactory.Create())
             {
                 dataContext.BuildServers.DeleteOnSubmit(
                     dataContext.BuildServers.First(s => s.Id == buildServer.Id));
@@ -172,7 +172,7 @@ namespace RichardSzalay.PocketCiTray
 
         public ICollection<Job> GetJobs(BuildServer buildServer)
         {
-            using (var dataContext = dataContextFactory())
+            using (var dataContext = dataContextFactory.Create())
             {
                 return dataContext.Jobs
                     .Where(j => j.BuildServerId == buildServer.Id)
@@ -185,7 +185,7 @@ namespace RichardSzalay.PocketCiTray
 
         public void Initialize()
         {
-            using (var dataContext = dataContextFactory())
+            using (var dataContext = dataContextFactory.Create())
             {
                 if (!dataContext.DatabaseExists())
                 {

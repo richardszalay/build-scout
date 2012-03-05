@@ -48,7 +48,7 @@ namespace RichardSzalay.PocketCiTray.Services
         {
             OnStarted();
                 
-            Mutex mutex = mutexService.GetOwned(MutexNames.JobUpdateService, TimeSpan.FromMilliseconds(100));
+            IDisposable mutex = mutexService.GetOwned(MutexNames.JobUpdateService, TimeSpan.FromMilliseconds(100));
 
             if (mutex == null)
             {
@@ -70,7 +70,7 @@ namespace RichardSzalay.PocketCiTray.Services
 
             isUpdating = true;
 
-            mutex.ReleaseMutex();
+            mutex.Dispose();
 
             var serverGroups = jobRepository.GetJobs()
                 .GroupBy(j => j.BuildServer);

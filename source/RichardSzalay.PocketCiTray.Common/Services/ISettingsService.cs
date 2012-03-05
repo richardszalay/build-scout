@@ -36,42 +36,37 @@ namespace RichardSzalay.PocketCiTray.Services
 
         public IDictionary<string, object> GetSettings()
         {
-            var mutex = mutexService.GetOwned(MutexNames.Settings, SettingsAccessTimeout);
-
-            try
+            using (var mutex = mutexService.GetOwned(MutexNames.Settings, SettingsAccessTimeout))
             {
-                if (!isolatedStorageFacade.FileExists(SettingsFile))
+                try
                 {
+                    if (!isolatedStorageFacade.FileExists(SettingsFile))
+                    {
+                        return new Dictionary<string, object>();
+                    }
+
+                    using (var input = isolatedStorageFacade.OpenFile(SettingsFile))
+                    {
+                        return serializer.Deserialize(input);
+                    }
+                }
+                catch(IOException exception)
+                {
+                    log.Write("Error reading settings", exception);
+
+                    if (Debugger.IsAttached)
+                    {
+                        Debugger.Break();
+                    }
+
                     return new Dictionary<string, object>();
                 }
-
-                using (var input = isolatedStorageFacade.OpenFile(SettingsFile))
-                {
-                    return serializer.Deserialize(input);
-                }
-            }
-            catch(IOException exception)
-            {
-                log.Write("Error reading settings", exception);
-
-                if (Debugger.IsAttached)
-                {
-                    Debugger.Break();
-                }
-
-                return new Dictionary<string, object>();
-            }
-            finally
-            {
-                mutex.ReleaseMutex();
             }
         }
 
         public void SaveSettings(IDictionary<string, object> modifiedValues)
         {
-            var mutex = mutexService.GetOwned(MutexNames.Settings, SettingsAccessTimeout);
-
-            try
+            using (var mutex = mutexService.GetOwned(MutexNames.Settings, SettingsAccessTimeout))
             {
                 var settings = GetSettings();
 
@@ -81,10 +76,6 @@ namespace RichardSzalay.PocketCiTray.Services
                 {
                     serializer.Serialize(settings, output);
                 }
-            }
-            finally
-            {
-                mutex.ReleaseMutex();
             }
         }
 

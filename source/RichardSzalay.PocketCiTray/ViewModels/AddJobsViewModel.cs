@@ -122,7 +122,7 @@ namespace RichardSzalay.PocketCiTray.ViewModels
             StartLoading(Strings.UpdatingStatusMessage);
 
             addJobsSubscrition.Disposable = jobsWithStatuses
-                .SelectMany(jobRepository.AddJobs)
+                .Select(jobRepository.AddJobs)
                 .ObserveOn(schedulerAccessor.UserInterface)
                 .Finally(StopLoading)
                 .Subscribe(_ => navigationService.GoBackTo(ViewUris.ListJobs));

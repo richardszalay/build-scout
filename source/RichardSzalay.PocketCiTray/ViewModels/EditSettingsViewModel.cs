@@ -102,6 +102,8 @@ namespace RichardSzalay.PocketCiTray.ViewModels
         {
             base.OnBackKeyPress(e);
 
+            e.Cancel = true;
+
             StartLoading(Strings.UpdatingStatusMessage);
 
             updateDisposable.Disposable = Observable.ToAsync(() =>

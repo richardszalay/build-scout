@@ -33,7 +33,7 @@ namespace RichardSzalay.PocketCiTray.Tests.CommonTests.Services
                         filename = Guid.NewGuid().ToString("N") + ".sdf";
                         string connectionString = "isostore:/" + filename;
 
-                        jobRepository = new DbJobRepository(CreateDataContext,
+                        jobRepository = new DbJobRepository(new Factory(filename),
                             new CredentialEncryptor(), new DateTimeOffsetClock());
 
                         jobRepository.Initialize();
@@ -43,17 +43,27 @@ namespace RichardSzalay.PocketCiTray.Tests.CommonTests.Services
                 }
             }
 
-            private JobDataContext CreateDataContext()
-            {
-                string connectionString = "isostore:/" + filename;
-
-                return new JobDataContext(connectionString);
-            }
-
             public void CleanUp()
             {
                 IsolatedStorageFile.GetUserStoreForApplication()
                     .DeleteFile(filename);
+            }
+
+            private class Factory : IJobDataContextFactory
+            {
+                private readonly string filename;
+
+                public Factory(string filename)
+                {
+                    this.filename = filename;
+                }
+
+                public IJobDataContext Create()
+                {
+                    string connectionString = "isostore:/" + filename;
+
+                    return new JobDataContext(connectionString);
+                }
             }
         }
 

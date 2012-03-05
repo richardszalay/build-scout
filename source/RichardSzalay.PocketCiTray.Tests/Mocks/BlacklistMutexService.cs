@@ -12,6 +12,7 @@ using System.Windows.Shapes;
 using RichardSzalay.PocketCiTray.Services;
 using System.Collections.Generic;
 using System.Threading;
+using System.Reactive.Disposables;
 
 namespace RichardSzalay.PocketCiTray.Tests.Mocks
 {
@@ -42,13 +43,13 @@ namespace RichardSzalay.PocketCiTray.Tests.Mocks
             return true;
         }
 
-        public Mutex GetOwned(string name, TimeSpan timeout)
+        public IDisposable GetOwned(string name, TimeSpan timeout)
         {
             var mutex =new Mutex(false, name);
 
             takenMutexes.Add(name, mutex);
 
-            return mutex;
+            return Disposable.Create(() => ReleaseMutex(mutex));
         }
 
         public IEnumerable<string> TakenMutexes
@@ -62,7 +63,7 @@ namespace RichardSzalay.PocketCiTray.Tests.Mocks
         }
 
 
-        public void ReleaseMutex(Mutex mutex)
+        private void ReleaseMutex(Mutex mutex)
         {
             var key = this.takenMutexes.Where(x => x.Value == mutex)
                 .Select(kvp => kvp.Key)
