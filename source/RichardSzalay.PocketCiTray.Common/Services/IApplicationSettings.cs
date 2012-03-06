@@ -5,7 +5,7 @@ namespace RichardSzalay.PocketCiTray.Services
 {
     public interface IApplicationSettings : INotifyPropertyChanged
     {
-        TimeSpan ApplicationUpdateInterval { get; set; }
+        TimeSpan ForegroundUpdateInterval { get; set; }
         TimeSpan BackgroundUpdateInterval { get; set; }
 
         bool RunUnderLockScreen { get; set; }

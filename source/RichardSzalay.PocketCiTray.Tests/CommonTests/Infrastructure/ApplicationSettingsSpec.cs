@@ -36,7 +36,7 @@ namespace RichardSzalay.PocketCiTray.Tests.CommonTests.Services
 
                 settings.PropertyChanged += (s, e) => eventArgs = e;
 
-                settings.ApplicationUpdateInterval = TimeSpan.FromSeconds(15);
+                settings.ForegroundUpdateInterval = TimeSpan.FromSeconds(15);
             }
 
             [TestMethod]

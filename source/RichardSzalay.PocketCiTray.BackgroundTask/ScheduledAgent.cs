@@ -52,6 +52,8 @@ namespace RichardSzalay.PocketCiTray.BackgroundTask
         {
             Container container = CommonDependencyConfiguration.Configure();
 
+            // TODO: Move all this to a bootstrap
+
             var log = new LoggingService(Logging.ApplicationLogName);
 
             container.Register<ILog>(log);
@@ -64,10 +66,23 @@ namespace RichardSzalay.PocketCiTray.BackgroundTask
                 return;
             }
 
+            var clock = container.Resolve<IClock>();
+            var applicationSettings = container.Resolve<IApplicationSettings>();
             var jobUpdateService = container.Resolve<IJobUpdateService>();
 
-            jobUpdateService.Complete += (s, e) => NotifyComplete();
-            jobUpdateService.UpdateAll(UpdateTimeout);
+            TimeSpan nextRun = PeriodicTaskHelper.GetNextRunTime(jobUpdateService.LastUpdateTime,
+                applicationSettings.BackgroundUpdateInterval, clock.UtcNow);
+
+            // TODO: Should this allow up to BackgroundUpdateInterval / 2 to better round out scheduling weirdness?
+            if (nextRun == TimeSpan.Zero)
+            {
+                jobUpdateService.Complete += (s, e) => NotifyComplete();
+                jobUpdateService.UpdateAll(UpdateTimeout);
+            }
+            else
+            {
+                NotifyComplete();
+            }
         }
 
         private static readonly TimeSpan UpdateTimeout = TimeSpan.FromSeconds(10);

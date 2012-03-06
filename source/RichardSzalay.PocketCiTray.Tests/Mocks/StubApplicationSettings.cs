@@ -15,7 +15,7 @@ namespace RichardSzalay.PocketCiTray.Tests.Mocks
     public class StubApplicationSettings : IApplicationSettings
     {
 
-        public TimeSpan ApplicationUpdateInterval
+        public TimeSpan ForegroundUpdateInterval
         {
             get;
             set;

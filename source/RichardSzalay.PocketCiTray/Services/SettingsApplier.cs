@@ -99,12 +99,12 @@ namespace RichardSzalay.PocketCiTray.Services
 
         private void StartPeriodicUpdateService(IApplicationSettings applicationSettings)
         {
-            if (applicationSettings.ApplicationUpdateInterval > TimeSpan.Zero)
+            if (applicationSettings.ForegroundUpdateInterval > TimeSpan.Zero)
             {
-                TimeSpan firstUpdate = PeriodicTaskHelper.GetNextRunInterval(jobUpdateService.LastUpdateTime,
-                    applicationSettings.ApplicationUpdateInterval, clock.UtcNow);
+                TimeSpan firstUpdate = PeriodicTaskHelper.GetNextRunTime(jobUpdateService.LastUpdateTime,
+                    applicationSettings.ForegroundUpdateInterval, clock.UtcNow);
 
-                periodicJobUpdateService.Start(firstUpdate, applicationSettings.ApplicationUpdateInterval);
+                periodicJobUpdateService.Start(firstUpdate, applicationSettings.ForegroundUpdateInterval);
             }
 
             if (applicationSettings.BackgroundUpdateEnabled)

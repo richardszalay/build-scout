@@ -4,7 +4,7 @@ namespace RichardSzalay.PocketCiTray
 {
     public class PeriodicTaskHelper
     {
-        public static TimeSpan GetNextRunInterval(DateTimeOffset? lastRunTime, TimeSpan runInterval, DateTimeOffset now)
+        public static TimeSpan GetNextRunTime(DateTimeOffset? lastRunTime, TimeSpan runInterval, DateTimeOffset now)
         {
             lastRunTime = NormalizeLastRunTime(lastRunTime, now);
 

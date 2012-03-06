@@ -123,7 +123,11 @@ namespace RichardSzalay.PocketCiTray.ViewModels
             this.ApplyChanges();
             applicationSettings.Save();
 
-            settingsApplier.RebuildSharedResources(applicationSettings);
+            if (ShouldRebuildSharedResources())
+            {
+                settingsApplier.RebuildSharedResources(applicationSettings);
+            }
+
             settingsApplier.ApplyToSession(applicationSettings);
 
             StopLoading();
@@ -180,8 +184,8 @@ namespace RichardSzalay.PocketCiTray.ViewModels
 
         public UpdateInterval ForegroundUpdateInterval
         {
-            get { return ForegroundUpdateOptions.First(x => x.Interval == applicationSettings.ApplicationUpdateInterval); }
-            set { applicationSettings.ApplicationUpdateInterval = value.Interval; }
+            get { return ForegroundUpdateOptions.First(x => x.Interval == applicationSettings.ForegroundUpdateInterval); }
+            set { applicationSettings.ForegroundUpdateInterval = value.Interval; }
         }
 
         public UpdateInterval BackgroundUpdateInterval

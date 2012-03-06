@@ -23,69 +23,6 @@ namespace RichardSzalay.PocketCiTray.Services
             this.Refresh();
         }
 
-        private const string ApplicationUpdateIntervalKey = "ApplicationSettings.ApplicationUpdateInterval";
-        private const string BackgroundUpdateIntervalKey = "ApplicationSettings.BackgroundUpdateInterval";
-        private const string BackgroundUpdateEnabledKey = "ApplicationSettings.BackgroundUpdateEnabled";
-        private const string LoggingEnabledKey = "ApplicationSettings.LoggingEnabledKey";
-        private const string FirstRunKey = "ApplicationSettings.FirstRun";
-
-        private const string SuccessTileUriKey = "ApplicationSettings.SuccessTileUriKey";
-        private const string FailureTileUriKey = "ApplicationSettings.FailureTileUriKey";
-        private const string UnavailableTileUriKey = "ApplicationSettings.UnavailableTileUriKey";
-        
-        private const string NotificationPreferenceKey = "ApplicationSettings.NotificationPreference";
-        private const string NotificationStartKey = "ApplicationSettings.NotificationStart";
-        private const string NotificationEndKey = "ApplicationSettings.NotificationEnd";
-        private const string NotificationDaysKey = "ApplicationSettings.NotificationDays";
-
-        [NotifyProperty]
-        public TimeSpan ApplicationUpdateInterval
-        {
-            get { return new TimeSpan(GetValue(ApplicationUpdateIntervalKey, DefaultForegroundInterval.Ticks)); }
-            set { writeThroughValues[ApplicationUpdateIntervalKey] = value.Ticks; }
-        }
-
-        public bool RunUnderLockScreen
-        {
-            get { return GetValue("RunUnderLockScreen", false); }
-            set { writeThroughValues["RunUnderLockScreen"] = value; }
-        }
-
-        public TimeSpan BackgroundUpdateInterval
-        {
-            get { return new TimeSpan(GetValue(BackgroundUpdateIntervalKey, DefaultBackgroundInterval.Ticks)); }
-            set { writeThroughValues[BackgroundUpdateIntervalKey] = value.Ticks; }
-        }
-
-        public bool BackgroundUpdateEnabled
-        {
-            get { return BackgroundUpdateInterval != TimeSpan.Zero; }
-        }
-
-        public bool FirstRun
-        {
-            get { return GetValue(FirstRunKey, true); }
-            set { writeThroughValues[FirstRunKey] = value; }
-        }
-
-        public Uri SuccessTileUri
-        {
-            get { return new Uri(GetValue(SuccessTileUriKey, "Images/Tiles/Success.png"), UriKind.RelativeOrAbsolute); }
-            set { writeThroughValues[SuccessTileUriKey] = value.OriginalString; }
-        }
-
-        public Uri FailureTileUri
-        {
-            get { return new Uri(GetValue(FailureTileUriKey, "Images/Tiles/Failed.png"), UriKind.RelativeOrAbsolute); }
-            set { writeThroughValues[FailureTileUriKey] = value.OriginalString; }
-        }
-
-        public Uri UnavailableTileUri
-        {
-            get { return new Uri(GetValue(UnavailableTileUriKey, "Images/Tiles/Unavailable.png"), UriKind.RelativeOrAbsolute); }
-            set { writeThroughValues[UnavailableTileUriKey] = value.OriginalString; }
-        }
-
         public event EventHandler Updated;
 
         public void Save()
@@ -106,12 +43,6 @@ namespace RichardSzalay.PocketCiTray.Services
             this.writeThroughValues = new Dictionary<string, object>();
         }
 
-        public bool LoggingEnabled
-        {
-            get { return GetValue(FirstRunKey, false); }
-            set { writeThroughValues[LoggingEnabledKey] = value; }
-        }
-
         private T GetValue<T>(string key, T defaultValue)
         {
             object value;
@@ -129,53 +60,129 @@ namespace RichardSzalay.PocketCiTray.Services
             return defaultValue;
         }
 
+        private void ChangeValue(string property, object value)
+        {
+            bool writeValue = false;
+
+            if (writeThroughValues.ContainsKey(property))
+            {
+                if (!Object.Equals(writeThroughValues[property], value))
+                {
+                    writeValue = true;
+                }
+            }
+            else if (readOnlyValues.ContainsKey(property) &&
+                !Object.Equals(readOnlyValues[property], value))
+            {
+                writeValue = true;
+            }
+
+            if (writeValue)
+            {
+                writeThroughValues[property] = value;
+                OnNotifyPropertyChanged(property);
+            }
+        }
+
+        public TimeSpan ForegroundUpdateInterval
+        {
+            get { return new TimeSpan(GetValue("ForegroundUpdateInterval", DefaultForegroundInterval.Ticks)); }
+            set { ChangeValue("ForegroundUpdateInterval", value.Ticks); }
+        }
+
+        public bool RunUnderLockScreen
+        {
+            get { return GetValue("RunUnderLockScreen", false); }
+            set { ChangeValue("RunUnderLockScreen", value); }
+        }
+
+        public TimeSpan BackgroundUpdateInterval
+        {
+            get { return new TimeSpan(GetValue("BackgroundUpdateInterval", DefaultBackgroundInterval.Ticks)); }
+            set { ChangeValue("BackgroundUpdateInterval", value.Ticks); }
+        }
+
+        public bool BackgroundUpdateEnabled
+        {
+            get { return BackgroundUpdateInterval != TimeSpan.Zero; }
+        }
+
+        public bool FirstRun
+        {
+            get { return GetValue("FirstRun", true); }
+            set { ChangeValue("FirstRun", value); }
+        }
+
+        public Uri SuccessTileUri
+        {
+            get { return new Uri(GetValue("SuccessTileUri", "Images/Tiles/Success.png"), UriKind.RelativeOrAbsolute); }
+            set { ChangeValue("SuccessTileUri", value.OriginalString); }
+        }
+
+        public Uri FailureTileUri
+        {
+            get { return new Uri(GetValue("FailureTileUri", "Images/Tiles/Failed.png"), UriKind.RelativeOrAbsolute); }
+            set { ChangeValue("FailureTileUri", value.OriginalString); }
+        }
+
+        public Uri UnavailableTileUri
+        {
+            get { return new Uri(GetValue("UnavailableTileUri", "Images/Tiles/Unavailable.png"), UriKind.RelativeOrAbsolute); }
+            set { ChangeValue("UnavailableTileUri", value.OriginalString); }
+        }
+
+        public bool LoggingEnabled
+        {
+            get { return GetValue("LoggingEnabled", false); }
+            set { ChangeValue("LoggingEnabled", value); }
+        }
 
         public NotificationReason NotificationPreference
         {
-            get { return (NotificationReason)GetValue(NotificationPreferenceKey, (int)NotificationReason.All); }
-            set { writeThroughValues[NotificationPreferenceKey] = (int)value; }
+            get { return (NotificationReason)GetValue("NotificationPreference", (int)NotificationReason.All); }
+            set { ChangeValue("NotificationPreference", (int)value); }
         }
 
 
         public TimeSpan NotificationStart
         {
-            get { return new TimeSpan(GetValue(NotificationStartKey, new TimeSpan(9, 0, 0).Ticks)); }
-            set { writeThroughValues[NotificationStartKey] = value.Ticks; }
+            get { return new TimeSpan(GetValue("NotificationStart", new TimeSpan(9, 0, 0).Ticks)); }
+            set { ChangeValue("NotificationStart", value.Ticks); }
         }
 
         public TimeSpan NotificationEnd
         {
-            get { return new TimeSpan(GetValue(NotificationEndKey, new TimeSpan(17, 0, 0).Ticks)); }
-            set { writeThroughValues[NotificationEndKey] = value.Ticks; }
+            get { return new TimeSpan(GetValue("NotificationEnd", new TimeSpan(17, 0, 0).Ticks)); }
+            set { ChangeValue("NotificationEnd", value.Ticks); }
         }
 
         public DayOfWeek[] NotificationDays
         {
             get
             {
-                int storedValue = GetValue(NotificationDaysKey, DefaultDaysOfWeek);
+                int storedValue = GetValue("NotificationDays", DefaultDaysOfWeek);
 
                 return UnshrinkDaysOfWeek(storedValue);
             }
-            set { writeThroughValues[NotificationDaysKey] = ShrinkDaysOfWeek(value); }
+            set { ChangeValue("NotificationDays", ShrinkDaysOfWeek(value)); }
         }
 
         public string SuccessColorResource
         {
             get { return GetValue("SuccessColorResource", "GreenAccentBrush"); }
-            set { writeThroughValues["SuccessColorResource"] = value; }
+            set { ChangeValue("SuccessColorResource", value); }
         }
 
         public string FailedColorResource
         {
             get { return GetValue("FailedColorResource", "RedAccentBrush"); }
-            set { writeThroughValues["FailedColorResource"] = value; }
+            set { ChangeValue("FailedColorResource", value); }
         }
 
         public string UnavailableColorResource
         {
             get { return GetValue("UnavailableColorResource", "GrayAccentBrush"); }
-            set { writeThroughValues["UnavailableColorResource"] = value; }
+            set { ChangeValue("UnavailableColorResource", value); }
         }
 
         public static int ShrinkDaysOfWeek(params DayOfWeek[] daysOfWeek)
