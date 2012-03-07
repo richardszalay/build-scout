@@ -21,23 +21,19 @@
     tk:TiltEffect.IsTiltEnabled="True">
     
     <v:ViewBase.Resources>
-        <DataTemplate x:Key="ColorPickerItemTemplate">
-            <StackPanel Orientation="Horizontal">
-                <Rectangle Width="24" Height="24" Fill="{Binding Brush}" />
-                <TextBlock Text="{Binding Name}" Style="{StaticResource PhoneTextNormalStyle}" FontSize="{StaticResource PhoneFontSizeMedium}" Foreground="{StaticResource PhoneContrastForegroundBrush}" />
-            </StackPanel>
-        </DataTemplate>
-        <DataTemplate x:Key="ColorPickerFullModeItemTemplate">
-            <StackPanel Orientation="Horizontal" Margin="0,12,0,24">
-                <Rectangle Width="40" Height="40" Fill="{Binding Brush}" />
-                <TextBlock Text="{Binding Name}" Style="{StaticResource PhoneTextExtraLargeStyle}" VerticalAlignment="Bottom" />
-            </StackPanel>
-        </DataTemplate>
     </v:ViewBase.Resources>
 
     <!--LayoutRoot is the root grid where all page content is placed-->
     <Grid x:Name="LayoutRoot" Background="Transparent">
-        <controls:Pivot Title="SETTINGS">
+        <ListBox>
+            <ListBox.Items>
+                <ListBoxItem>
+                    <HyperlinkButton Content="notifications" NavigateUri="/View/EditNotificationSettings.xaml" />
+                </ListBoxItem>
+            </ListBox.Items>
+        </ListBox>
+        
+        <!--<controls:Pivot Title="SETTINGS">
 
             <controls:PivotItem Header="polling">
                 <StackPanel>
@@ -99,7 +95,7 @@
                                    ItemTemplate="{StaticResource ColorPickerItemTemplate}" FullModeItemTemplate="{StaticResource ColorPickerFullModeItemTemplate}" />
                 </StackPanel>
             </controls:PivotItem>
-        </controls:Pivot>
+        </controls:Pivot>-->
     </Grid>
 
     <!--Sample code showing usage of ApplicationBar-->

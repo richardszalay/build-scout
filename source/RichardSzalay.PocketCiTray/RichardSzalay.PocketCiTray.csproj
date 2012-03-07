@@ -196,6 +196,9 @@
     <Compile Include="View\AddBuildServer.xaml.cs">
       <DependentUpon>AddBuildServer.xaml</DependentUpon>
     </Compile>
+    <Compile Include="View\EditNotificationSettings.xaml.cs">
+      <DependentUpon>EditNotificationSettings.xaml</DependentUpon>
+    </Compile>
     <Compile Include="View\EditSettings.xaml.cs">
       <DependentUpon>EditSettings.xaml</DependentUpon>
     </Compile>
@@ -243,6 +246,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="View\AddBuildServer.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="View\EditNotificationSettings.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
