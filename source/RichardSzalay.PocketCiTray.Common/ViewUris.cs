@@ -53,5 +53,25 @@ namespace RichardSzalay.PocketCiTray
         {
             get { return ViewUri("/View/EditSettings.xaml"); }
         }
+
+        public static Uri EditScheduleSettings
+        {
+            get { return ViewUri("/View/EditScheduleSettings.xaml"); }
+        }
+
+        public static Uri EditNotificationSettings
+        {
+            get { return ViewUri("/View/EditNotificationSettings.xaml"); }
+        }
+
+        public static Uri EditColourSettings
+        {
+            get { return ViewUri("/View/EditColourSettings.xaml"); }
+        }
+
+        public static Uri About
+        {
+            get { return ViewUri("/View/About.xaml"); }
+        }
     }
 }

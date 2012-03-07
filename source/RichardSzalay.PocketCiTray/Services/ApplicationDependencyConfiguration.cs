@@ -120,10 +120,28 @@ namespace RichardSzalay.PocketCiTray.Services
                 ));
 
             container.Register(c => new EditSettingsViewModel(
+                c.Resolve<IApplicationSettings>()));
+
+            container.Register(c => new EditNotificationSettingsViewModel(
                 c.Resolve<INavigationService>(),
                 c.Resolve<ISchedulerAccessor>(),
                 c.Resolve<IApplicationSettings>(),
                 c.Resolve<IApplicationResourceFacade>(), c.Resolve<ISettingsApplier>()));
+
+            container.Register(c => new EditColourSettingsViewModel(
+                c.Resolve<INavigationService>(),
+                c.Resolve<ISchedulerAccessor>(),
+                c.Resolve<IApplicationSettings>(),
+                c.Resolve<IApplicationResourceFacade>(), c.Resolve<ISettingsApplier>()));
+
+            container.Register(c => new EditScheduleSettingsViewModel(
+                c.Resolve<INavigationService>(),
+                c.Resolve<ISchedulerAccessor>(),
+                c.Resolve<IApplicationSettings>(),
+                c.Resolve<IApplicationResourceFacade>(), c.Resolve<ISettingsApplier>()));
+
+            container.Register(c => new AboutViewModel(
+                c.Resolve<IEmailComposeTaskFacade>()));
         }
 
         private static void ConfigureFacades(Container container)
@@ -131,6 +149,8 @@ namespace RichardSzalay.PocketCiTray.Services
             container.Register<IScheduledActionServiceFacade>(new ScheduledActionServiceFacade());
             container.Register<IMessageBoxFacade>(new MessageBoxFacade());
             container.Register<IWebBrowserTaskFacade>(new WebBrowserTaskFacade());
+
+            container.Register<IEmailComposeTaskFacade>(new EmailComposeTaskFacade());
             
             container.Register<IApplicationResourceFacade>(new ApplicationResourceFacade());
 

@@ -63,16 +63,25 @@ namespace RichardSzalay.PocketCiTray.Services
             CopyColorFrom(applicationSettings.UnavailableColorResource, "BuildResultUnavailableBrush");
         }
 
+        private const string PhoneAccentBrushResourceKey = "PhoneAccentBrush";
+
         private void UpdateTileImages(IApplicationSettings applicationSettings)
         {
-            var successColor = applicationResourceFacade.GetResource<SolidColorBrush>("BuildResultSuccessBrush").Color;
-            var failedColor = applicationResourceFacade.GetResource<SolidColorBrush>("BuildResultFailedBrush").Color;
-            var unavailableColor = applicationResourceFacade.GetResource<SolidColorBrush>("BuildResultUnavailableBrush").Color;
+            var successColor = GetTileColor(applicationSettings.SuccessColorResource);
+            var failedColor = GetTileColor(applicationSettings.FailedColorResource);
+            var unavailableColor = GetTileColor(applicationSettings.UnavailableColorResource);
 
             applicationSettings.SuccessTileUri = UpdateTileImage(successColor, @"Shared\ShellContent\SuccessTile.png");
             applicationSettings.FailureTileUri = UpdateTileImage(failedColor, @"Shared\ShellContent\FailedTile.png");
             applicationSettings.UnavailableTileUri = UpdateTileImage(unavailableColor, @"Shared\ShellContent\UnavailableTile.png");
             applicationSettings.Save();
+        }
+
+        private Color GetTileColor(string brushResourceKey)
+        {
+            return (brushResourceKey == PhoneAccentBrushResourceKey)
+                ? Colors.Transparent
+                : applicationResourceFacade.GetResource<SolidColorBrush>(brushResourceKey).Color;
         }
 
         private Uri UpdateTileImage(Color color, string path)

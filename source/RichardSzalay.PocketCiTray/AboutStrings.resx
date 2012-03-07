@@ -117,139 +117,25 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="ApplicationTitle" xml:space="preserve">
-    <value>Build Scout</value>
+  <data name="AboutTitle" xml:space="preserve">
+    <value>about</value>
   </data>
-  <data name="ApplicationTitleLower" xml:space="preserve">
-    <value>build scout</value>
+  <data name="ApplicationCopyright" xml:space="preserve">
+    <value>© 2012 Richard Szalay. All rights reserved. Product names and company names mentioned herein may be trademarks or tradenames of their respective owners.</value>
   </data>
-  <data name="ApplicationTitleUpper" xml:space="preserve">
-    <value>BUILD SCOUT</value>
+  <data name="ApplicationVersion" xml:space="preserve">
+    <value>1.0.0.0</value>
   </data>
-  <data name="AtTime" xml:space="preserve">
-    <value>at {1:hh:mm}</value>
+  <data name="ApplicationVersionSeparator" xml:space="preserve">
+    <value>: </value>
   </data>
-  <data name="BackgroundUpdateAgentDescription" xml:space="preserve">
-    <value>Updates the status of build jobs in the background and notifies you of broken builds.</value>
+  <data name="ContactAuthor" xml:space="preserve">
+    <value>Contact the author</value>
   </data>
-  <data name="BlueAccentBrush" xml:space="preserve">
-    <value>blue</value>
+  <data name="VersionFormat" xml:space="preserve">
+    <value>version {0}</value>
   </data>
-  <data name="BrownAccentBrush" xml:space="preserve">
-    <value>brown</value>
-  </data>
-  <data name="BuildResult_Failed" xml:space="preserve">
-    <value>failed</value>
-  </data>
-  <data name="BuildResult_Success" xml:space="preserve">
-    <value>successful</value>
-  </data>
-  <data name="BuildResult_Unavailable" xml:space="preserve">
-    <value>unavailable</value>
-  </data>
-  <data name="DeleteBuildServerConfirmationDescription" xml:space="preserve">
-    <value>Delete build server?</value>
-  </data>
-  <data name="DeleteBuildServerConfirmationMessage" xml:space="preserve">
-    <value>All related jobs will be removed, but will remain on the server</value>
-  </data>
-  <data name="DeleteJobConfirmationDescription" xml:space="preserve">
-    <value>Delete job?</value>
-  </data>
-  <data name="DeleteJobConfirmationMessage" xml:space="preserve">
-    <value>The job will remain on the server</value>
-  </data>
-  <data name="EnableBackgroundTaskPrompt" xml:space="preserve">
-    <value>Would you like to enable job status updates while the application is not running? You can change this setting at any time in Settings.</value>
-  </data>
-  <data name="ErrorValidatingBuildServer" xml:space="preserve">
-    <value>Error validating build server</value>
-  </data>
-  <data name="FindingJobsStatusMessage" xml:space="preserve">
-    <value>finding jobs</value>
-  </data>
-  <data name="GrayAccentBrush" xml:space="preserve">
-    <value>gray</value>
-  </data>
-  <data name="GreenAccentBrush" xml:space="preserve">
-    <value>green</value>
-  </data>
-  <data name="LessThanOneMinuteAgo" xml:space="preserve">
-    <value>just now</value>
-  </data>
-  <data name="LimeAccentBrush" xml:space="preserve">
-    <value>lime</value>
-  </data>
-  <data name="LoadingStatusMessage" xml:space="preserve">
-    <value>loading</value>
-  </data>
-  <data name="MagentaAccentBrush" xml:space="preserve">
-    <value>magenta</value>
-  </data>
-  <data name="MangoAccentBrush" xml:space="preserve">
-    <value>mango</value>
-  </data>
-  <data name="MinutesAgo" xml:space="preserve">
-    <value>{0} mins ago</value>
-  </data>
-  <data name="NotificationNoneSelectedOption" xml:space="preserve">
-    <value>never</value>
-  </data>
-  <data name="OnDate" xml:space="preserve">
-    <value>on {1:d}</value>
-  </data>
-  <data name="OneMinuteAgo" xml:space="preserve">
-    <value>1 min ago</value>
-  </data>
-  <data name="PhoneAccentBrush" xml:space="preserve">
-    <value>theme color</value>
-  </data>
-  <data name="PinkAccentBrush" xml:space="preserve">
-    <value>pink</value>
-  </data>
-  <data name="PurpleAccentBrush" xml:space="preserve">
-    <value>purple</value>
-  </data>
-  <data name="RedAccentBrush" xml:space="preserve">
-    <value>red</value>
-  </data>
-  <data name="ShortDatePattern" xml:space="preserve">
-    <value>dd/MM</value>
-  </data>
-  <data name="TealAccentBrush" xml:space="preserve">
-    <value>teal</value>
-  </data>
-  <data name="ThisWeek" xml:space="preserve">
-    <value>on {1:ddd}</value>
-  </data>
-  <data name="UpdateIntervalDay" xml:space="preserve">
-    <value>1 day</value>
-  </data>
-  <data name="UpdateIntervalDays" xml:space="preserve">
-    <value>{0} day</value>
-  </data>
-  <data name="UpdateIntervalHour" xml:space="preserve">
-    <value>1 hour</value>
-  </data>
-  <data name="UpdateIntervalHours" xml:space="preserve">
-    <value>{0} hours</value>
-  </data>
-  <data name="UpdateIntervalMinute" xml:space="preserve">
-    <value>1 minute</value>
-  </data>
-  <data name="UpdateIntervalMinutes" xml:space="preserve">
-    <value>{0} minutes</value>
-  </data>
-  <data name="UpdateIntervalNever" xml:space="preserve">
-    <value>never</value>
-  </data>
-  <data name="UpdatingStatusMessage" xml:space="preserve">
-    <value>updating</value>
-  </data>
-  <data name="ValidatingBuildServerStatusMessage" xml:space="preserve">
-    <value>validating</value>
-  </data>
-  <data name="Yesterday" xml:space="preserve">
-    <value>yesterday</value>
+  <data name="VersionString" xml:space="preserve">
+    <value>version 1.0.0.0</value>
   </data>
 </root>

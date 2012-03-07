@@ -12,9 +12,9 @@
     <Application.Resources>
         <res:LocalizedResources x:Key="LocalizedResources" />
         <vm:ViewModelLocator x:Key="ViewModelLocator" />
-        <SolidColorBrush x:Key="BuildResultSuccessBrush" Color="#339933" />
-        <SolidColorBrush x:Key="BuildResultUnavailableBrush" Color="Gray" />
-        <SolidColorBrush x:Key="BuildResultFailedBrush" Color="#E51400" />
+        <SolidColorBrush x:Key="BuildResultSuccessBrush" Color="#FF339933" />
+        <SolidColorBrush x:Key="BuildResultUnavailableBrush" Color="#FF5D5D5D" />
+        <SolidColorBrush x:Key="BuildResultFailedBrush" Color="#FFE51400" />
         <Style TargetType="local:HighlightingTextBlock">
             <Setter Property="HighlightBrush" Value="Blue" />
             <Setter Property="Template">

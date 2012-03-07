@@ -7,6 +7,7 @@ using System.Reactive.Disposables;
 using System.Reactive.Linq;
 using System.Threading;
 using RichardSzalay.PocketCiTray.Providers;
+using System.Diagnostics;
 
 namespace RichardSzalay.PocketCiTray.Services
 {
@@ -27,7 +28,7 @@ namespace RichardSzalay.PocketCiTray.Services
         private bool isUpdating;        
 
         private SerialDisposable disposable = new SerialDisposable();
-        private TimeSpan BackgroundAgentTimeout;
+        private readonly TimeSpan BackgroundAgentTimeout = TimeSpan.FromSeconds(20);
 
         public JobUpdateService(IJobProviderFactory jobProviderFactory, IJobRepository jobRepository,
             IClock clock, ISettingsService settingsService, IMutexService mutexService,
@@ -54,10 +55,12 @@ namespace RichardSzalay.PocketCiTray.Services
             {
                 schedulerAccessor.Background.Schedule(() =>
                 {
-                    BackgroundAgentTimeout = TimeSpan.FromSeconds(20);
-                    mutexService.WaitOne(MutexNames.JobUpdateService, BackgroundAgentTimeout);
+                    if (!Debugger.IsAttached)
+                    {
+                        mutexService.WaitOne(MutexNames.JobUpdateService, BackgroundAgentTimeout);
 
-                    OnComplete(new List<Job>());
+                        OnComplete(new List<Job>());
+                    }
                 });
 
                 return;

@@ -61,6 +61,33 @@ namespace RichardSzalay.PocketCiTray {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Build Scout.
+        /// </summary>
+        public static string ApplicationTitle {
+            get {
+                return ResourceManager.GetString("ApplicationTitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to build scout.
+        /// </summary>
+        public static string ApplicationTitleLower {
+            get {
+                return ResourceManager.GetString("ApplicationTitleLower", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to BUILD SCOUT.
+        /// </summary>
+        public static string ApplicationTitleUpper {
+            get {
+                return ResourceManager.GetString("ApplicationTitleUpper", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to at {1:hh:mm}.
         /// </summary>
         public static string AtTime {

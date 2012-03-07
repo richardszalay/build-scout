@@ -1,5 +1,5 @@
 ﻿<v:ViewBase 
-    x:Class="RichardSzalay.PocketCiTray.View.EditSettings"
+    x:Class="RichardSzalay.PocketCiTray.View.EditColourSettings"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:shell="clr-namespace:Microsoft.Phone.Shell;assembly=Microsoft.Phone"
@@ -17,36 +17,24 @@
     SupportedOrientations="Portrait"  Orientation="Portrait"
     shell:SystemTray.IsVisible="True"
     shell:SystemTray.ProgressIndicator="{Binding ProgressIndicator}"
-    DataContext="{Binding Path=EditSettingsViewModel ,Source={StaticResource ViewModelLocator}}"
-    d:DataContext="{d:DesignData /DesignData/EditSettingsData.xaml}"    
+    DataContext="{Binding Path=EditColourSettingsViewModel ,Source={StaticResource ViewModelLocator}}"
     tk:TiltEffect.IsTiltEnabled="True">
     
     <v:ViewBase.Resources>
-    	<Style x:Key="ContentHyperlinkButtonStyle" TargetType="HyperlinkButton">
-    		<Setter Property="Foreground" Value="{StaticResource PhoneForegroundBrush}"/>
-    		<Setter Property="Background" Value="Transparent"/>
-    		<Setter Property="FontSize" Value="{StaticResource PhoneFontSizeMedium}"/>
-    		<Setter Property="Padding" Value="0"/>
-    		<Setter Property="Template">
-    			<Setter.Value>
-    				<ControlTemplate TargetType="HyperlinkButton">
-    					<Border Background="Transparent">
-    						<VisualStateManager.VisualStateGroups>
-    							<VisualStateGroup x:Name="CommonStates">
-    								<VisualState x:Name="Normal"/>
-    								<VisualState x:Name="MouseOver"/>
-                                    <VisualState x:Name="Pressed" />
-                                    <VisualState x:Name="Disabled" />
-    							</VisualStateGroup>
-    						</VisualStateManager.VisualStateGroups>
-    						<Border Background="{TemplateBinding Background}" Margin="{StaticResource PhoneHorizontalMargin}" Padding="{TemplateBinding Padding}">
-                                <ContentPresenter />
-    						</Border>
-    					</Border>
-    				</ControlTemplate>
-    			</Setter.Value>
-    		</Setter>
-    	</Style>
+        <DataTemplate x:Key="ColorPickerItemTemplate">
+            <StackPanel Orientation="Horizontal">
+                <Rectangle Width="24" Height="24" Fill="{Binding Brush}" />
+                <TextBlock Text="{Binding Name}" Style="{StaticResource PhoneTextNormalStyle}" 
+                           FontSize="{StaticResource PhoneFontSizeMedium}"
+                           Foreground="{StaticResource PhoneContrastForegroundBrush}"/>
+            </StackPanel>
+        </DataTemplate>
+        <DataTemplate x:Key="ColorPickerFullModeItemTemplate">
+            <StackPanel Orientation="Horizontal" Margin="0,12,0,24">
+                <Rectangle Width="40" Height="40" Fill="{Binding Brush}" />
+                <TextBlock Text="{Binding Name}" Style="{StaticResource PhoneTextExtraLargeStyle}" VerticalAlignment="Bottom" />
+            </StackPanel>
+        </DataTemplate>
     </v:ViewBase.Resources>
 
     <!--LayoutRoot is the root grid where all page content is placed-->
@@ -61,33 +49,24 @@
 
         <!--TitlePanel contains the name of the application and page title-->
         <StackPanel x:Name="TitlePanel" Grid.Row="0" Margin="12,17,0,28">
-            <TextBlock x:Name="ApplicationTitle" Text="BUILD SCOUT" Style="{StaticResource PhoneTextNormalStyle}"/>
-            <TextBlock x:Name="PageTitle" Text="settings" Margin="9,-7,0,0" Style="{StaticResource PhoneTextTitle1Style}"/>
+            <TextBlock x:Name="ApplicationTitle" Text="SETTINGS" Style="{StaticResource PhoneTextNormalStyle}"/>
+            <TextBlock x:Name="PageTitle" Text="colours" Margin="9,-7,0,0" Style="{StaticResource PhoneTextTitle1Style}"/>
         </StackPanel>
 
         <!--ContentPanel - place additional content here-->
-        <Grid x:Name="ContentPanel" Grid.Row="1" Margin="0,0,0,0">
-            <ListBox ItemsSource="{Binding Links}">
-                <ListBox.ItemTemplate>
-                    <DataTemplate>
-                        <HyperlinkButton NavigateUri="{Binding NavigateUri}" Style="{StaticResource ContentHyperlinkButtonStyle}" Margin="0,0,0,12">
-                            <HyperlinkButton.Content>
-                                <StackPanel>
-                                    <TextBlock Text="{Binding Title}" Style="{StaticResource PhoneTextExtraLargeStyle}" />
-                                    <TextBlock Text="{Binding Description}" Style="{StaticResource PhoneTextSubtleStyle}" />
-                                </StackPanel>
-                            </HyperlinkButton.Content>
-                        </HyperlinkButton>
-                    </DataTemplate>
-                </ListBox.ItemTemplate>
-                <ListBox.ItemContainerStyle>
-                    <Style TargetType="ListBoxItem">
-                        <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
-                        <Setter Property="Margin" Value="0,0,0,8" />
-                    </Style>
-                </ListBox.ItemContainerStyle>
-            </ListBox>
-        </Grid>
+        <StackPanel  x:Name="ContentPanel" Grid.Row="1" Margin="12,0,24,0">
+            <TextBlock Text="Successful" Style="{StaticResource PhoneTextSubtleStyle}" Margin="12,0,12,4" />
+            <tk:ListPicker ItemsSource="{Binding ColourOptions}" SelectedItem="{Binding SuccessfulColor, Mode=TwoWay}" Margin="12,-5,0,28"
+                                    ItemTemplate="{StaticResource ColorPickerItemTemplate}" FullModeItemTemplate="{StaticResource ColorPickerFullModeItemTemplate}" />
+
+            <TextBlock Text="Failed" Style="{StaticResource PhoneTextSubtleStyle}" Margin="12,0,12,4" />
+            <tk:ListPicker ItemsSource="{Binding ColourOptions}" SelectedItem="{Binding FailedColor, Mode=TwoWay}" Margin="12,-5,0,28"
+                                    ItemTemplate="{StaticResource ColorPickerItemTemplate}" FullModeItemTemplate="{StaticResource ColorPickerFullModeItemTemplate}" />
+
+            <TextBlock Text="Unavailable" Style="{StaticResource PhoneTextSubtleStyle}" Margin="12,0,12,4" />
+            <tk:ListPicker ItemsSource="{Binding ColourOptions}" SelectedItem="{Binding UnavailableColor, Mode=TwoWay}" Margin="12,-5,0,12"
+                                    ItemTemplate="{StaticResource ColorPickerItemTemplate}" FullModeItemTemplate="{StaticResource ColorPickerFullModeItemTemplate}" />
+        </StackPanel>
     </Grid>
 
     <!--Sample code showing usage of ApplicationBar-->

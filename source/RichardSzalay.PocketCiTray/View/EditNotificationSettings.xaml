@@ -15,11 +15,11 @@
     Foreground="{StaticResource PhoneForegroundBrush}"
     SupportedOrientations="PortraitOrLandscape" Orientation="Portrait"
     mc:Ignorable="d" 
-    d:DesignHeight="696" 
+    d:DesignHeight="768" 
     shell:SystemTray.ProgressIndicator="{Binding ProgressIndicator}"
     d:DesignWidth="480" 
     shell:SystemTray.IsVisible="True"
-    DataContext="{Binding Path=ListJobsViewModel ,Source={StaticResource ViewModelLocator}}"
+    DataContext="{Binding Path=EditNotificationSettingsViewModel ,Source={StaticResource ViewModelLocator}}"
     d:DataContext="{d:DesignData /DesignData/ListJobsData.xaml}"    
     tk:TiltEffect.IsTiltEnabled="True"
     >

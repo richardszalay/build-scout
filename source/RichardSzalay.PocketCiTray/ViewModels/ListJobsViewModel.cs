@@ -61,7 +61,7 @@ namespace RichardSzalay.PocketCiTray.ViewModels
 
             Disposables.Add(Observable.FromEventPattern(h => jobUpdateService.Complete += h, h => jobUpdateService.Complete -= h)
                 .ObserveOn(schedulerAccessor.UserInterface)
-                .Subscribe(_ => RefreshJobs()));
+                .Subscribe(_ => { StopLoading(); RefreshJobs(); }));
 
             if (lastUpdateDate == null || lastUpdateDate.Value < jobRepository.LastUpdateDate)
             {
