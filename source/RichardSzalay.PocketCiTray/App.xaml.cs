@@ -10,6 +10,7 @@ using RichardSzalay.PocketCiTray.ViewModels;
 using WP7Contrib.Logging;
 using System.Diagnostics;
 using Microsoft.Phone.Info;
+using BugSense;
 
 namespace RichardSzalay.PocketCiTray
 {
@@ -28,6 +29,8 @@ namespace RichardSzalay.PocketCiTray
         {
             TiltEffect.TiltableItems.Add(typeof(MultiselectItem));
             //TiltEffect.TiltableItems.Add(typeof(CheckBox));
+
+            BugSenseHandler.Instance.Init(this, "6726e103");
 
             // Global handler for uncaught exceptions. 
             UnhandledException += Application_UnhandledException;
@@ -127,7 +130,9 @@ namespace RichardSzalay.PocketCiTray
         {
             bootstrap.Shutdown();
 
+#if DEBUG
             Debug.WriteLine("Max memory used: {0}", DeviceStatus.ApplicationPeakMemoryUsage);
+#endif
         }
 
         // Code to execute if a navigation fails

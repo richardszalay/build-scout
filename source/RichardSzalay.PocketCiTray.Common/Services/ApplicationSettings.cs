@@ -71,8 +71,14 @@ namespace RichardSzalay.PocketCiTray.Services
                     writeValue = true;
                 }
             }
-            else if (readOnlyValues.ContainsKey(property) &&
-                !Object.Equals(readOnlyValues[property], value))
+            else if (readOnlyValues.ContainsKey(property))
+            {
+                if (!Object.Equals(readOnlyValues[property], value))
+                {
+                    writeValue = true;
+                }
+            }
+            else
             {
                 writeValue = true;
             }

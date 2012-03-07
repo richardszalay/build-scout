@@ -114,8 +114,6 @@ namespace RichardSzalay.PocketCiTray.ViewModels
 
         private void RefreshJobs()
         {
-            //StartLoading(Strings.LoadingStatusMessage);
-
             var jobs = jobRepository.GetJobs();
             Jobs = new ObservableCollection<Job>(jobs);
             var lastUpdateDate = jobRepository.LastUpdateDate;
