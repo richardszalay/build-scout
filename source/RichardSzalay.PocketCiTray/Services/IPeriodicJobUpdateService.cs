@@ -4,6 +4,8 @@ namespace RichardSzalay.PocketCiTray.Services
 {
     public interface IPeriodicJobUpdateService
     {
+        bool CanRegisterBackgroundTask { get; }
+
         void Start(TimeSpan dueTime, TimeSpan period);
 
         void Stop();

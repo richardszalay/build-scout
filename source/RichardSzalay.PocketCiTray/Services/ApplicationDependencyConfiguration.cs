@@ -37,10 +37,17 @@ namespace RichardSzalay.PocketCiTray.Services
             container.Register<ILog>(log);
             container.Register<ILogManager>(log);
 
+#if DEBUG_256_DEVICE
+            container.Register<IDeviceInformationService>(c => new LowEndDeviceInformationService());
+#else
+            container.Register<IDeviceInformationService>(c => new DeviceInformationService());
+#endif
+
             container.Register<IPeriodicJobUpdateService>(l => new PeriodicJobUpdateService(
                 l.Resolve<IJobUpdateService>(),
                 l.Resolve<ISchedulerAccessor>().Background,
-                l.Resolve<IScheduledActionServiceFacade>()
+                l.Resolve<IScheduledActionServiceFacade>(),
+                l.Resolve<IDeviceInformationService>()
                 ));
 
             container.Register<INavigationService>(l => 
@@ -57,7 +64,8 @@ namespace RichardSzalay.PocketCiTray.Services
                 c.Resolve<IApplicationResourceFacade>(),
                 c.Resolve<IPhoneApplicationServiceFacade>(),
                 c.Resolve<ITileImageGenerator>(),
-                c.Resolve<IIsolatedStorageFacade>()));
+                c.Resolve<IIsolatedStorageFacade>(),
+                c.Resolve<ILog>()));
 
             container.Register<Bootstrap>(l => new Bootstrap(l.Resolve<IApplicationSettings>(),
                 l.Resolve<IClock>(),
@@ -65,7 +73,8 @@ namespace RichardSzalay.PocketCiTray.Services
                 l.Resolve<IMutexService>(),
                 l.Resolve<ILogManager>(),
                 l.Resolve<ISettingsApplier>(),
-                l.Resolve<IJobRepository>()));
+                l.Resolve<IJobRepository>(),
+                l.Resolve<IPeriodicJobUpdateService>()));
 
             container.Register<IHelpService>(c => new HelpService(
                 c.Resolve<IIsolatedStorageFacade>(),
@@ -120,7 +129,8 @@ namespace RichardSzalay.PocketCiTray.Services
                 ));
 
             container.Register(c => new EditSettingsViewModel(
-                c.Resolve<IApplicationSettings>()));
+                c.Resolve<IApplicationSettings>(),
+                c.Resolve<IDeviceInformationService>()));
 
             container.Register(c => new EditNotificationSettingsViewModel(
                 c.Resolve<INavigationService>(),

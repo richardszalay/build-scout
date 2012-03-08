@@ -1,5 +1,6 @@
 ﻿using System;
 using System.IO;
+using Microsoft.Phone.Scheduler;
 using WP7Contrib.Logging;
 using System.Windows.Media;
 using Microsoft.Phone.Shell;
@@ -24,11 +25,13 @@ namespace RichardSzalay.PocketCiTray.Services
         private readonly IPhoneApplicationServiceFacade phoneApplicationService;
         private readonly ITileImageGenerator tileImageGenerator;
         private readonly IIsolatedStorageFacade isolatedStorageFacade;
+        private readonly ILog log;
 
         public SettingsApplier(ILogManager logManager, IJobUpdateService jobUpdateService,
             IPeriodicJobUpdateService periodicJobUpdateService, IClock clock,
             IApplicationResourceFacade applicationResourceFacade, IPhoneApplicationServiceFacade phoneApplicationService,
-            ITileImageGenerator tileImageGenerator, IIsolatedStorageFacade isolatedStorageFacade)
+            ITileImageGenerator tileImageGenerator, IIsolatedStorageFacade isolatedStorageFacade,
+            ILog log)
         {
             this.logManager = logManager;
             this.jobUpdateService = jobUpdateService;
@@ -38,6 +41,7 @@ namespace RichardSzalay.PocketCiTray.Services
             this.phoneApplicationService = phoneApplicationService;
             this.tileImageGenerator = tileImageGenerator;
             this.isolatedStorageFacade = isolatedStorageFacade;
+            this.log = log;
         }
 
         public void ApplyToSession(IApplicationSettings applicationSettings)
@@ -118,7 +122,18 @@ namespace RichardSzalay.PocketCiTray.Services
 
             if (applicationSettings.BackgroundUpdateEnabled)
             {
-                periodicJobUpdateService.RegisterBackgroundTask();
+                try
+                {
+                    periodicJobUpdateService.RegisterBackgroundTask();
+                }
+                catch (InvalidOperationException ex)
+                {
+                    log.Write("InvalidOperationException registering background service");
+                }
+                catch (SchedulerServiceException ex)
+                {
+                    log.Write("SchedulerServiceException registering background service");
+                }
             }
         }
 

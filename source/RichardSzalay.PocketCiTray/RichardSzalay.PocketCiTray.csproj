@@ -33,7 +33,7 @@
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
     <OutputPath>Bin\Debug</OutputPath>
-    <DefineConstants>TRACE;DEBUG;SILVERLIGHT;WINDOWS_PHONE;DEBUG_AGENT</DefineConstants>
+    <DefineConstants>TRACE;DEBUG;SILVERLIGHT;WINDOWS_PHONE;DEBUG_AGENT;DEBUG_256_DEVICE</DefineConstants>
     <NoStdLib>true</NoStdLib>
     <NoConfig>true</NoConfig>
     <ErrorReport>prompt</ErrorReport>
@@ -171,6 +171,7 @@
     <Compile Include="Services\ApplicationDependencyConfiguration.cs" />
     <Compile Include="Services\EmailComposeTaskFacade.cs" />
     <Compile Include="Services\IApplicationResourceFacade.cs" />
+    <Compile Include="Services\IDeviceInformationService.cs" />
     <Compile Include="Services\IHelpService.cs" />
     <Compile Include="Services\INavigationService.cs" />
     <Compile Include="Services\IPeriodicJobUpdateService.cs" />

@@ -15,12 +15,15 @@ namespace RichardSzalay.PocketCiTray.Services
         private readonly IJobUpdateService jobUpdateService;
         private readonly IScheduler scheduler;
         private readonly IScheduledActionServiceFacade scheduledActionService;
+        private readonly IDeviceInformationService deviceInformationService;
 
-        public PeriodicJobUpdateService(IJobUpdateService jobUpdateService, IScheduler scheduler, IScheduledActionServiceFacade scheduledActionService)
+        public PeriodicJobUpdateService(IJobUpdateService jobUpdateService, IScheduler scheduler, 
+            IScheduledActionServiceFacade scheduledActionService, IDeviceInformationService deviceInformationService)
         {
             this.jobUpdateService = jobUpdateService;
             this.scheduler = scheduler;
             this.scheduledActionService = scheduledActionService;
+            this.deviceInformationService = deviceInformationService;
         }
 
         private readonly SerialDisposable subscription = new SerialDisposable();
@@ -47,6 +50,11 @@ namespace RichardSzalay.PocketCiTray.Services
             scheduledActionService.Add(PeriodicTaskName, Strings.BackgroundUpdateAgentDescription);
 
             scheduledActionService.LaunchForTest(PeriodicTaskName, TestBackgroundInterval);
+        }
+
+        public bool CanRegisterBackgroundTask
+        {
+            get { return !deviceInformationService.IsLowEndDevice; }
         }
 
         private const string PeriodicTaskName = "PocketBuild.BackgroundUpdateAgent";

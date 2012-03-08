@@ -1,18 +1,8 @@
 ﻿using System;
-using System.Linq;
 using System.Collections.Generic;
-using System.Collections.ObjectModel;
-using System.Reactive.Concurrency;
-using System.Reactive.Linq;
-using System.Windows.Input;
-using System.Windows.Media;
 using System.Windows.Navigation;
-using RichardSzalay.PocketCiTray.Extensions.Extensions;
 using RichardSzalay.PocketCiTray.Services;
 using RichardSzalay.PocketCiTray.Infrastructure;
-using System.Globalization;
-using System.Reactive.Disposables;
-using System.ComponentModel;
 using System.Xml.Linq;
 
 namespace RichardSzalay.PocketCiTray.ViewModels
@@ -20,10 +10,12 @@ namespace RichardSzalay.PocketCiTray.ViewModels
     public class EditSettingsViewModel : ViewModelBase
     {
         private readonly IApplicationSettings applicationSettings;
+        private readonly IDeviceInformationService deviceInformationService;
 
-        public EditSettingsViewModel(IApplicationSettings applicationSettings)
+        public EditSettingsViewModel(IApplicationSettings applicationSettings, IDeviceInformationService deviceInformationService)
         {
             this.applicationSettings = applicationSettings;
+            this.deviceInformationService = deviceInformationService;
         }
 
         public override void OnNavigatedTo(NavigationEventArgs e)
@@ -50,34 +42,31 @@ namespace RichardSzalay.PocketCiTray.ViewModels
 
         private string BuildNotificationDescription()
         {
-            if (applicationSettings.NotificationPreference == NotificationReason.All)
+            switch (applicationSettings.NotificationPreference)
             {
-                return SettingsStrings.NotificationAllChanges;
-            }
-            else if (applicationSettings.NotificationPreference == NotificationReason.None)
-            {
-                return SettingsStrings.Disabled;
-            }
-            else
-            {
-                List<String> changes = new List<string>();
+                case NotificationReason.All:
+                    return SettingsStrings.NotificationAllChanges;
+                case NotificationReason.None:
+                    return SettingsStrings.Disabled;
+                default:
+                    var changes = new List<string>();
 
-                if ((applicationSettings.NotificationPreference & NotificationReason.Fixed) != 0)
-                {
-                    changes.Add(SettingsStrings.NotificationFixed);
-                }
+                    if ((applicationSettings.NotificationPreference & NotificationReason.Fixed) != 0)
+                    {
+                        changes.Add(SettingsStrings.NotificationFixed);
+                    }
 
-                if ((applicationSettings.NotificationPreference & NotificationReason.Failed) != 0)
-                {
-                    changes.Add(SettingsStrings.NotificationFailed);
-                }
+                    if ((applicationSettings.NotificationPreference & NotificationReason.Failed) != 0)
+                    {
+                        changes.Add(SettingsStrings.NotificationFailed);
+                    }
 
-                if ((applicationSettings.NotificationPreference & NotificationReason.Unavailable) != 0)
-                {
-                    changes.Add(SettingsStrings.NotificationUnavailable);
-                }
+                    if ((applicationSettings.NotificationPreference & NotificationReason.Unavailable) != 0)
+                    {
+                        changes.Add(SettingsStrings.NotificationUnavailable);
+                    }
 
-                return String.Join(SettingsStrings.NotificationSeparator, changes);
+                    return String.Join(SettingsStrings.NotificationSeparator, changes);
             }
         }
 
@@ -85,22 +74,32 @@ namespace RichardSzalay.PocketCiTray.ViewModels
         {
             string foregroundDescription = null;
 
-            if (applicationSettings.ForegroundUpdateInterval == TimeSpan.Zero)
-            {
-                foregroundDescription = SettingsStrings.Disabled;
-            }
-            else
+            if (deviceInformationService.IsLowEndDevice)
             {
                 string interval = new UpdateInterval(applicationSettings.ForegroundUpdateInterval).Display;
 
-                foregroundDescription = String.Format(SettingsStrings.EveryInterval, interval);
+                return String.Format(SettingsStrings.EveryInterval, interval);
             }
+            else
+            {
+                if (applicationSettings.ForegroundUpdateInterval == TimeSpan.Zero)
+                {
+                    foregroundDescription = SettingsStrings.Disabled;
+                }
+                else
+                {
+                    string interval = new UpdateInterval(applicationSettings.ForegroundUpdateInterval).Display;
 
-            string backgroundDescription = (applicationSettings.BackgroundUpdateInterval == TimeSpan.Zero)
-                ? SettingsStrings.Disabled
-                : SettingsStrings.Enabled;
+                    foregroundDescription = String.Format(SettingsStrings.EveryInterval, interval);
+                }
 
-            return String.Format(SettingsStrings.ScheduleDescriptionFormat, foregroundDescription, backgroundDescription);
+                string backgroundDescription = (applicationSettings.BackgroundUpdateInterval == TimeSpan.Zero)
+                                                   ? SettingsStrings.Disabled
+                                                   : SettingsStrings.Enabled;
+
+                return String.Format(SettingsStrings.ScheduleDescriptionFormat, foregroundDescription,
+                                     backgroundDescription);
+            }
         }
 
         private string GetApplicationVersion()

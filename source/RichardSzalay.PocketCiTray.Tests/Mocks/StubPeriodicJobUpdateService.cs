@@ -59,5 +59,11 @@ namespace RichardSzalay.PocketCiTray.Tests.Mocks
         {
             IsBackgroundServiceRegistered = true;
         }
+
+        #region IPeriodicJobUpdateService Members
+
+        public bool CanRegisterBackgroundTask { get; set; }
+
+        #endregion
     }
 }
