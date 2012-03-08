@@ -6,12 +6,14 @@
     xmlns:shell="clr-namespace:Microsoft.Phone.Shell;assembly=Microsoft.Phone" 
     xmlns:vm="clr-namespace:RichardSzalay.PocketCiTray.ViewModels"
     xmlns:local="clr-namespace:RichardSzalay.PocketCiTray.Infrastructure.Controls" 
+    xmlns:inf="clr-namespace:RichardSzalay.PocketCiTray.Infrastructure"
     xmlns:res="clr-namespace:RichardSzalay.PocketCiTray">
 
     <!--Application Resources-->
     <Application.Resources>
         <res:LocalizedResources x:Key="LocalizedResources" />
         <vm:ViewModelLocator x:Key="ViewModelLocator" />
+        <inf:BooleanVisibilityConverter x:Key="BooleanVisibilityConverter" />
         <SolidColorBrush x:Key="BuildResultSuccessBrush" Color="#FF339933" />
         <SolidColorBrush x:Key="BuildResultUnavailableBrush" Color="#FF5D5D5D" />
         <SolidColorBrush x:Key="BuildResultFailedBrush" Color="#FFE51400" />

@@ -27,7 +27,6 @@
     <v:ViewBase.Resources>
         <inf:RelativeTimeConverter x:Key="RelativeTimeConverter" />
         <inf:LocalizedBuildStatusConverter x:Key="LocalizedBuildStatusConverter" />
-        <inf:BooleanVisibilityConverter x:Key="BooleanVisibilityConverter" />
         <inf:ContinuumTransition x:Key="ContinuumInTransition" Mode="BackwardIn" />
         <inf:ContinuumTransition x:Key="ContinuumOutTransition" Mode="ForwardOut" />
         <inf:BuildStatusToBrushConverter x:Key="BuildStatusToBrushConverter" />

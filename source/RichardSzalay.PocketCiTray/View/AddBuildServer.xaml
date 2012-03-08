@@ -25,7 +25,7 @@
 
         <!--TitlePanel contains the name of the application and page title-->
         <StackPanel x:Name="TitlePanel" Grid.Row="0" Margin="12,17,0,28">
-            <TextBlock x:Name="ApplicationTitle" Text="POCKET BUILD" Style="{StaticResource PhoneTextNormalStyle}"/>
+            <TextBlock x:Name="ApplicationTitle" Text="{Binding Path=Strings.ApplicationTitle, Source={StaticResource LocalizedResources}}" Style="{StaticResource PhoneTextNormalStyle}"/>
             <TextBlock x:Name="PageTitle" Text="add server" Margin="9,-7,0,0" Style="{StaticResource PhoneTextTitle1Style}"/>
         </StackPanel>
 
@@ -42,6 +42,27 @@
                         <inf:EnterKeyBehavior Command="{Binding AddBuildServerCommand}" />
                     </i:Interaction.Behaviors>
                 </TextBox>
+
+                <Button Content="Advanced"
+                        Command="{Binding ShowAdvancedOptionsCommand}"
+                    Visibility="{Binding IsShowingAdvancedOptions, Converter={StaticResource BooleanVisibilityConverter}, ConverterParameter=!}" />
+
+                <StackPanel Visibility="{Binding IsShowingAdvancedOptions, Converter={StaticResource BooleanVisibilityConverter}}">
+                    <TextBlock Text="Username" Style="{StaticResource PhoneTextSubtleStyle}" Margin="12,12,12,0" />
+                    <TextBox x:Name="Username" Text="{Binding Username, Mode=TwoWay}" Tag="auto:Username">
+                        <i:Interaction.Behaviors>
+                            <inf:RealtimeTextBoxBindingBehavior />
+                            <inf:EnterKeyBehavior Command="{Binding AddBuildServerCommand}" />
+                        </i:Interaction.Behaviors>
+                    </TextBox>
+
+                    <TextBlock Text="Password" Style="{StaticResource PhoneTextSubtleStyle}" Margin="12,12,12,0" />
+                    <PasswordBox x:Name="Password" Password="{Binding Password, Mode=TwoWay}" Tag="auto:Password">
+                        <i:Interaction.Behaviors>
+                            <inf:RealtimePasswordBoxBindingBehavior />
+                        </i:Interaction.Behaviors>
+                    </PasswordBox>
+                </StackPanel>
             </StackPanel>
         </Grid>
     </Grid>

@@ -22,6 +22,7 @@ using System.Windows.Input;
 using System.Windows.Interactivity;
 using Microsoft.Phone.Controls;
 using WP7Contrib.View.Controls.BindingListener;
+using System.Windows.Controls;
 
 namespace RichardSzalay.PocketCiTray.Infrastructure
 {

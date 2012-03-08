@@ -11,6 +11,7 @@ using System.Windows;
 using System.Collections.Generic;
 using Microsoft.Phone.Net.NetworkInformation;
 using RichardSzalay.PocketCiTray.Infrastructure;
+using System.Net;
 
 namespace RichardSzalay.PocketCiTray.ViewModels
 {
@@ -27,8 +28,8 @@ namespace RichardSzalay.PocketCiTray.ViewModels
         private readonly INetworkInterfaceFacade networkInterface;
 
         private ICommand addBuildServerCommand;
-        private string buildServerUrl = "http://guest@teamcity.codebetter.com";
-        private string selectedProvider = "teamcity6";
+        private string buildServerUrl;
+        private string selectedProvider;
         private ICollection<string> providers;
 
         private bool canRestrictToNetwork = false;
@@ -51,7 +52,10 @@ namespace RichardSzalay.PocketCiTray.ViewModels
         {
             base.OnNavigatedTo(e);
 
-            Providers = jobProviderFactory.GetProviders();
+            Providers = jobProviderFactory.GetProviders()
+                .Select(p => new ProviderOption(p))
+                .ToList();
+
             SelectedProvider = Providers.First();
 
             validateBuildServer = new SerialDisposable();
@@ -59,6 +63,8 @@ namespace RichardSzalay.PocketCiTray.ViewModels
 
             AddBuildServerCommand = CreateCommand<string>(
                 new ObservableCommand<string>(CanAdd), OnAddBuildServer);
+
+            ShowAdvancedOptionsCommand = CreateCommand(new ObservableCommand(), OnShowAdvancedOptionsCommand);
 
             ViewHelpCommand = CreateCommand(new ObservableCommand(), OnViewHelp);
 
@@ -70,54 +76,54 @@ namespace RichardSzalay.PocketCiTray.ViewModels
                 .Subscribe(OnNetworkInterfaceChanged));
         }
 
-        public string BuildServerUrl
-        {
-            get { return buildServerUrl; }
-            set
-            {
-                buildServerUrl = value;
-                OnPropertyChanged("BuildServerUrl");
-            }
-        }
+        [NotifyProperty]
+        public string BuildServerUrl { get; set; }
 
-        public bool CanRestrictToNetwork
-        {
-            get { return canRestrictToNetwork; }
-            set { canRestrictToNetwork = value; OnPropertyChanged("CanRestrictToNetwork"); }
-        }
+        [NotifyProperty]
+        public bool CanRestrictToNetwork { get; set; }
 
-        public string NetworkName
-        {
-            get { return networkName; }
-            set { networkName = value; OnPropertyChanged("NetworkName"); }
-        }
+        [NotifyProperty]
+        public string NetworkName { get; set; }
 
-        public ICommand AddBuildServerCommand
-        {
-            get { return addBuildServerCommand; }
-            set { addBuildServerCommand = value; OnPropertyChanged("AddBuildServerCommand"); }
-        }
+        [NotifyProperty]
+        public ICommand AddBuildServerCommand { get; set; }
+        
+        [NotifyProperty]
+        public ICommand ShowAdvancedOptionsCommand { get; set; }
+
+        [NotifyProperty]
+        public bool IsShowingAdvancedOptions { get; set; }
+
+        [NotifyProperty]
+        public string Username { get; set; }
+
+        [NotifyProperty]
+        public string Password { get; set; }
 
         [NotifyProperty]
         public ICommand ViewHelpCommand { get; set; }
 
-        public string SelectedProvider
-        {
-            get { return selectedProvider; }
-            set { selectedProvider = value; OnPropertyChanged("SelectedProvider"); }
-        }
+        [NotifyProperty]
+        public ProviderOption SelectedProvider { get; set; }
 
-        public ICollection<string> Providers
+        [NotifyProperty]
+        public ICollection<ProviderOption> Providers { get; set; }
+
+        private void OnShowAdvancedOptionsCommand()
         {
-            get { return providers; }
-            private set { providers = value; OnPropertyChanged("Providers"); }
+            IsShowingAdvancedOptions = true;
         }
 
         private void OnAddBuildServer(string buildServerUrl)
         {
-            IJobProvider provider = jobProviderFactory.Get(SelectedProvider);
+            IJobProvider provider = jobProviderFactory.Get(SelectedProvider.Provider);
 
-            BuildServer buildServer = BuildServer.FromUri(provider.Name, new Uri(buildServerUrl, UriKind.Absolute));
+            var credential = (!String.IsNullOrEmpty(Username))
+                ? new NetworkCredential(Username, Password)
+                : null;
+
+            BuildServer buildServer = BuildServer.FromUri(provider.Name, 
+                new Uri(buildServerUrl, UriKind.Absolute), credential);
 
             StartLoading(Strings.ValidatingBuildServerStatusMessage);
 
@@ -157,6 +163,30 @@ namespace RichardSzalay.PocketCiTray.ViewModels
             if (CanRestrictToNetwork)
             {
                 NetworkName = networkInterface.NetworkName;
+            }
+        }
+
+        public class ProviderOption
+        {
+            private readonly string provider;
+
+            public ProviderOption(string provider)
+            {
+                this.provider = provider;
+                this.DisplayName = ProviderStrings.ResourceManager.GetString(provider + "_Selector");
+            }
+
+            public string Provider { get { return provider; } }
+
+            public string DisplayName
+            {
+                get;
+                private set;
+            }
+
+            public override string ToString()
+            {
+                return DisplayName;
             }
         }
     }

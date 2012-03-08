@@ -17,13 +17,17 @@ namespace RichardSzalay.PocketCiTray
 
         public string Provider { get; set; }
 
-        public static BuildServer FromUri(String provider, Uri uri)
+        public static BuildServer FromUri(String provider, Uri uri, NetworkCredential credential)
         {
             var builder = new UriBuilder(uri);
 
-            NetworkCredential credential = (builder.UserName != "")
-                ? new NetworkCredential(builder.UserName, builder.Password)
-                : null;
+            if (!String.IsNullOrEmpty(builder.UserName))
+            {
+                credential = new NetworkCredential(builder.UserName, builder.Password);
+
+                builder.UserName = "";
+                builder.Password = "";
+            }
 
             return new BuildServer
             {
