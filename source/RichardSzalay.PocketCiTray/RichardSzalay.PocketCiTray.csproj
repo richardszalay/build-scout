@@ -186,6 +186,7 @@
     <Compile Include="Services\ScheduledActionServiceFacade.cs" />
     <Compile Include="Services\SettingsApplier.cs" />
     <Compile Include="Services\TileImageGenerator.cs" />
+    <Compile Include="Services\WebExceptionService.cs" />
     <Compile Include="SettingsStrings.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>

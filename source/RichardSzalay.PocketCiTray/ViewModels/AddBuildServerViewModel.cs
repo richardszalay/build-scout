@@ -146,7 +146,11 @@ namespace RichardSzalay.PocketCiTray.ViewModels
 
         private void OnAddBuildServerFailed(Exception ex)
         {
-            messageBoxFacade.Show(ex.Message, Strings.ErrorValidatingBuildServer, MessageBoxButton.OK);
+            String message = (ex is WebException)
+                ? WebExceptionService.GetDisplayMessage((WebException)ex)
+                : ex.Message;
+
+            messageBoxFacade.Show(message, Strings.ErrorValidatingBuildServer, MessageBoxButton.OK);
         }
 
         private bool CanAdd(string value)
