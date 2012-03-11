@@ -43,7 +43,7 @@
                     </i:Interaction.Behaviors>
                 </TextBox>
 
-                <Button Content="Advanced"
+                <Button Content="advanced"
                         Command="{Binding ShowAdvancedOptionsCommand}"
                     Visibility="{Binding IsShowingAdvancedOptions, Converter={StaticResource BooleanVisibilityConverter}, ConverterParameter=!}" />
 

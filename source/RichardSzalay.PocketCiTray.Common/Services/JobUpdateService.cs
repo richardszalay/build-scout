@@ -7,7 +7,10 @@ using System.Reactive.Disposables;
 using System.Reactive.Linq;
 using System.Threading;
 using RichardSzalay.PocketCiTray.Providers;
+using RichardSzalay.PocketCiTray.Extensions;
 using System.Diagnostics;
+using System.Net;
+using WP7Contrib.Logging;
 
 namespace RichardSzalay.PocketCiTray.Services
 {
@@ -15,7 +18,7 @@ namespace RichardSzalay.PocketCiTray.Services
     {
         private const string LastUpdateKey = "JobUpdateService.LastUpdateTime";
 
-        private IJobProviderFactory jobProviderFactory;
+        private readonly IJobProviderFactory jobProviderFactory;
         private readonly IJobRepository jobRepository;
         private readonly IClock clock;
         private readonly ISettingsService settingsService;
@@ -23,8 +26,10 @@ namespace RichardSzalay.PocketCiTray.Services
         private readonly ISchedulerAccessor schedulerAccessor;
         private readonly IApplicationTileService applicationTileService;
         private readonly IJobNotificationService jobNotificationService;
+        private readonly ILog log;
 
         public event EventHandler Started;
+        public event EventHandler Complete;
         private bool isUpdating;        
 
         private SerialDisposable disposable = new SerialDisposable();
@@ -33,7 +38,7 @@ namespace RichardSzalay.PocketCiTray.Services
         public JobUpdateService(IJobProviderFactory jobProviderFactory, IJobRepository jobRepository,
             IClock clock, ISettingsService settingsService, IMutexService mutexService,
             ISchedulerAccessor schedulerAccessor, IApplicationTileService applicationTileService,
-            IJobNotificationService jobNotificationService)
+            IJobNotificationService jobNotificationService, ILog log)
         {
             this.jobProviderFactory = jobProviderFactory;
             this.jobRepository = jobRepository;
@@ -43,37 +48,37 @@ namespace RichardSzalay.PocketCiTray.Services
             this.schedulerAccessor = schedulerAccessor;
             this.applicationTileService = applicationTileService;
             this.jobNotificationService = jobNotificationService;
+            this.log = log;
         }
 
         public void UpdateAll(TimeSpan timeout)
         {
             OnStarted();
-                
-            IDisposable mutex = mutexService.GetOwned(MutexNames.JobUpdateService, TimeSpan.FromMilliseconds(100));
 
-            if (mutex == null)
+            using (var mutex = mutexService.GetOwned(MutexNames.JobUpdateService, TimeSpan.FromMilliseconds(100)))
             {
-                schedulerAccessor.Background.Schedule(() =>
+                if (mutex == null)
                 {
-                    if (!Debugger.IsAttached)
+                    schedulerAccessor.Background.Schedule(() =>
                     {
-                        mutexService.WaitOne(MutexNames.JobUpdateService, BackgroundAgentTimeout);
+                        if (!Debugger.IsAttached)
+                        {
+                            mutexService.WaitOne(MutexNames.JobUpdateService, BackgroundAgentTimeout);
 
-                        OnComplete(new List<Job>());
-                    }
-                });
+                            OnComplete(new List<Job>());
+                        }
+                    });
 
-                return;
+                    return;
+                }
+
+                if (isUpdating)
+                {
+                    return;
+                }
+
+                isUpdating = true;
             }
-
-            if (isUpdating)
-            {
-                return;
-            }
-
-            isUpdating = true;
-
-            mutex.Dispose();
 
             var serverGroups = jobRepository.GetJobs()
                 .GroupBy(j => j.BuildServer);
@@ -83,9 +88,16 @@ namespace RichardSzalay.PocketCiTray.Services
                 .SelectMany(group => jobProviderFactory
                     .Get(group.Key.Provider)
                     .UpdateAll(group.Key, group)
-                    .Catch<Job, Exception>(ex =>
+                    .Catch<Job, WebException>(ex =>
                     {
-                        // TODO: Log the error in the provider
+                        log.Write(String.Format("Unhandled WebException updating jobs from {0} ({1})", 
+                            group.Key.Name, group.Key.Provider), ex);
+
+                        if (WebExceptionService.IsJobUnavailable(ex))
+                        {
+                            return group.Select(x => x.MakeUnavailable(ex, clock.UtcNow))
+                                .ToObservable(schedulerAccessor.Background);
+                        }
 
                         return Observable.Empty<Job>();
                     })
@@ -93,8 +105,6 @@ namespace RichardSzalay.PocketCiTray.Services
                 .Buffer(timeout).Take(1)
                 .Subscribe(OnComplete);
         }
-
-        public event EventHandler Complete;
 
         public DateTimeOffset? LastUpdateTime
         {

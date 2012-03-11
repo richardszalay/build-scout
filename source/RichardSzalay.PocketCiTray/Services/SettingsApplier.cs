@@ -53,9 +53,10 @@ namespace RichardSzalay.PocketCiTray.Services
                 logManager.Enable();
             }
 
-            phoneApplicationService.ApplicationIdleDetectionMode = (applicationSettings.RunUnderLockScreen)
-                ? IdleDetectionMode.Disabled
-                : IdleDetectionMode.Enabled;
+            if (applicationSettings.RunUnderLockScreen)
+            {
+                phoneApplicationService.ApplicationIdleDetectionMode = IdleDetectionMode.Disabled;
+            }
 
             ApplyBuildResultColors(applicationSettings);
         }

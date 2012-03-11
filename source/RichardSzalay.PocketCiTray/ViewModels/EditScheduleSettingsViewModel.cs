@@ -23,6 +23,7 @@ namespace RichardSzalay.PocketCiTray.ViewModels
         private readonly IApplicationSettings applicationSettings;
         private readonly IApplicationResourceFacade applicationResources;
         private readonly ISettingsApplier settingsApplier;
+        private readonly IDeviceInformationService deviceInformationService;
 
         private SerialDisposable updateDisposable;
 
@@ -30,13 +31,14 @@ namespace RichardSzalay.PocketCiTray.ViewModels
 
         public EditScheduleSettingsViewModel(INavigationService navigationService, ISchedulerAccessor schedulerAccessor, 
             IApplicationSettings applicationSettings, IApplicationResourceFacade applicationResources,
-            ISettingsApplier settingsApplier)
+            ISettingsApplier settingsApplier, IDeviceInformationService deviceInformationService)
         {
             this.navigationService = navigationService;
             this.schedulerAccessor = schedulerAccessor;
             this.applicationSettings = applicationSettings;
             this.applicationResources = applicationResources;
             this.settingsApplier = settingsApplier;
+            this.deviceInformationService = deviceInformationService;
         }
 
         public override void OnNavigatedTo(NavigationEventArgs e)
@@ -55,6 +57,8 @@ namespace RichardSzalay.PocketCiTray.ViewModels
             string[] dayNames = CultureInfo.CurrentCulture.DateTimeFormat.DayNames;
 
             updateDisposable = new SerialDisposable();
+
+            ShowBackgroundScheduleOptions = !deviceInformationService.IsLowEndDevice;
 
             ForegroundUpdateOptions = new[]
             {
@@ -107,6 +111,9 @@ namespace RichardSzalay.PocketCiTray.ViewModels
 
         [NotifyProperty(AlsoNotifyFor=new[] { "ForegroundUpdateInterval" })]
         public ICollection<UpdateInterval> ForegroundUpdateOptions { get; private set; }
+
+        [NotifyProperty]
+        public bool ShowBackgroundScheduleOptions { get; private set; }
 
         [NotifyProperty(AlsoNotifyFor = new[] { "BackgroundUpdateInterval" })]
         public ICollection<UpdateInterval> BackgroundUpdateOptions { get; private set; }

@@ -113,6 +113,7 @@
     <Compile Include="Extensions\Extensions\PropertyChangeExtensions.cs" />
     <Compile Include="Extensions\Extensions\UriExtensions.cs" />
     <Compile Include="Extensions\Extensions\WebRequestExtensions.cs" />
+    <Compile Include="Extensions\JobExtensions.cs" />
     <Compile Include="IJobRepository.cs" />
     <Compile Include="Infrastructure\NotifyPropertyWeaver.cs" />
     <Compile Include="ISchedulerAccessor.cs" />
@@ -162,6 +163,7 @@
     <Compile Include="Services\MutexService.cs" />
     <Compile Include="Services\SettingsDictionarySerializer.cs" />
     <Compile Include="Services\ShellTileService.cs" />
+    <Compile Include="Services\WebExceptionService.cs" />
     <Compile Include="ViewUris.cs" />
   </ItemGroup>
   <ItemGroup>

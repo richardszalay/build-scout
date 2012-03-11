@@ -148,7 +148,9 @@ namespace RichardSzalay.PocketCiTray.Services
                 c.Resolve<INavigationService>(),
                 c.Resolve<ISchedulerAccessor>(),
                 c.Resolve<IApplicationSettings>(),
-                c.Resolve<IApplicationResourceFacade>(), c.Resolve<ISettingsApplier>()));
+                c.Resolve<IApplicationResourceFacade>(), 
+                c.Resolve<ISettingsApplier>(),
+                c.Resolve<IDeviceInformationService>()));
 
             container.Register(c => new AboutViewModel(
                 c.Resolve<IEmailComposeTaskFacade>()));

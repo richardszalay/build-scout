@@ -22,17 +22,33 @@ namespace RichardSzalay.PocketCiTray.ViewModels
         {
             base.OnNavigatedTo(e);
 
-            this.Links = new List<PageLink>()
+            this.Links = new List<PageLink>(GetPageLinks());
+        }
+
+        private IEnumerable<PageLink> GetPageLinks()
+        {
+            yield return new PageLink(SettingsStrings.ScheduleTitle, 
+                BuildScheduleDescription(), ViewUris.EditScheduleSettings);
+
+            if (!deviceInformationService.IsLowEndDevice)
             {
-                new PageLink(SettingsStrings.ScheduleTitle, 
-                    BuildScheduleDescription(), ViewUris.EditScheduleSettings),
-                new PageLink(SettingsStrings.NotificationTitle, 
-                    BuildNotificationDescription(), ViewUris.EditNotificationSettings),
-                new PageLink(SettingsStrings.ColoursTitle, 
-                    SettingsStrings.ColoursDescription, ViewUris.EditColourSettings),
-                new PageLink(AboutStrings.AboutTitle, 
-                    GetAboutDescription(), ViewUris.About),
-            };
+                yield return new PageLink(SettingsStrings.NotificationTitle,
+                    BuildNotificationDescription(), ViewUris.EditNotificationSettings);
+            }
+
+            if (deviceInformationService.IsLowEndDevice)
+            {
+                yield return new PageLink(SettingsStrings.ColoursTitle,
+                    SettingsStrings.ColoursLowEndDeviceDescription, ViewUris.EditColourSettings);
+            }
+            else
+            {
+                yield return new PageLink(SettingsStrings.ColoursTitle,
+                    SettingsStrings.ColoursDescription, ViewUris.EditColourSettings);
+            }
+            
+            yield return new PageLink(AboutStrings.AboutTitle,
+                GetAboutDescription(), ViewUris.About);
         }
 
         private string GetAboutDescription()

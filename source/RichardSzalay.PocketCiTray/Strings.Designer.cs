@@ -61,6 +61,15 @@ namespace RichardSzalay.PocketCiTray {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to add server.
+        /// </summary>
+        public static string AddBuildServerTitle {
+            get {
+                return ResourceManager.GetString("AddBuildServerTitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Build Scout.
         /// </summary>
         public static string ApplicationTitle {
@@ -187,6 +196,42 @@ namespace RichardSzalay.PocketCiTray {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to colours.
+        /// </summary>
+        public static string EditColourSettingsTitle {
+            get {
+                return ResourceManager.GetString("EditColourSettingsTitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to notifications.
+        /// </summary>
+        public static string EditNoficiationSettingsTitle {
+            get {
+                return ResourceManager.GetString("EditNoficiationSettingsTitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to schedule.
+        /// </summary>
+        public static string EditScheduleSettingsTitle {
+            get {
+                return ResourceManager.GetString("EditScheduleSettingsTitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to settings.
+        /// </summary>
+        public static string EditSettingsTitle {
+            get {
+                return ResourceManager.GetString("EditSettingsTitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Would you like to enable job status updates while the application is not running? You can change this setting at any time in Settings..
         /// </summary>
         public static string EnableBackgroundTaskPrompt {
@@ -232,60 +277,6 @@ namespace RichardSzalay.PocketCiTray {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to The server could not be contacted.
-        /// </summary>
-        public static string HttpServerResponseConnection {
-            get {
-                return ResourceManager.GetString("HttpServerResponseConnection", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to There is a problem with the network connection.
-        /// </summary>
-        public static string HttpServerResponseNetwork {
-            get {
-                return ResourceManager.GetString("HttpServerResponseNetwork", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to The is an issue with the server&apos;s SSLcertificate.
-        /// </summary>
-        public static string HttpServerResponseSslError {
-            get {
-                return ResourceManager.GetString("HttpServerResponseSslError", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to The server returned: {0:G}.
-        /// </summary>
-        public static string HttpServerResponseStatusError {
-            get {
-                return ResourceManager.GetString("HttpServerResponseStatusError", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to The response timed out.
-        /// </summary>
-        public static string HttpServerResponseTimedOutError {
-            get {
-                return ResourceManager.GetString("HttpServerResponseTimedOutError", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to The server returned an unsupported response.
-        /// </summary>
-        public static string HttpServerUnexpectedResponse {
-            get {
-                return ResourceManager.GetString("HttpServerUnexpectedResponse", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to just now.
         /// </summary>
         public static string LessThanOneMinuteAgo {
@@ -300,6 +291,15 @@ namespace RichardSzalay.PocketCiTray {
         public static string LimeAccentBrush {
             get {
                 return ResourceManager.GetString("LimeAccentBrush", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to jobs.
+        /// </summary>
+        public static string ListJobsTitle {
+            get {
+                return ResourceManager.GetString("ListJobsTitle", resourceCulture);
             }
         }
         
@@ -399,6 +399,15 @@ namespace RichardSzalay.PocketCiTray {
         public static string RedAccentBrush {
             get {
                 return ResourceManager.GetString("RedAccentBrush", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to select server.
+        /// </summary>
+        public static string SelectBuildServerTitle {
+            get {
+                return ResourceManager.GetString("SelectBuildServerTitle", resourceCulture);
             }
         }
         

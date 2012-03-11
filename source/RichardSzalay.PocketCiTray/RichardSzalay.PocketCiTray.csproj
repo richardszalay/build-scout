@@ -43,7 +43,7 @@
     <DebugType>pdbonly</DebugType>
     <Optimize>true</Optimize>
     <OutputPath>Bin\Release</OutputPath>
-    <DefineConstants>TRACE;SILVERLIGHT;WINDOWS_PHONE</DefineConstants>
+    <DefineConstants>TRACE;DEBUG;SILVERLIGHT;WINDOWS_PHONE;DEBUG_256_DEVICE</DefineConstants>
     <NoStdLib>true</NoStdLib>
     <NoConfig>true</NoConfig>
     <ErrorReport>prompt</ErrorReport>
@@ -186,7 +186,6 @@
     <Compile Include="Services\ScheduledActionServiceFacade.cs" />
     <Compile Include="Services\SettingsApplier.cs" />
     <Compile Include="Services\TileImageGenerator.cs" />
-    <Compile Include="Services\WebExceptionService.cs" />
     <Compile Include="SettingsStrings.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>

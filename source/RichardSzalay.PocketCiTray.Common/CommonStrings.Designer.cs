@@ -61,11 +61,65 @@ namespace RichardSzalay.PocketCiTray {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Pocket Build Monitor.
+        ///   Looks up a localized string similar to Build Scout.
         /// </summary>
         internal static string ApplicationTitle {
             get {
                 return ResourceManager.GetString("ApplicationTitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The server could not be contacted.
+        /// </summary>
+        internal static string HttpServerResponseConnection {
+            get {
+                return ResourceManager.GetString("HttpServerResponseConnection", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to There is a problem with the network connection.
+        /// </summary>
+        internal static string HttpServerResponseNetwork {
+            get {
+                return ResourceManager.GetString("HttpServerResponseNetwork", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The is an issue with the server&apos;s SSLcertificate.
+        /// </summary>
+        internal static string HttpServerResponseSslError {
+            get {
+                return ResourceManager.GetString("HttpServerResponseSslError", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The server returned: {0:G}.
+        /// </summary>
+        internal static string HttpServerResponseStatusError {
+            get {
+                return ResourceManager.GetString("HttpServerResponseStatusError", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The response timed out.
+        /// </summary>
+        internal static string HttpServerResponseTimedOutError {
+            get {
+                return ResourceManager.GetString("HttpServerResponseTimedOutError", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The server returned an unsupported response.
+        /// </summary>
+        internal static string HttpServerUnexpectedResponse {
+            get {
+                return ResourceManager.GetString("HttpServerUnexpectedResponse", resourceCulture);
             }
         }
     }

@@ -120,6 +120,9 @@
   <data name="ColoursDescription" xml:space="preserve">
     <value>change application and tile colours</value>
   </data>
+  <data name="ColoursLowEndDeviceDescription" xml:space="preserve">
+    <value>change application colours</value>
+  </data>
   <data name="ColoursTitle" xml:space="preserve">
     <value>colours</value>
   </data>

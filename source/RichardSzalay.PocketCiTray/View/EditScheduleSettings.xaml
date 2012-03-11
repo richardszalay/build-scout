@@ -52,8 +52,10 @@
                 </CheckBox>
             </StackPanel>
 
-            <TextBlock Text="Background Updates" Style="{StaticResource PhoneTextSubtleStyle}" Margin="12,30,0,0" />
-            <tk:ListPicker Margin="12,0,12,12" ItemsSource="{Binding BackgroundUpdateOptions}" SelectedItem="{Binding BackgroundUpdateInterval, Mode=TwoWay}" DisplayMemberPath="Display" />
+            <StackPanel Visibility="{Binding ShowBackgroundScheduleOptions, Converter={StaticResource BooleanVisibilityConverter}}">
+                <TextBlock Text="Background Updates" Style="{StaticResource PhoneTextSubtleStyle}" Margin="12,30,0,0" />
+                <tk:ListPicker Margin="12,0,12,12" ItemsSource="{Binding BackgroundUpdateOptions}" SelectedItem="{Binding BackgroundUpdateInterval, Mode=TwoWay}" DisplayMemberPath="Display" />
+            </StackPanel>
         </StackPanel>
     </Grid>
 

@@ -117,6 +117,9 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="AddBuildServerTitle" xml:space="preserve">
+    <value>add server</value>
+  </data>
   <data name="ApplicationTitle" xml:space="preserve">
     <value>Build Scout</value>
   </data>
@@ -159,6 +162,18 @@
   <data name="DeleteJobConfirmationMessage" xml:space="preserve">
     <value>The job will remain on the server</value>
   </data>
+  <data name="EditColourSettingsTitle" xml:space="preserve">
+    <value>colours</value>
+  </data>
+  <data name="EditNoficiationSettingsTitle" xml:space="preserve">
+    <value>notifications</value>
+  </data>
+  <data name="EditScheduleSettingsTitle" xml:space="preserve">
+    <value>schedule</value>
+  </data>
+  <data name="EditSettingsTitle" xml:space="preserve">
+    <value>settings</value>
+  </data>
   <data name="EnableBackgroundTaskPrompt" xml:space="preserve">
     <value>Would you like to enable job status updates while the application is not running? You can change this setting at any time in Settings.</value>
   </data>
@@ -174,29 +189,14 @@
   <data name="GreenAccentBrush" xml:space="preserve">
     <value>green</value>
   </data>
-  <data name="HttpServerResponseConnection" xml:space="preserve">
-    <value>The server could not be contacted</value>
-  </data>
-  <data name="HttpServerResponseNetwork" xml:space="preserve">
-    <value>There is a problem with the network connection</value>
-  </data>
-  <data name="HttpServerResponseSslError" xml:space="preserve">
-    <value>The is an issue with the server's SSLcertificate</value>
-  </data>
-  <data name="HttpServerResponseStatusError" xml:space="preserve">
-    <value>The server returned: {0:G}</value>
-  </data>
-  <data name="HttpServerResponseTimedOutError" xml:space="preserve">
-    <value>The response timed out</value>
-  </data>
-  <data name="HttpServerUnexpectedResponse" xml:space="preserve">
-    <value>The server returned an unsupported response</value>
-  </data>
   <data name="LessThanOneMinuteAgo" xml:space="preserve">
     <value>just now</value>
   </data>
   <data name="LimeAccentBrush" xml:space="preserve">
     <value>lime</value>
+  </data>
+  <data name="ListJobsTitle" xml:space="preserve">
+    <value>jobs</value>
   </data>
   <data name="LoadingStatusMessage" xml:space="preserve">
     <value>loading</value>
@@ -230,6 +230,9 @@
   </data>
   <data name="RedAccentBrush" xml:space="preserve">
     <value>red</value>
+  </data>
+  <data name="SelectBuildServerTitle" xml:space="preserve">
+    <value>select server</value>
   </data>
   <data name="ShortDatePattern" xml:space="preserve">
     <value>dd/MM</value>

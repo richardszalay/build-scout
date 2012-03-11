@@ -59,7 +59,8 @@ namespace RichardSzalay.PocketCiTray.Services
                 l.Resolve<IMutexService>(),
                 l.Resolve<ISchedulerAccessor>(),
                 l.Resolve<IApplicationTileService>(),
-                l.Resolve<IJobNotificationService>()));
+                l.Resolve<IJobNotificationService>(),
+                l.Resolve<ILog>()));
 
             container.Register<IApplicationTileService>(l => new ApplicationTileService(
                 l.Resolve<IApplicationSettings>(),

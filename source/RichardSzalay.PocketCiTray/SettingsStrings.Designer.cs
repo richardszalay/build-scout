@@ -70,6 +70,15 @@ namespace RichardSzalay.PocketCiTray {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to change application colours.
+        /// </summary>
+        public static string ColoursLowEndDeviceDescription {
+            get {
+                return ResourceManager.GetString("ColoursLowEndDeviceDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to colours.
         /// </summary>
         public static string ColoursTitle {

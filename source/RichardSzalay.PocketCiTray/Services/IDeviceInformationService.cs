@@ -10,7 +10,7 @@ namespace RichardSzalay.PocketCiTray.Services
     {
         public bool IsLowEndDevice
         {
-            get { return DeviceStatus.ApplicationMemoryUsageLimit < 90; }
+            get { return DeviceStatus.ApplicationMemoryUsageLimit < 94371840; }
         }
     }
 
