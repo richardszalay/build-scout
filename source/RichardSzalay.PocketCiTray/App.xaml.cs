@@ -11,6 +11,7 @@ using WP7Contrib.Logging;
 using System.Diagnostics;
 using Microsoft.Phone.Info;
 using BugSense;
+using System.Windows.Media;
 
 namespace RichardSzalay.PocketCiTray
 {
@@ -183,6 +184,7 @@ namespace RichardSzalay.PocketCiTray
             //RootFrame = new PhoneApplicationFrame();
             RootFrame = new TransitionFrame();
             RootFrame.Navigated += CompleteInitializePhoneApplication;
+            RootFrame.Background = new SolidColorBrush(Colors.Transparent);
 
             // Handle navigation failures
             RootFrame.NavigationFailed += RootFrame_NavigationFailed;

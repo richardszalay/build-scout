@@ -192,6 +192,18 @@ namespace RichardSzalay.PocketCiTray.ViewModels
             {
                 return DisplayName;
             }
+
+            public override bool Equals(object obj)
+            {
+                var otherOption = obj as ProviderOption;
+
+                if (otherOption != null)
+                {
+                    return otherOption.provider == this.provider;
+                }
+
+                return false;
+            }
         }
     }
 }

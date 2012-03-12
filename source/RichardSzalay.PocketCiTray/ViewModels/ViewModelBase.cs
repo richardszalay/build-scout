@@ -79,7 +79,7 @@ namespace RichardSzalay.PocketCiTray.ViewModels
         public TransitionMode TransitionMode
         {
             get { return transitionMode; }
-            protected set { transitionMode = value; OnPropertyChanged("TransitionMode"); }
+            protected set { if (transitionMode != value) { transitionMode = value; OnPropertyChanged("TransitionMode"); } }
         }
 
         protected ICommand CreateCommand<TParam>(ObservableCommand<TParam> command, Action<TParam> action)
