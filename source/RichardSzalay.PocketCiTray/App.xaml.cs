@@ -27,6 +27,8 @@ namespace RichardSzalay.PocketCiTray
         /// </summary>
         public App()
         {
+            Debug.WriteLine("[{0:hh:mm:ss.fff}] Begin App.ctor", DateTimeOffset.UtcNow);
+
             TiltEffect.TiltableItems.Add(typeof(MultiselectItem));
             //TiltEffect.TiltableItems.Add(typeof(CheckBox));
 
@@ -65,6 +67,8 @@ namespace RichardSzalay.PocketCiTray
             //WindowsPhoneTestFramework.Client.AutomationClient.Automation.Instance.Initialise();
 #endif //DEBUG
 
+            Debug.WriteLine("[{0:hh:mm:ss.fff}] End App.ctor", DateTimeOffset.UtcNow);
+
         }
 
         private Container container;
@@ -73,6 +77,8 @@ namespace RichardSzalay.PocketCiTray
         // This code will not execute when the application is reactivated
         private void Application_Launching(object sender, LaunchingEventArgs e)
         {
+            Debug.WriteLine("[{0:hh:mm:ss.fff}] Begin App.Launching", DateTimeOffset.UtcNow);
+
             container = ConfigureContainer();
 
             this.log = container.Resolve<ILog>();
@@ -81,6 +87,8 @@ namespace RichardSzalay.PocketCiTray
             bootstrap.Startup();
 
             EnableLoggingForDebug();
+
+            Debug.WriteLine("[{0:hh:mm:ss.fff}] End App.Launching", DateTimeOffset.UtcNow);
         }
 
         // Code to execute when the application is activated (brought to foreground)
