@@ -1,8 +1,14 @@
-﻿using System.IO.IsolatedStorage;
+﻿using System;
+using System.Collections.ObjectModel;
+using System.IO.IsolatedStorage;
 using System.Net;
 using System.Net.Browser;
 using System.Reactive.Concurrency;
+using System.Windows.Interactivity;
 using Funq;
+using Google.WebAnalytics;
+using Microsoft.Phone.Info;
+using Microsoft.WebAnalytics;
 using RichardSzalay.PocketCiTray.Providers;
 using WP7Contrib.Logging;
 using RichardSzalay.PocketCiTray.Data;
@@ -79,6 +85,17 @@ namespace RichardSzalay.PocketCiTray.Services
                 c.Resolve<IMutexService>(),
                 c.Resolve<ILog>()
                 ));
+
+            container.Register(c => new WebAnalyticsService
+            {
+                Services = new Collection<Behavior>
+                {
+                    c.Resolve<IGoogleAnalyticsFactory>().Create()
+                }
+            });
+
+            container.Register<ITrackingService>(c => new WebAnalyticsTrackingService(
+                c.Resolve<WebAnalyticsService>().EventLog.WriteEntry));
         }
 
         private static void ConfigureFacades(Container container)
@@ -93,7 +110,6 @@ namespace RichardSzalay.PocketCiTray.Services
             container.Register<IShellToastFacade>(new ShellToastFacade());
 
             container.Register<INetworkInterfaceFacade>(new NetworkInterfaceFacade());
-            
         }
     }
 }

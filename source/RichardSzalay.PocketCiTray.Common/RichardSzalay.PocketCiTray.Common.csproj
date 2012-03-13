@@ -46,7 +46,9 @@
     <Reference Include="Funq">
       <HintPath>..\libs\Funq\Funq.dll</HintPath>
     </Reference>
+    <Reference Include="Google.WebAnalytics, Version=1.4.11.0, Culture=neutral, processorArchitecture=MSIL" />
     <Reference Include="Microsoft.Phone" />
+    <Reference Include="Microsoft.WebAnalytics, Version=1.4.8.0, Culture=neutral, processorArchitecture=MSIL" />
     <Reference Include="Newtonsoft.Json">
       <HintPath>..\packages\Newtonsoft.Json.4.0.8\lib\sl4-windowsphone71\Newtonsoft.Json.dll</HintPath>
     </Reference>
@@ -67,6 +69,7 @@
     <Reference Include="System.Windows" />
     <Reference Include="system" />
     <Reference Include="System.Core" />
+    <Reference Include="System.Windows.Interactivity, Version=3.8.5.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL" />
     <Reference Include="System.Xml" />
     <Reference Include="System.Net" />
     <Reference Include="mscorlib.extensions" />
@@ -116,6 +119,7 @@
     <Compile Include="Extensions\JobExtensions.cs" />
     <Compile Include="IJobRepository.cs" />
     <Compile Include="Infrastructure\NotifyPropertyWeaver.cs" />
+    <Compile Include="Infrastructure\PhoneApplicationManifestHelper.cs" />
     <Compile Include="ISchedulerAccessor.cs" />
     <Compile Include="Job.cs" />
     <Compile Include="InMemoryJobRepository.cs" />
@@ -145,10 +149,13 @@
     <Compile Include="Services\ApplicationTileService.cs" />
     <Compile Include="Services\CommonDependencyConfiguration.cs" />
     <Compile Include="Services\DateTimeOffsetClock.cs" />
+    <Compile Include="Services\IApplicationInformation.cs" />
     <Compile Include="Services\IApplicationSettings.cs" />
     <Compile Include="Services\IApplicationTileService.cs" />
     <Compile Include="Services\IClock.cs" />
     <Compile Include="Services\IDataEncryptor.cs" />
+    <Compile Include="Services\IDeviceInformationService.cs" />
+    <Compile Include="Services\IGoogleAnalyticsFactory.cs" />
     <Compile Include="Services\IIsolatedStorageFacade.cs" />
     <Compile Include="Services\IJobNotificationService.cs" />
     <Compile Include="Services\IJobUpdateService.cs" />
@@ -158,6 +165,7 @@
     <Compile Include="Services\ISettingsService.cs" />
     <Compile Include="Services\IShellTileService.cs" />
     <Compile Include="Services\IShellToastFacade.cs" />
+    <Compile Include="Services\ITrackingService.cs" />
     <Compile Include="Services\JobUpdateService.cs" />
     <Compile Include="Services\MutexNames.cs" />
     <Compile Include="Services\MutexService.cs" />

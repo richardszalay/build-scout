@@ -1,0 +1,405 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>Google.WebAnalytics</name>
+    </assembly>
+    <members>
+        <member name="T:Google.WebAnalytics.Scope">
+            <summary>
+            The Scope of the application storage
+            </summary>
+        </member>
+        <member name="F:Google.WebAnalytics.Scope.Application">
+            <summary>
+            Application scope - different xaps have different storage
+            </summary>
+        </member>
+        <member name="F:Google.WebAnalytics.Scope.Site">
+            <summary>
+            Site storage - different xaps on the same domain have the same storage
+            </summary>
+        </member>
+        <member name="T:Google.WebAnalytics.Platform">
+            <summary>
+            Windows Phone 7-Specific platform code
+            </summary>
+        </member>
+        <member name="M:Google.WebAnalytics.Platform.OnAttached(System.Windows.Controls.Panel)">
+            <summary>
+            Do nothing when attached
+            </summary>
+            <param name="panel">the panel</param>
+        </member>
+        <member name="M:Google.WebAnalytics.Platform.OnDetach(System.Windows.Controls.Panel)">
+            <summary>
+            Do nothing when detached
+            </summary>
+            <param name="panel">the panel</param>
+        </member>
+        <member name="M:Google.WebAnalytics.Platform.Track(System.Uri)">
+            <summary>
+            Send a web request when tracking
+            </summary>
+            <param name="url">the URL to track</param>
+            <exception cref="T:System.ArgumentNullException">if url is null</exception>
+        </member>
+        <member name="M:Google.WebAnalytics.Platform.OnResponse(System.IAsyncResult)">
+            <summary>
+            process the response
+            </summary>
+            <param name="result">the asynchronous result</param>
+        </member>
+        <member name="P:Google.WebAnalytics.Platform.Category">
+            <summary>
+            Gets the analytics category
+            </summary>
+        </member>
+        <member name="P:Google.WebAnalytics.Platform.TrackingCodeVersion">
+            <summary>
+            Gets the tracking code version
+            </summary>
+        </member>
+        <member name="T:Google.WebAnalytics.Properties.Resources">
+            <summary>
+              A strongly-typed resource class, for looking up localized strings, etc.
+            </summary>
+        </member>
+        <member name="P:Google.WebAnalytics.Properties.Resources.ResourceManager">
+            <summary>
+              Returns the cached ResourceManager instance used by this class.
+            </summary>
+        </member>
+        <member name="P:Google.WebAnalytics.Properties.Resources.Culture">
+            <summary>
+              Overrides the current thread's CurrentUICulture property for all
+              resource lookups using this strongly typed resource class.
+            </summary>
+        </member>
+        <member name="P:Google.WebAnalytics.Properties.Resources.ProfileIdError">
+            <summary>
+              Looks up a localized string similar to The Google Analytics Profile Id should be in this format: &quot;UA-12345-1&quot;.
+            </summary>
+        </member>
+        <member name="T:Google.WebAnalytics.GoogleAnalytics">
+            <summary>
+            Analytics Service for Google Analytics
+            </summary>
+            <remarks>
+            see <a href="http://code.google.com/apis/analytics/docs/gaJS/gaJSApi.html">Google Analytics Tracking API</a> for more information.
+            </remarks>
+        </member>
+        <member name="F:Google.WebAnalytics.GoogleAnalytics.GoogleAnalyticsLastEventTime">
+            <summary>
+            The Last vent time
+            </summary>
+        </member>
+        <member name="F:Google.WebAnalytics.GoogleAnalytics.GoogleAnalyticsVisitorId">
+            <summary>
+            The Isolated Storage Key for the Google Analytics Session Id
+            </summary>
+        </member>
+        <member name="F:Google.WebAnalytics.GoogleAnalytics.GoogleAnalyticsVisitorStartTime">
+            <summary>
+            The Isolated Storage Key for the Google Analytics Session Start Time
+            </summary>
+        </member>
+        <member name="F:Google.WebAnalytics.GoogleAnalytics.GoogleAnalyticsSessionCount">
+            <summary>
+            The Isolated Storage Key for the Google Analytics Session Hit Count
+            </summary>
+        </member>
+        <member name="F:Google.WebAnalytics.GoogleAnalytics.GoogleAnalyticsPreviousSessionStartTime">
+            <summary>
+            The Isolated Storage Key for the Google Analytics Last Hit Time
+            </summary>
+        </member>
+        <member name="F:Google.WebAnalytics.GoogleAnalytics.GoogleAnalyticsSessionStartTime">
+            <summary>
+            The Session Start time
+            </summary>
+        </member>
+        <member name="F:Google.WebAnalytics.GoogleAnalytics.platform">
+            <summary>
+            platform-specific implementation
+            </summary>
+        </member>
+        <member name="F:Google.WebAnalytics.GoogleAnalytics.profileId">
+            <summary>
+            The Profile ID
+            </summary>
+        </member>
+        <member name="F:Google.WebAnalytics.GoogleAnalytics.sessionStartTime">
+            <summary>
+            the timestamp of the start of this session
+            </summary>
+        </member>
+        <member name="F:Google.WebAnalytics.GoogleAnalytics.visitorStartTime">
+            <summary>
+            the timestamp of the start of the visitor's usage of the site
+            </summary>
+        </member>
+        <member name="F:Google.WebAnalytics.GoogleAnalytics.previousSessionStartTime">
+            <summary>
+            the timestamp of the start of the previous session
+            </summary>
+        </member>
+        <member name="F:Google.WebAnalytics.GoogleAnalytics.sessionCount">
+            <summary>
+            The session count
+            </summary>
+        </member>
+        <member name="F:Google.WebAnalytics.GoogleAnalytics.visitorId">
+            <summary>
+            the visitor id;
+            </summary>
+        </member>
+        <member name="F:Google.WebAnalytics.GoogleAnalytics.lastEventTime">
+            <summary>
+            the time of the last event
+            </summary>
+        </member>
+        <member name="M:Google.WebAnalytics.GoogleAnalytics.#ctor">
+            <summary>
+            Initializes a new instance of the GoogleAnalytics class.
+            </summary>
+        </member>
+        <member name="M:Google.WebAnalytics.GoogleAnalytics.OnAttached">
+            <summary>
+            This is enabled if on an HTML Page
+            </summary>
+            <exception cref="T:System.InvalidOperationException">if the Google Analytics page tag is not on the page</exception>
+        </member>
+        <member name="M:Google.WebAnalytics.GoogleAnalytics.OnDetaching">
+            <summary>
+            Remove the page tag
+            </summary>
+        </member>
+        <member name="M:Google.WebAnalytics.GoogleAnalytics.AppendReferrerInformation(Microsoft.WebAnalytics.AnalyticsEvent,System.Text.StringBuilder)">
+            <summary>
+            Append the referrer information
+            </summary>
+            <param name="logEvent">the log event</param>
+            <param name="builder">the string builder</param>
+        </member>
+        <member name="M:Google.WebAnalytics.GoogleAnalytics.AppendPageInformation(Microsoft.WebAnalytics.AnalyticsEvent,System.Text.StringBuilder)">
+            <summary>
+            Append the page information
+            </summary>
+            <param name="logEvent">the log event</param>
+            <param name="builder">the string builder</param>
+        </member>
+        <member name="M:Google.WebAnalytics.GoogleAnalytics.AppendScreenInformation(System.Double,System.Double,System.Text.StringBuilder)">
+            <summary>
+            Append the screeen information
+            </summary>
+            <param name="width">the screen resolution width</param>
+            <param name="height">the screen resolution height</param>
+            <param name="builder">the URI string builder</param>
+        </member>
+        <member name="M:Google.WebAnalytics.GoogleAnalytics.AppendBrowserInformation(System.Text.StringBuilder)">
+            <summary>
+            Append the browser information
+            </summary>
+            <param name="builder">the URI string builder</param>
+        </member>
+        <member name="M:Google.WebAnalytics.GoogleAnalytics.GenerateTimestamp(System.DateTimeOffset)">
+            <summary>
+            Generate a timestamp
+            </summary>
+            <param name="dateTime">a date to convert</param>
+            <returns>a timestamp in seconds since January 1, 1970</returns>
+        </member>
+        <member name="M:Google.WebAnalytics.GoogleAnalytics.EncodeX10(System.String)">
+            <summary>
+            Encode for 10 project
+            </summary>
+            <param name="text">input text</param>
+            <returns>X10 Encoded text</returns>
+        </member>
+        <member name="M:Google.WebAnalytics.GoogleAnalytics.GenerateNewVisitorId">
+            <summary>
+            Generate a new unique visitor Id
+            </summary>
+            <returns>the new visitor Id</returns>
+        </member>
+        <member name="M:Google.WebAnalytics.GoogleAnalytics.ShouldTrackEvent(Microsoft.WebAnalytics.AnalyticsEventArgs)">
+            <summary>
+            Returns whether the specific event should be tracked
+            </summary>
+            <param name="e">the event arguments</param>
+            <returns>true if the event should be tracked</returns>
+        </member>
+        <member name="M:Google.WebAnalytics.GoogleAnalytics.AssociatedObject_Unloaded(System.Object,System.Windows.RoutedEventArgs)">
+            <summary>
+            Remove the event handlers and behavior
+            </summary>
+            <param name="sender">the associated object that the behavior is attached to</param>
+            <param name="e">the routed event arguments</param>
+        </member>
+        <member name="M:Google.WebAnalytics.GoogleAnalytics.DetachEvents">
+            <summary>
+            Detach events and the image
+            </summary>
+        </member>
+        <member name="M:Google.WebAnalytics.GoogleAnalytics.ReadSessionData">
+            <summary>
+            this will pull out all stored values from local storage in to 
+            member variables.  This includes visitorId, first session time, 
+            previous session time, current session time, session count and last
+            event time. This should be called once at startup from 
+            OnAttached().
+            </summary>
+            <returns>true if this is a new Visitor</returns>
+        </member>
+        <member name="M:Google.WebAnalytics.GoogleAnalytics.WriteSessionData">
+            <summary>
+            a utility method that writes all of those values back to local 
+            storage. This is called from UpdateSession below whenever any of 
+            these values changes.
+            </summary>
+        </member>
+        <member name="M:Google.WebAnalytics.GoogleAnalytics.UpdateSession(System.DateTimeOffset)">
+            <summary>
+            call this every time you process an event, pass in the event's 
+            timestamp as the argument to the method. In here keep track of 
+            session information, basically starting a new session when the last
+            event time is more than 30 min older than the timestamp parameter 
+            passed in.
+            Be sure to call WriteSessionData every time (to at least save the 
+            last event time). 
+            </summary>
+            <param name="eventTime">the timestamp of the event being processed</param>
+        </member>
+        <member name="M:Google.WebAnalytics.GoogleAnalytics.OnTrackEvent(System.Object,Microsoft.WebAnalytics.AnalyticsEventArgs)">
+            <summary>
+            If Native tracking, then format a URL for the image, otherwise format a URL for the JavaScript API
+            </summary>
+            <param name="sender">the Data collector</param>
+            <param name="e">the analytics event arguments</param>
+        </member>
+        <member name="M:Google.WebAnalytics.GoogleAnalytics.UpdateImage(Microsoft.WebAnalytics.AnalyticsEventArgs)">
+            <summary>
+            Update the image of the Page tag
+            </summary>
+            <param name="e">the analytics event arguments</param>
+        </member>
+        <member name="M:Google.WebAnalytics.GoogleAnalytics.BuildUrl(Microsoft.WebAnalytics.AnalyticsEvent)">
+            <summary>
+            Build a URL like this:
+            <![CDATA[ http://www.google-analytics.com/__utm.gif?utmwv=4.3&utmn=742040714&utmhn=xmldocs.net&utmt=event&utme=5(ABC*Click*%2FMyButton)(314)&utmcs=utf-8&utmsr=1680x1050&utmsc=32-bit&utmul=en-us&utmje=1&utmfl=10.0%20r22&utmdt=GoogleAnalyticsTest&utmhid=1805427388&utmr=-&utmp=/ga/&utmac=UA-86356-3&utmcc=__utma%3D50180655.1976482529.1243975974.1245349189.1245705737.6%3B%2B__utmz%3D50180655.1243975974.1.1.utmccn%3D(direct)%7Cutmcsr%3D(direct)%7Cutmcmd%3D(none)%3B
+            ]]>
+            </summary>
+            <param name="logEvent">the event to turn into a GIF image request</param>
+            <returns>the URL to the Google Analytics GIF image</returns>
+            <remarks>we don't use utmje or utmfl because this can be running out of the browser</remarks>
+        </member>
+        <member name="M:Google.WebAnalytics.GoogleAnalytics.AppendCustomVars(Microsoft.WebAnalytics.AnalyticsEvent,System.Text.StringBuilder)">
+            <summary>
+            Append custom variables
+            </summary>
+            <param name="logEvent">the log event</param>
+            <param name="builder">the string builder</param>
+        </member>
+        <member name="M:Google.WebAnalytics.GoogleAnalytics.AppendCommonParameters(System.String,System.String,System.String,System.Nullable{System.Int32},System.Text.StringBuilder,Microsoft.WebAnalytics.AnalyticsEvent)">
+            <summary>
+            Append common parameters
+            </summary>
+            <param name="category">the event category</param>
+            <param name="action">the event action</param>
+            <param name="label">the event label</param>
+            <param name="value">the event value</param>
+            <param name="builder">the string builder</param>
+            <param name="logEvent">the analytics log event</param>
+        </member>
+        <member name="M:Google.WebAnalytics.GoogleAnalytics.GenerateCookie">
+            <summary>
+            Generate the cookie for Google Analytics
+            </summary>
+            <returns>the Cookie for Google Analytics</returns>
+        </member>
+        <member name="P:Google.WebAnalytics.GoogleAnalytics.Category">
+            <summary>
+            Gets or sets the category for the group of objects you want to track.
+            </summary>
+        </member>
+        <member name="P:Google.WebAnalytics.GoogleAnalytics.WebPropertyId">
+            <summary>
+            Gets or sets the Google Analyitcs Web Property ID
+            </summary>
+            <remarks></remarks>
+            <exception cref="T:System.ArgumentException">Thrown if an invalid-format Web Property ID is entered</exception>
+        </member>
+        <member name="P:Google.WebAnalytics.GoogleAnalytics.CustomVariables">
+            <summary>
+            Gets the custom variables
+            </summary>
+        </member>
+        <member name="P:Google.WebAnalytics.GoogleAnalytics.SessionLength">
+            <summary>
+            Gets or sets the length of time of inactivity to wait before 
+            starting a new session (hh:mm:ss).  The default is 30 minutes.
+            </summary>
+        </member>
+        <member name="P:Google.WebAnalytics.GoogleAnalytics.Events">
+            <summary>
+            Gets or sets the Web Analytics events
+            </summary>
+        </member>
+        <member name="P:Google.WebAnalytics.GoogleAnalytics.ApplicationStorageEnabled">
+            <summary>
+            Gets or sets a value indicating whether application storage is enabled
+            </summary>
+        </member>
+        <member name="P:Google.WebAnalytics.GoogleAnalytics.Settings">
+            <summary>
+            Gets the Application Settings
+            </summary>
+            <exception cref="T:System.IO.IsolatedStorage.IsolatedStorageException">If the Isolated Storage is disabled</exception>
+        </member>
+        <member name="P:Google.WebAnalytics.GoogleAnalytics.TrackingCodeVersion">
+            <summary>
+            Gets or sets the tracking code version
+            </summary>
+        </member>
+        <member name="T:Google.WebAnalytics.GoogleAnalytics.CustomVariableScope">
+            <summary>
+            The Custom Variable Scope
+            </summary>
+        </member>
+        <member name="F:Google.WebAnalytics.GoogleAnalytics.CustomVariableScope.None">
+            <summary>
+            No scope (not used)
+            </summary>
+        </member>
+        <member name="F:Google.WebAnalytics.GoogleAnalytics.CustomVariableScope.Visitor">
+            <summary>
+            Visitor scope
+            </summary>
+        </member>
+        <member name="F:Google.WebAnalytics.GoogleAnalytics.CustomVariableScope.Session">
+            <summary>
+            Session Scope
+            </summary>
+        </member>
+        <member name="F:Google.WebAnalytics.GoogleAnalytics.CustomVariableScope.Hit">
+            <summary>
+            Hit event scope
+            </summary>
+        </member>
+        <member name="T:Google.WebAnalytics.GoogleAnalytics.ScopedVariable">
+            <summary>
+            Scoped variable
+            </summary>
+        </member>
+        <member name="P:Google.WebAnalytics.GoogleAnalytics.ScopedVariable.Scope">
+            <summary>
+            Gets or sets the scope (1=visitor, 2=session, 3=hit)
+            </summary>
+        </member>
+        <member name="P:Google.WebAnalytics.GoogleAnalytics.ScopedVariable.Variable">
+            <summary>
+            Gets or sets the property value variable
+            </summary>
+        </member>
+    </members>
+</doc>

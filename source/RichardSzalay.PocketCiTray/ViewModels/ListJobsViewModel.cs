@@ -103,10 +103,6 @@ namespace RichardSzalay.PocketCiTray.ViewModels
             applicationTileService.AddJobTile(job);
         }
 
-        private void OnSelectJob(Job job)
-        {
-        }
-
         private bool CanPinJob(Job job)
         {
             return job != null && !applicationTileService.IsPinned(job);
@@ -116,7 +112,7 @@ namespace RichardSzalay.PocketCiTray.ViewModels
         {
             var jobs = jobRepository.GetJobs();
             Jobs = new ObservableCollection<Job>(jobs);
-            var lastUpdateDate = jobRepository.LastUpdateDate;
+            lastUpdateDate = jobRepository.LastUpdateDate;
         }
 
         private void OnViewJob(Job job)

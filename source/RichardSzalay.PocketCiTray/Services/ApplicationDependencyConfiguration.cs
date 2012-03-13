@@ -1,5 +1,7 @@
 ﻿using System.Reactive.Concurrency;
 using Funq;
+using Google.WebAnalytics;
+using Microsoft.WebAnalytics;
 using RichardSzalay.PocketCiTray.Providers;
 using RichardSzalay.PocketCiTray.ViewModels;
 using WP7Contrib.Logging;
@@ -154,6 +156,11 @@ namespace RichardSzalay.PocketCiTray.Services
 
             container.Register(c => new AboutViewModel(
                 c.Resolve<IEmailComposeTaskFacade>()));
+
+            container.Register<IGoogleAnalyticsFactory>(c => new GoogleAnalyticsFactory(
+                TrackingCodes.Foreground,
+                c.Resolve<IDeviceInformationService>(),
+                c.Resolve<IApplicationInformation>()));
         }
 
         private static void ConfigureFacades(Container container)
