@@ -13,7 +13,7 @@ namespace RichardSzalay.PocketCiTray.Providers
     {
         public const string ProviderName = "hudson";
 
-        private const string ApiSuffix = "api/xml";
+        private const string ApiSuffix = "./api/xml";
         private const string JobQuery = "?tree=jobs[name,url,lastCompletedBuild[result,timestamp,number]]";
 
         private readonly IWebRequestCreate webRequestCreate;
@@ -46,6 +46,10 @@ namespace RichardSzalay.PocketCiTray.Providers
 
         public IObservable<BuildServer> ValidateBuildServer(BuildServer buildServer)
         {
+            buildServer.Uri = (buildServer.Uri.OriginalString.EndsWith("/"))
+                ? buildServer.Uri
+                : new Uri(buildServer.Uri.AbsoluteUri + "/", UriKind.Absolute);
+
             Uri validateUri = new Uri(buildServer.Uri, ApiSuffix + "?tree=hudson");
 
             var request = (HttpWebRequest)webRequestCreate.Create(validateUri);
@@ -113,14 +117,30 @@ namespace RichardSzalay.PocketCiTray.Providers
                     BuildServer = buildServer,
                     Name = project.Element("name").Value,
                     WebUri = new Uri(project.Element("url").Value),
-                    LastBuild = new Build
-                    {
-                        Result = ParseBuildResult(project.Element("lastCompletedBuild").Element("result").Value),
-                        Time = ParseBuildTime(project.Element("lastCompletedBuild").Element("timestamp").Value),
-                        Label = project.Element("lastCompletedBuild").Element("number").Value
-                    }
+                    LastBuild = MapBuild(project.Element("lastCompletedBuild"))
                 })
                 .ToList();
+        }
+
+        private Build MapBuild(XElement buildElement)
+        {
+            if (buildElement == null)
+            {
+                return new Build
+                {
+                    Result = BuildResult.Unavailable,
+                    Time = clock.UtcNow
+                };
+            }
+            else
+            {
+                return new Build
+                {
+                    Result = ParseBuildResult(buildElement.Element("result").Value),
+                    Time = ParseBuildTime(buildElement.Element("timestamp").Value),
+                    Label = buildElement.Element("number").Value
+                };
+            }
         }
 
         private static DateTimeOffset ParseBuildTime(string value)

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Net;
+using System.Text;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Documents;
@@ -24,6 +25,23 @@ namespace RichardSzalay.PocketCiTray.Services
         public static bool IsJobUnavailable(WebException ex)
         {
             return unavailableIndicatingStatuses.ContainsKey(ex.Status);
+        }
+
+        public static string GetDebugMessage(WebException ex)
+        {
+            StringBuilder sb = new StringBuilder();
+
+            sb.Append("WebException: ");
+            sb.Append(ex.Status.ToString("G"));
+
+            HttpWebResponse httpResponse = ex.Response as HttpWebResponse;
+
+            if (httpResponse != null)
+            {
+                sb.AppendFormat(" - {0} {1}", (int) httpResponse.StatusCode, httpResponse.StatusDescription);
+            }
+
+            return sb.ToString();
         }
 
         public static string GetDisplayMessage(WebException ex)

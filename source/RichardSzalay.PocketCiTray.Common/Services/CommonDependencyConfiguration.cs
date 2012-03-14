@@ -45,6 +45,10 @@ namespace RichardSzalay.PocketCiTray.Services
                 l.Resolve<ISchedulerAccessor>(),
                 l.Resolve<ILog>()));
 
+            container.Register<IDeviceInformationService>(c => new DeviceInformationService());
+
+            container.Register<IApplicationInformation>(c => new ApplicationInformation());
+
             //container.Register<IJobRepository>(l => new InMemoryJobRepository(l.Resolve<IClock>()));
 
             container.Register<ICredentialEncryptor>(c => new CredentialEncryptor());
@@ -66,7 +70,9 @@ namespace RichardSzalay.PocketCiTray.Services
                 l.Resolve<ISchedulerAccessor>(),
                 l.Resolve<IApplicationTileService>(),
                 l.Resolve<IJobNotificationService>(),
-                l.Resolve<ILog>()));
+                l.Resolve<ILog>(),
+                l.Resolve<INetworkInterfaceFacade>(),
+                l.Resolve<ITrackingService>()));
 
             container.Register<IApplicationTileService>(l => new ApplicationTileService(
                 l.Resolve<IApplicationSettings>(),
@@ -94,8 +100,9 @@ namespace RichardSzalay.PocketCiTray.Services
                 }
             });
 
-            container.Register<ITrackingService>(c => new WebAnalyticsTrackingService(
-                c.Resolve<WebAnalyticsService>().EventLog.WriteEntry));
+            container.Register<ITrackingService>(c => new NullTrackingService());
+            //container.Register<ITrackingService>(c => new WebAnalyticsTrackingService(
+                //c.Resolve<WebAnalyticsService>().EventLog.WriteEntry));
         }
 
         private static void ConfigureFacades(Container container)

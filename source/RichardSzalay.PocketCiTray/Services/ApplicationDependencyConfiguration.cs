@@ -20,9 +20,6 @@ namespace RichardSzalay.PocketCiTray.Services
 
             ConfigureServices(container);
 
-            //var child = container.CreateChildContainer();
-            //child.DefaultReuse = ReuseScope.None;
-
             var child = container;
 
             ConfigureViewModels(child);
@@ -34,15 +31,13 @@ namespace RichardSzalay.PocketCiTray.Services
         {
             container.Register<ISchedulerAccessor>(new SchedulerAccessor(DispatcherScheduler.Instance, Scheduler.ThreadPool));
 
-            var log = new LoggingService(Logging.ApplicationLogName);
+            var log = new ThreadSafeLoggingService(Logging.ApplicationLogName);
 
             container.Register<ILog>(log);
             container.Register<ILogManager>(log);
 
 #if DEBUG_256_DEVICE
             container.Register<IDeviceInformationService>(c => new LowEndDeviceInformationService());
-#else
-            container.Register<IDeviceInformationService>(c => new DeviceInformationService());
 #endif
 
             container.Register<IPeriodicJobUpdateService>(l => new PeriodicJobUpdateService(

@@ -14,7 +14,7 @@
     FontFamily="{StaticResource PhoneFontFamilyNormal}"
     FontSize="{StaticResource PhoneFontSizeNormal}"
     Foreground="{StaticResource PhoneForegroundBrush}"
-    SupportedOrientations="Portrait"  Orientation="Portrait"
+    SupportedOrientations="PortraitOrLandscape"  Orientation="Portrait"
     shell:SystemTray.IsVisible="True"
     shell:SystemTray.ProgressIndicator="{Binding ProgressIndicator}"
     DataContext="{Binding Path=EditColourSettingsViewModel ,Source={StaticResource ViewModelLocator}}"

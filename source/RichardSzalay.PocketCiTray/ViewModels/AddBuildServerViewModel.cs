@@ -122,6 +122,7 @@ namespace RichardSzalay.PocketCiTray.ViewModels
                 ? new NetworkCredential(Username, Password)
                 : null;
 
+
             BuildServer buildServer = BuildServer.FromUri(provider.Name, 
                 new Uri(buildServerUrl, UriKind.Absolute), credential);
 

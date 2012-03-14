@@ -54,7 +54,7 @@ namespace RichardSzalay.PocketCiTray.BackgroundTask
 
             // TODO: Move all this to a bootstrap
 
-            var log = new LoggingService(Logging.ApplicationLogName);
+            var log = new LoggingService(Logging.AgentLogName);
 
             container.Register<ILog>(log);
             container.Register<ILogManager>(log);
@@ -66,25 +66,48 @@ namespace RichardSzalay.PocketCiTray.BackgroundTask
                 return;
             }
 
+#if !DEBUG
+            if (container.Resolve<IApplicationSettings>().LoggingEnabled)
+#endif
+            {
+                container.Resolve<ILogManager>().Enable();
+            }
+
             var clock = container.Resolve<IClock>();
             var applicationSettings = container.Resolve<IApplicationSettings>();
             var jobUpdateService = container.Resolve<IJobUpdateService>();
 
-            TimeSpan nextRun = PeriodicTaskHelper.GetNextRunTime(jobUpdateService.LastUpdateTime,
-                applicationSettings.BackgroundUpdateInterval, clock.UtcNow);
+            TimeSpan timeSpan = applicationSettings.BackgroundUpdateInterval;
+
+            if (timeSpan == MinimumBackgroundUpdateInterval)
+            {
+                timeSpan = TimeSpan.Zero;
+            }
+
+            TimeSpan nextRun = PeriodicTaskHelper.GetNextRunTime(
+                jobUpdateService.LastUpdateTime, timeSpan, clock.UtcNow);
 
             // TODO: Should this allow up to BackgroundUpdateInterval / 2 to better round out scheduling weirdness?
             if (nextRun == TimeSpan.Zero)
             {
-                jobUpdateService.Complete += (s, e) => NotifyComplete();
+                jobUpdateService.Complete += (s, e) =>
+                {
+                    log.Disable();
+                    NotifyComplete();
+                };
+                        
                 jobUpdateService.UpdateAll(UpdateTimeout);
             }
             else
             {
+                log.Write("Next background update not due for {0}. Skipping.", timeSpan.ToString());
+                log.Disable();
                 NotifyComplete();
             }
         }
 
         private static readonly TimeSpan UpdateTimeout = TimeSpan.FromSeconds(10);
+
+        private readonly TimeSpan MinimumBackgroundUpdateInterval = TimeSpan.FromSeconds(30);
     }
 }

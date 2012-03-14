@@ -41,4 +41,11 @@ namespace RichardSzalay.PocketCiTray.Services
             });
         }
     }
+
+    public class NullTrackingService : ITrackingService
+    {
+        public void Track(string category, string name, string value)
+        {
+        }
+    }
 }

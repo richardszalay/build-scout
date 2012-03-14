@@ -27,6 +27,8 @@ namespace RichardSzalay.PocketCiTray.Services
         private readonly IApplicationTileService applicationTileService;
         private readonly IJobNotificationService jobNotificationService;
         private readonly ILog log;
+        private readonly INetworkInterfaceFacade networkInterfaceFacade;
+        private readonly ITrackingService trackingService;
 
         public event EventHandler Started;
         public event EventHandler Complete;
@@ -38,7 +40,8 @@ namespace RichardSzalay.PocketCiTray.Services
         public JobUpdateService(IJobProviderFactory jobProviderFactory, IJobRepository jobRepository,
             IClock clock, ISettingsService settingsService, IMutexService mutexService,
             ISchedulerAccessor schedulerAccessor, IApplicationTileService applicationTileService,
-            IJobNotificationService jobNotificationService, ILog log)
+            IJobNotificationService jobNotificationService, ILog log,
+            INetworkInterfaceFacade networkInterfaceFacade, ITrackingService trackingService)
         {
             this.jobProviderFactory = jobProviderFactory;
             this.jobRepository = jobRepository;
@@ -49,6 +52,8 @@ namespace RichardSzalay.PocketCiTray.Services
             this.applicationTileService = applicationTileService;
             this.jobNotificationService = jobNotificationService;
             this.log = log;
+            this.networkInterfaceFacade = networkInterfaceFacade;
+            this.trackingService = trackingService;
         }
 
         public void UpdateAll(TimeSpan timeout)
@@ -80,18 +85,28 @@ namespace RichardSzalay.PocketCiTray.Services
                 isUpdating = true;
             }
 
-            var serverGroups = jobRepository.GetJobs()
-                .GroupBy(j => j.BuildServer);
+            var connectionAvailableAsync = Observable.ToAsync(() => networkInterfaceFacade.IsConnectionAvailable, 
+                schedulerAccessor.Background)();
 
-            disposable.Disposable = serverGroups
+            disposable.Disposable = connectionAvailableAsync
+                .Where(FilterConnectionAvailable)
+                .SelectMany(_ => UpdateJobs(jobRepository.GetJobs(), timeout))
+                .Subscribe(OnComplete);
+        }
+
+        private IObservable<IList<Job>> UpdateJobs(ICollection<Job> jobs, TimeSpan timeout)
+        {
+            var serverGroups = jobs.GroupBy(j => j.BuildServer);
+
+            return serverGroups
                 .ToObservable(schedulerAccessor.Background)
                 .SelectMany(group => jobProviderFactory
                     .Get(group.Key.Provider)
                     .UpdateAll(group.Key, group)
                     .Catch<Job, WebException>(ex =>
                     {
-                        log.Write(String.Format("Unhandled WebException updating jobs from {0} ({1})", 
-                            group.Key.Name, group.Key.Provider), ex);
+                        log.Write("Job update failed for {0} ({1}): {2}",
+                            group.Key.Name, group.Key.Provider, WebExceptionService.GetDebugMessage(ex));
 
                         if (WebExceptionService.IsJobUnavailable(ex))
                         {
@@ -102,8 +117,17 @@ namespace RichardSzalay.PocketCiTray.Services
                         return Observable.Empty<Job>();
                     })
                 )
-                .Buffer(timeout).Take(1)
-                .Subscribe(OnComplete);
+                .Buffer(timeout).Take(1);
+        }
+
+        private bool FilterConnectionAvailable(bool connectionAvailable)
+        {
+            if (!connectionAvailable)
+            {
+                log.Write("Job update skipped: no network connectivity");
+            }
+
+            return connectionAvailable;
         }
 
         public DateTimeOffset? LastUpdateTime
@@ -122,6 +146,8 @@ namespace RichardSzalay.PocketCiTray.Services
 
         private void OnStarted()
         {
+            log.Write("Job update started");
+
             var handler = this.Started;
 
             if (handler != null)
@@ -132,6 +158,8 @@ namespace RichardSzalay.PocketCiTray.Services
 
         private void OnComplete(IList<Job> updatedJobs)
         {
+            log.Write("Job update complete - {0} jobs updated", updatedJobs.Count);
+
             jobRepository.UpdateAll(updatedJobs);
 
             var allJobs = jobRepository.GetJobs();
@@ -158,4 +186,4 @@ namespace RichardSzalay.PocketCiTray.Services
 
         
     }
-}
+}   
