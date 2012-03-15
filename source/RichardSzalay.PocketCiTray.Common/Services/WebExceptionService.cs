@@ -1,4 +1,5 @@
 ﻿using System;
+using System.IO;
 using System.Net;
 using System.Text;
 using System.Windows;
@@ -22,9 +23,19 @@ namespace RichardSzalay.PocketCiTray.Services
             { WebExceptionStatus.ConnectFailure, null }
         };
 
-        public static bool IsJobUnavailable(WebException ex)
+        public static bool IsJobUnavailable(Exception ex)
         {
-            return unavailableIndicatingStatuses.ContainsKey(ex.Status);
+            var wex = ex as WebException;
+
+            return ex is TimeoutException ||
+                (wex != null && unavailableIndicatingStatuses.ContainsKey(wex.Status));
+        }
+
+        public static string GetDebugMessage(Exception ex)
+        {
+            return ex is WebException
+                ? GetDebugMessage((WebException) ex)
+                : ex.Message;
         }
 
         public static string GetDebugMessage(WebException ex)
@@ -39,9 +50,29 @@ namespace RichardSzalay.PocketCiTray.Services
             if (httpResponse != null)
             {
                 sb.AppendFormat(" - {0} {1}", (int) httpResponse.StatusCode, httpResponse.StatusDescription);
+
+#if DEBUG
+                using (var stream = httpResponse.GetResponseStream())
+                using (var reader = new StreamReader(stream))
+                {
+                    sb.AppendFormat(reader.ReadToEnd());
+                }
+#endif
             }
 
             return sb.ToString();
+        }
+
+        public static string GetDisplayMessage(Exception ex)
+        {
+            if (ex is TimeoutException)
+            {
+                return CommonStrings.HttpServerResponseTimedOutError;
+            }
+            
+            return (ex is WebException)
+                ? GetDisplayMessage((WebException)ex)
+                : "";
         }
 
         public static string GetDisplayMessage(WebException ex)

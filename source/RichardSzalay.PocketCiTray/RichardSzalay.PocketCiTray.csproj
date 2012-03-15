@@ -33,7 +33,7 @@
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
     <OutputPath>Bin\Debug</OutputPath>
-    <DefineConstants>TRACE;DEBUG;SILVERLIGHT;WINDOWS_PHONE;DEBUG_AGENT;DEBUG_256_DEVICE</DefineConstants>
+    <DefineConstants>TRACE;DEBUG;SILVERLIGHT;WINDOWS_PHONE;DEBUG_AGENT</DefineConstants>
     <NoStdLib>true</NoStdLib>
     <NoConfig>true</NoConfig>
     <ErrorReport>prompt</ErrorReport>
@@ -206,6 +206,7 @@
     <Compile Include="ViewModels\EditColourSettingsViewModel.cs" />
     <Compile Include="ViewModels\EditNotificationSettingsViewModel.cs" />
     <Compile Include="ViewModels\EditSettingsViewModel.cs" />
+    <Compile Include="ViewModels\FilteredObservableCollection.cs" />
     <Compile Include="ViewModels\PageLink.cs" />
     <Compile Include="ViewModels\ViewHelpViewModel.cs" />
     <Compile Include="ViewModels\TransitionMode.cs" />

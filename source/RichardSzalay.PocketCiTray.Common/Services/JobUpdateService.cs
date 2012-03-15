@@ -103,7 +103,7 @@ namespace RichardSzalay.PocketCiTray.Services
                 .SelectMany(group => jobProviderFactory
                     .Get(group.Key.Provider)
                     .UpdateAll(group.Key, group)
-                    .Catch<Job, WebException>(ex =>
+                    .Catch<Job, Exception>(ex =>
                     {
                         log.Write("Job update failed for {0} ({1}): {2}",
                             group.Key.Name, group.Key.Provider, WebExceptionService.GetDebugMessage(ex));

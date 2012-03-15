@@ -15,14 +15,5 @@ namespace RichardSzalay.PocketCiTray.View
             ((ContinuumTransition)Resources["ContinuumInTransition"]).ContinuumElement = ApplicationTitle;
             ((ContinuumTransition)Resources["ContinuumOutTransition"]).ContinuumElement = ApplicationTitle;
         }
-
-        protected override void OnOrientationChanged(OrientationChangedEventArgs e)
-        {
-            ApplicationBar.Opacity = (e.Orientation == PageOrientation.LandscapeLeft || e.Orientation == PageOrientation.LandscapeRight)
-                ? 0.7
-                : 1;
-            
-            base.OnOrientationChanged(e);
-        }
     }
 }

@@ -14,7 +14,7 @@ namespace RichardSzalay.PocketCiTray.Extensions
 {
     public static class JobExtensions
     {
-        public static Job MakeUnavailable(this Job job, WebException ex, DateTimeOffset timestamp)
+        public static Job MakeUnavailable(this Job job, Exception ex, DateTimeOffset timestamp)
         {
             job.LastBuild = new Build
             {
