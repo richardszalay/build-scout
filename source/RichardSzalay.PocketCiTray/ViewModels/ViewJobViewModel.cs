@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Reactive.Concurrency;
 using System.Reactive.Linq;
+using System.Text;
 using System.Windows;
 using System.Windows.Input;
 using RichardSzalay.PocketCiTray.Extensions.Extensions;
@@ -20,8 +21,6 @@ namespace RichardSzalay.PocketCiTray.ViewModels
         private readonly IWebBrowserTaskFacade webBrowserTask;
         private readonly IMessageBoxFacade messageBoxFacade;
 
-        private Job job;
-
         public ViewJobViewModel(INavigationService navigationService, IJobRepository jobRepository, 
             ISchedulerAccessor schedulerAccessor, IApplicationTileService applicationTileService, 
             IWebBrowserTaskFacade webBrowserTask, IMessageBoxFacade messageBoxFacade)
@@ -34,11 +33,7 @@ namespace RichardSzalay.PocketCiTray.ViewModels
             this.messageBoxFacade = messageBoxFacade;
         }
 
-        public Job Job
-        {
-            get { return job; }
-            private set { job = value; OnPropertyChanged("Job"); }
-        }
+        public Job Job { get; private set; }
 
         public override void OnNavigatedTo(System.Windows.Navigation.NavigationEventArgs e)
         {
@@ -59,7 +54,12 @@ namespace RichardSzalay.PocketCiTray.ViewModels
             int jobId = Int32.Parse(query["jobId"]);
 
             Job = jobRepository.GetJob(jobId);
+
+            HasBuildLabel = !String.IsNullOrEmpty(Job.LastBuild.Label);
         }
+
+        [NotifyProperty]
+        public bool HasBuildLabel { get; set; }
 
         [NotifyProperty]
         public ICommand PinJobCommand { get; set; }
@@ -82,7 +82,7 @@ namespace RichardSzalay.PocketCiTray.ViewModels
 
             if (result == MessageBoxResult.OK)
             {
-                Observable.ToAsync(() => this.jobRepository.DeleteJob(job), schedulerAccessor.Background)()
+                Observable.ToAsync(() => this.jobRepository.DeleteJob(Job), schedulerAccessor.Background)()
                     .ObserveOn(schedulerAccessor.UserInterface)
                     .Subscribe(_ => navigationService.GoBack());
             }

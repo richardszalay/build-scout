@@ -43,7 +43,7 @@
     <DebugType>pdbonly</DebugType>
     <Optimize>true</Optimize>
     <OutputPath>Bin\Release</OutputPath>
-    <DefineConstants>TRACE;DEBUG;SILVERLIGHT;WINDOWS_PHONE;DEBUG_256_DEVICE</DefineConstants>
+    <DefineConstants>DEBUG;SILVERLIGHT;WINDOWS_PHONE;DEBUG_AGENT</DefineConstants>
     <NoStdLib>true</NoStdLib>
     <NoConfig>true</NoConfig>
     <ErrorReport>prompt</ErrorReport>

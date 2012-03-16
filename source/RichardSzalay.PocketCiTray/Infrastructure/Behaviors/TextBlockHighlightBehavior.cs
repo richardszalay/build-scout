@@ -120,7 +120,7 @@ namespace RichardSzalay.PocketCiTray.Infrastructure
                     });
                 }
 
-                cursor += index + highlight.Length;
+                cursor += (index - cursor) + highlight.Length;
 
                 if (cursor >= text.Length)
                 {

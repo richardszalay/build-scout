@@ -25,7 +25,12 @@ namespace RichardSzalay.PocketCiTray.Infrastructure
 
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
-            var result = (BuildResult) value;
+            return Convert((BuildResult) value);
+        }
+
+        public string Convert(BuildResult value)
+        {
+            var result = (BuildResult)value;
 
             string resourceKey = String.Format("BuildResult_{0:G}", result);
 

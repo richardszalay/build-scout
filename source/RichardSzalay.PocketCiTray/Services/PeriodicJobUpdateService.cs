@@ -49,7 +49,9 @@ namespace RichardSzalay.PocketCiTray.Services
             scheduledActionService.Remove(PeriodicTaskName);
             scheduledActionService.Add(PeriodicTaskName, Strings.BackgroundUpdateAgentDescription);
 
-            scheduledActionService.LaunchForTest(PeriodicTaskName, TestBackgroundInterval);
+#if DEBUG_AGENT
+            scheduledActionService.LaunchForTest(PeriodicTaskName, TimeSpan.Zero);
+#endif
         }
 
         public bool CanRegisterBackgroundTask
@@ -57,6 +59,6 @@ namespace RichardSzalay.PocketCiTray.Services
             get { return !deviceInformationService.IsLowEndDevice; }
         }
 
-        private const string PeriodicTaskName = "PocketBuild.BackgroundUpdateAgent";
+        private const string PeriodicTaskName = "BuildScout.BackgroundUpdateAgent";
     }
 }

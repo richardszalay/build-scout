@@ -91,7 +91,7 @@ namespace RichardSzalay.PocketCiTray.Services
             disposable.Disposable = connectionAvailableAsync
                 .Where(FilterConnectionAvailable)
                 .SelectMany(_ => UpdateJobs(jobRepository.GetJobs(), timeout))
-                .Subscribe(OnComplete);
+                .Subscribe(OnComplete, ex => Debug.WriteLine(ex.Message));
         }
 
         private IObservable<IList<Job>> UpdateJobs(ICollection<Job> jobs, TimeSpan timeout)

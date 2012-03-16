@@ -1,25 +1,35 @@
 ﻿using System;
+using System.Linq;
 using System.Collections;
 using System.Collections.Specialized;
 using System.Collections.Generic;
+using System.ComponentModel;
+using System.Diagnostics;
+using System.Reactive.Concurrency;
+using System.Reactive.Disposables;
 
 namespace RichardSzalay.PocketCiTray.ViewModels
 {
-    public class FilteredObservableCollection<TList> : IList<TList>, IList, INotifyCollectionChanged
+    public class FilteredObservableCollection<TList> : IList<TList>, IList, INotifyCollectionChanged, INotifyPropertyChanged
     {
         private List<TList> filteredList = new List<TList>();
         private List<int> hiddenIndexes = new List<int>();
 
         private readonly IList<TList> source;
         private readonly Func<TList, string, bool> filterCallback;
+        private readonly IScheduler userInterface;
         private string filter;
         private string previousFilter;
         private IList<TList> visibleItems;
 
-        public FilteredObservableCollection(IList<TList> source, Func<TList, string, bool> filterCallback)
+        private readonly SerialDisposable eventDispatcherSubscription = new SerialDisposable();
+
+        public FilteredObservableCollection(IList<TList> source, 
+            Func<TList, string, bool> filterCallback, IScheduler userInterface)
         {
             this.source = source;
             this.filterCallback = filterCallback;
+            this.userInterface = userInterface;
 
             this.visibleItems = source;
         }
@@ -56,7 +66,7 @@ namespace RichardSzalay.PocketCiTray.ViewModels
 
         public int IndexOf(object value)
         {
-            throw new NotSupportedException();
+            return visibleItems.IndexOf((TList)value);
         }
 
         public void Insert(int index, object value)
@@ -115,9 +125,9 @@ namespace RichardSzalay.PocketCiTray.ViewModels
             throw new NotSupportedException();
         }
 
-        int ICollection.Count
+        public int Count
         {
-            get { return source.Count - hiddenIndexes.Count; }
+            get { return visibleItems.Count; }
         }
 
         public object SyncRoot
@@ -162,6 +172,7 @@ namespace RichardSzalay.PocketCiTray.ViewModels
         }
 
         public event NotifyCollectionChangedEventHandler CollectionChanged;
+        public event PropertyChangedEventHandler PropertyChanged;
 
         public string Filter
         {
@@ -177,11 +188,7 @@ namespace RichardSzalay.PocketCiTray.ViewModels
 
         private void UpdateFilter()
         {
-            if (String.IsNullOrEmpty(filter))
-            {
-                hiddenIndexes = new List<int>();
-                visibleItems = source;
-            }
+            var handler = CollectionChanged;
 
             var indexEnumerator = this.hiddenIndexes.GetEnumerator();
             bool moreHiddenIndexes = indexEnumerator.MoveNext();
@@ -196,7 +203,7 @@ namespace RichardSzalay.PocketCiTray.ViewModels
             {
                 bool itemVisible = (filter == null || filterCallback(source[i], filter));
 
-                while(moreHiddenIndexes && i < indexEnumerator.Current)
+                while(moreHiddenIndexes && indexEnumerator.Current < i)
                 {
                     moreHiddenIndexes = indexEnumerator.MoveNext();
                 }
@@ -233,15 +240,28 @@ namespace RichardSzalay.PocketCiTray.ViewModels
             visibleItems = newVisibleItems;
             hiddenIndexes = newHiddenIndexes;
 
-            var handler = CollectionChanged;
+            if (handler != null)
+            {
+                eventDispatcherSubscription.Disposable = userInterface.Schedule(() =>
+                {
+                    foreach (var change in changes)
+                    {
+                        handler(this, change);
+                    }
+
+                    OnPropertyChanged("Count");
+                    OnPropertyChanged("Item[]");
+                });
+            }
+        }
+
+        private void OnPropertyChanged(string property)
+        {
+            var handler = this.PropertyChanged;
 
             if (handler != null)
             {
-                //handler(this, new NotifyCollectionChangedEventArgs(NotifyCollectionChangedAction.Reset));
-                foreach(var change in changes)
-                {
-                    handler(this, change);
-                }
+                handler(this, new PropertyChangedEventArgs(property));
             }
         }
 
@@ -253,6 +273,37 @@ namespace RichardSzalay.PocketCiTray.ViewModels
         private static NotifyCollectionChangedEventArgs CreateRemoved(int index, TList item)
         {
             return new NotifyCollectionChangedEventArgs(NotifyCollectionChangedAction.Remove, item, index);
+        }
+
+        [Conditional("DEBUG")]
+        public static void TraceCollectionChangedEvent(NotifyCollectionChangedEventArgs args)
+        {
+#if !DEBUG
+            return;
+#endif
+
+            string symbol = (args.Action == NotifyCollectionChangedAction.Add) ? "+"
+                : (args.Action == NotifyCollectionChangedAction.Remove) ? "-"
+                : (args.Action == NotifyCollectionChangedAction.Replace) ? "="
+                : "!";
+
+            string items = "";
+            string index = "-";
+
+            if (args.Action == NotifyCollectionChangedAction.Add ||
+                args.Action == NotifyCollectionChangedAction.Replace)
+            {
+                items = String.Join(", ", args.NewItems.Cast<Object>().Select(x => x.ToString()));
+                index = args.NewStartingIndex.ToString();
+            }
+
+            if (args.Action == NotifyCollectionChangedAction.Remove)
+            {
+                items = String.Join(", ", args.OldItems.Cast<Object>().Select(x => x.ToString()));
+                index = args.OldStartingIndex.ToString();
+            }
+
+            Debug.WriteLine("{0}[{1}] {2}", symbol, index, items);
         }
 
         //private static IEnumerable<NotifyCollectionChangedEventArgs>

@@ -57,6 +57,12 @@
                 <StackPanel Grid.Column="1">
                     <TextBlock Text="last build" Style="{StaticResource PhoneTextLargeStyle}" />
                     <TextBlock Text="{Binding Job.LastBuild.Result, Converter={StaticResource LocalizedBuildStatusConverter}}" Style="{StaticResource PhoneTextSubtleStyle}" Margin="12,-4,0,0" />
+                    <TextBlock Visibility="{Binding HasBuildLabel, Converter={StaticResource BooleanVisibilityConverter}}" Style="{StaticResource PhoneTextNormalStyle}" Margin="12,-4,0,0">
+                        <TextBlock.Inlines>
+                            <Run Text="Label: " />
+                            <Run Text="{Binding Job.LastBuild.Label}" />
+                        </TextBlock.Inlines>
+                    </TextBlock>
                     <TextBlock Text="{Binding Job.LastBuild.Time, StringFormat=f}" Style="{StaticResource PhoneTextNormalStyle}" Grid.Column="1" />
                 </StackPanel>
             </Grid>

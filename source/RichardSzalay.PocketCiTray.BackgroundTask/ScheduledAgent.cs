@@ -104,6 +104,11 @@ namespace RichardSzalay.PocketCiTray.BackgroundTask
                 log.Disable();
                 NotifyComplete();
             }
+
+#if DEBUG_AGENT
+            ScheduledActionService.LaunchForTest("BuildScout.BackgroundUpdateAgent", TimeSpan.FromMinutes(1));
+            
+#endif
         }
 
         private static readonly TimeSpan UpdateTimeout = TimeSpan.FromSeconds(10);

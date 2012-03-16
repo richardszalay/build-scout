@@ -150,6 +150,9 @@
   <data name="BuildResult_Unavailable" xml:space="preserve">
     <value>unavailable</value>
   </data>
+  <data name="BuildStatusLabelSeperator" xml:space="preserve">
+    <value> - </value>
+  </data>
   <data name="DeleteBuildServerConfirmationDescription" xml:space="preserve">
     <value>Delete build server?</value>
   </data>

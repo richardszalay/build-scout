@@ -89,20 +89,23 @@ namespace RichardSzalay.PocketCiTray.Services
                 c.Resolve<IApplicationTileService>(), 
                 c.Resolve<IMessageBoxFacade>(),
                 c.Resolve<IApplicationSettings>(),
-                c.Resolve<IApplicationResourceFacade>()));
+                c.Resolve<IApplicationResourceFacade>())
+                ).ReusedWithin(ReuseScope.None);
 
             container.Register(c => new ViewJobViewModel(
                 c.Resolve<INavigationService>(),
                 c.Resolve<IJobRepository>(),
                 c.Resolve<ISchedulerAccessor>(),
                 c.Resolve<IApplicationTileService>(),
-                c.Resolve<IWebBrowserTaskFacade>(), c.Resolve<IMessageBoxFacade>()));
+                c.Resolve<IWebBrowserTaskFacade>(), c.Resolve<IMessageBoxFacade>())
+                ).ReusedWithin(ReuseScope.None);
 
             container.Register(c => new SelectBuildServerViewModel(
                 c.Resolve<IJobRepository>(),
                 c.Resolve<IJobProviderFactory>(),
                 c.Resolve<INavigationService>(),
-                c.Resolve<ISchedulerAccessor>(), c.Resolve<IMessageBoxFacade>()));
+                c.Resolve<ISchedulerAccessor>(), c.Resolve<IMessageBoxFacade>())
+                ).ReusedWithin(ReuseScope.None);
 
             container.Register(c => new AddBuildServerViewModel(
                 c.Resolve<INavigationService>(),
@@ -111,35 +114,38 @@ namespace RichardSzalay.PocketCiTray.Services
                 c.Resolve<ISchedulerAccessor>(),
                 c.Resolve<IMessageBoxFacade>(),
                 c.Resolve<INetworkInterfaceFacade>()
-                ));
+                )).ReusedWithin(ReuseScope.None);
 
             container.Register(c => new AddJobsViewModel(
                 c.Resolve<INavigationService>(),
                 c.Resolve<IJobProviderFactory>(),
                 c.Resolve<IJobRepository>(),
                 c.Resolve<ISchedulerAccessor>()
-                ));
+                )).ReusedWithin(ReuseScope.None);
 
             container.Register(c => new ViewHelpViewModel(
                 c.Resolve<INavigationService>(),
                 c.Resolve<IHelpService>()
-                ));
+                )).ReusedWithin(ReuseScope.None);
 
             container.Register(c => new EditSettingsViewModel(
                 c.Resolve<IApplicationSettings>(),
-                c.Resolve<IDeviceInformationService>()));
+                c.Resolve<IDeviceInformationService>())
+                ).ReusedWithin(ReuseScope.None);
 
             container.Register(c => new EditNotificationSettingsViewModel(
                 c.Resolve<INavigationService>(),
                 c.Resolve<ISchedulerAccessor>(),
                 c.Resolve<IApplicationSettings>(),
-                c.Resolve<IApplicationResourceFacade>(), c.Resolve<ISettingsApplier>()));
+                c.Resolve<IApplicationResourceFacade>(), c.Resolve<ISettingsApplier>()
+                )).ReusedWithin(ReuseScope.None);
 
             container.Register(c => new EditColourSettingsViewModel(
                 c.Resolve<INavigationService>(),
                 c.Resolve<ISchedulerAccessor>(),
                 c.Resolve<IApplicationSettings>(),
-                c.Resolve<IApplicationResourceFacade>(), c.Resolve<ISettingsApplier>()));
+                c.Resolve<IApplicationResourceFacade>(), c.Resolve<ISettingsApplier>()
+                )).ReusedWithin(ReuseScope.None);
 
             container.Register(c => new EditScheduleSettingsViewModel(
                 c.Resolve<INavigationService>(),
@@ -147,15 +153,18 @@ namespace RichardSzalay.PocketCiTray.Services
                 c.Resolve<IApplicationSettings>(),
                 c.Resolve<IApplicationResourceFacade>(), 
                 c.Resolve<ISettingsApplier>(),
-                c.Resolve<IDeviceInformationService>()));
+                c.Resolve<IDeviceInformationService>()
+                )).ReusedWithin(ReuseScope.None);
 
             container.Register(c => new AboutViewModel(
-                c.Resolve<IEmailComposeTaskFacade>()));
+                c.Resolve<IEmailComposeTaskFacade>()
+                )).ReusedWithin(ReuseScope.None);
 
             container.Register<IGoogleAnalyticsFactory>(c => new GoogleAnalyticsFactory(
                 TrackingCodes.Foreground,
                 c.Resolve<IDeviceInformationService>(),
-                c.Resolve<IApplicationInformation>()));
+                c.Resolve<IApplicationInformation>()
+                )).ReusedWithin(ReuseScope.None);
         }
 
         private static void ConfigureFacades(Container container)

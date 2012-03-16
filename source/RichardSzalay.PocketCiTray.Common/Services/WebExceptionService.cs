@@ -40,22 +40,36 @@ namespace RichardSzalay.PocketCiTray.Services
 
         public static string GetDebugMessage(WebException ex)
         {
-            StringBuilder sb = new StringBuilder();
+            var sb = new StringBuilder();
 
             sb.Append("WebException: ");
+
+            if (IsIncorrectlyReportedConnectionError(ex))
+            {
+                sb.Append(WebExceptionStatus.ConnectFailure.ToString("G"));
+                return sb.ToString();
+            }
+
             sb.Append(ex.Status.ToString("G"));
 
-            HttpWebResponse httpResponse = ex.Response as HttpWebResponse;
+            var httpResponse = ex.Response as HttpWebResponse;
 
             if (httpResponse != null)
             {
                 sb.AppendFormat(" - {0} {1}", (int) httpResponse.StatusCode, httpResponse.StatusDescription);
 
 #if DEBUG
-                using (var stream = httpResponse.GetResponseStream())
-                using (var reader = new StreamReader(stream))
+                try
                 {
-                    sb.AppendFormat(reader.ReadToEnd());
+                    using (var stream = httpResponse.GetResponseStream())
+                    using (var reader = new StreamReader(stream))
+                    {
+                        sb.AppendFormat(": {0}", reader.ReadToEnd());
+                    }
+                }
+                catch (Exception)
+                {
+                    sb.Append("Response not available");
                 }
 #endif
             }
@@ -77,7 +91,11 @@ namespace RichardSzalay.PocketCiTray.Services
 
         public static string GetDisplayMessage(WebException ex)
         {
-            switch (ex.Status)
+            var status = IsIncorrectlyReportedConnectionError(ex)
+                ? WebExceptionStatus.ConnectFailure
+                : ex.Status;
+
+            switch (status)
             {
                 case WebExceptionStatus.UnknownError:
                 case WebExceptionStatus.ProtocolError:
@@ -104,6 +122,16 @@ namespace RichardSzalay.PocketCiTray.Services
                 default:
                     return CommonStrings.HttpServerUnexpectedResponse;
             }
+        }
+
+        private static bool IsIncorrectlyReportedConnectionError(WebException ex)
+        {
+            var response = ex.Response as HttpWebResponse;
+
+            return ex.Status == WebExceptionStatus.UnknownError &&
+                   response != null &&
+                   response.StatusCode == HttpStatusCode.NotFound &&
+                   response.ResponseUri.OriginalString == "";
         }
     }
 }
