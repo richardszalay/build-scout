@@ -46,9 +46,16 @@
     <Reference Include="Funq">
       <HintPath>..\libs\Funq\Funq.dll</HintPath>
     </Reference>
-    <Reference Include="Google.WebAnalytics, Version=1.4.11.0, Culture=neutral, processorArchitecture=MSIL" />
     <Reference Include="Microsoft.Phone" />
-    <Reference Include="Microsoft.WebAnalytics, Version=1.4.8.0, Culture=neutral, processorArchitecture=MSIL" />
+    <Reference Include="Microsoft.SilverlightMediaFramework.Compatibility.Phone">
+      <HintPath>..\libs\Analytics\Microsoft.SilverlightMediaFramework.Compatibility.Phone.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.WebAnalytics">
+      <HintPath>..\libs\Analytics\Microsoft.WebAnalytics.dll</HintPath>
+    </Reference>
+    <Reference Include="Google.WebAnalytics">
+      <HintPath>..\libs\Analytics\Google.WebAnalytics.dll</HintPath>
+    </Reference>
     <Reference Include="Newtonsoft.Json">
       <HintPath>..\packages\Newtonsoft.Json.4.0.8\lib\sl4-windowsphone71\Newtonsoft.Json.dll</HintPath>
     </Reference>

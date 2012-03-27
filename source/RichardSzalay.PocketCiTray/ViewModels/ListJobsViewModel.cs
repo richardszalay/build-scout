@@ -8,6 +8,7 @@ using RichardSzalay.PocketCiTray.Services;
 using System.Windows.Navigation;
 using RichardSzalay.PocketCiTray.Infrastructure;
 using System.Windows.Media;
+using RichardSzalay.PocketCiTray.Controllers;
 
 namespace RichardSzalay.PocketCiTray.ViewModels
 {
@@ -21,13 +22,15 @@ namespace RichardSzalay.PocketCiTray.ViewModels
         private readonly IMessageBoxFacade messageBoxFacade;
         private readonly IApplicationSettings applicationSettings;
         private readonly IApplicationResourceFacade applicationResourceFacade;
+        private readonly IJobController jobController;
 
         private DateTimeOffset? lastUpdateDate;
 
         public ListJobsViewModel(INavigationService navigationService, IJobRepository jobRepository, 
             ISchedulerAccessor schedulerAccessor, IJobUpdateService jobUpdateService,
             IApplicationTileService applicationTileService, IMessageBoxFacade messageBoxFacade,
-            IApplicationSettings applicationSettings, IApplicationResourceFacade applicationResourceFacade)
+            IApplicationSettings applicationSettings, IApplicationResourceFacade applicationResourceFacade,
+            IJobController jobController)
         {
             this.navigationService = navigationService;
             this.jobRepository = jobRepository;
@@ -37,6 +40,7 @@ namespace RichardSzalay.PocketCiTray.ViewModels
             this.messageBoxFacade = messageBoxFacade;
             this.applicationSettings = applicationSettings;
             this.applicationResourceFacade = applicationResourceFacade;
+            this.jobController = jobController;
         }
 
         public override void OnNavigatedTo(NavigationEventArgs e)
@@ -87,15 +91,8 @@ namespace RichardSzalay.PocketCiTray.ViewModels
 
         private void OnDeleteJob(Job job)
         {
-            var result = messageBoxFacade.Show(Strings.DeleteJobConfirmationMessage, 
-                Strings.DeleteJobConfirmationDescription, MessageBoxButton.OKCancel);
-
-            if (result ==  MessageBoxResult.OK)
-            {
-                Observable.ToAsync(() => this.jobRepository.DeleteJob(job), schedulerAccessor.Background)()
-                    .ObserveOn(schedulerAccessor.UserInterface)
-                    .Subscribe(_ => RefreshJobs());
-            }
+            jobController.DeleteJob(job)
+                .Subscribe(_ => { }, RefreshJobs);
         }
 
         private void OnPinJob(Job job)

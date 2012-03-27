@@ -9,6 +9,7 @@ using System.Windows.Input;
 using RichardSzalay.PocketCiTray.Extensions.Extensions;
 using RichardSzalay.PocketCiTray.Services;
 using RichardSzalay.PocketCiTray.Infrastructure;
+using RichardSzalay.PocketCiTray.Controllers;
 
 namespace RichardSzalay.PocketCiTray.ViewModels
 {
@@ -20,10 +21,12 @@ namespace RichardSzalay.PocketCiTray.ViewModels
         private readonly IApplicationTileService applicationTileService;
         private readonly IWebBrowserTaskFacade webBrowserTask;
         private readonly IMessageBoxFacade messageBoxFacade;
+        private readonly IJobController jobController;
 
         public ViewJobViewModel(INavigationService navigationService, IJobRepository jobRepository, 
             ISchedulerAccessor schedulerAccessor, IApplicationTileService applicationTileService, 
-            IWebBrowserTaskFacade webBrowserTask, IMessageBoxFacade messageBoxFacade)
+            IWebBrowserTaskFacade webBrowserTask, IMessageBoxFacade messageBoxFacade,
+            IJobController jobController)
         {
             this.navigationService = navigationService;
             this.jobRepository = jobRepository;
@@ -31,6 +34,7 @@ namespace RichardSzalay.PocketCiTray.ViewModels
             this.applicationTileService = applicationTileService;
             this.webBrowserTask = webBrowserTask;
             this.messageBoxFacade = messageBoxFacade;
+            this.jobController = jobController;
         }
 
         public Job Job { get; private set; }
@@ -77,15 +81,8 @@ namespace RichardSzalay.PocketCiTray.ViewModels
 
         private void OnDelete()
         {
-            var result = messageBoxFacade.Show(Strings.DeleteJobConfirmationMessage,
-                Strings.DeleteJobConfirmationDescription, MessageBoxButton.OKCancel);
-
-            if (result == MessageBoxResult.OK)
-            {
-                Observable.ToAsync(() => this.jobRepository.DeleteJob(Job), schedulerAccessor.Background)()
-                    .ObserveOn(schedulerAccessor.UserInterface)
-                    .Subscribe(_ => navigationService.GoBack());
-            }
+            jobController.DeleteJob(Job)
+                .Subscribe(_ => { }, navigationService.GoBack);
         }
 
         private void OnViewWebUrl()

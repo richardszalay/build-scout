@@ -184,7 +184,7 @@
     <value>Error validating build server</value>
   </data>
   <data name="FindingJobsStatusMessage" xml:space="preserve">
-    <value>finding jobs</value>
+    <value>Looking for jobs...</value>
   </data>
   <data name="GrayAccentBrush" xml:space="preserve">
     <value>gray</value>

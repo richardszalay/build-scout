@@ -45,30 +45,32 @@
         </StackPanel>
 
         <!--ContentPanel - place additional content here-->
-        <StackPanel  x:Name="ContentPanel" Grid.Row="1" Margin="12,0,0,0">
-            <TextBlock Text="Successful" Style="{StaticResource PhoneTextSubtleStyle}" />
-            <tk:ToggleSwitch IsChecked="{Binding NotifySuccess, Mode=TwoWay}" Margin="0,-28,0,-18" />
+        <ScrollViewer x:Name="ContentPanel" Grid.Row="1" Margin="12,0,0,0">
+            <StackPanel>
+                <TextBlock Text="Successful" Style="{StaticResource PhoneTextSubtleStyle}" />
+                <tk:ToggleSwitch IsChecked="{Binding NotifySuccess, Mode=TwoWay}" Margin="0,-28,0,-18" />
 
-            <TextBlock Text="Failed" Style="{StaticResource PhoneTextSubtleStyle}" />
-            <tk:ToggleSwitch IsChecked="{Binding NotifyFailed, Mode=TwoWay}" Margin="0,-28,0,-18" />
+                <TextBlock Text="Failed" Style="{StaticResource PhoneTextSubtleStyle}" />
+                <tk:ToggleSwitch IsChecked="{Binding NotifyFailed, Mode=TwoWay}" Margin="0,-28,0,-18" />
 
-            <TextBlock Text="Unavailable" Style="{StaticResource PhoneTextSubtleStyle}" />
-            <tk:ToggleSwitch IsChecked="{Binding NotifyUnavailable, Mode=TwoWay}" Margin="0,-28,0,-18" />
+                <TextBlock Text="Unavailable" Style="{StaticResource PhoneTextSubtleStyle}" />
+                <tk:ToggleSwitch IsChecked="{Binding NotifyUnavailable, Mode=TwoWay}" Margin="0,-28,0,-18" />
 
-            <TextBlock Text="Start notifications" Style="{StaticResource PhoneTextSubtleStyle}" />
-            <tk:TimePicker Value="{Binding NotificationStart, Mode=TwoWay}" />
+                <TextBlock Text="Start notifications" Style="{StaticResource PhoneTextSubtleStyle}" />
+                <tk:TimePicker Value="{Binding NotificationStart, Mode=TwoWay}" />
 
-            <TextBlock Text="End notifications" Style="{StaticResource PhoneTextSubtleStyle}" />
-            <tk:TimePicker Value="{Binding NotificationEnd, Mode=TwoWay}" />
+                <TextBlock Text="End notifications" Style="{StaticResource PhoneTextSubtleStyle}" />
+                <tk:TimePicker Value="{Binding NotificationEnd, Mode=TwoWay}" />
 
-            <TextBlock Text="Notifications days" Style="{StaticResource PhoneTextSubtleStyle}" />
-            <tk:RecurringDaysPicker Margin="12,0,12,12">
-                <i:Interaction.Behaviors>
-                    <inf:ListPickerBoundSelectedItemsBehavior BoundList="{Binding NotificationDays}" />
-                    <inf:RecurringDaysPickerNoneSelectedTextBehavior NoneSelectedText="{Binding Path=Strings.NotificationNoneSelectedOption, Source={StaticResource LocalizedResources}}" />
-                </i:Interaction.Behaviors>
-            </tk:RecurringDaysPicker>
-        </StackPanel>
+                <TextBlock Text="Notifications days" Style="{StaticResource PhoneTextSubtleStyle}" />
+                <tk:RecurringDaysPicker Margin="12,0,12,12">
+                    <i:Interaction.Behaviors>
+                        <inf:ListPickerBoundSelectedItemsBehavior BoundList="{Binding NotificationDays}" />
+                        <inf:RecurringDaysPickerNoneSelectedTextBehavior NoneSelectedText="{Binding Path=Strings.NotificationNoneSelectedOption, Source={StaticResource LocalizedResources}}" />
+                    </i:Interaction.Behaviors>
+                </tk:RecurringDaysPicker>
+            </StackPanel>
+        </ScrollViewer>
     </Grid>
 
     <tk:TransitionService.NavigationInTransition>

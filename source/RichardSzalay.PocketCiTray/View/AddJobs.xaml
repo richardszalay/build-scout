@@ -19,159 +19,16 @@
     tk:TiltEffect.IsTiltEnabled="True">
 
     <v:ViewBase.Resources>
-        <inf:UpperCaseConverter x:Key="UpperCaseConverter" />
-        <inf:BooleanValueConverter x:Key="FilterTextStateConverter" TrueValue="Filtered" FalseValue="Unfiltered" />
-        <inf:ContinuumTransition x:Key="ContinuumInTransition" Mode="ForwardIn" />
-        <inf:ContinuumTransition x:Key="ContinuumOutTransition" Mode="BackwardOut" />
-
-        <Style x:Key="PhoneButtonBase" TargetType="ButtonBase">
-            <Setter Property="Background" Value="Transparent"/>
-            <Setter Property="BorderBrush" Value="{StaticResource PhoneForegroundBrush}"/>
-            <Setter Property="Foreground" Value="{StaticResource PhoneForegroundBrush}"/>
-            <Setter Property="BorderThickness" Value="{StaticResource PhoneBorderThickness}"/>
-            <Setter Property="FontFamily" Value="{StaticResource PhoneFontFamilySemiBold}"/>
-            <Setter Property="FontSize" Value="{StaticResource PhoneFontSizeMediumLarge}"/>
-            <Setter Property="Padding" Value="10,3,10,5"/>
-            <Setter Property="Template">
-                <Setter.Value>
-                    <ControlTemplate TargetType="ButtonBase">
-                        <Grid Background="Transparent">
-                            <VisualStateManager.VisualStateGroups>
-                                <VisualStateGroup x:Name="CommonStates">
-                                    <VisualState x:Name="Normal"/>
-                                    <VisualState x:Name="MouseOver"/>
-                                    <VisualState x:Name="Pressed">
-                                        <Storyboard>
-                                            <ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="Foreground" Storyboard.TargetName="ContentContainer">
-                                                <DiscreteObjectKeyFrame KeyTime="0" Value="{StaticResource PhoneBackgroundBrush}"/>
-                                            </ObjectAnimationUsingKeyFrames>
-                                            <ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="Background" Storyboard.TargetName="ButtonBackground">
-                                                <DiscreteObjectKeyFrame KeyTime="0" Value="{StaticResource PhoneForegroundBrush}"/>
-                                            </ObjectAnimationUsingKeyFrames>
-                                            <ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="BorderBrush" Storyboard.TargetName="ButtonBackground">
-                                                <DiscreteObjectKeyFrame KeyTime="0" Value="{StaticResource PhoneForegroundBrush}"/>
-                                            </ObjectAnimationUsingKeyFrames>
-                                        </Storyboard>
-                                    </VisualState>
-                                    <VisualState x:Name="Disabled">
-                                        <Storyboard>
-                                            <ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="Foreground" Storyboard.TargetName="ContentContainer">
-                                                <DiscreteObjectKeyFrame KeyTime="0" Value="{StaticResource PhoneDisabledBrush}"/>
-                                            </ObjectAnimationUsingKeyFrames>
-                                            <ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="BorderBrush" Storyboard.TargetName="ButtonBackground">
-                                                <DiscreteObjectKeyFrame KeyTime="0" Value="{StaticResource PhoneDisabledBrush}"/>
-                                            </ObjectAnimationUsingKeyFrames>
-                                            <ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="Background" Storyboard.TargetName="ButtonBackground">
-                                                <DiscreteObjectKeyFrame KeyTime="0" Value="Transparent"/>
-                                            </ObjectAnimationUsingKeyFrames>
-                                        </Storyboard>
-                                    </VisualState>
-                                </VisualStateGroup>
-                            </VisualStateManager.VisualStateGroups>
-                            <Border x:Name="ButtonBackground" BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}" Background="{TemplateBinding Background}" CornerRadius="0" Margin="{StaticResource PhoneTouchTargetOverhang}">
-                                <ContentControl x:Name="ContentContainer" ContentTemplate="{TemplateBinding ContentTemplate}" Content="{TemplateBinding Content}" Foreground="{TemplateBinding Foreground}" HorizontalContentAlignment="{TemplateBinding HorizontalContentAlignment}" Padding="{TemplateBinding Padding}" VerticalContentAlignment="{TemplateBinding VerticalContentAlignment}"/>
-                            </Border>
-                        </Grid>
-                    </ControlTemplate>
-                </Setter.Value>
-            </Setter>
-        </Style>
-        <Style x:Key="PhoneRadioButtonCheckBoxBase" BasedOn="{StaticResource PhoneButtonBase}" TargetType="ToggleButton">
-            <Setter Property="Background" Value="{StaticResource PhoneRadioCheckBoxBrush}"/>
-            <Setter Property="BorderBrush" Value="{StaticResource PhoneRadioCheckBoxBrush}"/>
-            <Setter Property="FontSize" Value="{StaticResource PhoneFontSizeMedium}"/>
-            <Setter Property="FontFamily" Value="{StaticResource PhoneFontFamilyNormal}"/>
-            <Setter Property="HorizontalContentAlignment" Value="Left"/>
-            <Setter Property="VerticalContentAlignment" Value="Center"/>
-            <Setter Property="Padding" Value="0"/>
-        </Style>
-
-        <Style x:Key="ZeroPaddingCheckBox" BasedOn="{StaticResource PhoneRadioButtonCheckBoxBase}" TargetType="CheckBox">
-        	<Setter Property="Template">
-        		<Setter.Value>
-        			<ControlTemplate TargetType="CheckBox">
-        				<Grid Background="Transparent">
-        					<VisualStateManager.VisualStateGroups>
-        						<VisualStateGroup x:Name="CommonStates">
-        							<VisualState x:Name="Normal"/>
-        							<VisualState x:Name="MouseOver"/>
-        							<VisualState x:Name="Pressed">
-        								<Storyboard>
-        									<ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="Background" Storyboard.TargetName="CheckBackground">
-        										<DiscreteObjectKeyFrame KeyTime="0" Value="{StaticResource PhoneRadioCheckBoxPressedBrush}"/>
-        									</ObjectAnimationUsingKeyFrames>
-        									<ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="BorderBrush" Storyboard.TargetName="CheckBackground">
-        										<DiscreteObjectKeyFrame KeyTime="0" Value="{StaticResource PhoneRadioCheckBoxPressedBorderBrush}"/>
-        									</ObjectAnimationUsingKeyFrames>
-        									<ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="Fill" Storyboard.TargetName="CheckMark">
-        										<DiscreteObjectKeyFrame KeyTime="0" Value="{StaticResource PhoneRadioCheckBoxCheckBrush}"/>
-        									</ObjectAnimationUsingKeyFrames>
-        									<ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="Fill" Storyboard.TargetName="IndeterminateMark">
-        										<DiscreteObjectKeyFrame KeyTime="0" Value="{StaticResource PhoneRadioCheckBoxCheckBrush}"/>
-        									</ObjectAnimationUsingKeyFrames>
-        								</Storyboard>
-        							</VisualState>
-        							<VisualState x:Name="Disabled">
-        								<Storyboard>
-        									<ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="Background" Storyboard.TargetName="CheckBackground">
-        										<DiscreteObjectKeyFrame KeyTime="0" Value="{StaticResource PhoneRadioCheckBoxDisabledBrush}"/>
-        									</ObjectAnimationUsingKeyFrames>
-        									<ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="BorderBrush" Storyboard.TargetName="CheckBackground">
-        										<DiscreteObjectKeyFrame KeyTime="0" Value="{StaticResource PhoneDisabledBrush}"/>
-        									</ObjectAnimationUsingKeyFrames>
-        									<ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="Fill" Storyboard.TargetName="CheckMark">
-        										<DiscreteObjectKeyFrame KeyTime="0" Value="{StaticResource PhoneRadioCheckBoxCheckDisabledBrush}"/>
-        									</ObjectAnimationUsingKeyFrames>
-        									<ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="Fill" Storyboard.TargetName="IndeterminateMark">
-        										<DiscreteObjectKeyFrame KeyTime="0" Value="{StaticResource PhoneRadioCheckBoxCheckDisabledBrush}"/>
-        									</ObjectAnimationUsingKeyFrames>
-        									<ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="Foreground" Storyboard.TargetName="ContentContainer">
-        										<DiscreteObjectKeyFrame KeyTime="0" Value="{StaticResource PhoneDisabledBrush}"/>
-        									</ObjectAnimationUsingKeyFrames>
-        								</Storyboard>
-        							</VisualState>
-        						</VisualStateGroup>
-        						<VisualStateGroup x:Name="CheckStates">
-        							<VisualState x:Name="Checked">
-        								<Storyboard>
-        									<ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="Visibility" Storyboard.TargetName="CheckMark">
-        										<DiscreteObjectKeyFrame KeyTime="0">
-        											<DiscreteObjectKeyFrame.Value>
-        												<Visibility>Visible</Visibility>
-        											</DiscreteObjectKeyFrame.Value>
-        										</DiscreteObjectKeyFrame>
-        									</ObjectAnimationUsingKeyFrames>
-        								</Storyboard>
-        							</VisualState>
-        							<VisualState x:Name="Unchecked"/>
-        							<VisualState x:Name="Indeterminate">
-        								<Storyboard>
-        									<ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="Visibility" Storyboard.TargetName="IndeterminateMark">
-        										<DiscreteObjectKeyFrame KeyTime="0">
-        											<DiscreteObjectKeyFrame.Value>
-        												<Visibility>Visible</Visibility>
-        											</DiscreteObjectKeyFrame.Value>
-        										</DiscreteObjectKeyFrame>
-        									</ObjectAnimationUsingKeyFrames>
-        								</Storyboard>
-        							</VisualState>
-        						</VisualStateGroup>
-        					</VisualStateManager.VisualStateGroups>
-        					<Grid Margin="12,0,0,12">
-        						<Grid.ColumnDefinitions>
-        							<ColumnDefinition Width="32"/>
-        							<ColumnDefinition Width="*"/>
-        						</Grid.ColumnDefinitions>
-        						<Border x:Name="CheckBackground" BorderBrush="{TemplateBinding Background}" BorderThickness="{StaticResource PhoneBorderThickness}" Background="{TemplateBinding Background}" HorizontalAlignment="Left" Height="32" IsHitTestVisible="False" VerticalAlignment="Top" Width="32" Margin="0,12,0,0"/>
-                                <Rectangle x:Name="IndeterminateMark" Fill="{StaticResource PhoneRadioCheckBoxCheckBrush}" HorizontalAlignment="Center" Height="16" IsHitTestVisible="False" Grid.Row="0" Visibility="Collapsed" VerticalAlignment="Top" Width="16"/>
-                                <Path x:Name="CheckMark" Data="M0,119 L31,92 L119,185 L267,0 L300,24 L122,250 z" Fill="{StaticResource PhoneRadioCheckBoxCheckBrush}" HorizontalAlignment="Center" Height="18" IsHitTestVisible="False" Stretch="Fill" StrokeThickness="2" StrokeLineJoin="Round" Visibility="Collapsed" VerticalAlignment="Top" Width="24" Margin="0,20,0,0"/>
-                                <ContentControl x:Name="ContentContainer" ContentTemplate="{TemplateBinding ContentTemplate}" Content="{TemplateBinding Content}" Grid.Column="1" Foreground="{TemplateBinding Foreground}" HorizontalContentAlignment="{TemplateBinding HorizontalContentAlignment}" Margin="12,0,0,0" Padding="{TemplateBinding Padding}" VerticalAlignment="Top" VerticalContentAlignment="Top"/>
-                            </Grid>
-        				</Grid>
-        			</ControlTemplate>
-        		</Setter.Value>
-        	</Setter>
-        </Style>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="/RichardSzalay.PocketCiTray;component/Resources/ControlTemplates.xaml" />
+                <ResourceDictionary>
+                    <inf:UpperCaseConverter x:Key="UpperCaseConverter" />
+                    <inf:ContinuumTransition x:Key="ContinuumInTransition" Mode="ForwardIn" />
+                    <inf:ContinuumTransition x:Key="ContinuumOutTransition" Mode="BackwardOut" />
+                </ResourceDictionary>
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
     </v:ViewBase.Resources>
 
 	<v:ViewBase.FontFamily>
@@ -197,7 +54,7 @@
     </v:ViewBase.ApplicationBar>
 
     <i:Interaction.Behaviors>
-        <inf:VisualStateBindingBehavior State="{Binding ShowFilter, Converter={StaticResource FilterTextStateConverter}}" />
+        <inf:VisualStateBindingBehavior State="{Binding State}" />
         <inf:ApplicationBarIconButtonCommand TextKey="add"
                                                       Text="add jobs"
                                                       CommandBinding="{Binding AddJobsCommand}"
@@ -217,53 +74,42 @@
     <Grid x:Name="LayoutRoot" Background="Transparent">
         <VisualStateManager.VisualStateGroups>
             <VisualStateGroup x:Name="FilterMode">
-                <VisualStateGroup.Transitions>
-                    <VisualTransition GeneratedDuration="0">
-                        <VisualTransition.GeneratedEasingFunction>
-                        	<QuarticEase EasingMode="EaseIn"/>
-                        </VisualTransition.GeneratedEasingFunction>
-                    </VisualTransition>
-                </VisualStateGroup.Transitions>
                 <VisualState x:Name="Unfiltered">
-                	<Storyboard>
-                		<ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="(UIElement.Visibility)" Storyboard.TargetName="textBox">
-                			<DiscreteObjectKeyFrame KeyTime="0">
-                				<DiscreteObjectKeyFrame.Value>
-                					<Visibility>Visible</Visibility>
-                				</DiscreteObjectKeyFrame.Value>
-                			</DiscreteObjectKeyFrame>
-                			<DiscreteObjectKeyFrame KeyTime="0:0:0.3">
-                				<DiscreteObjectKeyFrame.Value>
-                					<Visibility>Visible</Visibility>
-                				</DiscreteObjectKeyFrame.Value>
-                			</DiscreteObjectKeyFrame>
-                		</ObjectAnimationUsingKeyFrames>
-                		<DoubleAnimation Duration="0:0:0.2" To="1" Storyboard.TargetProperty="(UIElement.Opacity)" Storyboard.TargetName="ApplicationTitle" d:IsOptimized="True"/>
-                		<DoubleAnimationUsingKeyFrames Storyboard.TargetProperty="(UIElement.RenderTransform).(CompositeTransform.TranslateY)" Storyboard.TargetName="textBox">
+                    <Storyboard>
+                        <DoubleAnimation Duration="0:0:0.2" To="1" Storyboard.TargetProperty="(UIElement.Opacity)" Storyboard.TargetName="ApplicationTitle" d:IsOptimized="True"/>
+                        <DoubleAnimationUsingKeyFrames Storyboard.TargetProperty="(UIElement.Opacity)" Storyboard.TargetName="textBox">
+                            <DiscreteDoubleKeyFrame KeyTime="0" Value="1" />
+                        </DoubleAnimationUsingKeyFrames>
+                        <DoubleAnimationUsingKeyFrames Storyboard.TargetProperty="(UIElement.RenderTransform).(CompositeTransform.TranslateY)" Storyboard.TargetName="textBox">
                             <EasingDoubleKeyFrame KeyTime="0" Value="0" />
                             <EasingDoubleKeyFrame KeyTime="0:0:0.2" Value="-105">
                                 <EasingDoubleKeyFrame.EasingFunction>
                                     <CubicEase EasingMode="EaseIn"/>
                                 </EasingDoubleKeyFrame.EasingFunction>
                             </EasingDoubleKeyFrame>
-                		</DoubleAnimationUsingKeyFrames>
-                	</Storyboard>
-                </VisualState>
-                <VisualState x:Name="Filtered">
-                    <Storyboard>
-                        <ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="(UIElement.Visibility)" Storyboard.TargetName="textBox">
+                        </DoubleAnimationUsingKeyFrames>
+                        <ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="(UIElement.Visibility)" Storyboard.TargetName="LoadingPanel">
+                            <DiscreteObjectKeyFrame KeyTime="0">
+                                <DiscreteObjectKeyFrame.Value>
+                                    <Visibility>Collapsed</Visibility>
+                                </DiscreteObjectKeyFrame.Value>
+                            </DiscreteObjectKeyFrame>
+                        </ObjectAnimationUsingKeyFrames>
+                        <ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="(UIElement.Visibility)" Storyboard.TargetName="JobsListBox">
                             <DiscreteObjectKeyFrame KeyTime="0">
                                 <DiscreteObjectKeyFrame.Value>
                                     <Visibility>Visible</Visibility>
                                 </DiscreteObjectKeyFrame.Value>
                             </DiscreteObjectKeyFrame>
-                            <DiscreteObjectKeyFrame KeyTime="0:0:0.3">
-                                <DiscreteObjectKeyFrame.Value>
-                                    <Visibility>Visible</Visibility>
-                                </DiscreteObjectKeyFrame.Value>
-                            </DiscreteObjectKeyFrame>
                         </ObjectAnimationUsingKeyFrames>
+                    </Storyboard>
+                </VisualState>
+                <VisualState x:Name="Filtered">
+                    <Storyboard>
                         <DoubleAnimation Duration="0:0:0.2" To="0" Storyboard.TargetProperty="(UIElement.Opacity)" Storyboard.TargetName="ApplicationTitle" d:IsOptimized="True"/>
+                        <DoubleAnimationUsingKeyFrames Storyboard.TargetProperty="(UIElement.Opacity)" Storyboard.TargetName="textBox">
+                            <DiscreteDoubleKeyFrame KeyTime="0" Value="1" />
+                        </DoubleAnimationUsingKeyFrames>
                         <DoubleAnimationUsingKeyFrames Storyboard.TargetProperty="(UIElement.RenderTransform).(CompositeTransform.TranslateY)" Storyboard.TargetName="textBox">
                             <EasingDoubleKeyFrame KeyTime="0" Value="-105" />
                             <EasingDoubleKeyFrame KeyTime="0:0:0.2" Value="0">
@@ -271,6 +117,126 @@
                                     <CubicEase EasingMode="EaseOut"/>
                                 </EasingDoubleKeyFrame.EasingFunction>
                             </EasingDoubleKeyFrame>
+                        </DoubleAnimationUsingKeyFrames>
+                        <ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="(UIElement.Visibility)" Storyboard.TargetName="LoadingPanel">
+                            <DiscreteObjectKeyFrame KeyTime="0">
+                                <DiscreteObjectKeyFrame.Value>
+                                    <Visibility>Collapsed</Visibility>
+                                </DiscreteObjectKeyFrame.Value>
+                            </DiscreteObjectKeyFrame>
+                        </ObjectAnimationUsingKeyFrames>
+                        <ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="(UIElement.Visibility)" Storyboard.TargetName="JobsListBox">
+                            <DiscreteObjectKeyFrame KeyTime="0">
+                                <DiscreteObjectKeyFrame.Value>
+                                    <Visibility>Visible</Visibility>
+                                </DiscreteObjectKeyFrame.Value>
+                            </DiscreteObjectKeyFrame>
+                        </ObjectAnimationUsingKeyFrames>
+
+                    </Storyboard>
+                </VisualState>
+            </VisualStateGroup>
+
+            <VisualStateGroup x:Name="Results">
+                <VisualState x:Name="Loading">
+                    <Storyboard>
+                        <ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="(UIElement.Visibility)" Storyboard.TargetName="LoadingPanel">
+                            <DiscreteObjectKeyFrame KeyTime="0">
+                                <DiscreteObjectKeyFrame.Value>
+                                    <Visibility>Visible</Visibility>
+                                </DiscreteObjectKeyFrame.Value>
+                            </DiscreteObjectKeyFrame>
+                        </ObjectAnimationUsingKeyFrames>
+                        <ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="(UIElement.Visibility)" Storyboard.TargetName="NoResultsTextBlock">
+                            <DiscreteObjectKeyFrame KeyTime="0">
+                                <DiscreteObjectKeyFrame.Value>
+                                    <Visibility>Collapsed</Visibility>
+                                </DiscreteObjectKeyFrame.Value>
+                            </DiscreteObjectKeyFrame>
+                        </ObjectAnimationUsingKeyFrames>
+                        <ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="(UIElement.Visibility)" Storyboard.TargetName="NoFilteredResultsTextBlock">
+                            <DiscreteObjectKeyFrame KeyTime="0">
+                                <DiscreteObjectKeyFrame.Value>
+                                    <Visibility>Collapsed</Visibility>
+                                </DiscreteObjectKeyFrame.Value>
+                            </DiscreteObjectKeyFrame>
+                        </ObjectAnimationUsingKeyFrames>
+                        <ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="(UIElement.Visibility)" Storyboard.TargetName="JobsListBox">
+                            <DiscreteObjectKeyFrame KeyTime="0">
+                                <DiscreteObjectKeyFrame.Value>
+                                    <Visibility>Collapsed</Visibility>
+                                </DiscreteObjectKeyFrame.Value>
+                            </DiscreteObjectKeyFrame>
+                        </ObjectAnimationUsingKeyFrames>
+                    </Storyboard>
+                </VisualState>
+                <VisualState x:Name="NoResults">
+                    <Storyboard>
+                        <ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="(UIElement.Visibility)" Storyboard.TargetName="LoadingPanel">
+                            <DiscreteObjectKeyFrame KeyTime="0">
+                                <DiscreteObjectKeyFrame.Value>
+                                    <Visibility>Collapsed</Visibility>
+                                </DiscreteObjectKeyFrame.Value>
+                            </DiscreteObjectKeyFrame>
+                        </ObjectAnimationUsingKeyFrames>
+                        <ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="(UIElement.Visibility)" Storyboard.TargetName="NoResultsTextBlock">
+                            <DiscreteObjectKeyFrame KeyTime="0">
+                                <DiscreteObjectKeyFrame.Value>
+                                    <Visibility>Visible</Visibility>
+                                </DiscreteObjectKeyFrame.Value>
+                            </DiscreteObjectKeyFrame>
+                        </ObjectAnimationUsingKeyFrames>
+                        <ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="(UIElement.Visibility)" Storyboard.TargetName="NoFilteredResultsTextBlock">
+                            <DiscreteObjectKeyFrame KeyTime="0">
+                                <DiscreteObjectKeyFrame.Value>
+                                    <Visibility>Collapsed</Visibility>
+                                </DiscreteObjectKeyFrame.Value>
+                            </DiscreteObjectKeyFrame>
+                        </ObjectAnimationUsingKeyFrames>
+                        <ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="(UIElement.Visibility)" Storyboard.TargetName="JobsListBox">
+                            <DiscreteObjectKeyFrame KeyTime="0">
+                                <DiscreteObjectKeyFrame.Value>
+                                    <Visibility>Collapsed</Visibility>
+                                </DiscreteObjectKeyFrame.Value>
+                            </DiscreteObjectKeyFrame>
+                        </ObjectAnimationUsingKeyFrames>
+                    </Storyboard>
+                </VisualState>
+                <VisualState x:Name="NoFilteredResults">
+                    <Storyboard>
+                        <ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="(UIElement.Visibility)" Storyboard.TargetName="LoadingPanel">
+                            <DiscreteObjectKeyFrame KeyTime="0">
+                                <DiscreteObjectKeyFrame.Value>
+                                    <Visibility>Collapsed</Visibility>
+                                </DiscreteObjectKeyFrame.Value>
+                            </DiscreteObjectKeyFrame>
+                        </ObjectAnimationUsingKeyFrames>
+                        <ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="(UIElement.Visibility)" Storyboard.TargetName="NoResultsTextBlock">
+                            <DiscreteObjectKeyFrame KeyTime="0">
+                                <DiscreteObjectKeyFrame.Value>
+                                    <Visibility>Collapsed</Visibility>
+                                </DiscreteObjectKeyFrame.Value>
+                            </DiscreteObjectKeyFrame>
+                        </ObjectAnimationUsingKeyFrames>
+                        <ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="(UIElement.Visibility)" Storyboard.TargetName="NoFilteredResultsTextBlock">
+                            <DiscreteObjectKeyFrame KeyTime="0">
+                                <DiscreteObjectKeyFrame.Value>
+                                    <Visibility>Visible</Visibility>
+                                </DiscreteObjectKeyFrame.Value>
+                            </DiscreteObjectKeyFrame>
+                        </ObjectAnimationUsingKeyFrames>
+                        <ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="(UIElement.Visibility)" Storyboard.TargetName="JobsListBox">
+                            <DiscreteObjectKeyFrame KeyTime="0">
+                                <DiscreteObjectKeyFrame.Value>
+                                    <Visibility>Collapsed</Visibility>
+                                </DiscreteObjectKeyFrame.Value>
+                            </DiscreteObjectKeyFrame>
+                        </ObjectAnimationUsingKeyFrames>
+                        <DoubleAnimationUsingKeyFrames Storyboard.TargetProperty="(UIElement.Opacity)" Storyboard.TargetName="textBox">
+                            <DiscreteDoubleKeyFrame KeyTime="0" Value="1" />
+                        </DoubleAnimationUsingKeyFrames>
+                        <DoubleAnimationUsingKeyFrames Storyboard.TargetProperty="(UIElement.RenderTransform).(CompositeTransform.TranslateY)" Storyboard.TargetName="textBox">
+                            <DiscreteDoubleKeyFrame KeyTime="0" Value="0" />
                         </DoubleAnimationUsingKeyFrames>
                     </Storyboard>
                 </VisualState>
@@ -291,7 +257,7 @@
             <TextBlock x:Name="PageTitle" Text="add jobs" Margin="9,-7,0,0" Style="{StaticResource PhoneTextTitle1Style}"/>
         </StackPanel>
 
-        <TextBox x:Name="textBox" Text="{Binding FilterText, Mode=TwoWay}" Grid.Row="0" VerticalAlignment="Top" Visibility="Collapsed" RenderTransformOrigin="0.5,0.5">
+        <TextBox x:Name="textBox" Text="{Binding FilterText, Mode=TwoWay}" Grid.Row="0" VerticalAlignment="Top" Opacity="0" RenderTransformOrigin="0.5,0.5">
         	<TextBox.RenderTransform>
         		<CompositeTransform/>
         	</TextBox.RenderTransform>
@@ -303,7 +269,26 @@
 
         <!--ContentPanel - place additional content here-->
         <Grid x:Name="ContentPanel" Grid.Row="1" Margin="12,0,12,0">
-            <ListBox ItemsSource="{Binding Jobs}">
+            <Grid x:Name="LoadingPanel">
+                <TextBlock Text="Loading..." Style="{StaticResource PhoneTextLargeStyle}" Foreground="{StaticResource PhoneSubtleBrush}" />
+            </Grid>
+            
+            <Grid x:Name="ResultsContainer">
+                <TextBlock x:Name="NoFilteredResultsTextBlock" Style="{StaticResource PhoneTextLargeStyle}" Foreground="{StaticResource PhoneSubtleBrush}" Visibility="Collapsed">
+                    <TextBlock.Inlines>
+                        <Run Text="No results for " />
+                        <Run Text="{Binding FilterText}" Foreground="{StaticResource PhoneAccentBrush}" />
+                    </TextBlock.Inlines>
+                </TextBlock>
+
+                <TextBlock x:Name="NoResultsTextBlock" Style="{StaticResource PhoneTextLargeStyle}" Foreground="{StaticResource PhoneSubtleBrush}" Visibility="Collapsed">
+                    <TextBlock.Inlines>
+                        <Run Text="No jobs found" />
+                    </TextBlock.Inlines>
+                </TextBlock>
+            </Grid>
+
+            <ListBox x:Name="JobsListBox" ItemsSource="{Binding Jobs}" Visibility="Collapsed">
                 <ListBox.ItemTemplate>
                     <DataTemplate>
                         <Grid>

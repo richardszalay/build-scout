@@ -7,6 +7,7 @@ using RichardSzalay.PocketCiTray.ViewModels;
 using WP7Contrib.Logging;
 using Microsoft.Phone.Controls;
 using Microsoft.Phone.Shell;
+using RichardSzalay.PocketCiTray.Controllers;
 
 namespace RichardSzalay.PocketCiTray.Services
 {
@@ -77,6 +78,13 @@ namespace RichardSzalay.PocketCiTray.Services
                 c.Resolve<IIsolatedStorageFacade>(),
                 c.Resolve<IApplicationResourceFacade>()
                 ));
+
+            container.Register<IJobController>(c => new JobController(
+                c.Resolve<IJobRepository>(),
+                c.Resolve<IApplicationTileService>(),
+                c.Resolve<ISchedulerAccessor>(),
+                c.Resolve<IMessageBoxFacade>()
+                ));
         }
 
         private static void ConfigureViewModels(Container container)
@@ -89,7 +97,8 @@ namespace RichardSzalay.PocketCiTray.Services
                 c.Resolve<IApplicationTileService>(), 
                 c.Resolve<IMessageBoxFacade>(),
                 c.Resolve<IApplicationSettings>(),
-                c.Resolve<IApplicationResourceFacade>())
+                c.Resolve<IApplicationResourceFacade>(),
+                c.Resolve<IJobController>())
                 ).ReusedWithin(ReuseScope.None);
 
             container.Register(c => new ViewJobViewModel(
@@ -97,7 +106,8 @@ namespace RichardSzalay.PocketCiTray.Services
                 c.Resolve<IJobRepository>(),
                 c.Resolve<ISchedulerAccessor>(),
                 c.Resolve<IApplicationTileService>(),
-                c.Resolve<IWebBrowserTaskFacade>(), c.Resolve<IMessageBoxFacade>())
+                c.Resolve<IWebBrowserTaskFacade>(), c.Resolve<IMessageBoxFacade>(),
+                c.Resolve<IJobController>())
                 ).ReusedWithin(ReuseScope.None);
 
             container.Register(c => new SelectBuildServerViewModel(

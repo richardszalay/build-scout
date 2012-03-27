@@ -106,7 +106,7 @@ namespace RichardSzalay.PocketCiTray.BackgroundTask
             }
 
 #if DEBUG_AGENT
-            ScheduledActionService.LaunchForTest("BuildScout.BackgroundUpdateAgent", TimeSpan.FromMinutes(1));
+            ScheduledActionService.LaunchForTest("BuildScout.BackgroundUpdateAgent", TimeSpan.FromSeconds(10));
             
 #endif
         }

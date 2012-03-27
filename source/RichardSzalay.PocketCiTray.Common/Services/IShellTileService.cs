@@ -6,5 +6,7 @@ namespace RichardSzalay.PocketCiTray.Services
         void Create(Uri navigationUri, Microsoft.Phone.Shell.StandardTileData tileData);
         System.Collections.Generic.IEnumerable<Uri> GetUris();
         void Update(Uri navigationUri, Microsoft.Phone.Shell.StandardTileData tileData);
+
+        void Remove(Uri uri);
     }
 }

@@ -259,7 +259,7 @@ namespace RichardSzalay.PocketCiTray {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to finding jobs.
+        ///   Looks up a localized string similar to Looking for jobs....
         /// </summary>
         public static string FindingJobsStatusMessage {
             get {

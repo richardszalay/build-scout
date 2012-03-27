@@ -52,7 +52,11 @@ namespace RichardSzalay.PocketCiTray.ViewModels
                 .Sample(TimeSpan.FromMilliseconds(200), schedulerAccessor.UserInterface)
                 .Select(filter => Observable.ToAsync(() => Jobs.Filter = filter, schedulerAccessor.Background)())
                 .Switch()
-                .Subscribe());
+                .ObserveOn(schedulerAccessor.UserInterface)
+                .Subscribe(_ => State = (Jobs.Count > 0)
+                    ? AddJobsViewState.Filtered
+                    : AddJobsViewState.NoFilteredResults)
+                    );
 
             var query = e.Uri.GetQueryValues();
 
@@ -70,6 +74,8 @@ namespace RichardSzalay.PocketCiTray.ViewModels
 
             BuildServer = jobRepository.GetBuildServer(buildServerId);
 
+            this.State = AddJobsViewState.Loading;
+
             jobProviderFactory
                 .Get(BuildServer.Provider)
                 .GetJobsObservableAsync(BuildServer)
@@ -81,13 +87,11 @@ namespace RichardSzalay.PocketCiTray.ViewModels
                 {
                     allJobs = loadedJobs;
                     Jobs = new FilteredObservableCollection<AvailableJob>(loadedJobs, FilterJob, schedulerAccessor.UserInterface);
-                    Jobs.CollectionChanged += (s, arg) =>
-                        FilteredObservableCollection<object>.TraceCollectionChangedEvent(arg);
 
-                    ((INotifyPropertyChanged)Jobs).PropertyChanged += (ps, parg) =>
-                        Debug.WriteLine("{0} Changed", parg.PropertyName);
+                    State = (Jobs.Count > 0)
+                        ? AddJobsViewState.Unfiltered
+                        : AddJobsViewState.NoResults;
                 });
-                //.Subscribe(loadedJobs => Jobs = new FilteredObservableCollection<AvailableJob>(loadedJobs, FilterJob));
         }
 
         private bool FilterJob(AvailableJob job, string filter)
@@ -95,8 +99,6 @@ namespace RichardSzalay.PocketCiTray.ViewModels
             return filter == null || 
                 job.Job.Name.IndexOf(filter, StringComparison.InvariantCultureIgnoreCase) != -1;
         }
-
-        private string previousFilterText;
 
         [NotifyProperty]
         public string FilterText { get; set; }
@@ -109,45 +111,13 @@ namespace RichardSzalay.PocketCiTray.ViewModels
             {
                 Jobs.Filter = null;
                 FilterText = null;
-                ShowFilter = false;
+                State = AddJobsViewState.Unfiltered;
                 e.Cancel = true;
             }
             else
             {
                 navigationService.GoBackToAny(ViewUris.SelectBuildServer, ViewUris.ListJobs);
             }
-        }
-
-        private void OnUpdateFilter(string filter)
-        {
-            if (filter == null)
-            {
-                return;
-            }
-
-            Jobs.Filter = filter;
-
-            return;
-
-            /*Jobs = new ObservableCollection<AvailableJob>(allJobs);
-
-            Jobs.CollectionChanged += (s, arg) =>
-                        FilteredObservableCollection<object>.TraceCollectionChangedEvent(arg);
-
-            ((INotifyPropertyChanged)Jobs).PropertyChanged += (ps, parg) =>
-                Debug.WriteLine("{0} Changed", parg.PropertyName);
-
-            for (int i = 0; i < Jobs.Count;)
-            {
-                if (Jobs[i].Job.Name.IndexOf(filter, StringComparison.InvariantCultureIgnoreCase) == -1)
-                {
-                    Jobs.RemoveAt(i);
-                }
-                else
-                {
-                    i++;
-                }
-            }*/
         }
 
         private ICollection<Job> RemoveExistingJobs(BuildServer buildServer, ICollection<Job> jobs)
@@ -198,38 +168,8 @@ namespace RichardSzalay.PocketCiTray.ViewModels
 
         private void OnFilterJobs()
         {
-            ShowFilter = true;
+            State = AddJobsViewState.Filtered;
         }
-
-        /*
-        private FilterResult OnUpdateFilter(string filter)
-        {
-            if (filter == null)
-            {
-                previousFilterText = null;
-
-                return new FilterResult { Reset = true, IndexesToRemove = new int[0] };
-            }
-
-            FilterResult result = new FilterResult
-            {
-                Reset = (previousFilterText != null && filter.StartsWith(previousFilterText))
-            };
-
-            var filterSource = result.Reset
-                ? Jobs
-                : allJobs;
-
-            previousFilterText = filter;
-
-            result.IndexesToRemove = filterSource
-                .Select((j, i) => new {Index = i, Job = j})
-                .Where(t => t.Job.Job.Name.IndexOf(filter, StringComparison.InvariantCultureIgnoreCase) != -1)
-                .Select(t => t.Index)
-                .ToList();
-
-            return new ObservableCollection<AvailableJob>(filteredJobs);
-        }*/
 
         private AvailableJob CreateAvailableJob(Job job)
         {
@@ -257,7 +197,10 @@ namespace RichardSzalay.PocketCiTray.ViewModels
         private List<AvailableJob> allJobs;
 
         [NotifyProperty]
-        public bool ShowFilter { get; private set; }
+        public bool ShowFilter
+        {
+            get { return State == AddJobsViewState.Filtered || State == AddJobsViewState.NoFilteredResults; }
+        }
 
         [NotifyProperty]
         public ICommand AddJobsCommand { get; private set; }
@@ -301,6 +244,8 @@ namespace RichardSzalay.PocketCiTray.ViewModels
         [NotifyProperty]
         public bool IsSelectionEnabled { get; set; }
 
+        [NotifyProperty(AlsoNotifyFor = new [] { "ShowFilter" })]
+        public AddJobsViewState State { get; set; }
     }
 
     public class AvailableJob : PropertyChangeBase
@@ -349,5 +294,14 @@ namespace RichardSzalay.PocketCiTray.ViewModels
         {
             return Job.Name;
         }
+    }
+
+    public enum AddJobsViewState
+    {
+        Loading,
+        Unfiltered,
+        NoResults,
+        Filtered,
+        NoFilteredResults
     }
 }

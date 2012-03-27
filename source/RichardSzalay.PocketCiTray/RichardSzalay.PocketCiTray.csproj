@@ -56,7 +56,6 @@
     <Reference Include="Funq">
       <HintPath>..\libs\Funq\Funq.dll</HintPath>
     </Reference>
-    <Reference Include="Google.WebAnalytics, Version=1.4.11.0, Culture=neutral, processorArchitecture=MSIL" />
     <Reference Include="Microsoft.Expression.Interactions, Version=3.8.5.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL" />
     <Reference Include="Microsoft.Phone" />
     <Reference Include="Microsoft.Phone.Controls, Version=7.0.0.0, Culture=neutral, PublicKeyToken=24eec0d8c86cda1e, processorArchitecture=MSIL" />
@@ -64,7 +63,15 @@
       <HintPath>..\packages\SilverlightToolkitWP.4.2011.12.14\lib\sl4-windowsphone71\Microsoft.Phone.Controls.Toolkit.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.Phone.Interop" />
-    <Reference Include="Microsoft.WebAnalytics, Version=1.4.8.0, Culture=neutral, processorArchitecture=MSIL" />
+    <Reference Include="Microsoft.SilverlightMediaFramework.Compatibility.Phone">
+      <HintPath>..\libs\Analytics\Microsoft.SilverlightMediaFramework.Compatibility.Phone.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.WebAnalytics">
+      <HintPath>..\libs\Analytics\Microsoft.WebAnalytics.dll</HintPath>
+    </Reference>
+    <Reference Include="Google.WebAnalytics">
+      <HintPath>..\libs\Analytics\Google.WebAnalytics.dll</HintPath>
+    </Reference>
     <Reference Include="Newtonsoft.Json">
       <HintPath>..\packages\Newtonsoft.Json.4.0.8\lib\sl4-windowsphone71\Newtonsoft.Json.dll</HintPath>
     </Reference>
@@ -132,6 +139,8 @@
     <Compile Include="Bootstrap.cs" />
     <Compile Include="CcXml\BuildStatus.cs" />
     <Compile Include="CcXml\ProjectActivity.cs" />
+    <Compile Include="Controllers\IJobService.cs" />
+    <Compile Include="Controllers\JobController.cs" />
     <Compile Include="Infrastructure\Behaviors\RealtimePasswordBoxBindingBehavior.cs" />
     <Compile Include="Infrastructure\Behaviors\ListPickerBoundSelectedItemsBehavior.cs" />
     <Compile Include="Infrastructure\Behaviors\FocusBindingBehavior.cs" />
@@ -179,7 +188,6 @@
     <Compile Include="Services\IPhoneApplicationServiceFacade.cs" />
     <Compile Include="Services\IScheduledActionServiceFacade.cs" />
     <Compile Include="Services\IWebBrowserTaskFacade.cs" />
-    <Compile Include="Services\JobService.cs" />
     <Compile Include="Services\MessageBoxFacade.cs" />
     <Compile Include="Services\PeriodicJobUpdateService.cs" />
     <Compile Include="Services\PhoneApplicationFrameNavigationService.cs" />
@@ -355,6 +363,10 @@
     <Content Include="Images\Tiles\Success.png" />
     <Content Include="Images\Tiles\Template.png" />
     <Content Include="Images\Tiles\Unavailable.png" />
+    <Page Include="Resources\ControlTemplates.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Content Include="Toolkit.Content\ApplicationBar.Cancel.png" />
     <Content Include="Toolkit.Content\ApplicationBar.Check.png" />
     <Content Include="Toolkit.Content\ApplicationBar.Delete.png" />

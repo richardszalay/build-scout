@@ -69,9 +69,9 @@ namespace RichardSzalay.PocketCiTray.Services
                         if (!Debugger.IsAttached)
                         {
                             mutexService.WaitOne(MutexNames.JobUpdateService, BackgroundAgentTimeout);
-
-                            OnComplete(new List<Job>());
                         }
+
+                        CommitUpdatedJobs(new List<Job>());                        
                     });
 
                     return;
@@ -89,9 +89,20 @@ namespace RichardSzalay.PocketCiTray.Services
                 schedulerAccessor.Background)();
 
             disposable.Disposable = connectionAvailableAsync
-                .Where(FilterConnectionAvailable)
-                .SelectMany(_ => UpdateJobs(jobRepository.GetJobs(), timeout))
-                .Subscribe(OnComplete, ex => Debug.WriteLine(ex.Message));
+                .SelectMany(connectionAvailable =>
+                {
+                    if (connectionAvailable)
+                    {
+                        return UpdateJobs(jobRepository.GetJobs(), timeout);
+                    }
+                    else
+                    {
+                        log.Write("Job update skipped: no network connectivity");
+
+                        return Observable.Empty<IList<Job>>();
+                    }
+                })
+                .Subscribe(CommitUpdatedJobs, OnFailed, OnCompleted);
         }
 
         private IObservable<IList<Job>> UpdateJobs(ICollection<Job> jobs, TimeSpan timeout)
@@ -120,16 +131,6 @@ namespace RichardSzalay.PocketCiTray.Services
                 .Buffer(timeout).Take(1);
         }
 
-        private bool FilterConnectionAvailable(bool connectionAvailable)
-        {
-            if (!connectionAvailable)
-            {
-                log.Write("Job update skipped: no network connectivity");
-            }
-
-            return connectionAvailable;
-        }
-
         public DateTimeOffset? LastUpdateTime
         {
             get
@@ -156,7 +157,7 @@ namespace RichardSzalay.PocketCiTray.Services
             }
         }
 
-        private void OnComplete(IList<Job> updatedJobs)
+        private void CommitUpdatedJobs(IList<Job> updatedJobs)
         {
             log.Write("Job update complete - {0} jobs updated", updatedJobs.Count);
 
@@ -168,7 +169,15 @@ namespace RichardSzalay.PocketCiTray.Services
             jobNotificationService.Notify(updatedJobs);
 
             LastUpdateTime = clock.UtcNow;
+        }
 
+        private void OnFailed(Exception ex)
+        {
+            log.Write("Job updated failed", ex);
+        }
+
+        private void OnCompleted()
+        {
             isUpdating = false;
 
             var handler = Complete;

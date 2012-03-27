@@ -76,7 +76,8 @@ namespace RichardSzalay.PocketCiTray.Services
 
             container.Register<IApplicationTileService>(l => new ApplicationTileService(
                 l.Resolve<IApplicationSettings>(),
-                l.Resolve<IShellTileService>()));
+                l.Resolve<IShellTileService>())
+                ).ReusedWithin(ReuseScope.None);
 
             container.Register<IJobNotificationService>(l => new JobNotificationService(
                 l.Resolve<IApplicationSettings>(),

@@ -12,5 +12,7 @@ namespace RichardSzalay.PocketCiTray.Services
         void UpdateAll(ICollection<Job> jobs);
 
         bool IsPinned(Job j);
+
+        void RemoveJobTile(Job job);
     }
 }

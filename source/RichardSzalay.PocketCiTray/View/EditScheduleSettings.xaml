@@ -40,25 +40,26 @@
         </StackPanel>
 
         <!--ContentPanel - place additional content here-->
-        <StackPanel  x:Name="ContentPanel" Grid.Row="1" Margin="12,0,0,0">
-            <TextBlock Text="Foreground Updates" Style="{StaticResource PhoneTextSubtleStyle}" />
-            <tk:ListPicker Margin="12,0,12,12" ItemsSource="{Binding ForegroundUpdateOptions}" SelectedItem="{Binding ForegroundUpdateInterval, Mode=TwoWay}" DisplayMemberPath="Display" />
+        <ScrollViewer x:Name="ContentPanel" Grid.Row="1" Margin="12,0,0,0">
+            <StackPanel>
+                <TextBlock Text="Foreground Updates" Style="{StaticResource PhoneTextSubtleStyle}" />
+                <tk:ListPicker Margin="12,0,12,12" ItemsSource="{Binding ForegroundUpdateOptions}" SelectedItem="{Binding ForegroundUpdateInterval, Mode=TwoWay}" DisplayMemberPath="Display" />
 
-            <StackPanel Orientation="Horizontal" Margin="0,-12,0,5">
-                <CheckBox IsChecked="{Binding ApplicationSettings.RunUnderLockScreen, Mode=TwoWay}" HorizontalAlignment="Left" HorizontalContentAlignment="Left">
-                    <TextBlock Text="Continue to update when the phone is locked" 
-                                TextWrapping="Wrap"
-                                Style="{StaticResource PhoneTextNormalStyle}" Margin="0,0,0,0" HorizontalAlignment="Left" />
-                </CheckBox>
-            </StackPanel>
+                <StackPanel Orientation="Horizontal" Margin="0,-12,0,5">
+                    <CheckBox IsChecked="{Binding ApplicationSettings.RunUnderLockScreen, Mode=TwoWay}" HorizontalAlignment="Left" HorizontalContentAlignment="Left">
+                        <TextBlock Text="Continue to update when the phone is locked" 
+                                    TextWrapping="Wrap"
+                                    Style="{StaticResource PhoneTextNormalStyle}" Margin="0,0,0,0" HorizontalAlignment="Left" />
+                    </CheckBox>
+                </StackPanel>
 
-            <StackPanel Visibility="{Binding ShowBackgroundScheduleOptions, Converter={StaticResource BooleanVisibilityConverter}}">
-                <TextBlock Text="Background Updates" Style="{StaticResource PhoneTextSubtleStyle}" Margin="12,30,0,0" />
-                <tk:ListPicker Margin="12,0,12,12" ItemsSource="{Binding BackgroundUpdateOptions}" SelectedItem="{Binding BackgroundUpdateInterval, Mode=TwoWay}" DisplayMemberPath="Display" />
+                <StackPanel Visibility="{Binding ShowBackgroundScheduleOptions, Converter={StaticResource BooleanVisibilityConverter}}">
+                    <TextBlock Text="Background Updates" Style="{StaticResource PhoneTextSubtleStyle}" Margin="12,30,0,0" />
+                    <tk:ListPicker Margin="12,0,12,12" ItemsSource="{Binding BackgroundUpdateOptions}" SelectedItem="{Binding BackgroundUpdateInterval, Mode=TwoWay}" DisplayMemberPath="Display" />
+                </StackPanel>
             </StackPanel>
-        </StackPanel>
+        </ScrollViewer>
     </Grid>
-
     <!--Sample code showing usage of ApplicationBar-->
     <!--<phone:PhoneApplicationPage.ApplicationBar>
         <shell:ApplicationBar IsVisible="True" IsMenuEnabled="True">

@@ -66,5 +66,17 @@ namespace RichardSzalay.PocketCiTray.Services
                     return jobTile != null && jobTile.JobId == job.Id;
                 });
         }
+
+
+        public void RemoveJobTile(Job job)
+        {
+            var tile = GetAllTiles().OfType<JobTile>()
+                .FirstOrDefault(t => t.JobId == job.Id);
+
+            if (tile != null)
+            {
+                shellTileService.Remove(tile.NavigationUri);
+            }
+        }
     }
 }

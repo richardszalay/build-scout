@@ -89,6 +89,15 @@
     <Reference Include="WP7Contrib.Services">
       <HintPath>..\packages\WP7Contrib.Services.1.0.0.16\lib\sl4-wp71\WP7Contrib.Services.dll</HintPath>
     </Reference>
+    <Reference Include="Microsoft.SilverlightMediaFramework.Compatibility.Phone">
+      <HintPath>..\libs\Analytics\Microsoft.SilverlightMediaFramework.Compatibility.Phone.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.WebAnalytics">
+      <HintPath>..\libs\Analytics\Microsoft.WebAnalytics.dll</HintPath>
+    </Reference>
+    <Reference Include="Google.WebAnalytics">
+      <HintPath>..\libs\Analytics\Google.WebAnalytics.dll</HintPath>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="ScheduledAgent.cs" />

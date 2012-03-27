@@ -17,7 +17,19 @@ namespace RichardSzalay.PocketCiTray.Services
     {
         public virtual bool IsLowEndDevice
         {
-            get { return DeviceStatus.ApplicationMemoryUsageLimit < 94371840; }
+            get
+            {
+                try
+                {
+                    long limit = (Int64)DeviceExtendedProperties.GetValue("ApplicationWorkingSetLimit");
+
+                    return limit < 94371840L;
+                }
+                catch (ArgumentOutOfRangeException)
+                {
+                    return false;
+                }
+            }
         }
 
         public string DeviceUniqueId

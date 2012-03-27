@@ -7,7 +7,8 @@
     xmlns:vm="clr-namespace:RichardSzalay.PocketCiTray.ViewModels"
     xmlns:local="clr-namespace:RichardSzalay.PocketCiTray.Infrastructure.Controls" 
     xmlns:inf="clr-namespace:RichardSzalay.PocketCiTray.Infrastructure"
-    xmlns:res="clr-namespace:RichardSzalay.PocketCiTray" xmlns:analytics="clr-namespace:Microsoft.WebAnalytics;assembly=Microsoft.WebAnalytics">
+    xmlns:res="clr-namespace:RichardSzalay.PocketCiTray" 
+    xmlns:analytics="clr-namespace:Microsoft.WebAnalytics;assembly=Microsoft.WebAnalytics">
 
     <!--Application Resources-->
     <Application.Resources>

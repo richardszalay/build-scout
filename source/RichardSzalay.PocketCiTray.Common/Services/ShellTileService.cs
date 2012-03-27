@@ -37,5 +37,13 @@ namespace RichardSzalay.PocketCiTray.Services
                 shellTile.Update(tileData);
             }
         }
+
+
+        public void Remove(Uri uri)
+        {
+            ShellTile.ActiveTiles
+                .First(x => x.NavigationUri == uri)
+                .Delete();
+        }
     }
 }
