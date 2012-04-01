@@ -17,6 +17,14 @@ namespace RichardSzalay.PocketCiTray
 
         public string Provider { get; set; }
 
+        public string ProviderDisplayName
+        {
+            get
+            {
+                return ProviderStrings.ResourceManager.GetString(Provider);
+            }
+        }
+
         public static BuildServer FromUri(String provider, Uri uri, NetworkCredential credential)
         {
             var builder = new UriBuilder(uri);

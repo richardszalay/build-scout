@@ -73,8 +73,10 @@ namespace RichardSzalay.PocketCiTray
 
             using (var dataContext = dataContextFactory.Create())
             {
-                return dataContext.Jobs.Select(j => j.ToJob(
-                    buildServers[j.BuildServerId]))
+                return dataContext.Jobs
+                    .Select(j => j.ToJob(buildServers[j.BuildServerId]))
+                    .ToList()
+                    .OrderBy(j => j.Name)
                     .ToList();
             }
         }

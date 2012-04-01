@@ -174,11 +174,6 @@
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="LocalizedResources.cs" />
-    <Compile Include="ProviderStrings.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>ProviderStrings.resx</DependentUpon>
-    </Compile>
     <Compile Include="Services\ApplicationDependencyConfiguration.cs" />
     <Compile Include="Services\EmailComposeTaskFacade.cs" />
     <Compile Include="Services\IApplicationResourceFacade.cs" />
@@ -379,10 +374,6 @@
     <EmbeddedResource Include="AboutStrings.resx">
       <Generator>PublicResXFileCodeGenerator</Generator>
       <LastGenOutput>AboutStrings.Designer.cs</LastGenOutput>
-    </EmbeddedResource>
-    <EmbeddedResource Include="ProviderStrings.resx">
-      <Generator>ResXFileCodeGenerator</Generator>
-      <LastGenOutput>ProviderStrings.Designer.cs</LastGenOutput>
     </EmbeddedResource>
     <EmbeddedResource Include="SettingsStrings.resx">
       <Generator>PublicResXFileCodeGenerator</Generator>

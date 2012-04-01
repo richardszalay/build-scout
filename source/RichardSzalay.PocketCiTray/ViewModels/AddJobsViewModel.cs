@@ -49,7 +49,7 @@ namespace RichardSzalay.PocketCiTray.ViewModels
 
             Disposables.Add(this.GetPropertyValues(x => x.FilterText)
                 .Where(f => f != null && Jobs.Filter != f)
-                .Sample(TimeSpan.FromMilliseconds(200), schedulerAccessor.UserInterface)
+                //.Sample(TimeSpan.FromMilliseconds(200), schedulerAccessor.UserInterface)
                 .Select(filter => Observable.ToAsync(() => Jobs.Filter = filter, schedulerAccessor.Background)())
                 .Switch()
                 .ObserveOn(schedulerAccessor.UserInterface)
@@ -80,7 +80,10 @@ namespace RichardSzalay.PocketCiTray.ViewModels
                 .Get(BuildServer.Provider)
                 .GetJobsObservableAsync(BuildServer)
                 .Select(jobs => RemoveExistingJobs(BuildServer, jobs))
-                .Select(jobs => jobs.Select(CreateAvailableJob).ToList())
+                .Select(jobs => jobs.Select(CreateAvailableJob)
+                    .OrderBy(j => j.Job.Name)
+                    .ToList()
+                )
                 .ObserveOn(schedulerAccessor.UserInterface)
                 .Finally(StopLoading)
                 .Subscribe(loadedJobs =>

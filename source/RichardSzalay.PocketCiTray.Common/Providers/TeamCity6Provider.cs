@@ -54,12 +54,22 @@ namespace RichardSzalay.PocketCiTray.Providers
         public IObservable<ICollection<Job>> GetJobsObservableAsync(BuildServer buildServer)
         {
             Uri jobsUri = new Uri(buildServer.Uri, "httpAuth/app/rest/buildTypes");
-
             var request = webRequestCreate.CreateXmlRequest(jobsUri, buildServer.Credential);
 
-            return request.GetResponseObservable()
+            Uri buildsUri = new Uri(buildServer.Uri, "httpAuth/app/rest/builds?locator=personal:true");
+            var buildsRequest = webRequestCreate.CreateXmlRequest(buildsUri, buildServer.Credential);
+
+            var buildTypes = request.GetResponseObservable()
                 .ParseXmlResponse()
                 .Select(doc => (ICollection<Job>)MapJobs(doc, buildServer).ToList());
+
+            var personalBuildTypes = buildsRequest.GetResponseObservable()
+                .ParseXmlResponse()
+                .Select(MapBuildTypes);
+
+            return buildTypes.Zip(personalBuildTypes, (jobs, personalJobs) => (ICollection<Job>)jobs.Join(
+                personalJobs.Distinct(), j => j.RemoteId, btid => btid,
+                (j, btid) => j).ToList());
         }
 
         public IObservable<BuildServer> ValidateBuildServer(BuildServer buildServer)
@@ -105,7 +115,8 @@ namespace RichardSzalay.PocketCiTray.Providers
             return this.updateStrategies.Select(strat => Observable.Defer(() =>
             {
                 return remainingJobsSet.Count > 0
-                    ? strat.UpdateAll(buildServer, jobs)
+                    ? strat.UpdateAll(buildServer, remainingJobsSet.Keys.ToList())
+                        .Do(j => { if (remainingJobsSet.ContainsKey(j)) remainingJobsSet.Remove(j); })
                     : Observable.Empty<Job>();
             }))
             .Concat();
@@ -146,6 +157,13 @@ namespace RichardSzalay.PocketCiTray.Providers
                 Result = ParseBuildResult(jobElement.Attribute("status").Value),
                 Time = ParseBuildTime(jobElement.Attribute("startDate").Value)
             };
+        }
+
+        private ICollection<string> MapBuildTypes(XDocument doc)
+        {
+            return doc.Root.Elements("build")
+                .Select(b => b.Attribute("buildTypeId").Value)
+                .ToList();
         }
 
         private static DateTimeOffset ParseBuildTime(string value)

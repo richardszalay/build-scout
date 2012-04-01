@@ -11,6 +11,7 @@ using System.Windows.Shapes;
 using RichardSzalay.PocketCiTray.Services;
 using System.Reactive;
 using System.Reactive.Linq;
+using System.Collections.ObjectModel;
 
 namespace RichardSzalay.PocketCiTray.Controllers
 {
@@ -37,16 +38,7 @@ namespace RichardSzalay.PocketCiTray.Controllers
 
             if (result == MessageBoxResult.OK)
             {
-                return Observable.ToAsync(() => 
-                    {
-                        jobRepository.DeleteJob(job);
-
-                        if (tileService.IsPinned(job))
-                        {
-                            tileService.RemoveJobTile(job);
-                        }
-
-                    }, schedulerAccessor.Background)()
+                return Observable.ToAsync(() => DeleteJobInternal(job), schedulerAccessor.Background)()
                     .ObserveOn(schedulerAccessor.UserInterface);
             }
             else
@@ -57,6 +49,19 @@ namespace RichardSzalay.PocketCiTray.Controllers
 
         private void DeleteJobInternal(Job job)
         {
+            jobRepository.DeleteJob(job);
+
+            if (tileService.IsPinned(job))
+            {
+                tileService.RemoveJobTile(job);
+            }
+        }
+
+
+        public ObservableCollection<Job> GetJobs()
+        {
+            var jobs = jobRepository.GetJobs();
+            return new ObservableCollection<Job>(jobs);
         }
     }
 }

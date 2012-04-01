@@ -141,12 +141,17 @@
     </Compile>
     <Compile Include="PeriodicTaskHelper.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="ProviderStrings.Designer.cs">
+      <DependentUpon>ProviderStrings.resx</DependentUpon>
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+    </Compile>
     <Compile Include="Providers\ITeamCity6UpdateStrategy.cs" />
     <Compile Include="Providers\JobProviderFeature.cs" />
     <Compile Include="Providers\PersonalBuildsTeamCity6UpdateStrategy.cs" />
     <Compile Include="Providers\PerJobTeamCity6UpdateStrategy.cs" />
     <Compile Include="Providers\HudsonProvider.cs" />
-    <Compile Include="Providers\CruiseProvider.cs" />
+    <Compile Include="Providers\CcTrayProvider.cs" />
     <Compile Include="Providers\IJobProvider.cs" />
     <Compile Include="Providers\IJobProviderFactory.cs" />
     <Compile Include="Providers\JobProviderFactory.cs" />
@@ -192,6 +197,10 @@
     <EmbeddedResource Include="NotificationStrings.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>NotificationStrings.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ProviderStrings.resx">
+      <Generator>PublicResXFileCodeGenerator</Generator>
+      <LastGenOutput>ProviderStrings.Designer.cs</LastGenOutput>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>

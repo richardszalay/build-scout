@@ -9,14 +9,14 @@ using RichardSzalay.PocketCiTray.Services;
 
 namespace RichardSzalay.PocketCiTray.Providers
 {
-    public class CruiseProvider : IJobProvider
+    public class CcTrayProvider : IJobProvider
     {
         public const string ProviderName = "cruise";
 
         private readonly IWebRequestCreate webRequestCreate;
         private readonly IClock clock;
 
-        public CruiseProvider(IWebRequestCreate webRequestCreate, IClock clock)
+        public CcTrayProvider(IWebRequestCreate webRequestCreate, IClock clock)
         {
             this.webRequestCreate = webRequestCreate;
             this.clock = clock;

@@ -26,7 +26,7 @@ namespace RichardSzalay.PocketCiTray.Providers
         {
             return new string[]
             {
-                CruiseProvider.ProviderName,
+                CcTrayProvider.ProviderName,
                 HudsonProvider.ProviderName,
                 TeamCity6Provider.ProviderName
             };
@@ -36,8 +36,8 @@ namespace RichardSzalay.PocketCiTray.Providers
         {
             switch (serverType)
             {
-                case CruiseProvider.ProviderName:
-                    return new CruiseProvider(webRequestCreator, clock);
+                case CcTrayProvider.ProviderName:
+                    return new CcTrayProvider(webRequestCreator, clock);
 
                 case HudsonProvider.ProviderName:
                     return new HudsonProvider(webRequestCreator, clock);
