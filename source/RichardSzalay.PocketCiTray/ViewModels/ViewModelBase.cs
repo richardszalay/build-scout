@@ -11,7 +11,7 @@ namespace RichardSzalay.PocketCiTray.ViewModels
     public abstract class ViewModelBase : PropertyChangeBase
     {
         private CompositeDisposable disposables;
-        private ProgressIndicator progressIndicator;
+        private ProgressIndicator progressIndicator = new ProgressIndicator();
         private TransitionMode transitionMode;
 
         protected CompositeDisposable Disposables

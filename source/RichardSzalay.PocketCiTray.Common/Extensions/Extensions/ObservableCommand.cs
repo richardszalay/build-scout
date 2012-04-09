@@ -14,6 +14,8 @@ namespace RichardSzalay.PocketCiTray.Extensions.Extensions
         private readonly IDisposable subscription;
         private readonly Func<TParam, bool> canExecuteFunc;
 
+        private bool enabled = true;
+
         public ObservableCommand(IObservable<bool> canExecute)
         {
             subscription = canExecute
@@ -37,6 +39,11 @@ namespace RichardSzalay.PocketCiTray.Extensions.Extensions
 
         public bool CanExecute(object parameter)
         {
+            if (!enabled)
+            {
+                return false;
+            }
+
             if (canExecuteFunc != null)
             {
                 return canExecuteFunc((TParam) parameter);
@@ -70,6 +77,17 @@ namespace RichardSzalay.PocketCiTray.Extensions.Extensions
         {
             subscription.Dispose();
         }
+
+        public bool Enabled
+        {
+            get { return enabled; }
+            set
+            {
+                enabled = value;
+                this.OnCanExecuteChanged();
+            }
+        }
+
 
         public IDisposable Subscribe(IObserver<TParam> observer)
         {

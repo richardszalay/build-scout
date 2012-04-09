@@ -12,6 +12,7 @@ using System.Collections.Generic;
 using Microsoft.Phone.Net.NetworkInformation;
 using RichardSzalay.PocketCiTray.Infrastructure;
 using System.Net;
+using Microsoft.Phone.Shell;
 
 namespace RichardSzalay.PocketCiTray.ViewModels
 {
@@ -61,12 +62,15 @@ namespace RichardSzalay.PocketCiTray.ViewModels
             validateBuildServer = new SerialDisposable();
             Disposables.Add(validateBuildServer);
 
-            AddBuildServerCommand = CreateCommand<string>(
+            var isBusy = this.GetPropertyValues(x => x.ProgressIndicator)
+                .Select(pi => pi.IsVisible);
+
+            AddBuildServerCommand = (ObservableCommand<string>)CreateCommand<string>(
                 new ObservableCommand<string>(CanAdd), OnAddBuildServer);
 
             ShowAdvancedOptionsCommand = CreateCommand(new ObservableCommand(), OnShowAdvancedOptionsCommand);
 
-            ViewHelpCommand = CreateCommand(new ObservableCommand(), OnViewHelp);
+            ViewHelpCommand = CreateCommand(new ObservableCommand(isBusy.Select(busy => !busy)), OnViewHelp);
 
             Disposables.Add(Observable.FromEventPattern<NetworkNotificationEventArgs>(
                 h => networkInterface.NetworkChanged += h,
@@ -74,6 +78,20 @@ namespace RichardSzalay.PocketCiTray.ViewModels
                 )
                 .Select(_ => networkInterface.IsOnWifi)
                 .Subscribe(OnNetworkInterfaceChanged));
+
+            isBusy.Subscribe(busy => AddBuildServerCommand.Enabled = !busy);
+        }
+
+        public override void OnBackKeyPress(System.ComponentModel.CancelEventArgs e)
+        {
+            if (ProgressIndicator != null && ProgressIndicator.IsVisible)
+            {
+                validateBuildServer.Disposable = null;
+                e.Cancel = true;
+                return;
+            }
+
+            base.OnBackKeyPress(e);
         }
 
         [NotifyProperty]
@@ -86,7 +104,7 @@ namespace RichardSzalay.PocketCiTray.ViewModels
         public string NetworkName { get; set; }
 
         [NotifyProperty]
-        public ICommand AddBuildServerCommand { get; set; }
+        public ObservableCommand<string> AddBuildServerCommand { get; set; }
         
         [NotifyProperty]
         public ICommand ShowAdvancedOptionsCommand { get; set; }
