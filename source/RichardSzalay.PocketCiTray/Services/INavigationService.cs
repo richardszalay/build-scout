@@ -9,5 +9,7 @@ namespace RichardSzalay.PocketCiTray.Services
         void RemoveBackEntry();
         void GoBackTo(Uri pageUri);
         void GoBackToAny(params Uri[] pageUris);
+
+        bool CanGoBack { get; }
     }
 }

@@ -8,6 +8,7 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:v="clr-namespace:RichardSzalay.PocketCiTray.View" 
     xmlns:ms="clr-namespace:Microsoft.Phone.Controls;assembly=Microsoft.Phone"
+    xmlns:tk="clr-namespace:Microsoft.Phone.Controls;assembly=Microsoft.Phone.Controls.Toolkit" 
     FontFamily="{StaticResource PhoneFontFamilyNormal}"
     FontSize="{StaticResource PhoneFontSizeNormal}"
     Foreground="{StaticResource PhoneForegroundBrush}"
@@ -20,9 +21,23 @@
     shell:SystemTray.ProgressIndicator="{Binding ProgressIndicator}"
     >
 
-    
     <Grid x:Name="LayoutRoot" Background="Transparent">
         <ms:WebBrowser Source="{Binding HelpUri}" />
     </Grid>
+
+    <tk:TransitionService.NavigationInTransition>
+        <tk:NavigationInTransition>
+            <tk:NavigationInTransition.Forward>
+                <tk:TurnstileTransition Mode="ForwardIn" />
+            </tk:NavigationInTransition.Forward>
+        </tk:NavigationInTransition>
+    </tk:TransitionService.NavigationInTransition>
+    <tk:TransitionService.NavigationOutTransition>
+        <tk:NavigationOutTransition>
+            <tk:NavigationOutTransition.Backward>
+                <tk:TurnstileTransition Mode="BackwardOut" />
+            </tk:NavigationOutTransition.Backward>
+        </tk:NavigationOutTransition>
+    </tk:TransitionService.NavigationOutTransition>
 
 </v:ViewBase>

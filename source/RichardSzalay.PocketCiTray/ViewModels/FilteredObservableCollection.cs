@@ -12,6 +12,8 @@ namespace RichardSzalay.PocketCiTray.ViewModels
 {
     public class FilteredObservableCollection<TList> : IList<TList>, IList, INotifyCollectionChanged, INotifyPropertyChanged
     {
+        private object syncRoot = new object();
+
         private List<TList> filteredList = new List<TList>();
         private List<int> hiddenIndexes = new List<int>();
 
@@ -132,7 +134,7 @@ namespace RichardSzalay.PocketCiTray.ViewModels
 
         public object SyncRoot
         {
-            get { return null; }
+            get { return syncRoot; }
         }
 
         public bool IsSynchronized
@@ -176,7 +178,6 @@ namespace RichardSzalay.PocketCiTray.ViewModels
 
         public string Filter
         {
-
             get { return filter; }
             set
             {
@@ -188,70 +189,78 @@ namespace RichardSzalay.PocketCiTray.ViewModels
 
         private void UpdateFilter()
         {
-            var handler = CollectionChanged;
-
-            var indexEnumerator = this.hiddenIndexes.GetEnumerator();
-            bool moreHiddenIndexes = indexEnumerator.MoveNext();
-
-            var newHiddenIndexes = new List<int>(source.Count);
-            var changes = new List<NotifyCollectionChangedEventArgs>(source.Count);
-            var newVisibleItems = new List<TList>(source.Count);
-
-            int visibleIndex = 0;
-
-            for (int i=0; i<source.Count; i++)
+            lock (SyncRoot)
             {
-                bool itemVisible = (filter == null || filterCallback(source[i], filter));
+                var handler = CollectionChanged;
 
-                while(moreHiddenIndexes && indexEnumerator.Current < i)
+                var indexEnumerator = this.hiddenIndexes.GetEnumerator();
+                bool moreHiddenIndexes = indexEnumerator.MoveNext();
+
+                var newHiddenIndexes = new List<int>(source.Count);
+                var changes = new List<NotifyCollectionChangedEventArgs>(source.Count);
+                var newVisibleItems = new List<TList>(source.Count);
+
+                int visibleIndex = 0;
+
+                for (int i = 0; i < source.Count; i++)
                 {
-                    moreHiddenIndexes = indexEnumerator.MoveNext();
+                    bool itemVisible = (filter == null || filterCallback(source[i], filter));
+
+                    while (moreHiddenIndexes && indexEnumerator.Current < i)
+                    {
+                        moreHiddenIndexes = indexEnumerator.MoveNext();
+                    }
+
+                    bool wasVisible = !(moreHiddenIndexes && i == indexEnumerator.Current);
+
+                    if (wasVisible != itemVisible)
+                    {
+                        var change = itemVisible
+                            ? CreateAdded(visibleIndex, source[i])
+                            : CreateRemoved(visibleIndex, source[i]);
+
+                        changes.Add(change);
+                    }
+
+                    if (!wasVisible && moreHiddenIndexes)
+                    {
+                        moreHiddenIndexes = indexEnumerator.MoveNext();
+                    }
+
+                    if (itemVisible)
+                    {
+                        newVisibleItems.Add(source[i]);
+                        visibleIndex++;
+                    }
+                    else
+                    {
+                        newHiddenIndexes.Add(i);
+                    }
                 }
 
-                bool wasVisible = !(moreHiddenIndexes && i == indexEnumerator.Current);
+                newHiddenIndexes.Sort();
 
-                if (wasVisible != itemVisible)
+                if (handler != null)
                 {
-                    var change = itemVisible
-                        ? CreateAdded(visibleIndex, source[i])
-                        : CreateRemoved(visibleIndex, source[i]);
+                    eventDispatcherSubscription.Disposable = userInterface.Schedule(() =>
+                    {
+                        visibleItems = newVisibleItems;
+                        hiddenIndexes = newHiddenIndexes;
 
-                    changes.Add(change);
-                }
+                        foreach (var change in changes)
+                        {
+                            handler(this, change);
+                        }
 
-                if (!wasVisible && moreHiddenIndexes)
-                {
-                    moreHiddenIndexes = indexEnumerator.MoveNext();
-                }
-
-                if (itemVisible)
-                {
-                    newVisibleItems.Add(source[i]);
-                    visibleIndex++;
+                        OnPropertyChanged("Count");
+                        OnPropertyChanged("Item[]");
+                    });
                 }
                 else
                 {
-                    newHiddenIndexes.Add(i);
+                    visibleItems = newVisibleItems;
+                    hiddenIndexes = newHiddenIndexes;
                 }
-            }
-
-            newHiddenIndexes.Sort();
-
-            visibleItems = newVisibleItems;
-            hiddenIndexes = newHiddenIndexes;
-
-            if (handler != null)
-            {
-                eventDispatcherSubscription.Disposable = userInterface.Schedule(() =>
-                {
-                    foreach (var change in changes)
-                    {
-                        handler(this, change);
-                    }
-
-                    OnPropertyChanged("Count");
-                    OnPropertyChanged("Item[]");
-                });
             }
         }
 

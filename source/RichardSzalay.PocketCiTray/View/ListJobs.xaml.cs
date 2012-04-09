@@ -1,7 +1,12 @@
 ﻿using RichardSzalay.PocketCiTray.Infrastructure;
 using WP7Contrib.View.Transitions.Animation;
 using System;
+using System.Linq;
 using System.Diagnostics;
+using System.Windows;
+using LinqToVisualTree;
+using System.Windows.Controls;
+
 namespace RichardSzalay.PocketCiTray.View
 {
     public partial class ListJobs
@@ -12,30 +17,23 @@ namespace RichardSzalay.PocketCiTray.View
 
             InitializeComponent();
 
-            ((ContinuumTransition) Resources["ContinuumOutTransition"]).ContinuumElement = JobsList;
-            ((ContinuumTransition)Resources["ContinuumInTransition"]).ContinuumElement = JobsList;
+            ConfigureContinuumTransition((ContinuumTransition)Resources["ContinuumOutTransition"]);
+            ConfigureContinuumTransition((ContinuumTransition)Resources["ContinuumInTransition"]);
 
             Debug.WriteLine("[{0:hh:mm:ss.fff}] End ListJobs.ctor", DateTimeOffset.UtcNow);
         }
 
-        /*
-        protected override AnimatorHelperBase GetAnimation(AnimationType animationType, Uri toOrFrom)
+        private void ConfigureContinuumTransition(ContinuumTransition transition)
         {
-            if (toOrFrom != null && toOrFrom.OriginalString.Contains("ViewJob"))
-            {
-                return GetContinuumAnimation(JobsList, animationType);
-            }
+            transition.ContinuumElement = JobsList;
+            transition.ResolvingContinuumElement += OnResolvingContinuumElement;
+        }
 
-            if (animationType == AnimationType.NavigateForwardIn ||
-                animationType == AnimationType.NavigateBackwardIn)
-            {
-                return new TurnstileFeatherForwardInAnimator
-                {
-                    ListBox = JobsList,
-                    RootElement = AnimationContext
-                };
-            }
-            return base.GetAnimation(animationType, toOrFrom);
-        }*/
+        void OnResolvingContinuumElement(object sender, ResolvingContinuumElementEventArgs e)
+        {
+            e.ContinuumElement = (FrameworkElement)e.ContinuumElement
+                .Descendants()
+                .First(x => (string)x.GetValue(FrameworkElement.NameProperty) == "JobName");
+        }
     }
 }

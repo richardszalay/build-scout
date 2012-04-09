@@ -8,6 +8,7 @@ using System.Windows.Media;
 using System.Windows.Media.Animation;
 using Microsoft.Phone.Controls;
 using WP7Contrib.View.Controls.Extensions;
+using System;
 
 namespace RichardSzalay.PocketCiTray.Infrastructure
 {
@@ -15,6 +16,8 @@ namespace RichardSzalay.PocketCiTray.Infrastructure
     {
         public const string ContinuumElementPropertyName = "ContinuumElement";
         public const string ContinuumModePropertyName = "Mode";
+
+        public event EventHandler<ResolvingContinuumElementEventArgs> ResolvingContinuumElement;
 
         public FrameworkElement ContinuumElement
         {
@@ -77,12 +80,30 @@ namespace RichardSzalay.PocketCiTray.Infrastructure
             bool needsList = (Mode == ContinuumTransitionMode.ForwardOut || Mode == ContinuumTransitionMode.BackwardIn);
             bool isList = selector != null;
 
+            FrameworkElement element = ContinuumElement;
+
             if (needsList && isList && selector.SelectedIndex != -1)
             {
-                return (FrameworkElement)selector.ItemContainerGenerator.ContainerFromIndex(selector.SelectedIndex);
+                element = (FrameworkElement)selector.ItemContainerGenerator.ContainerFromIndex(selector.SelectedIndex);
             }
 
-            return ContinuumElement;
+            OnResolvingContinuumElement(ref element);
+
+            return element;
+        }
+
+        private void OnResolvingContinuumElement(ref FrameworkElement element)
+        {
+            var args = new ResolvingContinuumElementEventArgs(element);
+
+            var handler = this.ResolvingContinuumElement;
+
+            if (handler != null)
+            {
+                handler(this, args);
+
+                element = args.ContinuumElement;
+            }
         }
 
         public void SetTargets(Dictionary<string, FrameworkElement> targets, Storyboard sb)
@@ -228,5 +249,15 @@ namespace RichardSzalay.PocketCiTray.Infrastructure
         ForwardIn,
         BackwardOut,
         BackwardIn
+    }
+
+    public class ResolvingContinuumElementEventArgs : EventArgs
+    {
+        public FrameworkElement ContinuumElement { get; set; }
+
+        public ResolvingContinuumElementEventArgs(FrameworkElement continuumElement)
+        {
+            this.ContinuumElement = continuumElement;
+        }
     }
 }

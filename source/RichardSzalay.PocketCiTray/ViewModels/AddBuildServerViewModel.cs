@@ -137,11 +137,13 @@ namespace RichardSzalay.PocketCiTray.ViewModels
 
         private void OnViewHelp()
         {
+            TransitionMode = TransitionMode.UnrelatedSection;
             navigationService.Navigate(ViewUris.Help(AddServerHelpKey));
         }
 
         private void OnAddBuildSucceeded(BuildServer addedBuildServer)
         {
+            TransitionMode = TransitionMode.ItemDetails;
             navigationService.Navigate(ViewUris.AddJobs(addedBuildServer));
         }
 

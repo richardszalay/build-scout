@@ -74,9 +74,14 @@ namespace RichardSzalay.PocketCiTray.Services
                 l.Resolve<IJobRepository>(),
                 l.Resolve<IPeriodicJobUpdateService>()));
 
+            container.Register<IThemeCssGenerator>(c => new PhoneThemeCssGenerator(
+                c.Resolve<IApplicationResourceFacade>()
+                ));
+
             container.Register<IHelpService>(c => new HelpService(
                 c.Resolve<IIsolatedStorageFacade>(),
-                c.Resolve<IApplicationResourceFacade>()
+                c.Resolve<IApplicationResourceFacade>(),
+                c.Resolve<IThemeCssGenerator>()
                 ));
 
             container.Register<IJobController>(c => new JobController(

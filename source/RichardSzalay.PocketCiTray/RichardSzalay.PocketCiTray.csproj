@@ -137,8 +137,6 @@
       <DependentUpon>App.xaml</DependentUpon>
     </Compile>
     <Compile Include="Bootstrap.cs" />
-    <Compile Include="CcXml\BuildStatus.cs" />
-    <Compile Include="CcXml\ProjectActivity.cs" />
     <Compile Include="Controllers\IJobService.cs" />
     <Compile Include="Controllers\JobController.cs" />
     <Compile Include="Infrastructure\Behaviors\RealtimePasswordBoxBindingBehavior.cs" />
@@ -181,6 +179,7 @@
     <Compile Include="Services\INavigationService.cs" />
     <Compile Include="Services\IPeriodicJobUpdateService.cs" />
     <Compile Include="Services\IPhoneApplicationServiceFacade.cs" />
+    <Compile Include="Services\IThemeCssGenerator.cs" />
     <Compile Include="Services\IScheduledActionServiceFacade.cs" />
     <Compile Include="Services\IWebBrowserTaskFacade.cs" />
     <Compile Include="Services\MessageBoxFacade.cs" />
@@ -343,6 +342,7 @@
     </Content>
     <Content Include="Content\Help\AddServer.html" />
     <Content Include="Content\Help\shared\help.css" />
+    <None Include="Content\Help\shared\theme.css" />
     <Content Include="Images\appbar.add.rest.png" />
     <Content Include="Images\appbar.cancel.rest.png" />
     <Content Include="Images\appbar.check.rest.png" />

@@ -49,14 +49,13 @@ namespace RichardSzalay.PocketCiTray.ViewModels
 
             Disposables.Add(this.GetPropertyValues(x => x.FilterText)
                 .Where(f => f != null && Jobs.Filter != f)
-                //.Sample(TimeSpan.FromMilliseconds(200), schedulerAccessor.UserInterface)
+                .Sample(TimeSpan.FromMilliseconds(200), schedulerAccessor.UserInterface)
                 .Select(filter => Observable.ToAsync(() => Jobs.Filter = filter, schedulerAccessor.Background)())
                 .Switch()
                 .ObserveOn(schedulerAccessor.UserInterface)
-                .Subscribe(_ => State = (Jobs.Count > 0)
-                    ? AddJobsViewState.Filtered
-                    : AddJobsViewState.NoFilteredResults)
-                    );
+                .Subscribe(_ => State = (Jobs.Count == 0)
+                    ? AddJobsViewState.NoResults
+                    : AddJobsViewState.Results));
 
             var query = e.Uri.GetQueryValues();
 
@@ -92,8 +91,12 @@ namespace RichardSzalay.PocketCiTray.ViewModels
                     Jobs = new FilteredObservableCollection<AvailableJob>(loadedJobs, FilterJob, schedulerAccessor.UserInterface);
 
                     State = (Jobs.Count > 0)
-                        ? AddJobsViewState.Unfiltered
+                        ? AddJobsViewState.Results
                         : AddJobsViewState.NoResults;
+                }, ex =>
+                {
+                    ErrorDescription = ex.Message;
+                    State = AddJobsViewState.Error;
                 });
         }
 
@@ -114,7 +117,12 @@ namespace RichardSzalay.PocketCiTray.ViewModels
             {
                 Jobs.Filter = null;
                 FilterText = null;
-                State = AddJobsViewState.Unfiltered;
+                ShowFilter = false;
+
+                State = Jobs.Count == 0
+                    ? AddJobsViewState.NoResults
+                    : AddJobsViewState.Results;
+
                 e.Cancel = true;
             }
             else
@@ -152,26 +160,32 @@ namespace RichardSzalay.PocketCiTray.ViewModels
 
         private void OnSelectAllJobs()
         {
-            if (SelectedJobs.Count == 0)
+            if (Jobs != null)
             {
-                foreach (var availableJob in Jobs)
+                if (SelectedJobs.Count == 0)
                 {
-                    availableJob.IsSelected = true;
+                    foreach (var availableJob in Jobs)
+                    {
+                        availableJob.IsSelected = true;
+                    }
                 }
-            }
-            else
-            {
-                foreach (var availableJob in Jobs)
+                else
                 {
-                    availableJob.IsSelected = false;
-                }
+                    foreach (var availableJob in Jobs)
+                    {
+                        availableJob.IsSelected = false;
+                    }
 
+                }
             }
         }
 
         private void OnFilterJobs()
         {
-            State = AddJobsViewState.Filtered;
+            if (State == AddJobsViewState.Results)
+            {
+                ShowFilter = true;
+            }
         }
 
         private AvailableJob CreateAvailableJob(Job job)
@@ -202,7 +216,8 @@ namespace RichardSzalay.PocketCiTray.ViewModels
         [NotifyProperty]
         public bool ShowFilter
         {
-            get { return State == AddJobsViewState.Filtered || State == AddJobsViewState.NoFilteredResults; }
+            get;
+            private set;
         }
 
         [NotifyProperty]
@@ -222,6 +237,9 @@ namespace RichardSzalay.PocketCiTray.ViewModels
 
         [NotifyProperty]
         public ObservableCollection<Job> SelectedJobs { get; private set; }
+
+        [NotifyProperty]
+        public string ErrorDescription { get; private set; }
 
         private IObservable<bool> CanAddJobs()
         {
@@ -302,9 +320,8 @@ namespace RichardSzalay.PocketCiTray.ViewModels
     public enum AddJobsViewState
     {
         Loading,
-        Unfiltered,
+        Results,
         NoResults,
-        Filtered,
-        NoFilteredResults
+        Error
     }
 }

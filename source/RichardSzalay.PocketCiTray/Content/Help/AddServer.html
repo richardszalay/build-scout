@@ -1,17 +1,37 @@
 ﻿<html>
 <head>
     <title>Supported Providers</title>
-    <link type="text/css" href="shared/help.css" />
+    <meta name="viewport" content="width=device-width, user-scalable=no" /> 
+    <link type="text/css" rel="Stylesheet" href="shared/help.css" />
 </head>
 <body>
-    <h2>Supported Providers</h2>
+    <p class="title">Add Build Server</p>
 
-    <h3>CCTray Feed</h3>
+    <h1>help</h1>
+
+    <h2>CCTray Feed</h2>
 
     <p>Select this option to add any server that supports the CCTray XML format. This is the most compatible 
     option, but provide access to provider-specific functionary (like starting a job) when it becomes available.</p>
 
-    <h3></h3>
+    <p>Example URL: <em>http://ci.jenkins-ci.org/cc.xml</em></p>
+
+    <h2>Hudson/Jenkins</h2>
+
+    <p>Select this option to add a Hudson or Jenkins server. Include the "jenkins/" or "hudson/" path if your server 
+    uses one.</p>
+
+    <p>Example URL: <em>http://ci.jenkins-ci.org</em></p>
+
+    <h2>TeamCity 6.x</h2>
+
+    <p>Select this option to add a Team City 6 server.</p>
+
+    <p><strong>Warning:</strong> Support for TeamCity is experimental and may not yield optimal network performance. 
+    This is due to the lack of HTTP compression support and increased HTTP requests required by Team City 6.</p>
+
+    <p>Example URL: <em>http://teamcity.codebetter.com</em></p>
+
 </body>
 </html>
 

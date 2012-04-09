@@ -14,8 +14,11 @@ namespace RichardSzalay.PocketCiTray.Services
 
         private const string SharedContentBasePath = StorageBasePath + @"\shared";
 
+        private const string ThemeFilePath = SharedContentBasePath + @"\theme.css";
+
         private readonly IIsolatedStorageFacade isolatedStorageFacade;
         private readonly IApplicationResourceFacade applicationResources;
+        private readonly IThemeCssGenerator themeCssGenerator;
 
         private Uri[] sharedContentUris = new Uri[]
         {
@@ -24,10 +27,12 @@ namespace RichardSzalay.PocketCiTray.Services
 
         private const string TopicUriTemplate = "Content/Help/{0}.html";
 
-        public HelpService(IIsolatedStorageFacade isolatedStorageFacade, IApplicationResourceFacade applicationResources)
+        public HelpService(IIsolatedStorageFacade isolatedStorageFacade, IApplicationResourceFacade applicationResources,
+            IThemeCssGenerator themeCssGenerator)
         {
             this.isolatedStorageFacade = isolatedStorageFacade;
             this.applicationResources = applicationResources;
+            this.themeCssGenerator = themeCssGenerator;
         }
 
         public Uri GetHelpUri(string topic)
@@ -57,6 +62,8 @@ namespace RichardSzalay.PocketCiTray.Services
                 isolatedStorageFacade.CreateDirectory(SharedContentBasePath);
             }
 
+            CreateThemeFile();
+
             foreach(Uri sharedContentUri in sharedContentUris)
             {
                 CopyResourceToFile(sharedContentUri, SharedContentBasePath);
@@ -76,6 +83,17 @@ namespace RichardSzalay.PocketCiTray.Services
             }
 
             return new Uri(storagePath, UriKind.Relative);
+        }
+
+        private void CreateThemeFile()
+        {
+            string cssContent = themeCssGenerator.Generate();
+
+            using (Stream outputStream = isolatedStorageFacade.CreateFile(ThemeFilePath))
+            using (StreamWriter writer = new StreamWriter(outputStream))
+            {
+                writer.Write(cssContent);
+            }
         }
     }
 }

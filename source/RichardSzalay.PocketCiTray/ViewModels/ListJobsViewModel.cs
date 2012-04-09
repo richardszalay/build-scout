@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Reactive.Concurrency;
 using System.Collections.ObjectModel;
 using System.Reactive.Linq;
 using System.Windows;
@@ -47,10 +48,13 @@ namespace RichardSzalay.PocketCiTray.ViewModels
         {
             base.OnNavigatedTo(e);
 
+            ClearBackStack();
+
             AddJobCommand = CreateCommand(new ObservableCommand(), OnAddJob);
             UpdateStatusesCommand = CreateCommand(new ObservableCommand(CanUpdateStatuses()), OnUpdateStatuses);
             ViewJobCommand = CreateCommand(new ObservableCommand<Job>(), OnViewJob);
             EditSettingsCommand = CreateCommand(new ObservableCommand(), OnEditSettings);
+            ShowAboutCommand = CreateCommand(new ObservableCommand(), OnShowAbout);
 
             SuccessBrush = applicationResourceFacade.GetResource<Brush>(applicationSettings.SuccessColorResource);
             FailedBrush = applicationResourceFacade.GetResource<Brush>(applicationSettings.FailedColorResource);
@@ -70,6 +74,15 @@ namespace RichardSzalay.PocketCiTray.ViewModels
             if (lastUpdateDate == null || lastUpdateDate.Value < jobRepository.LastUpdateDate)
             {
                 this.RefreshJobs();
+            }
+        }
+
+        private void ClearBackStack()
+        {
+            // `while` results in a infinite loop here for some reason
+            if (navigationService.CanGoBack)
+            {
+                navigationService.RemoveBackEntry();
             }
         }
 
@@ -143,6 +156,12 @@ namespace RichardSzalay.PocketCiTray.ViewModels
             navigationService.Navigate(ViewUris.EditSettings);
         }
 
+        private void OnShowAbout()
+        {
+            TransitionMode = ViewModels.TransitionMode.UnrelatedSection;
+            navigationService.Navigate(ViewUris.About);
+        }
+
         [NotifyProperty]
         public ICommand UpdateStatusesCommand { get; set; }
 
@@ -151,6 +170,9 @@ namespace RichardSzalay.PocketCiTray.ViewModels
 
         [NotifyProperty]
         public ICommand EditSettingsCommand { get; set; }
+
+        [NotifyProperty]
+        public ICommand ShowAboutCommand { get; set; }
 
         [NotifyProperty(AlsoNotifyFor = new[] { "HasJobs" })]
         public ObservableCollection<Job> Jobs { get; set; }

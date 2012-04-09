@@ -1,4 +1,7 @@
 ﻿using RichardSzalay.PocketCiTray.Infrastructure;
+using System.Windows;
+using System.Linq;
+using LinqToVisualTree;
 
 namespace RichardSzalay.PocketCiTray.View
 {
@@ -8,8 +11,21 @@ namespace RichardSzalay.PocketCiTray.View
         {
             InitializeComponent();
 
-            ((ContinuumTransition)Resources["ContinuumOutTransition"]).ContinuumElement = BuildServerList;
-            ((ContinuumTransition)Resources["ContinuumInTransition"]).ContinuumElement = BuildServerList;
+            ConfigureContinuumTransition((ContinuumTransition)Resources["ContinuumOutTransition"]);
+            ConfigureContinuumTransition((ContinuumTransition)Resources["ContinuumInTransition"]);
+        }
+
+        private void ConfigureContinuumTransition(ContinuumTransition transition)
+        {
+            transition.ContinuumElement = BuildServerList;
+            transition.ResolvingContinuumElement += OnResolvingContinuumElement;
+        }
+
+        void OnResolvingContinuumElement(object sender, ResolvingContinuumElementEventArgs e)
+        {
+            e.ContinuumElement = (FrameworkElement)e.ContinuumElement
+                .Descendants()
+                .First(x => (string)x.GetValue(FrameworkElement.NameProperty) == "ServerName");
         }
     }
 }

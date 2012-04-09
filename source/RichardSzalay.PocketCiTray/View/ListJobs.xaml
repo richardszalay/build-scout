@@ -71,9 +71,6 @@
                        Visibility="{Binding HasJobs, Converter={StaticResource BooleanVisibilityConverter}, ConverterParameter=!}"/>
             <ListBox ItemsSource="{Binding Jobs}" x:Name="JobsList"
                      Visibility="{Binding HasJobs, Converter={StaticResource BooleanVisibilityConverter}}">
-                <!--<i:Interaction.Behaviors>
-                    <inf:ListBoxSelectionCommandBehavior Command="{Binding ViewJobCommand}" />
-                </i:Interaction.Behaviors>-->
                 <ListBox.ItemTemplate>
                     <DataTemplate>
                         <Grid Margin="12,0,0,0">
@@ -104,7 +101,7 @@
 
                             <Rectangle Fill="{Binding LastBuild.Result, Converter={StaticResource BuildStatusToBrushConverter}}" Grid.RowSpan="2" Margin="0,11,0,4" />
 
-                            <TextBlock Text="{Binding Name}" Style="{StaticResource PhoneTextLargeStyle}" Grid.Column="1" VerticalAlignment="Bottom" Margin="12,0,0,0" />
+                            <TextBlock x:Name="JobName" Text="{Binding Name}" Style="{StaticResource PhoneTextLargeStyle}" Grid.Column="1" VerticalAlignment="Bottom" Margin="12,0,0,0" />
                             <TextBlock Text="{Binding LastBuild.Time, Converter={StaticResource RelativeTimeConverter}}" Style="{StaticResource PhoneTextSubtleStyle}" Grid.Column="2" VerticalAlignment="Bottom" HorizontalAlignment="Right" Margin="0,0,4,0" />
                             <TextBlock Text="{Binding LastBuild.Result, Converter={StaticResource LocalizedBuildStatusConverter}}" Style="{StaticResource PhoneTextSubtleStyle}" Grid.Column="1" Grid.Row="1" Margin="12,0,0,0" />
                         </Grid>
@@ -126,6 +123,7 @@
             <shell:ApplicationBarIconButton IconUri="/Images/appbar.refresh.rest.png" Text="refresh"/>
             <shell:ApplicationBar.MenuItems>
                 <shell:ApplicationBarMenuItem Text="settings" />
+                <shell:ApplicationBarMenuItem Text="about" />
             </shell:ApplicationBar.MenuItems>
         </shell:ApplicationBar>
     </phone:PhoneApplicationPage.ApplicationBar>
@@ -139,6 +137,9 @@
                                                       />
         <inf:ApplicationBarMenuItemCommand TextKey="settings"
                                                       CommandBinding="{Binding EditSettingsCommand}"
+                                                      />
+        <inf:ApplicationBarMenuItemCommand TextKey="about"
+                                                      CommandBinding="{Binding ShowAboutCommand}"
                                                       />
     </i:Interaction.Behaviors>
 

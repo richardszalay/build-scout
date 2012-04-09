@@ -39,5 +39,11 @@ namespace RichardSzalay.PocketCiTray.Tests.Mocks
         {
             throw new NotImplementedException();
         }
+
+
+        public bool CanGoBack
+        {
+            get { throw new NotImplementedException(); }
+        }
     }
 }

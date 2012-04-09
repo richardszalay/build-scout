@@ -49,5 +49,11 @@ namespace RichardSzalay.PocketCiTray.Services
                 rootVisual.RemoveBackEntry();
             }
         }
+
+
+        public bool CanGoBack
+        {
+            get { return rootVisual.CanGoBack; }
+        }
     }
 }

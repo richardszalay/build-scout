@@ -1,1 +1,12 @@
-﻿p { font: arial; }
+﻿@import url(theme.css);
+
+p.title { text-transform: uppercase; margin-bottom: -12pt; }
+
+h3 { text-decoration: underline; }
+
+h1 { margin-left: 8px; }
+
+html, body { margin: 0px; }
+em { font-style: normal; }
+
+body { margin-bottom: 12px; }

@@ -58,7 +58,7 @@
                                 </tk:ContextMenu>
                             </tk:ContextMenuService.ContextMenu>
                             
-                            <TextBlock Text="{Binding Name}" Style="{StaticResource PhoneTextLargeStyle}" Grid.Column="1" VerticalAlignment="Bottom" Margin="12,0,0,0" />
+                            <TextBlock x:Name="ServerName" Text="{Binding Name}" Style="{StaticResource PhoneTextLargeStyle}" Grid.Column="1" VerticalAlignment="Bottom" Margin="12,0,0,0" />
                             <TextBlock Text="{Binding ProviderDisplayName}" Style="{StaticResource PhoneTextSubtleStyle}" Grid.Column="1" VerticalAlignment="Bottom" Margin="12,0,0,0" />
                         </StackPanel>
                     </DataTemplate>

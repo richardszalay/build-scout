@@ -26,6 +26,15 @@ namespace RichardSzalay.PocketCiTray.Extensions.Extensions
             return request.FixUsernameHandling();
         }
 
+        public static WebRequest CreateHtmlRequest(this IWebRequestCreate creator, Uri uri, ICredentials credentials)
+        {
+            var request = (HttpWebRequest)creator.Create(uri);
+            request.Accept = "text/html";
+            request.Credentials = credentials;
+
+            return request.FixUsernameHandling();
+        }
+
         public static WebRequest CreateTextRequest(this IWebRequestCreate creator, Uri uri, ICredentials credentials)
         {
             var request = (HttpWebRequest)creator.Create(uri);

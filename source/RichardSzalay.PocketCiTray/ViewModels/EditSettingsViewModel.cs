@@ -46,9 +46,6 @@ namespace RichardSzalay.PocketCiTray.ViewModels
                 yield return new PageLink(SettingsStrings.ColoursTitle,
                     SettingsStrings.ColoursDescription, ViewUris.EditColourSettings);
             }
-            
-            yield return new PageLink(AboutStrings.AboutTitle,
-                GetAboutDescription(), ViewUris.About);
         }
 
         private string GetAboutDescription()
