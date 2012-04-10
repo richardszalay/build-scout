@@ -86,6 +86,7 @@ namespace RichardSzalay.PocketCiTray.Services
 
             container.Register<IJobController>(c => new JobController(
                 c.Resolve<IJobRepository>(),
+                c.Resolve<IJobProviderFactory>(),
                 c.Resolve<IApplicationTileService>(),
                 c.Resolve<ISchedulerAccessor>(),
                 c.Resolve<IMessageBoxFacade>()
@@ -133,6 +134,7 @@ namespace RichardSzalay.PocketCiTray.Services
 
             container.Register(c => new AddJobsViewModel(
                 c.Resolve<INavigationService>(),
+                c.Resolve<IJobController>(),
                 c.Resolve<IJobProviderFactory>(),
                 c.Resolve<IJobRepository>(),
                 c.Resolve<ISchedulerAccessor>()

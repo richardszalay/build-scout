@@ -57,7 +57,10 @@ namespace RichardSzalay.PocketCiTray.ViewModels
                 .Select(p => new ProviderOption(p))
                 .ToList();
 
-            SelectedProvider = Providers.First();
+            if (SelectedProvider == null)
+            {
+                SelectedProvider = Providers.First();
+            }
 
             validateBuildServer = new SerialDisposable();
             Disposables.Add(validateBuildServer);

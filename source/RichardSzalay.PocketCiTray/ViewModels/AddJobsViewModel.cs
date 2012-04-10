@@ -14,6 +14,7 @@ using RichardSzalay.PocketCiTray.Providers;
 using RichardSzalay.PocketCiTray.Services;
 using System.Collections.Generic;
 using RichardSzalay.PocketCiTray.Infrastructure;
+using RichardSzalay.PocketCiTray.Controllers;
 
 namespace RichardSzalay.PocketCiTray.ViewModels
 {
@@ -21,15 +22,18 @@ namespace RichardSzalay.PocketCiTray.ViewModels
     {
         private const string BuildServerIdKey = "buildServerId";
         private readonly INavigationService navigationService;
+        private readonly IJobController jobController;
         private readonly IJobProviderFactory jobProviderFactory;
         private readonly IJobRepository jobRepository;
         private readonly ISchedulerAccessor schedulerAccessor;
 
         private SerialDisposable addJobsSubscrition;
 
-        public AddJobsViewModel(INavigationService navigationService, IJobProviderFactory jobProviderFactory, IJobRepository jobRepository, ISchedulerAccessor schedulerAccessor)
+        public AddJobsViewModel(INavigationService navigationService, IJobController jobController,
+            IJobProviderFactory jobProviderFactory, IJobRepository jobRepository, ISchedulerAccessor schedulerAccessor)
         {
             this.navigationService = navigationService;
+            this.jobController = jobController;
             this.jobProviderFactory = jobProviderFactory;
             this.jobRepository = jobRepository;
             this.schedulerAccessor = schedulerAccessor;
@@ -151,8 +155,7 @@ namespace RichardSzalay.PocketCiTray.ViewModels
 
             StartLoading(Strings.UpdatingStatusMessage);
 
-            addJobsSubscrition.Disposable = jobsWithStatuses
-                .Select(jobRepository.AddJobs)
+            addJobsSubscrition.Disposable = jobController.AddJobs(SelectedJobs)
                 .ObserveOn(schedulerAccessor.UserInterface)
                 .Finally(StopLoading)
                 .Subscribe(_ => navigationService.GoBackTo(ViewUris.ListJobs));
