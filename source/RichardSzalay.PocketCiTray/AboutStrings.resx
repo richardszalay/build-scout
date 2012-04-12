@@ -129,6 +129,15 @@
   <data name="ApplicationVersionSeparator" xml:space="preserve">
     <value>: </value>
   </data>
+  <data name="CallToPurchase" xml:space="preserve">
+    <value>Buy Build Scout</value>
+  </data>
+  <data name="CallToReview" xml:space="preserve">
+    <value>Review Build Scout</value>
+  </data>
+  <data name="CallToTranslate" xml:space="preserve">
+    <value>Build Scout is looking for translators to help localise the application. Specifically Chinese (simplified and traditional), Japanese, Russian, Spanish, French and Italian. Contact the author for more information.</value>
+  </data>
   <data name="ContactAuthor" xml:space="preserve">
     <value>Contact the author</value>
   </data>
@@ -137,5 +146,8 @@
   </data>
   <data name="VersionString" xml:space="preserve">
     <value>version 1.0.0.0</value>
+  </data>
+  <data name="ViewChangeLog" xml:space="preserve">
+    <value>View change log</value>
   </data>
 </root>

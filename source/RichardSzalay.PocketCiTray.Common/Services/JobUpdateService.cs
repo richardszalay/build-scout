@@ -29,6 +29,7 @@ namespace RichardSzalay.PocketCiTray.Services
         private readonly ILog log;
         private readonly INetworkInterfaceFacade networkInterfaceFacade;
         private readonly ITrackingService trackingService;
+        private readonly IApplicationInformation applicationInformation;
 
         public event EventHandler Started;
         public event EventHandler Complete;
@@ -41,7 +42,8 @@ namespace RichardSzalay.PocketCiTray.Services
             IClock clock, ISettingsService settingsService, IMutexService mutexService,
             ISchedulerAccessor schedulerAccessor, IApplicationTileService applicationTileService,
             IJobNotificationService jobNotificationService, ILog log,
-            INetworkInterfaceFacade networkInterfaceFacade, ITrackingService trackingService)
+            INetworkInterfaceFacade networkInterfaceFacade, ITrackingService trackingService,
+            IApplicationInformation applicationInformation)
         {
             this.jobProviderFactory = jobProviderFactory;
             this.jobRepository = jobRepository;
@@ -54,6 +56,7 @@ namespace RichardSzalay.PocketCiTray.Services
             this.log = log;
             this.networkInterfaceFacade = networkInterfaceFacade;
             this.trackingService = trackingService;
+            this.applicationInformation = applicationInformation;
         }
 
         public void UpdateAll(TimeSpan timeout)
@@ -107,7 +110,10 @@ namespace RichardSzalay.PocketCiTray.Services
 
         private IObservable<IList<Job>> UpdateJobs(ICollection<Job> jobs, TimeSpan timeout)
         {
-            var serverGroups = jobs.GroupBy(j => j.BuildServer);
+            ICollection<Job> explicitUpdates = new List<Job>();
+            SplitTrialJobs(ref jobs, ref explicitUpdates);
+
+            var serverGroups = jobs.GroupBy(j => j.BuildServer);            
 
             return serverGroups
                 .ToObservable(schedulerAccessor.Background)
@@ -128,7 +134,22 @@ namespace RichardSzalay.PocketCiTray.Services
                         return Observable.Empty<Job>();
                     })
                 )
+                .Concat(explicitUpdates.ToObservable())
                 .Buffer(timeout).Take(1);
+        }
+
+        private void SplitTrialJobs(ref ICollection<Job> allJobs, ref ICollection<Job> explicitUpdates)
+        {
+            if (applicationInformation.IsTrialMode && allJobs.Count > 0)
+            {
+                var firstJob = allJobs.OrderBy(x => x.Id).First();
+
+                explicitUpdates = allJobs.Where(j => j != firstJob)
+                    .Select(j => j.MakeUnavailable(CommonStrings.JobUnavailableDueToTrial, clock.UtcNow))
+                    .ToList();
+
+                allJobs = allJobs.Where(j => j == firstJob).ToList();
+            }
         }
 
         public DateTimeOffset? LastUpdateTime

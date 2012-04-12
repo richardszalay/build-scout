@@ -138,4 +138,7 @@
   <data name="HttpServerUnexpectedResponse" xml:space="preserve">
     <value>The server returned an unsupported response</value>
   </data>
+  <data name="JobUnavailableDueToTrial" xml:space="preserve">
+    <value>Trial mode is limited to one job</value>
+  </data>
 </root>

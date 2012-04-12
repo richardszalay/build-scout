@@ -10,6 +10,7 @@ namespace RichardSzalay.PocketCiTray.Services
     public interface IApplicationInformation
     {
         string ApplicationVersion { get; }
+        string ProductId { get; }
         bool IsTrialMode { get; }
     }
 
@@ -20,9 +21,21 @@ namespace RichardSzalay.PocketCiTray.Services
             get { return PhoneApplicationManifestHelper.GetVersion(); }
         }
 
+        public string ProductId
+        {
+            get { return PhoneApplicationManifestHelper.GetProductId(); }
+        }
+
         public bool IsTrialMode
         {
-            get { return new LicenseInformation().IsTrial(); }
+            get
+            {
+#if DEBUG_TRIAL
+                return true;
+#else
+                return new LicenseInformation().IsTrial();
+#endif
+            }
         }
     }
 }

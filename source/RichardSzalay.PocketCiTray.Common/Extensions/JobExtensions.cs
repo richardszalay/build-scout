@@ -16,11 +16,16 @@ namespace RichardSzalay.PocketCiTray.Extensions
     {
         public static Job MakeUnavailable(this Job job, Exception ex, DateTimeOffset timestamp)
         {
+            return job.MakeUnavailable(WebExceptionService.GetDisplayMessage(ex), timestamp);
+        }
+
+        public static Job MakeUnavailable(this Job job, String label, DateTimeOffset timestamp)
+        {
             job.LastBuild = new Build
             {
                 Time = timestamp,
                 Result = BuildResult.Unavailable,
-                Label = WebExceptionService.GetDisplayMessage(ex)
+                Label = label
             };
 
             return job;

@@ -56,20 +56,11 @@ namespace RichardSzalay.PocketCiTray.Providers
             Uri jobsUri = new Uri(buildServer.Uri, "httpAuth/app/rest/buildTypes");
             var request = webRequestCreate.CreateXmlRequest(jobsUri, buildServer.Credential);
 
-            Uri buildsUri = new Uri(buildServer.Uri, "httpAuth/app/rest/builds?locator=personal:true");
-            var buildsRequest = webRequestCreate.CreateXmlRequest(buildsUri, buildServer.Credential);
-
             var buildTypes = request.GetResponseObservable()
                 .ParseXmlResponse()
                 .Select(doc => (ICollection<Job>)MapJobs(doc, buildServer).ToList());
 
-            var personalBuildTypes = buildsRequest.GetResponseObservable()
-                .ParseXmlResponse()
-                .Select(MapBuildTypes);
-
-            return buildTypes.Zip(personalBuildTypes, (jobs, personalJobs) => (ICollection<Job>)jobs.Join(
-                personalJobs.Distinct(), j => j.RemoteId, btid => btid,
-                (j, btid) => j).ToList());
+            return buildTypes;
         }
 
         public IObservable<BuildServer> ValidateBuildServer(BuildServer buildServer)

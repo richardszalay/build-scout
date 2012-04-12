@@ -65,14 +65,16 @@ namespace RichardSzalay.PocketCiTray.Services
                 c.Resolve<IIsolatedStorageFacade>(),
                 c.Resolve<ILog>()));
 
-            container.Register<Bootstrap>(l => new Bootstrap(l.Resolve<IApplicationSettings>(),
+            container.Register<Bootstrap>(l => new Bootstrap(
+                l.Resolve<IApplicationSettings>(),
                 l.Resolve<IClock>(),
                 l.Resolve<IMessageBoxFacade>(),
                 l.Resolve<IMutexService>(),
                 l.Resolve<ILogManager>(),
                 l.Resolve<ISettingsApplier>(),
                 l.Resolve<IJobRepository>(),
-                l.Resolve<IPeriodicJobUpdateService>()));
+                l.Resolve<IPeriodicJobUpdateService>(),
+                l.Resolve<IApplicationInformation>()));
 
             container.Register<IThemeCssGenerator>(c => new PhoneThemeCssGenerator(
                 c.Resolve<IApplicationResourceFacade>()
@@ -89,7 +91,9 @@ namespace RichardSzalay.PocketCiTray.Services
                 c.Resolve<IJobProviderFactory>(),
                 c.Resolve<IApplicationTileService>(),
                 c.Resolve<ISchedulerAccessor>(),
-                c.Resolve<IMessageBoxFacade>()
+                c.Resolve<IMessageBoxFacade>(),
+                c.Resolve<IApplicationInformation>(),
+                c.Resolve<IApplicationMarketplaceFacade>()
                 ));
         }
 
@@ -118,6 +122,7 @@ namespace RichardSzalay.PocketCiTray.Services
 
             container.Register(c => new SelectBuildServerViewModel(
                 c.Resolve<IJobRepository>(),
+                c.Resolve<IJobController>(),
                 c.Resolve<IJobProviderFactory>(),
                 c.Resolve<INavigationService>(),
                 c.Resolve<ISchedulerAccessor>(), c.Resolve<IMessageBoxFacade>())
@@ -137,7 +142,9 @@ namespace RichardSzalay.PocketCiTray.Services
                 c.Resolve<IJobController>(),
                 c.Resolve<IJobProviderFactory>(),
                 c.Resolve<IJobRepository>(),
-                c.Resolve<ISchedulerAccessor>()
+                c.Resolve<ISchedulerAccessor>(),
+                c.Resolve<IApplicationInformation>(),
+                c.Resolve<IMessageBoxFacade>()
                 )).ReusedWithin(ReuseScope.None);
 
             container.Register(c => new ViewHelpViewModel(
@@ -161,7 +168,9 @@ namespace RichardSzalay.PocketCiTray.Services
                 c.Resolve<INavigationService>(),
                 c.Resolve<ISchedulerAccessor>(),
                 c.Resolve<IApplicationSettings>(),
-                c.Resolve<IApplicationResourceFacade>(), c.Resolve<ISettingsApplier>()
+                c.Resolve<IApplicationResourceFacade>(), 
+                c.Resolve<ISettingsApplier>(),
+                c.Resolve<IDeviceInformationService>()
                 )).ReusedWithin(ReuseScope.None);
 
             container.Register(c => new EditScheduleSettingsViewModel(
@@ -174,7 +183,10 @@ namespace RichardSzalay.PocketCiTray.Services
                 )).ReusedWithin(ReuseScope.None);
 
             container.Register(c => new AboutViewModel(
-                c.Resolve<IEmailComposeTaskFacade>()
+                c.Resolve<IEmailComposeTaskFacade>(),
+                c.Resolve<IApplicationInformation>(),
+                c.Resolve<IApplicationMarketplaceFacade>(),
+                c.Resolve<INavigationService>()
                 )).ReusedWithin(ReuseScope.None);
 
             container.Register<IGoogleAnalyticsFactory>(c => new GoogleAnalyticsFactory(

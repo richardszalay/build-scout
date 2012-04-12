@@ -41,6 +41,16 @@ namespace RichardSzalay.PocketCiTray.ViewModels
             return command;
         }
 
+        protected ICommand CreateCommand(Action action)
+        {
+            return CreateCommand(new ObservableCommand(), action);
+        }
+
+        protected ICommand CreateCommand<TParam>(Action<TParam> action)
+        {
+            return CreateCommand(new ObservableCommand<TParam>(), action);
+        }
+
         public virtual void OnNavigatedFrom(NavigationEventArgs e)
         {
             this.Disposables.Dispose();

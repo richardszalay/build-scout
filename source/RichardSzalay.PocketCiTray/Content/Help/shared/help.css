@@ -8,3 +8,8 @@ em { font-style: normal; }
 p.title { text-transform: uppercase; margin-bottom: -12pt; }
 h1 { margin-left: 8px; }
 body { margin-bottom: 12px; }
+
+ul { margin: 0 0 0 0; padding: 0 0 0 0; }
+li { list-style-type: none; margin: 0 0 0 0; padding: 0 0 0 0;}
+
+

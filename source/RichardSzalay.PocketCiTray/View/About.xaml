@@ -41,20 +41,37 @@
         </StackPanel>
 
         <!--ContentPanel - place additional content here-->
-        <StackPanel x:Name="ContentPanel" Grid.Row="1" Margin="12,0,0,0" Orientation="Vertical">
-            <TextBlock Style="{StaticResource PhoneTextNormalStyle}">
-                <TextBlock.Inlines>
-                    <Run Text="{Binding Path=Strings.ApplicationTitle, Source={StaticResource LocalizedResources}}" />
-                    <Run Text="{Binding Path=AboutStrings.ApplicationVersionSeparator, Source={StaticResource LocalizedResources}}" />
-                    <Run Text="{Binding Path=AboutStrings.VersionString, Source={StaticResource LocalizedResources}}" />
-                </TextBlock.Inlines>
-            </TextBlock>
+        <ScrollViewer x:Name="ContentPanel" Grid.Row="1" Margin="12,0,0,0">
+            <StackPanel Orientation="Vertical">
+                <TextBlock Style="{StaticResource PhoneTextNormalStyle}">
+                    <TextBlock.Inlines>
+                        <Run Text="{Binding Path=Strings.ApplicationTitle, Source={StaticResource LocalizedResources}}" />
+                        <Run Text="{Binding Path=AboutStrings.ApplicationVersionSeparator, Source={StaticResource LocalizedResources}}" />
+                        <Run Text="{Binding Path=AboutStrings.VersionString, Source={StaticResource LocalizedResources}}" />
+                    </TextBlock.Inlines>
+                </TextBlock>
 
-            <TextBlock Text="{Binding Path=AboutStrings.ApplicationCopyright, Source={StaticResource LocalizedResources}}" Style="{StaticResource PhoneTextNormalStyle}"
-                       TextWrapping="Wrap" Margin="12,24,12,0"/>
+                <TextBlock Text="{Binding Path=AboutStrings.ApplicationCopyright, Source={StaticResource LocalizedResources}}" Style="{StaticResource PhoneTextNormalStyle}"
+                           TextWrapping="Wrap" Margin="12,24,12,0"/>
 
-            <HyperlinkButton FontSize="{StaticResource PhoneFontSizeNormal}" HorizontalContentAlignment="Left" Content="{Binding Path=AboutStrings.ContactAuthor, Source={StaticResource LocalizedResources}}" Command="{Binding ContactAuthorCommand}" Margin="0,24,0,0" />
-        </StackPanel>
+                <TextBlock Text="{Binding Path=AboutStrings.CallToTranslate, Source={StaticResource LocalizedResources}}" Style="{StaticResource PhoneTextNormalStyle}"
+                           TextWrapping="Wrap" Margin="12,24,12,0"/>
+            
+                <ItemsControl ItemsSource="{Binding Links}">
+                    <ItemsControl.ItemsPanel>
+                        <ItemsPanelTemplate>
+                            <StackPanel />
+                        </ItemsPanelTemplate>
+                    </ItemsControl.ItemsPanel>
+                    <ItemsControl.ItemTemplate>
+                        <DataTemplate>
+                            <HyperlinkButton FontSize="{StaticResource PhoneFontSizeNormal}" HorizontalContentAlignment="Left" Content="{Binding Title}" Command="{Binding Command}" Margin="0,24,0,0" />
+                        </DataTemplate>
+                    </ItemsControl.ItemTemplate>
+                </ItemsControl>
+
+            </StackPanel>
+        </ScrollViewer>
     </Grid>
 
     <tk:TransitionService.NavigationInTransition>

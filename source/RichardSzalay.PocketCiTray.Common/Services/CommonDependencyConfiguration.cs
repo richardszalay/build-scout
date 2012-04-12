@@ -72,7 +72,8 @@ namespace RichardSzalay.PocketCiTray.Services
                 l.Resolve<IJobNotificationService>(),
                 l.Resolve<ILog>(),
                 l.Resolve<INetworkInterfaceFacade>(),
-                l.Resolve<ITrackingService>()));
+                l.Resolve<ITrackingService>(),
+                l.Resolve<IApplicationInformation>()));
 
             container.Register<IApplicationTileService>(l => new ApplicationTileService(
                 l.Resolve<IApplicationSettings>(),
@@ -104,6 +105,10 @@ namespace RichardSzalay.PocketCiTray.Services
             container.Register<ITrackingService>(c => new NullTrackingService());
             //container.Register<ITrackingService>(c => new WebAnalyticsTrackingService(
                 //c.Resolve<WebAnalyticsService>().EventLog.WriteEntry));
+
+            container.Register<IApplicationMarketplaceFacade>(c => new ApplicationMarketplaceFacade(
+                c.Resolve<IApplicationInformation>()
+                ));
         }
 
         private static void ConfigureFacades(Container container)

@@ -27,6 +27,8 @@ namespace RichardSzalay.PocketCiTray.Services
         {
             //{ "body", "PhoneTextBlockBase" },            
             { "p", "PhoneTextSmallStyle" },
+            { "li span", "PhoneTextSmallStyle" },
+            { "li", "PhoneForegroundBrush" },
             { "em", "PhoneAccentBrush" },
             { "h1", "PhoneTextTitle1Style" },
             { "h2", "PhoneTextTitle2Style" },

@@ -12,5 +12,7 @@ namespace RichardSzalay.PocketCiTray.Controllers
         IObservable<ICollection<Job>> AddJobs(ICollection<Job> jobs);
 
         ObservableCollection<Job> GetJobs();
+
+        void DeleteBuildServer(BuildServer buildServer);
     }
 }

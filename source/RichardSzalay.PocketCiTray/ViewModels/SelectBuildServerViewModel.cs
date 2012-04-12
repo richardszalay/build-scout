@@ -7,6 +7,7 @@ using RichardSzalay.PocketCiTray.Extensions.Extensions;
 using RichardSzalay.PocketCiTray.Infrastructure;
 using RichardSzalay.PocketCiTray.Providers;
 using RichardSzalay.PocketCiTray.Services;
+using RichardSzalay.PocketCiTray.Controllers;
 
 namespace RichardSzalay.PocketCiTray.ViewModels
 {
@@ -16,16 +17,19 @@ namespace RichardSzalay.PocketCiTray.ViewModels
         private readonly INavigationService navigationService;
         private readonly ISchedulerAccessor schedulerAccessor;
         private readonly IMessageBoxFacade messageBoxFacade;
+        private readonly IJobController jobController;
         private BuildServer selectedBuildServer;
         private ObservableCollection<BuildServer> buildServers;
 
-        public SelectBuildServerViewModel(IJobRepository jobRepository, IJobProviderFactory jobProviderFactory, 
-            INavigationService navigationService, ISchedulerAccessor schedulerAccessor, IMessageBoxFacade messageBoxFacade)
+        public SelectBuildServerViewModel(IJobRepository jobRepository, IJobController jobController, 
+            IJobProviderFactory jobProviderFactory, INavigationService navigationService, 
+            ISchedulerAccessor schedulerAccessor, IMessageBoxFacade messageBoxFacade)
         {
             this.jobRepository = jobRepository;
             this.navigationService = navigationService;
             this.schedulerAccessor = schedulerAccessor;
             this.messageBoxFacade = messageBoxFacade;
+            this.jobController = jobController;
         }
 
         public override void OnNavigatedTo(System.Windows.Navigation.NavigationEventArgs e)
@@ -90,7 +94,7 @@ namespace RichardSzalay.PocketCiTray.ViewModels
 
             if (result == MessageBoxResult.OK)
             {
-                Observable.ToAsync(() => this.jobRepository.DeleteBuildServer(buildServer), schedulerAccessor.Background)()
+                Observable.ToAsync(() => this.jobController.DeleteBuildServer(buildServer), schedulerAccessor.Background)()
                     .ObserveOn(schedulerAccessor.UserInterface)
                     .Subscribe(_ =>
                     {

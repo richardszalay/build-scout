@@ -1,5 +1,8 @@
-﻿body {background-color: #000000; }
+﻿/* Generated at runtime. This is a debug version and is not included in the application bundle */
+body {background-color: #000000; }
 p { font-size: 14pt; color: #FFFFFF; font-family: "Segoe WP"; margin: 12px 12px 12px 12px; }
+li span { font-size: 14pt; color: #FFFFFF; font-family: "Segoe WP"; margin: 12px 12px 12px 12px; }
+li { color: #FFFFFF; }
 h1 { font-family: "Segoe WP SemiLight"; font-size: 54pt; color: #FFFFFF; margin: 12px 12px 12px 12px; }
 h2 { font-family: "Segoe WP SemiLight"; font-size: 24pt; color: #FFFFFF; margin: 12px 12px 12px 12px; }
 h3 { font-family: "Segoe WP SemiLight"; font-size: 17pt; color: #FFFFFF; margin: 12px 12px 12px 12px; }

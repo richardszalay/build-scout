@@ -15,20 +15,32 @@ namespace RichardSzalay.PocketCiTray.Services
 
     public class DeviceInformationService : IDeviceInformationService
     {
+        private bool? cachedIsLowEndDevice;
+
         public virtual bool IsLowEndDevice
         {
             get
             {
-                try
+                if (!cachedIsLowEndDevice.HasValue)
                 {
-                    long limit = (Int64)DeviceExtendedProperties.GetValue("ApplicationWorkingSetLimit");
+                    cachedIsLowEndDevice = GetIsLowEndDevice();
+                }
 
-                    return limit < 94371840L;
-                }
-                catch (ArgumentOutOfRangeException)
-                {
-                    return false;
-                }
+                return cachedIsLowEndDevice.Value;
+            }
+        }
+
+        private bool GetIsLowEndDevice()
+        {
+            try
+            {
+                long limit = (Int64)DeviceExtendedProperties.GetValue("ApplicationWorkingSetLimit");
+
+                return limit < 94371840L;
+            }
+            catch (ArgumentOutOfRangeException)
+            {
+                return false;
             }
         }
 

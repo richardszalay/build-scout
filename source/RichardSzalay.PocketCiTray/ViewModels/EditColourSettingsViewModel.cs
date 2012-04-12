@@ -23,6 +23,7 @@ namespace RichardSzalay.PocketCiTray.ViewModels
         private readonly IApplicationSettings applicationSettings;
         private readonly IApplicationResourceFacade applicationResources;
         private readonly ISettingsApplier settingsApplier;
+        private readonly IDeviceInformationService deviceInformationService;
 
         private SerialDisposable updateDisposable;
 
@@ -32,13 +33,14 @@ namespace RichardSzalay.PocketCiTray.ViewModels
 
         public EditColourSettingsViewModel(INavigationService navigationService, ISchedulerAccessor schedulerAccessor, 
             IApplicationSettings applicationSettings, IApplicationResourceFacade applicationResources,
-            ISettingsApplier settingsApplier)
+            ISettingsApplier settingsApplier, IDeviceInformationService deviceInformationService)
         {
             this.navigationService = navigationService;
             this.schedulerAccessor = schedulerAccessor;
             this.applicationSettings = applicationSettings;
             this.applicationResources = applicationResources;
             this.settingsApplier = settingsApplier;
+            this.deviceInformationService = deviceInformationService;
         }
 
         public override void OnNavigatedTo(NavigationEventArgs e)
@@ -94,7 +96,11 @@ namespace RichardSzalay.PocketCiTray.ViewModels
             this.ApplyChanges();
             applicationSettings.Save();
 
-            settingsApplier.RebuildSharedResources(applicationSettings);
+            if (!deviceInformationService.IsLowEndDevice)
+            {
+                settingsApplier.RebuildSharedResources(applicationSettings);
+            }
+
             settingsApplier.ApplyToSession(applicationSettings);
 
             StopLoading();

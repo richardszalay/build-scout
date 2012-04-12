@@ -15,6 +15,7 @@ using RichardSzalay.PocketCiTray.Services;
 using System.Collections.Generic;
 using RichardSzalay.PocketCiTray.Infrastructure;
 using RichardSzalay.PocketCiTray.Controllers;
+using System.Windows;
 
 namespace RichardSzalay.PocketCiTray.ViewModels
 {
@@ -26,24 +27,29 @@ namespace RichardSzalay.PocketCiTray.ViewModels
         private readonly IJobProviderFactory jobProviderFactory;
         private readonly IJobRepository jobRepository;
         private readonly ISchedulerAccessor schedulerAccessor;
+        private readonly IApplicationInformation applicationInformation;
+        private readonly IMessageBoxFacade messageBoxFacade;
 
         private SerialDisposable addJobsSubscrition;
 
+        private int existingJobCount = 0;
+
         public AddJobsViewModel(INavigationService navigationService, IJobController jobController,
-            IJobProviderFactory jobProviderFactory, IJobRepository jobRepository, ISchedulerAccessor schedulerAccessor)
+            IJobProviderFactory jobProviderFactory, IJobRepository jobRepository, ISchedulerAccessor schedulerAccessor,
+            IApplicationInformation applicationInformation, IMessageBoxFacade messageBoxFacade)
         {
             this.navigationService = navigationService;
             this.jobController = jobController;
             this.jobProviderFactory = jobProviderFactory;
             this.jobRepository = jobRepository;
             this.schedulerAccessor = schedulerAccessor;
+            this.applicationInformation = applicationInformation;
+            this.messageBoxFacade = messageBoxFacade;
         }
 
         public override void OnNavigatedTo(NavigationEventArgs e)
         {
             base.OnNavigatedTo(e);
-
-            SelectedJobs = new ObservableCollection<Job>();
 
             Disposables.Add(addJobsSubscrition = new SerialDisposable());
 
@@ -60,6 +66,8 @@ namespace RichardSzalay.PocketCiTray.ViewModels
                 .Subscribe(_ => State = (Jobs.Count == 0)
                     ? AddJobsViewState.NoResults
                     : AddJobsViewState.Results));
+
+            SelectedJobs = new ObservableCollection<Job>();
 
             var query = e.Uri.GetQueryValues();
 
@@ -91,6 +99,8 @@ namespace RichardSzalay.PocketCiTray.ViewModels
                 .Finally(StopLoading)
                 .Subscribe(loadedJobs =>
                 {
+                    existingJobCount = jobController.GetJobs().Count;
+
                     allJobs = loadedJobs;
                     Jobs = new FilteredObservableCollection<AvailableJob>(loadedJobs, FilterJob, schedulerAccessor.UserInterface);
 
@@ -210,7 +220,10 @@ namespace RichardSzalay.PocketCiTray.ViewModels
             }
             else
             {
-                SelectedJobs.Remove(availableJob.Job);
+                if (SelectedJobs.Contains(availableJob.Job))
+                {
+                    SelectedJobs.Remove(availableJob.Job);
+                }
             }
         }
 

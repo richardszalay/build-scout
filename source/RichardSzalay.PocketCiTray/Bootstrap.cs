@@ -19,12 +19,14 @@ namespace RichardSzalay.PocketCiTray
         private readonly ISettingsApplier settingsApplier;
         private readonly IJobRepository jobRepository;
         private readonly IPeriodicJobUpdateService periodicJobUpdateService;
+        private readonly IApplicationInformation applicationInformation;
         private IDisposable applicationMutex;
 
         public Bootstrap(IApplicationSettings applicationSettings, IClock clock, 
             IMessageBoxFacade messageBox, IMutexService mutexService,
             ILogManager logManager, ISettingsApplier settingsApplier,
-            IJobRepository jobRepository, IPeriodicJobUpdateService periodicJobUpdateService)
+            IJobRepository jobRepository, IPeriodicJobUpdateService periodicJobUpdateService,
+            IApplicationInformation applicationInformation)
         {
             this.applicationSettings = applicationSettings;
             this.clock = clock;
@@ -34,6 +36,7 @@ namespace RichardSzalay.PocketCiTray
             this.jobRepository = jobRepository;
             this.periodicJobUpdateService = periodicJobUpdateService;
             this.settingsApplier = settingsApplier;
+            this.applicationInformation = applicationInformation;
         }
 
         /// <summary>
@@ -60,6 +63,11 @@ namespace RichardSzalay.PocketCiTray
 
         private void PerformFirstRun()
         {
+            if (applicationInformation.IsTrialMode)
+            {
+                messageBox.Show(Strings.TrialModePrompt, Strings.TrialModePromptTitle, MessageBoxButton.OK);
+            }
+
             if (periodicJobUpdateService.CanRegisterBackgroundTask)
             {
                 var result = messageBox.Show(Strings.EnableBackgroundTaskPrompt, String.Empty, MessageBoxButton.OKCancel);

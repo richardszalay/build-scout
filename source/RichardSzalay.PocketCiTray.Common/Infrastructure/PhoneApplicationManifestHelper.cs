@@ -9,5 +9,11 @@ namespace RichardSzalay.PocketCiTray.Infrastructure
             return XDocument.Load("WMAppManifest.xml")
                 .Root.Element("App").Attribute("Version").Value;
         }
+
+        public static string GetProductId()
+        {
+            return XDocument.Load("WMAppManifest.xml")
+                .Root.Element("App").Attribute("ProductID").Value;
+        }
     }
 }

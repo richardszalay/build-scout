@@ -25,16 +25,21 @@ namespace RichardSzalay.PocketCiTray.Controllers
         private readonly IApplicationTileService tileService;
         private readonly ISchedulerAccessor schedulerAccessor;
         private readonly IMessageBoxFacade messageBoxFacade;
+        private readonly IApplicationInformation applicationInformation;
+        private readonly IApplicationMarketplaceFacade applicationMarketplace;
 
         public JobController(IJobRepository jobRepository, IJobProviderFactory jobProviderFactory,
-            IApplicationTileService tileService, ISchedulerAccessor schedulerAccessor, 
-            IMessageBoxFacade messageBoxFacade)
+            IApplicationTileService tileService, ISchedulerAccessor schedulerAccessor,
+            IMessageBoxFacade messageBoxFacade, IApplicationInformation applicationInformation,
+            IApplicationMarketplaceFacade applicationMarketplace)
         {
             this.jobRepository = jobRepository;
             this.tileService = tileService;
             this.schedulerAccessor = schedulerAccessor;
             this.messageBoxFacade = messageBoxFacade;
             this.jobProviderFactory = jobProviderFactory;
+            this.applicationInformation = applicationInformation;
+            this.applicationMarketplace = applicationMarketplace;
         }
 
         public IObservable<Unit> DeleteJob(Job job)
@@ -55,6 +60,24 @@ namespace RichardSzalay.PocketCiTray.Controllers
 
         public IObservable<ICollection<Job>> AddJobs(ICollection<Job> jobs)
         {
+            int existingJobCount = GetJobs().Count;
+
+            bool preventSelectionDueToTrial = applicationInformation.IsTrialMode && 
+                (existingJobCount + jobs.Count) > 1;
+
+            if (preventSelectionDueToTrial)
+            {
+                var purchaseResult = messageBoxFacade.Show(Strings.TrialModeTooManyJobsException, 
+                    Strings.TrialModeExceptionTitle, MessageBoxButton.OKCancel);
+
+                if (purchaseResult == MessageBoxResult.OK)
+                {
+                    applicationMarketplace.ShowDetail();
+                }
+
+                return Observable.Empty<ICollection<Job>>();
+            }
+
             var buildServer = jobs.First().BuildServer;
 
             var provider = jobProviderFactory.Get(buildServer.Provider);
@@ -95,6 +118,14 @@ namespace RichardSzalay.PocketCiTray.Controllers
         {
             var jobs = jobRepository.GetJobs();
             return new ObservableCollection<Job>(jobs);
+        }
+
+
+        public void DeleteBuildServer(BuildServer buildServer)
+        {
+            jobRepository.DeleteBuildServer(buildServer);
+
+            UpdateAllTiles();
         }
     }
 }

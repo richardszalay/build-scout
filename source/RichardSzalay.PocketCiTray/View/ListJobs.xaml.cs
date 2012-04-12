@@ -31,9 +31,12 @@ namespace RichardSzalay.PocketCiTray.View
 
         void OnResolvingContinuumElement(object sender, ResolvingContinuumElementEventArgs e)
         {
-            e.ContinuumElement = (FrameworkElement)e.ContinuumElement
-                .Descendants()
-                .First(x => (string)x.GetValue(FrameworkElement.NameProperty) == "JobName");
+            if (e.ContinuumElement is ListBoxItem)
+            {
+                e.ContinuumElement = (FrameworkElement)e.ContinuumElement
+                    .Descendants()
+                    .First(x => (string)x.GetValue(FrameworkElement.NameProperty) == "JobName");
+            }
         }
     }
 }

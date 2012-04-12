@@ -448,6 +448,42 @@ namespace RichardSzalay.PocketCiTray {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Trial Mode.
+        /// </summary>
+        public static string TrialModeExceptionTitle {
+            get {
+                return ResourceManager.GetString("TrialModeExceptionTitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Thanks for trying Build Scout. The trial is fully functional, but limited to monitoring a single job. Please provide constructive feedback either through the marketplace or via the about screen..
+        /// </summary>
+        public static string TrialModePrompt {
+            get {
+                return ResourceManager.GetString("TrialModePrompt", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Trial Mode.
+        /// </summary>
+        public static string TrialModePromptTitle {
+            get {
+                return ResourceManager.GetString("TrialModePromptTitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The trial is limited to 1 job. Purchase Build Scout to add unlimited jobs and support the developer..
+        /// </summary>
+        public static string TrialModeTooManyJobsException {
+            get {
+                return ResourceManager.GetString("TrialModeTooManyJobsException", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to 1 day.
         /// </summary>
         public static string UpdateIntervalDay {

@@ -246,6 +246,18 @@
   <data name="ThisWeek" xml:space="preserve">
     <value>on {1:ddd}</value>
   </data>
+  <data name="TrialModeExceptionTitle" xml:space="preserve">
+    <value>Trial Mode</value>
+  </data>
+  <data name="TrialModePrompt" xml:space="preserve">
+    <value>Thanks for trying Build Scout. The trial is fully functional, but limited to monitoring a single job. Please provide constructive feedback either through the marketplace or via the about screen.</value>
+  </data>
+  <data name="TrialModePromptTitle" xml:space="preserve">
+    <value>Trial Mode</value>
+  </data>
+  <data name="TrialModeTooManyJobsException" xml:space="preserve">
+    <value>The trial is limited to 1 job. Purchase Build Scout to add unlimited jobs and support the developer.</value>
+  </data>
   <data name="UpdateIntervalDay" xml:space="preserve">
     <value>1 day</value>
   </data>
