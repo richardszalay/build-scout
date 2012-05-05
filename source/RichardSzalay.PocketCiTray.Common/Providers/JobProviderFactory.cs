@@ -2,7 +2,6 @@
 using RichardSzalay.PocketCiTray.Services;
 using System;
 using System.Collections.Generic;
-using WP7Contrib.Logging;
 
 namespace RichardSzalay.PocketCiTray.Providers
 {

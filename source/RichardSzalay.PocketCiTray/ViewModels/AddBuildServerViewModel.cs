@@ -28,14 +28,6 @@ namespace RichardSzalay.PocketCiTray.ViewModels
         private readonly IMessageBoxFacade messageBoxFacade;
         private readonly INetworkInterfaceFacade networkInterface;
 
-        private ICommand addBuildServerCommand;
-        private string buildServerUrl;
-        private string selectedProvider;
-        private ICollection<string> providers;
-
-        private bool canRestrictToNetwork = false;
-        private string networkName;
-
         public AddBuildServerViewModel(INavigationService navigationService,
                                        IJobProviderFactory jobProviderFactory, IJobRepository jobRepository,
                                        ISchedulerAccessor schedulerAccessor, IMessageBoxFacade messageBoxFacade,

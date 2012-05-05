@@ -8,7 +8,7 @@ using System.Xml.Linq;
 using RichardSzalay.PocketCiTray.Extensions.Extensions;
 using RichardSzalay.PocketCiTray.Services;
 using System.IO;
-using WP7Contrib.Logging;
+
 using System.Reactive.Concurrency;
 using System.Reactive;
 using System.Globalization;

@@ -45,16 +45,16 @@
         <!--TitlePanel contains the name of the application and page title-->
         <StackPanel x:Name="TitlePanel" Grid.Row="0" Margin="12,17,0,28">
             <TextBlock x:Name="ApplicationTitle" Text="{Binding Path=Strings.ApplicationTitleUpper, Source={StaticResource LocalizedResources}}" Style="{StaticResource PhoneTextNormalStyle}"/>
-            <TextBlock x:Name="PageTitle" Text="add server" Margin="9,-7,0,0" Style="{StaticResource PhoneTextTitle1Style}"/>
+            <TextBlock x:Name="PageTitle" Text="{Binding Path=Strings.AddBuildServerTitle, Source={StaticResource LocalizedResources}}" Margin="9,-7,0,0" Style="{StaticResource PhoneTextTitle1Style}"/>
         </StackPanel>
 
         <!--ContentPanel - place additional content here-->
         <Grid x:Name="ContentPanel" Grid.Row="1" Margin="12,0,12,0">
             <StackPanel>
-                <TextBlock Text="Server type" Style="{StaticResource PhoneTextSubtleStyle}" />
+                <TextBlock Text="{Binding Path=Strings.ServerTypeLabel, Source={StaticResource LocalizedResources}}" Style="{StaticResource PhoneTextSubtleStyle}" />
                 <tk:ListPicker ItemsSource="{Binding Providers}" SelectedItem="{Binding SelectedProvider, Mode=TwoWay}" />
 
-                <TextBlock Text="Build URL" Style="{StaticResource PhoneTextSubtleStyle}" Margin="12,12,12,0" />
+                <TextBlock Text="{Binding Path=Strings.ServerUrlLabel, Source={StaticResource LocalizedResources}}" Style="{StaticResource PhoneTextSubtleStyle}" Margin="12,12,12,0" />
                 <TextBox x:Name="BuildSource" Text="{Binding BuildServerUrl, Mode=TwoWay}" InputScope="Url" Tag="auto:BuildSource">
                     <i:Interaction.Behaviors>
                         <inf:RealtimeTextBoxBindingBehavior />
@@ -62,12 +62,12 @@
                     </i:Interaction.Behaviors>
                 </TextBox>
 
-                <Button Content="advanced"
+                <Button Content="{Binding Path=Strings.AdvancedButtonLabel, Source={StaticResource LocalizedResources}}"
                         Command="{Binding ShowAdvancedOptionsCommand}"
                     Visibility="{Binding IsShowingAdvancedOptions, Converter={StaticResource BooleanVisibilityConverter}, ConverterParameter=!}" />
 
                 <StackPanel Visibility="{Binding IsShowingAdvancedOptions, Converter={StaticResource BooleanVisibilityConverter}}">
-                    <TextBlock Text="Username" Style="{StaticResource PhoneTextSubtleStyle}" Margin="12,12,12,0" />
+                    <TextBlock Text="{Binding Path=Strings.UsernameLabel, Source={StaticResource LocalizedResources}}" Style="{StaticResource PhoneTextSubtleStyle}" Margin="12,12,12,0" />
                     <TextBox x:Name="Username" Text="{Binding Username, Mode=TwoWay}" Tag="auto:Username">
                         <i:Interaction.Behaviors>
                             <inf:RealtimeTextBoxBindingBehavior />
@@ -75,7 +75,7 @@
                         </i:Interaction.Behaviors>
                     </TextBox>
 
-                    <TextBlock Text="Password" Style="{StaticResource PhoneTextSubtleStyle}" Margin="12,12,12,0" />
+                    <TextBlock Text="{Binding Path=Strings.PasswordLabel, Source={StaticResource LocalizedResources}}" Style="{StaticResource PhoneTextSubtleStyle}" Margin="12,12,12,0" />
                     <PasswordBox x:Name="Password" Password="{Binding Password, Mode=TwoWay}" Tag="auto:Password">
                         <i:Interaction.Behaviors>
                             <inf:RealtimePasswordBoxBindingBehavior />
@@ -90,7 +90,7 @@
 
     <phone:PhoneApplicationPage.ApplicationBar>
         <shell:ApplicationBar IsVisible="True" IsMenuEnabled="True">
-            <shell:ApplicationBarIconButton IconUri="/Images/appbar.add.rest.png" Text="add"/>
+            <shell:ApplicationBarIconButton IconUri="/Images/appbar.save.rest.png" Text="add"/>
             <shell:ApplicationBarIconButton IconUri="/Images/appbar.questionmark.rest.png" Text="help"/>
         </shell:ApplicationBar>
     </phone:PhoneApplicationPage.ApplicationBar>
@@ -99,10 +99,12 @@
         <inf:ApplicationBarIconButtonCommand TextKey="add"
                                              CommandBinding="{Binding AddBuildServerCommand}"
                                              CommandParameterBinding="{Binding BuildServerUrl}"
+                                             Text="{Binding Path=Strings.AddMenuItem, Source={StaticResource LocalizedResources}}"
                                              />
 
         <inf:ApplicationBarIconButtonCommand TextKey="help"
                                              CommandBinding="{Binding ViewHelpCommand}"
+                                             Text="{Binding Path=Strings.HelpMenuItem, Source={StaticResource LocalizedResources}}"
                                              />
     </i:Interaction.Behaviors>
 

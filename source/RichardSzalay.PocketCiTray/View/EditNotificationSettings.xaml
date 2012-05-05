@@ -40,29 +40,30 @@
 
         <!--TitlePanel contains the name of the application and page title-->
         <StackPanel x:Name="TitlePanel" Grid.Row="0" Margin="12,17,0,28">
-            <TextBlock x:Name="ApplicationTitle" Text="SETTINGS" Style="{StaticResource PhoneTextNormalStyle}"/>
-            <TextBlock x:Name="PageTitle" Text="notifications" Margin="9,-7,0,0" Style="{StaticResource PhoneTextTitle1Style}"/>
+            <TextBlock x:Name="ApplicationTitle" Text="{Binding Path=SettingsStrings.SettingsTitleUpper, Source={StaticResource LocalizedResources}}" Style="{StaticResource PhoneTextNormalStyle}"/>
+            <TextBlock x:Name="PageTitle" Text="{Binding Path=SettingsStrings.NotificationTitle, Source={StaticResource LocalizedResources}}" Margin="9,-7,0,0" Style="{StaticResource PhoneTextTitle1Style}"/>
         </StackPanel>
 
         <!--ContentPanel - place additional content here-->
         <ScrollViewer x:Name="ContentPanel" Grid.Row="1" Margin="12,0,0,0">
             <StackPanel>
-                <TextBlock Text="Successful" Style="{StaticResource PhoneTextSubtleStyle}" />
+                <TextBlock Text="{Binding Path=SettingsStrings.SuccessfulLabel, Source={StaticResource LocalizedResources}}" Style="{StaticResource PhoneTextSubtleStyle}" />
                 <tk:ToggleSwitch IsChecked="{Binding NotifySuccess, Mode=TwoWay}" Margin="0,-28,0,-18" />
 
-                <TextBlock Text="Failed" Style="{StaticResource PhoneTextSubtleStyle}" />
+                <TextBlock Text="{Binding Path=SettingsStrings.FailedLabel, Source={StaticResource LocalizedResources}}" Style="{StaticResource PhoneTextSubtleStyle}" />
                 <tk:ToggleSwitch IsChecked="{Binding NotifyFailed, Mode=TwoWay}" Margin="0,-28,0,-18" />
 
-                <TextBlock Text="Unavailable" Style="{StaticResource PhoneTextSubtleStyle}" />
+                <TextBlock Text="{Binding Path=SettingsStrings.UnavailableLabel, Source={StaticResource LocalizedResources}}" Style="{StaticResource PhoneTextSubtleStyle}" />
                 <tk:ToggleSwitch IsChecked="{Binding NotifyUnavailable, Mode=TwoWay}" Margin="0,-28,0,-18" />
 
-                <TextBlock Text="Start notifications" Style="{StaticResource PhoneTextSubtleStyle}" />
+                <TextBlock Text="{Binding Path=SettingsStrings.StartNotificationsLabel, Source={StaticResource LocalizedResources}}" Style="{StaticResource PhoneTextSubtleStyle}" />
                 <tk:TimePicker Value="{Binding NotificationStart, Mode=TwoWay}" />
 
-                <TextBlock Text="End notifications" Style="{StaticResource PhoneTextSubtleStyle}" />
+
+                <TextBlock Text="{Binding Path=SettingsStrings.EndNotificationsLabel, Source={StaticResource LocalizedResources}}" Style="{StaticResource PhoneTextSubtleStyle}" />
                 <tk:TimePicker Value="{Binding NotificationEnd, Mode=TwoWay}" />
 
-                <TextBlock Text="Notifications days" Style="{StaticResource PhoneTextSubtleStyle}" />
+                <TextBlock Text="{Binding Path=SettingsStrings.NotificationDaysLabel, Source={StaticResource LocalizedResources}}" Style="{StaticResource PhoneTextSubtleStyle}" />
                 <tk:RecurringDaysPicker Margin="12,0,12,12">
                     <i:Interaction.Behaviors>
                         <inf:ListPickerBoundSelectedItemsBehavior BoundList="{Binding NotificationDays}" />

@@ -30,5 +30,7 @@ namespace RichardSzalay.PocketCiTray.Services
         string SuccessColorResource { get; set; }
         string FailedColorResource { get; set; }
         string UnavailableColorResource { get; set; }
+
+        bool UseColoredTiles { get; set; }
     }
 }

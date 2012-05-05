@@ -2,7 +2,8 @@
 using System.Windows.Media;
 using System.IO;
 using System.Windows.Media.Imaging;
-using ToolStackPNGWriterLib;
+using RichardSzalay.PocketCiTray.Infrastructure;
+using System.Windows;
 
 namespace RichardSzalay.PocketCiTray.Services
 {
@@ -31,19 +32,15 @@ namespace RichardSzalay.PocketCiTray.Services
                 color.G << 8 |
                 color.B;
 
-
             var template = new WriteableBitmap(GetTemplateImage());
-            var bitmap = new WriteableBitmap(TileWidth, TileWidth);
+            var bitmap = CreateEmptyBitmap(TileWidth, TileWidth, color);
 
-            int[] sourcePixels = template.Pixels;
-            int[] destPixels = bitmap.Pixels;
+            var tileRect = new Rect(0D, 0D, TileWidth, TileWidth);
 
-            for (int i = 0; i < destPixels.Length; i++)
-            {
-                destPixels[i] = AlphaBlend(sourcePixels[i], colorValue);
-            }
+            bitmap.Blit(tileRect, template, tileRect, WriteableBitmapExtensions.BlendMode.Alpha);
 
-            PNGWriter.WritePNG(bitmap, outputStream);
+            
+            bitmap.SaveJpeg(outputStream, TileWidth, TileWidth, 0, 90);
         }
 
         private BitmapSource GetTemplateImage()

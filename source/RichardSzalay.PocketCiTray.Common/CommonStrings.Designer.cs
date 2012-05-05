@@ -70,11 +70,29 @@ namespace RichardSzalay.PocketCiTray {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to The server returned an error ({0}).
+        /// </summary>
+        internal static string HttpServerHttpStatusError {
+            get {
+                return ResourceManager.GetString("HttpServerHttpStatusError", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to The server could not be contacted.
         /// </summary>
         internal static string HttpServerResponseConnection {
             get {
                 return ResourceManager.GetString("HttpServerResponseConnection", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Your login details for the build server were rejected.
+        /// </summary>
+        internal static string HttpServerResponseForbidden {
+            get {
+                return ResourceManager.GetString("HttpServerResponseForbidden", resourceCulture);
             }
         }
         

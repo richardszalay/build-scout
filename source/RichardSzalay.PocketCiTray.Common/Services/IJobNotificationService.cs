@@ -23,7 +23,7 @@ namespace RichardSzalay.PocketCiTray.Services
             { BuildResultChange.Fixed, "JobFixed" },
             { BuildResultChange.Failed, "JobFailed" },
             { BuildResultChange.Unavailable, "JobUnavailable" }
-        };        
+        };
 
         public JobNotificationService(IApplicationSettings applicationSettings,
             IShellToastFacade shellToastFacade, IClock clock)
@@ -39,21 +39,16 @@ namespace RichardSzalay.PocketCiTray.Services
             bool jobsHaveBeenUpdated = updatedJobs.Count > 0;
             bool notificationsAreDisabled = applicationSettings.NotificationPreference == NotificationReason.None;
 
-            if (!jobsHaveBeenUpdated || notificationsAreDisabled || !IsValidTimeForNotifications(clock.UtcNow))
+            if (!jobsHaveBeenUpdated || notificationsAreDisabled || !IsValidTimeForNotifications(clock.LocalNow))
             {
                 return;
             }
 
-            var changeGroups = GetValidNotifications(updatedJobs)
-                .Where(j => j.LastBuild.Change != BuildResultChange.None)
-                .GroupBy(j => j.LastBuild.Change)
-                .ToList();
+            var changeGroups = GetChangesOrderedByRelevance(updatedJobs);
 
             if (changeGroups.Count != 0)
             {
-                var mostRelevantChange = changeGroups
-                    .OrderByDescending(g => (int)g.Key)
-                    .First();
+                var mostRelevantChange = changeGroups.First();
 
                 shellToastFacade.Show(
                     GetNotificationTitle(mostRelevantChange),
@@ -61,6 +56,15 @@ namespace RichardSzalay.PocketCiTray.Services
                     GetNotificationUri(mostRelevantChange, changeGroups.Count)
                     );
             }
+        }
+
+        private List<IGrouping<BuildResultChange, Job>> GetChangesOrderedByRelevance(ICollection<Job> updatedJobs)
+        {
+            return GetValidNotifications(updatedJobs)
+                .Where(j => j.LastBuild.Change != BuildResultChange.None)
+                .GroupBy(j => j.LastBuild.Change)
+                .OrderByDescending(g => (int)g.Key)
+                .ToList();
         }
 
         private bool IsValidTimeForNotifications(DateTimeOffset now)
@@ -104,8 +108,10 @@ namespace RichardSzalay.PocketCiTray.Services
 
         private IEnumerable<Job> GetValidNotifications(IEnumerable<Job> updatedJobs)
         {
+            NotificationReason notificationPreference = applicationSettings.NotificationPreference;
+
             return updatedJobs
-                .Where(j => ShouldNotifyFor(applicationSettings.NotificationPreference, j.LastBuild.Change) &&
+                .Where(j => ShouldNotifyFor(notificationPreference, j.LastBuild.Change) &&
                     ShouldNotifyFor(j.NotificationPreference, j.LastBuild.Change));
         }
 

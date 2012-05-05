@@ -61,11 +61,47 @@ namespace RichardSzalay.PocketCiTray {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to about.
+        /// </summary>
+        public static string AboutMenuItem {
+            get {
+                return ResourceManager.GetString("AboutMenuItem", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to add server.
         /// </summary>
         public static string AddBuildServerTitle {
             get {
                 return ResourceManager.GetString("AddBuildServerTitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to add builds.
+        /// </summary>
+        public static string AddJobsTitle {
+            get {
+                return ResourceManager.GetString("AddJobsTitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to add.
+        /// </summary>
+        public static string AddMenuItem {
+            get {
+                return ResourceManager.GetString("AddMenuItem", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to advanced.
+        /// </summary>
+        public static string AdvancedButtonLabel {
+            get {
+                return ResourceManager.GetString("AdvancedButtonLabel", resourceCulture);
             }
         }
         
@@ -178,7 +214,7 @@ namespace RichardSzalay.PocketCiTray {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to All related jobs will be removed, but will remain on the server.
+        ///   Looks up a localized string similar to All related builds will be removed, but will remain on the server.
         /// </summary>
         public static string DeleteBuildServerConfirmationMessage {
             get {
@@ -187,7 +223,7 @@ namespace RichardSzalay.PocketCiTray {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Delete job?.
+        ///   Looks up a localized string similar to Delete build?.
         /// </summary>
         public static string DeleteJobConfirmationDescription {
             get {
@@ -196,11 +232,20 @@ namespace RichardSzalay.PocketCiTray {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to The job will remain on the server.
+        ///   Looks up a localized string similar to The build will remain on the server.
         /// </summary>
         public static string DeleteJobConfirmationMessage {
             get {
                 return ResourceManager.GetString("DeleteJobConfirmationMessage", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to delete.
+        /// </summary>
+        public static string DeleteMenuItem {
+            get {
+                return ResourceManager.GetString("DeleteMenuItem", resourceCulture);
             }
         }
         
@@ -234,6 +279,15 @@ namespace RichardSzalay.PocketCiTray {
         /// <summary>
         ///   Looks up a localized string similar to settings.
         /// </summary>
+        public static string EditSettingsMenuItem {
+            get {
+                return ResourceManager.GetString("EditSettingsMenuItem", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to settings.
+        /// </summary>
         public static string EditSettingsTitle {
             get {
                 return ResourceManager.GetString("EditSettingsTitle", resourceCulture);
@@ -241,11 +295,20 @@ namespace RichardSzalay.PocketCiTray {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Would you like to enable job status updates while the application is not running? You can change this setting at any time in Settings..
+        ///   Looks up a localized string similar to Would you like to enable build status updates while the application is not running? You can change this setting at any time in Settings..
         /// </summary>
         public static string EnableBackgroundTaskPrompt {
             get {
                 return ResourceManager.GetString("EnableBackgroundTaskPrompt", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Error finding builds..
+        /// </summary>
+        public static string ErrorFindingJobsPrefix {
+            get {
+                return ResourceManager.GetString("ErrorFindingJobsPrefix", resourceCulture);
             }
         }
         
@@ -259,11 +322,20 @@ namespace RichardSzalay.PocketCiTray {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Looking for jobs....
+        ///   Looks up a localized string similar to Looking for builds....
         /// </summary>
         public static string FindingJobsStatusMessage {
             get {
                 return ResourceManager.GetString("FindingJobsStatusMessage", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to find.
+        /// </summary>
+        public static string FindMenuItem {
+            get {
+                return ResourceManager.GetString("FindMenuItem", resourceCulture);
             }
         }
         
@@ -286,6 +358,33 @@ namespace RichardSzalay.PocketCiTray {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to help.
+        /// </summary>
+        public static string HelpMenuItem {
+            get {
+                return ResourceManager.GetString("HelpMenuItem", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to last build.
+        /// </summary>
+        public static string LastBuild {
+            get {
+                return ResourceManager.GetString("LastBuild", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Label:.
+        /// </summary>
+        public static string LastBuildLabel {
+            get {
+                return ResourceManager.GetString("LastBuildLabel", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to just now.
         /// </summary>
         public static string LessThanOneMinuteAgo {
@@ -304,11 +403,20 @@ namespace RichardSzalay.PocketCiTray {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to jobs.
+        ///   Looks up a localized string similar to builds.
         /// </summary>
         public static string ListJobsTitle {
             get {
                 return ResourceManager.GetString("ListJobsTitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Loading....
+        /// </summary>
+        public static string LoadingLabel {
+            get {
+                return ResourceManager.GetString("LoadingLabel", resourceCulture);
             }
         }
         
@@ -349,6 +457,33 @@ namespace RichardSzalay.PocketCiTray {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to No results for.
+        /// </summary>
+        public static string NoFilterResultsPrefix {
+            get {
+                return ResourceManager.GetString("NoFilterResultsPrefix", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to No builds.
+        /// </summary>
+        public static string NoJobs {
+            get {
+                return ResourceManager.GetString("NoJobs", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to No builds found.
+        /// </summary>
+        public static string NoRemoteJobs {
+            get {
+                return ResourceManager.GetString("NoRemoteJobs", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to never.
         /// </summary>
         public static string NotificationNoneSelectedOption {
@@ -376,6 +511,15 @@ namespace RichardSzalay.PocketCiTray {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Password.
+        /// </summary>
+        public static string PasswordLabel {
+            get {
+                return ResourceManager.GetString("PasswordLabel", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to theme color.
         /// </summary>
         public static string PhoneAccentBrush {
@@ -390,6 +534,24 @@ namespace RichardSzalay.PocketCiTray {
         public static string PinkAccentBrush {
             get {
                 return ResourceManager.GetString("PinkAccentBrush", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to pin.
+        /// </summary>
+        public static string PinMenuItem {
+            get {
+                return ResourceManager.GetString("PinMenuItem", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to pin to start.
+        /// </summary>
+        public static string PinToStart {
+            get {
+                return ResourceManager.GetString("PinToStart", resourceCulture);
             }
         }
         
@@ -412,11 +574,47 @@ namespace RichardSzalay.PocketCiTray {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to refresh.
+        /// </summary>
+        public static string RefreshMenuItem {
+            get {
+                return ResourceManager.GetString("RefreshMenuItem", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to select all.
+        /// </summary>
+        public static string SelectAllMenuItem {
+            get {
+                return ResourceManager.GetString("SelectAllMenuItem", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to select server.
         /// </summary>
         public static string SelectBuildServerTitle {
             get {
                 return ResourceManager.GetString("SelectBuildServerTitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Type.
+        /// </summary>
+        public static string ServerTypeLabel {
+            get {
+                return ResourceManager.GetString("ServerTypeLabel", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to URL.
+        /// </summary>
+        public static string ServerUrlLabel {
+            get {
+                return ResourceManager.GetString("ServerUrlLabel", resourceCulture);
             }
         }
         
@@ -457,7 +655,7 @@ namespace RichardSzalay.PocketCiTray {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Thanks for trying Build Scout. The trial is fully functional, but limited to monitoring a single job. Please provide constructive feedback either through the marketplace or via the about screen..
+        ///   Looks up a localized string similar to Thanks for trying Build Scout. The trial is fully functional, but limited to monitoring a single build. Please provide constructive feedback either through the marketplace or via the about screen..
         /// </summary>
         public static string TrialModePrompt {
             get {
@@ -475,7 +673,7 @@ namespace RichardSzalay.PocketCiTray {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to The trial is limited to 1 job. Purchase Build Scout to add unlimited jobs and support the developer..
+        ///   Looks up a localized string similar to The trial is limited to 1 build. Purchase Build Scout to add unlimited builds and support the developer..
         /// </summary>
         public static string TrialModeTooManyJobsException {
             get {
@@ -556,11 +754,29 @@ namespace RichardSzalay.PocketCiTray {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Username.
+        /// </summary>
+        public static string UsernameLabel {
+            get {
+                return ResourceManager.GetString("UsernameLabel", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to validating.
         /// </summary>
         public static string ValidatingBuildServerStatusMessage {
             get {
                 return ResourceManager.GetString("ValidatingBuildServerStatusMessage", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to view website.
+        /// </summary>
+        public static string ViewJobWebsite {
+            get {
+                return ResourceManager.GetString("ViewJobWebsite", resourceCulture);
             }
         }
         

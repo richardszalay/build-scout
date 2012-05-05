@@ -101,7 +101,7 @@ namespace RichardSzalay.PocketCiTray
         public override StandardTileData CreateTileData(IEnumerable<Job> jobs, IApplicationSettings applicationSettings)
         {
             var filteredJobs = jobs.Where(j => j.Id == jobId);
-            var thisJob = jobs.FirstOrDefault();
+            var thisJob = filteredJobs.FirstOrDefault();
 
             if (thisJob == null)
             {

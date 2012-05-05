@@ -32,7 +32,11 @@ namespace RichardSzalay.PocketCiTray.ViewModels
                 navigationService.GoBack();
             }
 
+            this.StartLoading("");
+
             this.HelpUri = helpService.GetHelpUri(helpKey);
+
+            this.StopLoading();
         }
 
         private string GetHelpKey(Uri uri)

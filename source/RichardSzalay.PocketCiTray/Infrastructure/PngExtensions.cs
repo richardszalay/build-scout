@@ -97,18 +97,18 @@ namespace ToolStackPNGWriterLib
     /// <summary>
     /// WriteableBitmap Extensions for PNG Writing
     /// </summary>
-    public static class PNGWriter
+    public class PNGWriter
     {
         private const int MaxBlockSize = 0xFFFF;
 
-        private static Stream _stream;
-        private static WriteableBitmap _image;
+        private Stream _stream;
+        private WriteableBitmap _image;
 
         private const double DefaultDensityX = 75;
         private const double DefaultDensityY = 75;
 
-        private static bool IsWritingGamma = true;
-        private static double Gamma = 2.2f;
+        private bool IsWritingGamma = true;
+        private double Gamma = 2.2f;
 
         /* Data in a PNG is in RGBA format but source from a writeablebitmap is in BGRA format
                 BGRA=2,1,0,3
@@ -124,7 +124,7 @@ namespace ToolStackPNGWriterLib
         /// <summary>
         /// Detects the color order of a stored byte array.  Byte order may change between platforms, you should call this once before writting a PNG or if you have any issues with colors changing.
         /// </summary>
-        public static void DetectWBByteOrder()
+        private static void DetectWBByteOrder()
         {
             // We should only ever run the detection once (assuming it succeeded at least).
             if (WBBODetectionRun == true)
@@ -219,6 +219,11 @@ namespace ToolStackPNGWriterLib
             }
         }
 
+        static PNGWriter()
+        {
+            DetectWBByteOrder();
+        }
+
         /// <summary>
         /// Write and PNG file out to a file stream.  Currently compression is not supported.
         /// </summary>
@@ -237,9 +242,11 @@ namespace ToolStackPNGWriterLib
         /// <param name="compression">Level of compression to use (-1=auto, 0=none, 1-100 is percentage).</param>
         public static void WritePNG(WriteableBitmap image, System.IO.Stream stream, int compression)
         {
-            // Set the global class variables for the image and stream.
-            _image = image;
-            _stream = stream;
+            var writer = new PNGWriter()
+            {
+                _stream = stream,
+                _image = image
+            };
 
             // Write the png header.
             stream.Write(
@@ -260,37 +267,37 @@ namespace ToolStackPNGWriterLib
             header.InterlaceMethod = 0;
 
             // Write out the header.
-            WriteHeaderChunk(header);
+            writer.WriteHeaderChunk(header);
             // Write out the rest of the mandatory fields to the PNG.
-            WritePhysicsChunk();
-            WriteGammaChunk();
+            writer.WritePhysicsChunk();
+            writer.WriteGammaChunk();
 
             // Currently only uncompressed PNG's are supported, so this if statement really doesn't do anything ;).
             if (compression == -1)
             {
                 // Autodetect compression setting
-                WriteDataChunksUncompressed();
+                writer.WriteDataChunksUncompressed();
             }
             else if (compression == 0)
             {
                 // Write PNG without any compression
-                WriteDataChunksUncompressed();
+                writer.WriteDataChunksUncompressed();
             }
             else
             {
                 // Write the PNG with a desired compression level
-                WriteDataChunks(compression);
+                writer.WriteDataChunks(compression);
             }
 
             // Write out the end of the PNG.
-            WriteEndChunk();
+            writer.WriteEndChunk();
 
             // Flush the stream to make sure it's all written.
             stream.Flush();
         }
 
 
-        private static void WritePhysicsChunk()
+        private  void WritePhysicsChunk()
         {
             int dpmX = (int)Math.Round(DefaultDensityX * 39.3700787d);
             int dpmY = (int)Math.Round(DefaultDensityY * 39.3700787d);
@@ -305,7 +312,7 @@ namespace ToolStackPNGWriterLib
             WriteChunk(PngChunkTypes.Physical, chunkData);
         }
 
-        private static void WriteGammaChunk()
+        private  void WriteGammaChunk()
         {
             if (IsWritingGamma)
             {
@@ -321,12 +328,12 @@ namespace ToolStackPNGWriterLib
         }
 
         // Currently only uncompressed PNG are supported, so just call the uncompressed method.
-        private static void WriteDataChunks(int compression)
+        private  void WriteDataChunks(int compression)
         {
             WriteDataChunksUncompressed();
         }
 
-        private static void WriteDataChunksUncompressed()
+        private  void WriteDataChunksUncompressed()
         {
             // First setup some variables we're going to use later on so we can calculate how big of byte[] we need 
             // to store the entire PNG file in so we only keep a single copy of the data in memory.
@@ -545,12 +552,12 @@ namespace ToolStackPNGWriterLib
             WriteChunk(PngChunkTypes.Data, data, 0, pngLength);
         }
 
-        private static void WriteEndChunk()
+        private void WriteEndChunk()
         {
             WriteChunk(PngChunkTypes.End, null);
         }
 
-        private static void WriteHeaderChunk(PngHeader header)
+        private void WriteHeaderChunk(PngHeader header)
         {
             byte[] chunkData = new byte[13];
 
@@ -566,12 +573,12 @@ namespace ToolStackPNGWriterLib
             WriteChunk(PngChunkTypes.Header, chunkData);
         }
 
-        private static void WriteChunk(string type, byte[] data)
+        private void WriteChunk(string type, byte[] data)
         {
             WriteChunk(type, data, 0, data != null ? data.Length : 0);
         }
 
-        private static void WriteChunk(string type, byte[] data, int offset, int length)
+        private void WriteChunk(string type, byte[] data, int offset, int length)
         {
             // Write out the length to the PNG.
             WriteInteger(_stream, length);

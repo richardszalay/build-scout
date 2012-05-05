@@ -109,7 +109,7 @@ namespace RichardSzalay.PocketCiTray.ViewModels
                         : AddJobsViewState.NoResults;
                 }, ex =>
                 {
-                    ErrorDescription = ex.Message;
+                    ErrorDescription = WebExceptionService.GetDisplayMessage(ex);
                     State = AddJobsViewState.Error;
                 });
         }

@@ -49,37 +49,32 @@
 
         <!--TitlePanel contains the name of the application and page title-->
         <StackPanel x:Name="TitlePanel" Grid.Row="0" Margin="12,17,0,28">
-            <TextBlock x:Name="ApplicationTitle" Text="SETTINGS" Style="{StaticResource PhoneTextNormalStyle}"/>
-            <TextBlock x:Name="PageTitle" Text="colours" Margin="9,-7,0,0" Style="{StaticResource PhoneTextTitle1Style}"/>
+            <TextBlock x:Name="ApplicationTitle" Text="{Binding Path=SettingsStrings.SettingsTitleUpper, Source={StaticResource LocalizedResources}}" Style="{StaticResource PhoneTextNormalStyle}"/>
+            <TextBlock x:Name="PageTitle" Text="{Binding Path=SettingsStrings.ColoursTitle, Source={StaticResource LocalizedResources}}" Margin="9,-7,0,0" Style="{StaticResource PhoneTextTitle1Style}"/>
         </StackPanel>
 
         <!--ContentPanel - place additional content here-->
-        <StackPanel  x:Name="ContentPanel" Grid.Row="1" Margin="12,0,24,0">
-            <TextBlock Text="Successful" Style="{StaticResource PhoneTextSubtleStyle}" Margin="12,0,12,4" />
-            <tk:ListPicker ItemsSource="{Binding ColourOptions}" SelectedItem="{Binding SuccessfulColor, Mode=TwoWay}" Margin="12,-5,0,28"
-                                    ItemTemplate="{StaticResource ColorPickerItemTemplate}" FullModeItemTemplate="{StaticResource ColorPickerFullModeItemTemplate}" />
+        <ScrollViewer x:Name="ContentPanel" Grid.Row="1" Margin="12,0,0,0">
+            <StackPanel>
+                <TextBlock Text="{Binding Path=SettingsStrings.SuccessfulColor, Source={StaticResource LocalizedResources}}" Style="{StaticResource PhoneTextSubtleStyle}" Margin="12,0,12,4" />
+                <tk:ListPicker ItemsSource="{Binding ColourOptions}" SelectedItem="{Binding SuccessfulColor, Mode=TwoWay}" Margin="12,-5,0,28"
+                                        ItemTemplate="{StaticResource ColorPickerItemTemplate}" FullModeItemTemplate="{StaticResource ColorPickerFullModeItemTemplate}" />
 
-            <TextBlock Text="Failed" Style="{StaticResource PhoneTextSubtleStyle}" Margin="12,0,12,4" />
-            <tk:ListPicker ItemsSource="{Binding ColourOptions}" SelectedItem="{Binding FailedColor, Mode=TwoWay}" Margin="12,-5,0,28"
-                                    ItemTemplate="{StaticResource ColorPickerItemTemplate}" FullModeItemTemplate="{StaticResource ColorPickerFullModeItemTemplate}" />
+                <TextBlock Text="{Binding Path=SettingsStrings.FailedColor, Source={StaticResource LocalizedResources}}" Style="{StaticResource PhoneTextSubtleStyle}" Margin="12,0,12,4" />
+                <tk:ListPicker ItemsSource="{Binding ColourOptions}" SelectedItem="{Binding FailedColor, Mode=TwoWay}" Margin="12,-5,0,28"
+                                        ItemTemplate="{StaticResource ColorPickerItemTemplate}" FullModeItemTemplate="{StaticResource ColorPickerFullModeItemTemplate}" />
 
-            <TextBlock Text="Unavailable" Style="{StaticResource PhoneTextSubtleStyle}" Margin="12,0,12,4" />
-            <tk:ListPicker ItemsSource="{Binding ColourOptions}" SelectedItem="{Binding UnavailableColor, Mode=TwoWay}" Margin="12,-5,0,12"
-                                    ItemTemplate="{StaticResource ColorPickerItemTemplate}" FullModeItemTemplate="{StaticResource ColorPickerFullModeItemTemplate}" />
-        </StackPanel>
+                <TextBlock Text="{Binding Path=SettingsStrings.UnavailableColor, Source={StaticResource LocalizedResources}}" Style="{StaticResource PhoneTextSubtleStyle}" Margin="12,0,12,4" />
+                <tk:ListPicker ItemsSource="{Binding ColourOptions}" SelectedItem="{Binding UnavailableColor, Mode=TwoWay}" Margin="12,-5,0,12"
+                                        ItemTemplate="{StaticResource ColorPickerItemTemplate}" FullModeItemTemplate="{StaticResource ColorPickerFullModeItemTemplate}" />
+
+                <StackPanel Margin="0,16" Visibility="{Binding CanUseColoredTiles, Converter={StaticResource BooleanVisibilityConverter}}">
+                    <TextBlock Text="{Binding Path=SettingsStrings.UseColoredLiveTilesLabel, Source={StaticResource LocalizedResources}}" Style="{StaticResource PhoneTextSubtleStyle}" />
+                    <tk:ToggleSwitch IsChecked="{Binding UseColoredTiles, Mode=TwoWay}" Margin="0,-28,0,-18" />
+                </StackPanel>
+            </StackPanel>
+        </ScrollViewer>
     </Grid>
-
-    <!--Sample code showing usage of ApplicationBar-->
-    <!--<phone:PhoneApplicationPage.ApplicationBar>
-        <shell:ApplicationBar IsVisible="True" IsMenuEnabled="True">
-            <shell:ApplicationBarIconButton x:Name="appbar_button1" IconUri="/Images/appbar_button1.png" Text="Button 1"/>
-            <shell:ApplicationBarIconButton x:Name="appbar_button2" IconUri="/Images/appbar_button2.png" Text="Button 2"/>
-            <shell:ApplicationBar.MenuItems>
-                <shell:ApplicationBarMenuItem x:Name="menuItem1" Text="MenuItem 1"/>
-                <shell:ApplicationBarMenuItem x:Name="menuItem2" Text="MenuItem 2"/>
-            </shell:ApplicationBar.MenuItems>
-        </shell:ApplicationBar>
-    </phone:PhoneApplicationPage.ApplicationBar>-->
 
     <tk:TransitionService.NavigationInTransition>
         <tk:NavigationInTransition>

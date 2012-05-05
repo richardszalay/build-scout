@@ -8,5 +8,11 @@ namespace RichardSzalay.PocketCiTray.Services
         {
             get { return DateTimeOffset.UtcNow; }
         }
+
+
+        public DateTimeOffset LocalNow
+        {
+            get { return DateTimeOffset.Now; }
+        }
     }
 }

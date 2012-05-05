@@ -67,7 +67,7 @@
 
         <!--ContentPanel - place additional content here-->
         <Grid x:Name="ContentPanel" Grid.Row="1" Margin="12,0,0,0">
-            <TextBlock Text="No jobs" Style="{StaticResource PhoneTextSubtleStyle}" FontSize="{StaticResource PhoneFontSizeLarge}"
+            <TextBlock Text="{Binding Path=Strings.NoJobs, Source={StaticResource LocalizedResources}}" Style="{StaticResource PhoneTextSubtleStyle}" FontSize="{StaticResource PhoneFontSizeLarge}"
                        Visibility="{Binding HasJobs, Converter={StaticResource BooleanVisibilityConverter}, ConverterParameter=!}"/>
             <ListBox ItemsSource="{Binding Jobs}" x:Name="JobsList"
                      Visibility="{Binding HasJobs, Converter={StaticResource BooleanVisibilityConverter}}">
@@ -79,11 +79,11 @@
                             </i:Interaction.Behaviors>
                             <tk:ContextMenuService.ContextMenu>
                                 <tk:ContextMenu>
-                                    <tk:MenuItem Header="pin to start" 
+                                    <tk:MenuItem Header="{Binding Path=Strings.PinToStart, Source={StaticResource LocalizedResources}}" 
                                                  Command="{Binding DataContext.PinJobCommand, ElementName=ContentPanel}"
                                                  CommandParameter="{Binding}" />
 
-                                    <tk:MenuItem Header="delete" 
+                                    <tk:MenuItem Header="{Binding Path=Strings.DeleteMenuItem, Source={StaticResource LocalizedResources}}" 
                                                  Command="{Binding DataContext.DeleteJobCommand, ElementName=ContentPanel}"
                                                  CommandParameter="{Binding}" />
                                 </tk:ContextMenu>
@@ -127,19 +127,23 @@
             </shell:ApplicationBar.MenuItems>
         </shell:ApplicationBar>
     </phone:PhoneApplicationPage.ApplicationBar>
-    
+
     <i:Interaction.Behaviors>
         <inf:ApplicationBarIconButtonCommand TextKey="add"
                                                       CommandBinding="{Binding AddJobCommand}"
+                                                      Text="{Binding Path=Strings.AddMenuItem, Source={StaticResource LocalizedResources}}"
                                                       />
         <inf:ApplicationBarIconButtonCommand TextKey="refresh"
                                                       CommandBinding="{Binding UpdateStatusesCommand}"
+                                                      Text="{Binding Path=Strings.RefreshMenuItem, Source={StaticResource LocalizedResources}}"
                                                       />
         <inf:ApplicationBarMenuItemCommand TextKey="settings"
                                                       CommandBinding="{Binding EditSettingsCommand}"
+                                                      Text="{Binding Path=Strings.EditSettingsMenuItem, Source={StaticResource LocalizedResources}}"
                                                       />
         <inf:ApplicationBarMenuItemCommand TextKey="about"
                                                       CommandBinding="{Binding ShowAboutCommand}"
+                                                      Text="{Binding Path=Strings.AboutMenuItem, Source={StaticResource LocalizedResources}}"
                                                       />
     </i:Interaction.Behaviors>
 

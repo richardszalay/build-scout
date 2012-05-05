@@ -105,11 +105,6 @@ namespace RichardSzalay.PocketCiTray.Controllers
         {
             jobRepository.DeleteJob(job);
 
-            if (tileService.IsPinned(job))
-            {
-                tileService.RemoveJobTile(job);
-            }
-
             this.UpdateAllTiles();
         }
 

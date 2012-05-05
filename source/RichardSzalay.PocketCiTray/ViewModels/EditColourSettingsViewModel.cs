@@ -25,8 +25,6 @@ namespace RichardSzalay.PocketCiTray.ViewModels
         private readonly ISettingsApplier settingsApplier;
         private readonly IDeviceInformationService deviceInformationService;
 
-        private SerialDisposable updateDisposable;
-
         private bool isActive = false;
 
         private List<String> changedProperties;
@@ -65,6 +63,8 @@ namespace RichardSzalay.PocketCiTray.ViewModels
             FailedColor = ColourOptions.First(x => x.Key == applicationSettings.FailedColorResource);
             UnavailableColor = ColourOptions.First(x => x.Key == applicationSettings.UnavailableColorResource);
 
+            UseColoredTiles = applicationSettings.UseColoredTiles;
+
             applicationSettings.PropertyChanged += OnApplicationSettingChanged;
         }
 
@@ -76,6 +76,15 @@ namespace RichardSzalay.PocketCiTray.ViewModels
 
         [NotifyProperty]
         public ResourceColor SuccessfulColor { get; set; }
+
+        [NotifyProperty]
+        public bool UseColoredTiles { get; set; }
+
+        [NotifyProperty]
+        public bool CanUseColoredTiles
+        {
+            get { return !deviceInformationService.IsLowEndDevice; }
+        }
 
         public override void OnNavigatedFrom(NavigationEventArgs e)
         {
@@ -128,6 +137,7 @@ namespace RichardSzalay.PocketCiTray.ViewModels
             applicationSettings.SuccessColorResource = SuccessfulColor.Key;
             applicationSettings.FailedColorResource = FailedColor.Key;
             applicationSettings.UnavailableColorResource = UnavailableColor.Key;
+            applicationSettings.UseColoredTiles = this.UseColoredTiles;
         }
 
         public IApplicationSettings ApplicationSettings

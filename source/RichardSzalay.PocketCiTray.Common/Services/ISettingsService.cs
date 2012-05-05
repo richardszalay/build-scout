@@ -4,7 +4,6 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.IO.IsolatedStorage;
-using WP7Contrib.Logging;
 
 namespace RichardSzalay.PocketCiTray.Services
 {

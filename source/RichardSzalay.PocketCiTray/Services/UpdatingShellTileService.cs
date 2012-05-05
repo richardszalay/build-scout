@@ -1,21 +1,11 @@
-﻿using System;
-using System.Linq;
-using System.Net;
-using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Documents;
-using System.Windows.Ink;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Animation;
-using System.Windows.Shapes;
-using System.Collections;
-using Microsoft.Phone.Shell;
+﻿using System.Linq;
 using System.Collections.Generic;
+using Microsoft.Phone.Shell;
+using System;
 
 namespace RichardSzalay.PocketCiTray.Services
 {
-    public class ShellTileService : IShellTileService
+    public class UpdatingShellTileService : IShellTileService
     {
         public IEnumerable<Uri> GetUris()
         {
@@ -24,7 +14,7 @@ namespace RichardSzalay.PocketCiTray.Services
 
         public void Create(Uri navigationUri, StandardTileData tileData)
         {
-            throw new NotSupportedException("Use UpdatingShellTileService");
+            ShellTile.Create(navigationUri, tileData);
         }
 
         public void Update(Uri navigationUri, StandardTileData tileData)
@@ -47,3 +37,4 @@ namespace RichardSzalay.PocketCiTray.Services
         }
     }
 }
+

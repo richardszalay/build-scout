@@ -58,17 +58,17 @@
         <inf:VisualStateBindingBehavior State="{Binding State}" />
         <inf:VisualStateBindingBehavior State="{Binding ShowFilter, Converter={StaticResource FilterModeConverter}}" />
         <inf:ApplicationBarIconButtonCommand TextKey="add"
-                                                      Text="add jobs"
                                                       CommandBinding="{Binding AddJobsCommand}"
+                                                      Text="{Binding Path=Strings.AddMenuItem, Source={StaticResource LocalizedResources}}"
                                                       />
 
         <inf:ApplicationBarIconButtonCommand TextKey="select all"
-                                                      Text="select all"
+                                                      Text="{Binding Path=Strings.SelectAllMenuItem, Source={StaticResource LocalizedResources}}"
                                                       CommandBinding="{Binding SelectAllJobsCommand}"
                                                       />
 
         <inf:ApplicationBarIconButtonCommand TextKey="find"
-                                                      Text="find"
+                                                      Text="{Binding Path=Strings.FindMenuItem, Source={StaticResource LocalizedResources}}"
                                                       CommandBinding="{Binding FilterJobsCommand}"
                                                       />
     </i:Interaction.Behaviors>
@@ -197,7 +197,7 @@
         <!--TitlePanel contains the name of the application and page title-->
         <StackPanel x:Name="TitlePanel" Grid.Row="0" Margin="12,17,0,28">
             <TextBlock x:Name="ApplicationTitle" Text="{Binding Path=Strings.ApplicationTitleUpper, Source={StaticResource LocalizedResources}}" Style="{StaticResource PhoneTextNormalStyle}"/>
-            <TextBlock x:Name="PageTitle" Text="add jobs" Margin="9,-7,0,0" Style="{StaticResource PhoneTextTitle1Style}"/>
+            <TextBlock x:Name="PageTitle" Text="{Binding Path=Strings.AddJobsTitle, Source={StaticResource LocalizedResources}}" Margin="9,-7,0,0" Style="{StaticResource PhoneTextTitle1Style}"/>
         </StackPanel>
 
         <TextBox x:Name="textBox" Text="{Binding FilterText, Mode=TwoWay}" Grid.Row="0" VerticalAlignment="Top" Opacity="0" RenderTransformOrigin="0.5,0.5">
@@ -213,27 +213,27 @@
         <!--ContentPanel - place additional content here-->
         <Grid x:Name="ContentPanel" Grid.Row="1" Margin="12,0,12,0">
             <Grid x:Name="LoadingPanel">
-                <TextBlock Text="Loading..." Style="{StaticResource PhoneTextLargeStyle}" Foreground="{StaticResource PhoneSubtleBrush}" />
+                <TextBlock Text="{Binding Path=Strings.LoadingLabel, Source={StaticResource LocalizedResources}}" Style="{StaticResource PhoneTextLargeStyle}" Foreground="{StaticResource PhoneSubtleBrush}" />
             </Grid>
             
             <Grid x:Name="NoResultsContainer" Visibility="Collapsed">
                 <TextBlock x:Name="NoFilteredResultsTextBlock" Style="{StaticResource PhoneTextLargeStyle}" Foreground="{StaticResource PhoneSubtleBrush}" Visibility="Collapsed" TextWrapping="Wrap">
                     <TextBlock.Inlines>
-                        <Run Text="No results for " />
+                        <Run Text="{Binding Path=Strings.NoFilterResultsPrefix, Source={StaticResource LocalizedResources}}" />
                         <Run Text="{Binding FilterText}" Foreground="{StaticResource PhoneAccentBrush}" />
                     </TextBlock.Inlines>
                 </TextBlock>
 
                 <TextBlock x:Name="NoResultsTextBlock" Style="{StaticResource PhoneTextLargeStyle}" Foreground="{StaticResource PhoneSubtleBrush}" Visibility="Collapsed">
                     <TextBlock.Inlines>
-                        <Run Text="No jobs found" />
+                        <Run Text="{Binding Path=Strings.NoRemoteJobs, Source={StaticResource LocalizedResources}}" />
                     </TextBlock.Inlines>
                 </TextBlock>
             </Grid>
 
             <TextBlock x:Name="ErrorTextBlock" Style="{StaticResource PhoneTextLargeStyle}" Visibility="Collapsed" TextWrapping="Wrap">
                     <TextBlock.Inlines>
-                        <Run Text="Error finding jobs. " />
+                        <Run Text="{Binding Path=Strings.ErrorFindingJobsPrefix, Source={StaticResource LocalizedResources}}" />
                         <Run Text="{Binding ErrorDescription}" Foreground="{StaticResource PhoneSubtleBrush}" />
                     </TextBlock.Inlines>
             </TextBlock>

@@ -55,11 +55,11 @@
                 <Rectangle Fill="{Binding Job.LastBuild.Result, Converter={StaticResource BuildStatusToBrushConverter}}" Margin="0,11,0,4" />
 
                 <StackPanel Grid.Column="1">
-                    <TextBlock Text="last build" Style="{StaticResource PhoneTextLargeStyle}" />
+                    <TextBlock Text="{Binding Path=Strings.LastBuild, Source={StaticResource LocalizedResources}}" Style="{StaticResource PhoneTextLargeStyle}" />
                     <TextBlock Text="{Binding Job.LastBuild.Result, Converter={StaticResource LocalizedBuildStatusConverter}}" Style="{StaticResource PhoneTextSubtleStyle}" Margin="12,-4,0,0" />
                     <TextBlock Visibility="{Binding HasBuildLabel, Converter={StaticResource BooleanVisibilityConverter}}" Style="{StaticResource PhoneTextNormalStyle}" Margin="12,-4,0,0">
                         <TextBlock.Inlines>
-                            <Run Text="Label: " />
+                            <Run Text="{Binding Path=Strings.LastBuildLabel, Source={StaticResource LocalizedResources}}" />
                             <Run Text="{Binding Job.LastBuild.Label}" />
                         </TextBlock.Inlines>
                     </TextBlock>
@@ -69,7 +69,7 @@
 
             <Button Command="{Binding ViewWebUrlCommand}" Margin="12,24,0,0" tk:TiltEffect.IsTiltEnabled="True" Style="{StaticResource NoChromeButton}">
                 <StackPanel>
-                    <TextBlock Text="view website" Style="{StaticResource PhoneTextLargeStyle}" />
+                    <TextBlock Text="{Binding Path=Strings.ViewJobWebsite, Source={StaticResource LocalizedResources}}" Style="{StaticResource PhoneTextLargeStyle}" />
                     <TextBlock Text="{Binding Job.WebUri.AbsoluteUri}" Style="{StaticResource PhoneTextAccentStyle}" Margin="12,-6,0,0" TextWrapping="Wrap" />
                 </StackPanel>
             </Button>
@@ -87,10 +87,12 @@
     
     <i:Interaction.Behaviors>
         <inf:ApplicationBarIconButtonCommand TextKey="pin"
+                                             Text="{Binding Path=Strings.PinMenuItem, Source={StaticResource LocalizedResources}}"
                                              CommandBinding="{Binding PinJobCommand}"
                                              />
 
         <inf:ApplicationBarMenuItemCommand TextKey="delete"
+                                           Text="{Binding Path=Strings.DeleteMenuItem, Source={StaticResource LocalizedResources}}"
                                            CommandBinding="{Binding DeleteJobCommand}"
                                            />
     </i:Interaction.Behaviors>

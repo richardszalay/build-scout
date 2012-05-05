@@ -16,8 +16,7 @@
     <TargetFrameworkProfile>WindowsPhone71</TargetFrameworkProfile>
     <TargetFrameworkIdentifier>Silverlight</TargetFrameworkIdentifier>
     <SilverlightApplication>true</SilverlightApplication>
-    <SupportedCultures>
-    </SupportedCultures>
+    <SupportedCultures>en-US;en-GB</SupportedCultures>
     <XapOutputs>true</XapOutputs>
     <GenerateSilverlightManifest>true</GenerateSilverlightManifest>
     <XapFilename>RichardSzalay.PocketCiTray.xap</XapFilename>
@@ -43,7 +42,7 @@
     <DebugType>pdbonly</DebugType>
     <Optimize>true</Optimize>
     <OutputPath>Bin\Release</OutputPath>
-    <DefineConstants>DEBUG;SILVERLIGHT;WINDOWS_PHONE;DEBUG_AGENT</DefineConstants>
+    <DefineConstants>SILVERLIGHT;WINDOWS_PHONE</DefineConstants>
     <NoStdLib>true</NoStdLib>
     <NoConfig>true</NoConfig>
     <ErrorReport>prompt</ErrorReport>
@@ -101,20 +100,8 @@
       <HintPath>..\packages\SilverlightToolkitWP.4.2011.12.14\lib\sl4-windowsphone71\Microsoft.Phone.Controls.Toolkit.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.Phone.Interop" />
-    <Reference Include="Microsoft.SilverlightMediaFramework.Compatibility.Phone">
-      <HintPath>..\libs\Analytics\Microsoft.SilverlightMediaFramework.Compatibility.Phone.dll</HintPath>
-    </Reference>
-    <Reference Include="Microsoft.WebAnalytics">
-      <HintPath>..\libs\Analytics\Microsoft.WebAnalytics.dll</HintPath>
-    </Reference>
-    <Reference Include="Google.WebAnalytics">
-      <HintPath>..\libs\Analytics\Google.WebAnalytics.dll</HintPath>
-    </Reference>
     <Reference Include="Newtonsoft.Json">
       <HintPath>..\packages\Newtonsoft.Json.4.0.8\lib\sl4-windowsphone71\Newtonsoft.Json.dll</HintPath>
-    </Reference>
-    <Reference Include="SilverlightSerializer.WP71">
-      <HintPath>..\packages\WP7Contrib.Caching.1.0.0.16\lib\sl4-WindowsPhone71\SilverlightSerializer.WP71.dll</HintPath>
     </Reference>
     <Reference Include="System.Observable" />
     <Reference Include="System.Reactive">
@@ -131,38 +118,8 @@
     <Reference Include="System.Xml" />
     <Reference Include="mscorlib.extensions" />
     <Reference Include="System.Xml.Linq" />
-    <Reference Include="WindowsPhoneTestFramework.Client.AutomationClient">
-      <HintPath>..\packages\WP7TestClient.0.9.6\lib\sl4-wp71\WindowsPhoneTestFramework.Client.AutomationClient.dll</HintPath>
-    </Reference>
-    <Reference Include="WP7Contrib.Caching">
-      <HintPath>..\packages\WP7Contrib.Caching.1.0.0.16\lib\sl4-WindowsPhone71\WP7Contrib.Caching.dll</HintPath>
-    </Reference>
-    <Reference Include="WP7Contrib.Collections">
-      <HintPath>..\packages\WP7Contrib.Core.1.0.0.16\lib\sl4-wp71\WP7Contrib.Collections.dll</HintPath>
-    </Reference>
-    <Reference Include="WP7Contrib.Common">
-      <HintPath>..\packages\WP7Contrib.Core.1.0.0.16\lib\sl4-wp71\WP7Contrib.Common.dll</HintPath>
-    </Reference>
-    <Reference Include="WP7Contrib.Communications">
-      <HintPath>..\packages\WP7Contrib.Net.1.0.0.16\lib\sl4-wp71\WP7Contrib.Communications.dll</HintPath>
-    </Reference>
-    <Reference Include="WP7Contrib.Diagnostics">
-      <HintPath>..\packages\WP7Contrib.Core.1.0.0.16\lib\sl4-wp71\WP7Contrib.Diagnostics.dll</HintPath>
-    </Reference>
-    <Reference Include="WP7Contrib.Logging">
-      <HintPath>..\packages\WP7Contrib.Core.1.0.0.16\lib\sl4-wp71\WP7Contrib.Logging.dll</HintPath>
-    </Reference>
-    <Reference Include="WP7Contrib.Serialization.Helpers">
-      <HintPath>..\packages\WP7Contrib.Services.1.0.0.16\lib\sl4-wp71\WP7Contrib.Serialization.Helpers.dll</HintPath>
-    </Reference>
-    <Reference Include="WP7Contrib.Services">
-      <HintPath>..\packages\WP7Contrib.Services.1.0.0.16\lib\sl4-wp71\WP7Contrib.Services.dll</HintPath>
-    </Reference>
-    <Reference Include="WP7Contrib.View.Controls">
-      <HintPath>..\packages\WP7Contrib.Controls.1.0.0.16\lib\sl4-wp71\WP7Contrib.View.Controls.dll</HintPath>
-    </Reference>
-    <Reference Include="WP7Contrib.View.Transitions">
-      <HintPath>..\packages\WP7Contrib.Controls.1.0.0.16\lib\sl4-wp71\WP7Contrib.View.Transitions.dll</HintPath>
+    <Reference Include="WriteableBitmapExWinPhone">
+      <HintPath>..\packages\WriteableBitmapEx.0.9.8.6\lib\sl4-wp71\WriteableBitmapExWinPhone.dll</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup>
@@ -205,12 +162,14 @@
     <Compile Include="Infrastructure\Behaviors\EnterKeyBehavior.cs" />
     <Compile Include="Infrastructure\Behaviors\RealtimeTextBoxBindingBehavior.cs" />
     <Compile Include="Infrastructure\Behaviors\ListBoxSelectionCommandBehavior.cs" />
+    <Compile Include="Infrastructure\WritableBitmapBlit.cs" />
     <Compile Include="MainPage.xaml.cs">
       <DependentUpon>MainPage.xaml</DependentUpon>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="LocalizedResources.cs" />
     <Compile Include="Services\ApplicationDependencyConfiguration.cs" />
+    <Compile Include="Services\ApplicationMarketplaceFacade.cs" />
     <Compile Include="Services\EmailComposeTaskFacade.cs" />
     <Compile Include="Services\IApplicationResourceFacade.cs" />
     <Compile Include="Services\IHelpService.cs" />
@@ -226,9 +185,9 @@
     <Compile Include="Services\PhoneApplicationServiceFacade.cs" />
     <Compile Include="Services\ScheduledActionServiceFacade.cs" />
     <Compile Include="Services\SettingsApplier.cs" />
-    <Compile Include="Services\ThreadSafeLoggingService.cs" />
     <Compile Include="Services\TileImageGenerator.cs" />
     <Compile Include="Services\TrialModeException.cs" />
+    <Compile Include="Services\UpdatingShellTileService.cs" />
     <Compile Include="SettingsStrings.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -383,6 +342,10 @@
     <Content Include="Content\Help\AddServer.html" />
     <Content Include="Content\Help\ChangeLog.html" />
     <Content Include="Content\Help\shared\help.css" />
+    <Content Include="Toolkit.Content\ApplicationBar.Cancel.png" />
+    <Content Include="Toolkit.Content\ApplicationBar.Check.png" />
+    <Content Include="Toolkit.Content\ApplicationBar.Delete.png" />
+    <Content Include="Toolkit.Content\ApplicationBar.Select.png" />
     <None Include="Content\Help\shared\theme.css" />
     <Content Include="Images\appbar.add.rest.png" />
     <Content Include="Images\appbar.cancel.rest.png" />
@@ -403,10 +366,6 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Content Include="Toolkit.Content\ApplicationBar.Cancel.png" />
-    <Content Include="Toolkit.Content\ApplicationBar.Check.png" />
-    <Content Include="Toolkit.Content\ApplicationBar.Delete.png" />
-    <Content Include="Toolkit.Content\ApplicationBar.Select.png" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Data\" />
@@ -415,6 +374,21 @@
     <EmbeddedResource Include="AboutStrings.resx">
       <Generator>PublicResXFileCodeGenerator</Generator>
       <LastGenOutput>AboutStrings.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Strings.ja-JP.resx">
+      <LastGenOutput>SettingsStrings.en-US.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="SettingsStrings.ja-JP.resx">
+      <LastGenOutput>SettingsStrings.en-US.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Strings.de-DE.resx">
+      <LastGenOutput>SettingsStrings.en-US.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="SettingsStrings.de-DE.resx">
+      <LastGenOutput>SettingsStrings.en-US.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="SettingsStrings.en-US.resx">
+      <LastGenOutput>SettingsStrings.en-US.Designer.cs</LastGenOutput>
     </EmbeddedResource>
     <EmbeddedResource Include="SettingsStrings.resx">
       <Generator>PublicResXFileCodeGenerator</Generator>

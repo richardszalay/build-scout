@@ -6,7 +6,7 @@ using System.IO.IsolatedStorage;
 using System.Linq;
 using System.Reactive.Concurrency;
 using System.Reactive.Linq;
-using WP7Contrib.Logging;
+
 using Environment = Microsoft.Devices.Environment;
 
 namespace RichardSzalay.PocketCiTray.Services

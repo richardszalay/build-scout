@@ -1,5 +1,4 @@
 ﻿using RichardSzalay.PocketCiTray.Infrastructure;
-using WP7Contrib.View.Transitions.Animation;
 using System;
 using System.Linq;
 using System.Diagnostics;
@@ -13,14 +12,10 @@ namespace RichardSzalay.PocketCiTray.View
     {
         public ListJobs()
         {
-            Debug.WriteLine("[{0:hh:mm:ss.fff}] Begin ListJobs.ctor", DateTimeOffset.UtcNow);
-
             InitializeComponent();
 
             ConfigureContinuumTransition((ContinuumTransition)Resources["ContinuumOutTransition"]);
             ConfigureContinuumTransition((ContinuumTransition)Resources["ContinuumInTransition"]);
-
-            Debug.WriteLine("[{0:hh:mm:ss.fff}] End ListJobs.ctor", DateTimeOffset.UtcNow);
         }
 
         private void ConfigureContinuumTransition(ContinuumTransition transition)

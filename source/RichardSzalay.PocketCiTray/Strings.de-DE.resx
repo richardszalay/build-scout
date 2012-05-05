@@ -117,91 +117,31 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="BackgroundUpdates" xml:space="preserve">
-    <value>Background Updates</value>
+  <data name="GrayAccentBrush" xml:space="preserve">
+    <value>grau</value>
   </data>
-  <data name="ColoursDescription" xml:space="preserve">
-    <value>change application and tile colours</value>
+  <data name="GreenAccentBrush" xml:space="preserve">
+    <value>grün</value>
   </data>
-  <data name="ColoursLowEndDeviceDescription" xml:space="preserve">
-    <value>change application colours</value>
+  <data name="LimeAccentBrush" xml:space="preserve">
+    <value>lindgrün</value>
   </data>
-  <data name="ColoursTitle" xml:space="preserve">
-    <value>colours</value>
+  <data name="MagentaAccentBrush" xml:space="preserve">
+    <value>magenta</value>
   </data>
-  <data name="Disabled" xml:space="preserve">
-    <value>disabled</value>
+  <data name="MangoAccentBrush" xml:space="preserve">
+    <value>mango</value>
   </data>
-  <data name="Enabled" xml:space="preserve">
-    <value>enabled</value>
+  <data name="PinkAccentBrush" xml:space="preserve">
+    <value>rosa</value>
   </data>
-  <data name="EndNotificationsLabel" xml:space="preserve">
-    <value>End notifications</value>
+  <data name="PurpleAccentBrush" xml:space="preserve">
+    <value>lila</value>
   </data>
-  <data name="EveryInterval" xml:space="preserve">
-    <value>every {0}</value>
+  <data name="RedAccentBrush" xml:space="preserve">
+    <value>rot</value>
   </data>
-  <data name="FailedLabel" xml:space="preserve">
-    <value>Failed</value>
-  </data>
-  <data name="ForegroundUpdates" xml:space="preserve">
-    <value>Foreground Updates</value>
-  </data>
-  <data name="MinsFormat" xml:space="preserve">
-    <value>{0} mins</value>
-  </data>
-  <data name="NotificationAllChanges" xml:space="preserve">
-    <value>all changes</value>
-  </data>
-  <data name="NotificationDaysLabel" xml:space="preserve">
-    <value>Notification days</value>
-  </data>
-  <data name="NotificationFailed" xml:space="preserve">
-    <value>failed</value>
-  </data>
-  <data name="NotificationFixed" xml:space="preserve">
-    <value>fixed</value>
-  </data>
-  <data name="NotificationNone" xml:space="preserve">
-    <value>none</value>
-  </data>
-  <data name="NotificationSeparator" xml:space="preserve">
-    <value>, </value>
-  </data>
-  <data name="NotificationTitle" xml:space="preserve">
-    <value>notifications</value>
-  </data>
-  <data name="NotificationUnavailable" xml:space="preserve">
-    <value>unavailable</value>
-  </data>
-  <data name="OneMin" xml:space="preserve">
-    <value>1 min</value>
-  </data>
-  <data name="RunUnderLockScreen" xml:space="preserve">
-    <value>Continue to update when phone is locked</value>
-  </data>
-  <data name="ScheduleDescriptionFormat" xml:space="preserve">
-    <value>foreground {0}, background {1}</value>
-  </data>
-  <data name="ScheduleTitle" xml:space="preserve">
-    <value>schedule</value>
-  </data>
-  <data name="SettingsTitle" xml:space="preserve">
-    <value>settings</value>
-  </data>
-  <data name="SettingsTitleUpper" xml:space="preserve">
-    <value>SETTINGS</value>
-  </data>
-  <data name="StartNotificationsLabel" xml:space="preserve">
-    <value>Start notifications</value>
-  </data>
-  <data name="SuccessfulLabel" xml:space="preserve">
-    <value>Successful</value>
-  </data>
-  <data name="UnavailableLabel" xml:space="preserve">
-    <value>Unavailable</value>
-  </data>
-  <data name="UseColoredLiveTilesLabel" xml:space="preserve">
-    <value>Apply to live tiles</value>
+  <data name="TealAccentBrush" xml:space="preserve">
+    <value>blaugrün</value>
   </data>
 </root>

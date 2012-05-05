@@ -1,7 +1,6 @@
 ﻿using System.Windows.Controls;
 using Microsoft.Phone.Controls;
 using RichardSzalay.PocketCiTray.ViewModels;
-using WP7Contrib.View.Transitions.Animation;
 using System.Diagnostics;
 using System;
 
@@ -23,8 +22,6 @@ namespace RichardSzalay.PocketCiTray.View
 
         protected override void OnNavigatedTo(System.Windows.Navigation.NavigationEventArgs e)
         {
-            Debug.WriteLine("[{0:hh:mm:ss.fff}] Begin ViewBase.OnNavigatedTo({1})", DateTimeOffset.UtcNow, e.Uri.OriginalString);
-
             var vm = DataContext as ViewModelBase;
 
             if (vm != null)
@@ -33,8 +30,6 @@ namespace RichardSzalay.PocketCiTray.View
             }
 
             base.OnNavigatedTo(e);
-
-            Debug.WriteLine("[{0:hh:mm:ss.fff}] End ViewBase.OnNavigatedTo({1})", DateTimeOffset.UtcNow, e.Uri.OriginalString);
         }
 
         protected override void OnBackKeyPress(System.ComponentModel.CancelEventArgs e)

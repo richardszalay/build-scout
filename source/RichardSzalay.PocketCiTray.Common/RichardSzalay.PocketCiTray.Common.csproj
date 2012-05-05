@@ -86,31 +86,13 @@
       <HintPath>..\libs\Funq\Funq.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.Phone" />
-    <Reference Include="Microsoft.SilverlightMediaFramework.Compatibility.Phone">
-      <HintPath>..\libs\Analytics\Microsoft.SilverlightMediaFramework.Compatibility.Phone.dll</HintPath>
-    </Reference>
-    <Reference Include="Microsoft.WebAnalytics">
-      <HintPath>..\libs\Analytics\Microsoft.WebAnalytics.dll</HintPath>
-    </Reference>
-    <Reference Include="Google.WebAnalytics">
-      <HintPath>..\libs\Analytics\Google.WebAnalytics.dll</HintPath>
-    </Reference>
-    <Reference Include="Newtonsoft.Json">
-      <HintPath>..\packages\Newtonsoft.Json.4.0.8\lib\sl4-windowsphone71\Newtonsoft.Json.dll</HintPath>
-    </Reference>
     <Reference Include="SharpGIS.GZipWebClient">
       <HintPath>..\packages\SharpGIS.GZipWebClient.1.2\lib\sl40-wp71\SharpGIS.GZipWebClient.dll</HintPath>
     </Reference>
-    <Reference Include="SilverlightSerializer.WP71">
-      <HintPath>..\packages\WP7Contrib.Caching.1.0.0.16\lib\sl4-WindowsPhone71\SilverlightSerializer.WP71.dll</HintPath>
-    </Reference>
     <Reference Include="system.data.linq" />
     <Reference Include="System.Observable" />
-    <Reference Include="System.Reactive">
+    <Reference Include="System.Reactive, Version=1.0.10621.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <HintPath>..\packages\Rx-Main.1.0.11226\lib\SL3-WP\System.Reactive.dll</HintPath>
-    </Reference>
-    <Reference Include="System.Reactive.Windows.Threading">
-      <HintPath>..\packages\Rx-Xaml.1.0.10621\lib\SL3-WP\System.Reactive.Windows.Threading.dll</HintPath>
     </Reference>
     <Reference Include="System.Windows" />
     <Reference Include="system" />
@@ -120,30 +102,6 @@
     <Reference Include="System.Net" />
     <Reference Include="mscorlib.extensions" />
     <Reference Include="System.Xml.Linq" />
-    <Reference Include="WP7Contrib.Caching">
-      <HintPath>..\packages\WP7Contrib.Caching.1.0.0.16\lib\sl4-WindowsPhone71\WP7Contrib.Caching.dll</HintPath>
-    </Reference>
-    <Reference Include="WP7Contrib.Collections">
-      <HintPath>..\packages\WP7Contrib.Core.1.0.0.16\lib\sl4-wp71\WP7Contrib.Collections.dll</HintPath>
-    </Reference>
-    <Reference Include="WP7Contrib.Common">
-      <HintPath>..\packages\WP7Contrib.Core.1.0.0.16\lib\sl4-wp71\WP7Contrib.Common.dll</HintPath>
-    </Reference>
-    <Reference Include="WP7Contrib.Communications">
-      <HintPath>..\packages\WP7Contrib.Net.1.0.0.16\lib\sl4-wp71\WP7Contrib.Communications.dll</HintPath>
-    </Reference>
-    <Reference Include="WP7Contrib.Diagnostics">
-      <HintPath>..\packages\WP7Contrib.Core.1.0.0.16\lib\sl4-wp71\WP7Contrib.Diagnostics.dll</HintPath>
-    </Reference>
-    <Reference Include="WP7Contrib.Logging">
-      <HintPath>..\packages\WP7Contrib.Core.1.0.0.16\lib\sl4-wp71\WP7Contrib.Logging.dll</HintPath>
-    </Reference>
-    <Reference Include="WP7Contrib.Serialization.Helpers">
-      <HintPath>..\packages\WP7Contrib.Services.1.0.0.16\lib\sl4-wp71\WP7Contrib.Serialization.Helpers.dll</HintPath>
-    </Reference>
-    <Reference Include="WP7Contrib.Services">
-      <HintPath>..\packages\WP7Contrib.Services.1.0.0.16\lib\sl4-wp71\WP7Contrib.Services.dll</HintPath>
-    </Reference>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Build.cs" />
@@ -166,6 +124,7 @@
     <Compile Include="IJobRepository.cs" />
     <Compile Include="Infrastructure\NotifyPropertyWeaver.cs" />
     <Compile Include="Infrastructure\PhoneApplicationManifestHelper.cs" />
+    <Compile Include="Infrastructure\PseudoLocalizer.cs" />
     <Compile Include="ISchedulerAccessor.cs" />
     <Compile Include="Job.cs" />
     <Compile Include="InMemoryJobRepository.cs" />
@@ -196,7 +155,6 @@
     <Compile Include="Providers\JobProviderFactory.cs" />
     <Compile Include="Providers\TeamCity6Provider.cs" />
     <Compile Include="SchedulerAccessor.cs" />
-    <Compile Include="Services\ApplicationMarketplaceFacade.cs" />
     <Compile Include="Services\ApplicationSettings.cs" />
     <Compile Include="Services\ApplicationTileService.cs" />
     <Compile Include="Services\CommonDependencyConfiguration.cs" />
@@ -207,22 +165,22 @@
     <Compile Include="Services\IClock.cs" />
     <Compile Include="Services\IDataEncryptor.cs" />
     <Compile Include="Services\IDeviceInformationService.cs" />
-    <Compile Include="Services\IGoogleAnalyticsFactory.cs" />
     <Compile Include="Services\IIsolatedStorageFacade.cs" />
     <Compile Include="Services\IJobNotificationService.cs" />
     <Compile Include="Services\IJobUpdateService.cs" />
+    <Compile Include="Services\ILog.cs" />
     <Compile Include="Services\IMutexService.cs" />
     <Compile Include="Services\INetworkInterfaceFacade.cs" />
     <Compile Include="Services\ISettingsDictionarySerializer.cs" />
     <Compile Include="Services\ISettingsService.cs" />
     <Compile Include="Services\IShellTileService.cs" />
     <Compile Include="Services\IShellToastFacade.cs" />
-    <Compile Include="Services\ITrackingService.cs" />
     <Compile Include="Services\JobUpdateService.cs" />
     <Compile Include="Services\MutexNames.cs" />
     <Compile Include="Services\MutexService.cs" />
     <Compile Include="Services\SettingsDictionarySerializer.cs" />
     <Compile Include="Services\ShellTileService.cs" />
+    <Compile Include="Services\ThreadSafeLoggingService.cs" />
     <Compile Include="Services\WebExceptionService.cs" />
     <Compile Include="ViewUris.cs" />
   </ItemGroup>

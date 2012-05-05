@@ -6,11 +6,9 @@ using System.Net.Browser;
 using System.Reactive.Concurrency;
 using System.Windows.Interactivity;
 using Funq;
-using Google.WebAnalytics;
 using Microsoft.Phone.Info;
-using Microsoft.WebAnalytics;
 using RichardSzalay.PocketCiTray.Providers;
-using WP7Contrib.Logging;
+
 using RichardSzalay.PocketCiTray.Data;
 
 namespace RichardSzalay.PocketCiTray.Services
@@ -72,7 +70,6 @@ namespace RichardSzalay.PocketCiTray.Services
                 l.Resolve<IJobNotificationService>(),
                 l.Resolve<ILog>(),
                 l.Resolve<INetworkInterfaceFacade>(),
-                l.Resolve<ITrackingService>(),
                 l.Resolve<IApplicationInformation>()));
 
             container.Register<IApplicationTileService>(l => new ApplicationTileService(
@@ -94,21 +91,7 @@ namespace RichardSzalay.PocketCiTray.Services
                 c.Resolve<ILog>()
                 ));
 
-            container.Register(c => new WebAnalyticsService
-            {
-                Services = new Collection<Behavior>
-                {
-                    c.Resolve<IGoogleAnalyticsFactory>().Create()
-                }
-            });
-
-            container.Register<ITrackingService>(c => new NullTrackingService());
-            //container.Register<ITrackingService>(c => new WebAnalyticsTrackingService(
-                //c.Resolve<WebAnalyticsService>().EventLog.WriteEntry));
-
-            container.Register<IApplicationMarketplaceFacade>(c => new ApplicationMarketplaceFacade(
-                c.Resolve<IApplicationInformation>()
-                ));
+            
         }
 
         private static void ConfigureFacades(Container container)

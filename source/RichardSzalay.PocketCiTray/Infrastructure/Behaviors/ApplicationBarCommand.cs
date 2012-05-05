@@ -21,7 +21,6 @@ using System.Windows.Data;
 using System.Windows.Input;
 using System.Windows.Interactivity;
 using Microsoft.Phone.Controls;
-using WP7Contrib.View.Controls.BindingListener;
 using System.Windows.Controls;
 
 namespace RichardSzalay.PocketCiTray.Infrastructure
@@ -41,16 +40,14 @@ namespace RichardSzalay.PocketCiTray.Infrastructure
                 typeof(ApplicationBarCommand),
                 new PropertyMetadata(CommandParameterBindingChanged));
 
-        public static readonly DependencyProperty TextBindingProperty = DependencyProperty.Register(
-            "TextBinding", typeof(Binding), typeof(ApplicationBarCommand), new PropertyMetadata(TextBindingChanged));
+        public static readonly DependencyProperty TextProperty = DependencyProperty.Register(
+            "Text", typeof(String), typeof(ApplicationBarCommand), new PropertyMetadata(TextChanged));
 
         private ICommand command;
 
         private object commandParameter;
 
         private CompositeDisposable subscriptions;
-
-        private string text;
 
         public ICommand Command
         {
@@ -116,29 +113,12 @@ namespace RichardSzalay.PocketCiTray.Infrastructure
         {
             get
             {
-                return this.text;
+                return (string)GetValue(TextProperty);
             }
 
             set
             {
-                if (value != this.text)
-                {
-                    this.text = value;
-                    this.TextChanged();
-                }
-            }
-        }
-
-        public Binding TextBinding
-        {
-            get
-            {
-                return (Binding)this.GetValue(TextBindingProperty);
-            }
-
-            set
-            {
-                this.SetValue(TextBindingProperty, value);
+                SetValue(TextProperty, value);
             }
         }
 
@@ -158,7 +138,7 @@ namespace RichardSzalay.PocketCiTray.Infrastructure
             this.BindCommand();
             //this.BindCommandParameter();
             this.UpdateCanExecute();
-            this.BindText();
+            //this.BindText();
         }
 
         protected override void OnAttached()
@@ -181,6 +161,11 @@ namespace RichardSzalay.PocketCiTray.Infrastructure
             {
                 this.CommandBinding.Execute(this.commandParameter);
             }
+        }
+
+        protected static void TextChanged(DependencyObject dependencyObject, DependencyPropertyChangedEventArgs args)
+        {
+            ((ApplicationBarCommand)dependencyObject).TextChanged();
         }
 
         protected abstract void TextChanged();
@@ -221,18 +206,6 @@ namespace RichardSzalay.PocketCiTray.Infrastructure
 
         private void BindCommand()
         {
-            Binding binding = this.TextBinding;
-            if (binding != null)
-            {
-                this.subscriptions.Add(
-                    this.AssociatedObject.GetChanges(binding).Subscribe(
-                        args =>
-                        {
-                            this.command = args.NewValue as ICommand;
-                            this.CommandChanged();
-                        }));
-            }
-
             if (command != null)
             {
                 this.CommandChanged();
@@ -254,7 +227,7 @@ namespace RichardSzalay.PocketCiTray.Infrastructure
                         }));
             }
         }
-         */
+        
 
         private void BindText()
         {
@@ -265,13 +238,13 @@ namespace RichardSzalay.PocketCiTray.Infrastructure
                     this.AssociatedObject.GetChanges(binding).Subscribe(
                         args =>
                         {
-                            this.text = args.NewValue as string;
+                            this.Text = args.NewValue as string;
                             this.TextChanged();
                         }));
 
                 this.BindCommand();
             }
-        }
+        } */
 
         private void CommandBindingChanged()
         {
@@ -318,7 +291,6 @@ namespace RichardSzalay.PocketCiTray.Infrastructure
         {
             if (this.AssociatedObject != null)
             {
-                this.BindText();
             }
         }
 

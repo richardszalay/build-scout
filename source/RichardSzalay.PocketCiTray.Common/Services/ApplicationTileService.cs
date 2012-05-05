@@ -29,7 +29,13 @@ namespace RichardSzalay.PocketCiTray.Services
             {
                 var tileData = tile.CreateTileData(jobs, applicationSettings);
 
-                if (tileData != null)
+                bool isOrphaned = (tileData == null);
+
+                if (isOrphaned)
+                {
+                    shellTileService.Remove(tile.NavigationUri);
+                }
+                else
                 {
                     shellTileService.Update(tile.NavigationUri, tileData);
                 }

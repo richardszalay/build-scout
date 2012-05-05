@@ -8,8 +8,9 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Animation;
 using System.Windows.Shapes;
-using WP7Contrib.Logging;
+
 using System.Collections.Generic;
+using RichardSzalay.PocketCiTray.Services;
 
 namespace RichardSzalay.PocketCiTray.Tests.Mocks
 {

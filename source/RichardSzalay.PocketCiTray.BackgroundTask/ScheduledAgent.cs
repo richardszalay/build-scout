@@ -5,7 +5,6 @@ using System.Windows;
 using Funq;
 using Microsoft.Phone.Scheduler;
 using RichardSzalay.PocketCiTray.Services;
-using WP7Contrib.Logging;
 
 namespace RichardSzalay.PocketCiTray.BackgroundTask
 {
@@ -54,7 +53,7 @@ namespace RichardSzalay.PocketCiTray.BackgroundTask
 
             // TODO: Move all this to a bootstrap
 
-            var log = new LoggingService(Logging.AgentLogName);
+            var log = new ThreadSafeLoggingService(Logging.AgentLogName);
 
             container.Register<ILog>(log);
             container.Register<ILogManager>(log);
@@ -107,7 +106,6 @@ namespace RichardSzalay.PocketCiTray.BackgroundTask
 
 #if DEBUG_AGENT
             ScheduledActionService.LaunchForTest("BuildScout.BackgroundUpdateAgent", TimeSpan.FromSeconds(10));
-            
 #endif
         }
 

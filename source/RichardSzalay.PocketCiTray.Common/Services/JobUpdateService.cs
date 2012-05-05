@@ -10,7 +10,7 @@ using RichardSzalay.PocketCiTray.Providers;
 using RichardSzalay.PocketCiTray.Extensions;
 using System.Diagnostics;
 using System.Net;
-using WP7Contrib.Logging;
+
 
 namespace RichardSzalay.PocketCiTray.Services
 {
@@ -28,7 +28,6 @@ namespace RichardSzalay.PocketCiTray.Services
         private readonly IJobNotificationService jobNotificationService;
         private readonly ILog log;
         private readonly INetworkInterfaceFacade networkInterfaceFacade;
-        private readonly ITrackingService trackingService;
         private readonly IApplicationInformation applicationInformation;
 
         public event EventHandler Started;
@@ -42,8 +41,7 @@ namespace RichardSzalay.PocketCiTray.Services
             IClock clock, ISettingsService settingsService, IMutexService mutexService,
             ISchedulerAccessor schedulerAccessor, IApplicationTileService applicationTileService,
             IJobNotificationService jobNotificationService, ILog log,
-            INetworkInterfaceFacade networkInterfaceFacade, ITrackingService trackingService,
-            IApplicationInformation applicationInformation)
+            INetworkInterfaceFacade networkInterfaceFacade, IApplicationInformation applicationInformation)
         {
             this.jobProviderFactory = jobProviderFactory;
             this.jobRepository = jobRepository;
@@ -55,7 +53,6 @@ namespace RichardSzalay.PocketCiTray.Services
             this.jobNotificationService = jobNotificationService;
             this.log = log;
             this.networkInterfaceFacade = networkInterfaceFacade;
-            this.trackingService = trackingService;
             this.applicationInformation = applicationInformation;
         }
 
@@ -213,7 +210,5 @@ namespace RichardSzalay.PocketCiTray.Services
         {
             disposable.Dispose();
         }
-
-        
     }
 }   

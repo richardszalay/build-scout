@@ -7,7 +7,6 @@ using System.Windows.Markup;
 using System.Windows.Media;
 using System.Windows.Media.Animation;
 using Microsoft.Phone.Controls;
-using WP7Contrib.View.Controls.Extensions;
 using System;
 
 namespace RichardSzalay.PocketCiTray.Infrastructure
@@ -61,7 +60,10 @@ namespace RichardSzalay.PocketCiTray.Infrastructure
             else if (Mode == ContinuumTransitionMode.ForwardOut)
                 storyboard = XamlReader.Load(ContinuumForwardOutStoryboard) as Storyboard;
 
-            ContinuumElement.GetTransform<CompositeTransform>(TransformCreationMode.CreateOrAddAndIgnoreMatrix);
+            if (ContinuumElement.RenderTransform == null || !(ContinuumElement.RenderTransform is CompositeTransform))
+            {
+                ContinuumElement.RenderTransform = new CompositeTransform();
+            }
 
             SetTargets(new Dictionary<string, FrameworkElement>()
                 {

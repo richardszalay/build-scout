@@ -220,5 +220,12 @@ namespace RichardSzalay.PocketCiTray.Services
                 handler(this, new System.ComponentModel.PropertyChangedEventArgs(property));
             }
         }
+
+
+        public bool UseColoredTiles
+        {
+            get { return GetValue("UseColoredTiles", true); }
+            set { ChangeValue("UseColoredTiles", value); }
+        }
     }
 }

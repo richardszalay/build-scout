@@ -117,8 +117,14 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="AboutMenuItem" xml:space="preserve">
+    <value>about</value>
+  </data>
   <data name="AddBuildServerTitle" xml:space="preserve">
     <value>add server</value>
+  </data>
+  <data name="AddMenuItem" xml:space="preserve">
+    <value>add</value>
   </data>
   <data name="ApplicationTitle" xml:space="preserve">
     <value>Build Scout</value>
@@ -157,13 +163,16 @@
     <value>Delete build server?</value>
   </data>
   <data name="DeleteBuildServerConfirmationMessage" xml:space="preserve">
-    <value>All related jobs will be removed, but will remain on the server</value>
+    <value>All related builds will be removed, but will remain on the server</value>
   </data>
   <data name="DeleteJobConfirmationDescription" xml:space="preserve">
-    <value>Delete job?</value>
+    <value>Delete build?</value>
   </data>
   <data name="DeleteJobConfirmationMessage" xml:space="preserve">
-    <value>The job will remain on the server</value>
+    <value>The build will remain on the server</value>
+  </data>
+  <data name="DeleteMenuItem" xml:space="preserve">
+    <value>delete</value>
   </data>
   <data name="EditColourSettingsTitle" xml:space="preserve">
     <value>colours</value>
@@ -174,17 +183,20 @@
   <data name="EditScheduleSettingsTitle" xml:space="preserve">
     <value>schedule</value>
   </data>
+  <data name="EditSettingsMenuItem" xml:space="preserve">
+    <value>settings</value>
+  </data>
   <data name="EditSettingsTitle" xml:space="preserve">
     <value>settings</value>
   </data>
   <data name="EnableBackgroundTaskPrompt" xml:space="preserve">
-    <value>Would you like to enable job status updates while the application is not running? You can change this setting at any time in Settings.</value>
+    <value>Would you like to enable build status updates while the application is not running? You can change this setting at any time in Settings.</value>
   </data>
   <data name="ErrorValidatingBuildServer" xml:space="preserve">
     <value>Error validating build server</value>
   </data>
   <data name="FindingJobsStatusMessage" xml:space="preserve">
-    <value>Looking for jobs...</value>
+    <value>Looking for builds...</value>
   </data>
   <data name="GrayAccentBrush" xml:space="preserve">
     <value>gray</value>
@@ -199,7 +211,7 @@
     <value>lime</value>
   </data>
   <data name="ListJobsTitle" xml:space="preserve">
-    <value>jobs</value>
+    <value>builds</value>
   </data>
   <data name="LoadingStatusMessage" xml:space="preserve">
     <value>loading</value>
@@ -212,6 +224,9 @@
   </data>
   <data name="MinutesAgo" xml:space="preserve">
     <value>{0} mins ago</value>
+  </data>
+  <data name="NoJobs" xml:space="preserve">
+    <value>No builds</value>
   </data>
   <data name="NotificationNoneSelectedOption" xml:space="preserve">
     <value>never</value>
@@ -228,11 +243,17 @@
   <data name="PinkAccentBrush" xml:space="preserve">
     <value>pink</value>
   </data>
+  <data name="PinToStart" xml:space="preserve">
+    <value>pin to start</value>
+  </data>
   <data name="PurpleAccentBrush" xml:space="preserve">
     <value>purple</value>
   </data>
   <data name="RedAccentBrush" xml:space="preserve">
     <value>red</value>
+  </data>
+  <data name="RefreshMenuItem" xml:space="preserve">
+    <value>refresh</value>
   </data>
   <data name="SelectBuildServerTitle" xml:space="preserve">
     <value>select server</value>
@@ -250,13 +271,13 @@
     <value>Trial Mode</value>
   </data>
   <data name="TrialModePrompt" xml:space="preserve">
-    <value>Thanks for trying Build Scout. The trial is fully functional, but limited to monitoring a single job. Please provide constructive feedback either through the marketplace or via the about screen.</value>
+    <value>Thanks for trying Build Scout. The trial is fully functional, but limited to monitoring a single build. Please provide constructive feedback either through the marketplace or via the about screen.</value>
   </data>
   <data name="TrialModePromptTitle" xml:space="preserve">
     <value>Trial Mode</value>
   </data>
   <data name="TrialModeTooManyJobsException" xml:space="preserve">
-    <value>The trial is limited to 1 job. Purchase Build Scout to add unlimited jobs and support the developer.</value>
+    <value>The trial is limited to 1 build. Purchase Build Scout to add unlimited builds and support the developer.</value>
   </data>
   <data name="UpdateIntervalDay" xml:space="preserve">
     <value>1 day</value>
@@ -287,5 +308,61 @@
   </data>
   <data name="Yesterday" xml:space="preserve">
     <value>yesterday</value>
+  </data>
+  <data name="AddJobsTitle" xml:space="preserve">
+    <value>add builds</value>
+  </data>
+  <data name="AdvancedButtonLabel" xml:space="preserve">
+    <value>advanced</value>
+  </data>
+  <data name="ErrorFindingJobsPrefix" xml:space="preserve">
+    <value>Error finding builds.</value>
+  </data>
+  <data name="FindMenuItem" xml:space="preserve">
+    <value>find</value>
+    <comment>Indicates the current list can be filtered. Used in the add jobs screen</comment>
+  </data>
+  <data name="LoadingLabel" xml:space="preserve">
+    <value>Loading...</value>
+    <comment>Used in the add jobs screen while jobs are being loaded</comment>
+  </data>
+  <data name="NoFilterResultsPrefix" xml:space="preserve">
+    <value>No results for</value>
+    <comment>Used in the add jobs screen to indicate the user's filter text does not match any jobs</comment>
+  </data>
+  <data name="NoRemoteJobs" xml:space="preserve">
+    <value>No builds found</value>
+    <comment>Used in the add jobs screen to indicate the server has no jobs</comment>
+  </data>
+  <data name="PasswordLabel" xml:space="preserve">
+    <value>Password</value>
+  </data>
+  <data name="SelectAllMenuItem" xml:space="preserve">
+    <value>select all</value>
+    <comment>Toggles selection of all the items in a list. Used in the add jobs screen.</comment>
+  </data>
+  <data name="ServerTypeLabel" xml:space="preserve">
+    <value>Type</value>
+  </data>
+  <data name="ServerUrlLabel" xml:space="preserve">
+    <value>URL</value>
+  </data>
+  <data name="UsernameLabel" xml:space="preserve">
+    <value>Username</value>
+  </data>
+  <data name="LastBuild" xml:space="preserve">
+    <value>last build</value>
+  </data>
+  <data name="LastBuildLabel" xml:space="preserve">
+    <value>Label:</value>
+  </data>
+  <data name="PinMenuItem" xml:space="preserve">
+    <value>pin</value>
+  </data>
+  <data name="ViewJobWebsite" xml:space="preserve">
+    <value>view website</value>
+  </data>
+  <data name="HelpMenuItem" xml:space="preserve">
+    <value>help</value>
   </data>
 </root>

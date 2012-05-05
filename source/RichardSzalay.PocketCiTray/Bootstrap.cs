@@ -5,7 +5,7 @@ using System.Text;
 using System.Threading;
 using System.Windows;
 using RichardSzalay.PocketCiTray.Services;
-using WP7Contrib.Logging;
+
 
 namespace RichardSzalay.PocketCiTray
 {
@@ -39,9 +39,6 @@ namespace RichardSzalay.PocketCiTray
             this.applicationInformation = applicationInformation;
         }
 
-        /// <summary>
-        /// Runs this instance.
-        /// </summary>
         public void Startup()
         {
             applicationMutex = mutexService.GetOwned(MutexNames.ForegroundApplication, TimeSpan.FromMilliseconds(100));
@@ -68,18 +65,12 @@ namespace RichardSzalay.PocketCiTray
                 messageBox.Show(Strings.TrialModePrompt, Strings.TrialModePromptTitle, MessageBoxButton.OK);
             }
 
-            if (periodicJobUpdateService.CanRegisterBackgroundTask)
-            {
-                var result = messageBox.Show(Strings.EnableBackgroundTaskPrompt, String.Empty, MessageBoxButton.OKCancel);
-
-                if (result != MessageBoxResult.OK)
-                {
-                    applicationSettings.BackgroundUpdateInterval = TimeSpan.Zero;
-                }
-            }
-            else
+            if (!periodicJobUpdateService.CanRegisterBackgroundTask)
             {
                 applicationSettings.BackgroundUpdateInterval = TimeSpan.Zero;
+
+                applicationSettings.UseColoredTiles = false;
+                settingsApplier.RebuildSharedResources(applicationSettings);
             }
 
             applicationSettings.FirstRun = false;

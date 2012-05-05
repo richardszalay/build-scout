@@ -35,26 +35,26 @@
 
         <!--TitlePanel contains the name of the application and page title-->
         <StackPanel x:Name="TitlePanel" Grid.Row="0" Margin="12,17,0,28">
-            <TextBlock x:Name="ApplicationTitle" Text="SETTINGS" Style="{StaticResource PhoneTextNormalStyle}"/>
-            <TextBlock x:Name="PageTitle" Text="schedule" Margin="9,-7,0,0" Style="{StaticResource PhoneTextTitle1Style}"/>
+            <TextBlock x:Name="ApplicationTitle" Text="{Binding Path=SettingsStrings.SettingsTitleUpper, Source={StaticResource LocalizedResources}}" Style="{StaticResource PhoneTextNormalStyle}"/>
+            <TextBlock x:Name="PageTitle" Text="{Binding Path=SettingsStrings.ScheduleTitle, Source={StaticResource LocalizedResources}}" Margin="9,-7,0,0" Style="{StaticResource PhoneTextTitle1Style}"/>
         </StackPanel>
 
         <!--ContentPanel - place additional content here-->
         <ScrollViewer x:Name="ContentPanel" Grid.Row="1" Margin="12,0,0,0">
             <StackPanel>
-                <TextBlock Text="Foreground Updates" Style="{StaticResource PhoneTextSubtleStyle}" />
+                <TextBlock Text="{Binding Path=SettingsStrings.ForegroundUpdates, Source={StaticResource LocalizedResources}}" Style="{StaticResource PhoneTextSubtleStyle}" />
                 <tk:ListPicker Margin="12,0,12,12" ItemsSource="{Binding ForegroundUpdateOptions}" SelectedItem="{Binding ForegroundUpdateInterval, Mode=TwoWay}" DisplayMemberPath="Display" />
 
                 <StackPanel Orientation="Horizontal" Margin="0,-12,0,5">
                     <CheckBox IsChecked="{Binding ApplicationSettings.RunUnderLockScreen, Mode=TwoWay}" HorizontalAlignment="Left" HorizontalContentAlignment="Left">
-                        <TextBlock Text="Continue to update when the phone is locked" 
+                        <TextBlock Text="{Binding Path=SettingsStrings.RunUnderLockScreen, Source={StaticResource LocalizedResources}}" 
                                     TextWrapping="Wrap"
                                     Style="{StaticResource PhoneTextNormalStyle}" Margin="0,0,0,0" HorizontalAlignment="Left" />
                     </CheckBox>
                 </StackPanel>
 
                 <StackPanel Visibility="{Binding ShowBackgroundScheduleOptions, Converter={StaticResource BooleanVisibilityConverter}}">
-                    <TextBlock Text="Background Updates" Style="{StaticResource PhoneTextSubtleStyle}" Margin="12,30,0,0" />
+                    <TextBlock Text="{Binding Path=SettingsStrings.BackgroundUpdates, Source={StaticResource LocalizedResources}}" Style="{StaticResource PhoneTextSubtleStyle}" Margin="12,30,0,0" />
                     <tk:ListPicker Margin="12,0,12,12" ItemsSource="{Binding BackgroundUpdateOptions}" SelectedItem="{Binding BackgroundUpdateInterval, Mode=TwoWay}" DisplayMemberPath="Display" />
                 </StackPanel>
             </StackPanel>

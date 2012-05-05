@@ -21,7 +21,6 @@ namespace RichardSzalay.PocketCiTray.ViewModels
         private readonly Func<TList, string, bool> filterCallback;
         private readonly IScheduler userInterface;
         private string filter;
-        private string previousFilter;
         private IList<TList> visibleItems;
 
         private readonly SerialDisposable eventDispatcherSubscription = new SerialDisposable();

@@ -37,7 +37,7 @@
     <DebugType>pdbonly</DebugType>
     <Optimize>true</Optimize>
     <OutputPath>Bin\Release</OutputPath>
-    <DefineConstants>TRACE;DEBUG;SILVERLIGHT;WINDOWS_PHONE;DEBUG_AGENT</DefineConstants>
+    <DefineConstants>TRACE;SILVERLIGHT;WINDOWS_PHONE</DefineConstants>
     <NoStdLib>true</NoStdLib>
     <NoConfig>true</NoConfig>
     <ErrorReport>prompt</ErrorReport>
@@ -87,9 +87,6 @@
     <Reference Include="Newtonsoft.Json">
       <HintPath>..\packages\Newtonsoft.Json.4.0.8\lib\sl4-windowsphone71\Newtonsoft.Json.dll</HintPath>
     </Reference>
-    <Reference Include="SilverlightSerializer.WP71">
-      <HintPath>..\packages\WP7Contrib.Caching.1.0.0.16\lib\sl4-WindowsPhone71\SilverlightSerializer.WP71.dll</HintPath>
-    </Reference>
     <Reference Include="System.Observable" />
     <Reference Include="System.Reactive, Version=1.0.10621.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <HintPath>..\packages\Rx-Main.1.0.11226\lib\SL3-WP\System.Reactive.dll</HintPath>
@@ -103,30 +100,6 @@
     <Reference Include="System.Xml" />
     <Reference Include="System.Net" />
     <Reference Include="mscorlib.extensions" />
-    <Reference Include="WP7Contrib.Caching">
-      <HintPath>..\packages\WP7Contrib.Caching.1.0.0.16\lib\sl4-WindowsPhone71\WP7Contrib.Caching.dll</HintPath>
-    </Reference>
-    <Reference Include="WP7Contrib.Collections">
-      <HintPath>..\packages\WP7Contrib.Core.1.0.0.16\lib\sl4-wp71\WP7Contrib.Collections.dll</HintPath>
-    </Reference>
-    <Reference Include="WP7Contrib.Common">
-      <HintPath>..\packages\WP7Contrib.Core.1.0.0.16\lib\sl4-wp71\WP7Contrib.Common.dll</HintPath>
-    </Reference>
-    <Reference Include="WP7Contrib.Communications">
-      <HintPath>..\packages\WP7Contrib.Net.1.0.0.16\lib\sl4-wp71\WP7Contrib.Communications.dll</HintPath>
-    </Reference>
-    <Reference Include="WP7Contrib.Diagnostics">
-      <HintPath>..\packages\WP7Contrib.Core.1.0.0.16\lib\sl4-wp71\WP7Contrib.Diagnostics.dll</HintPath>
-    </Reference>
-    <Reference Include="WP7Contrib.Logging, Version=1.0.0.16, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\WP7Contrib.Core.1.0.0.16\lib\sl4-wp71\WP7Contrib.Logging.dll</HintPath>
-    </Reference>
-    <Reference Include="WP7Contrib.Serialization.Helpers">
-      <HintPath>..\packages\WP7Contrib.Services.1.0.0.16\lib\sl4-wp71\WP7Contrib.Serialization.Helpers.dll</HintPath>
-    </Reference>
-    <Reference Include="WP7Contrib.Services">
-      <HintPath>..\packages\WP7Contrib.Services.1.0.0.16\lib\sl4-wp71\WP7Contrib.Services.dll</HintPath>
-    </Reference>
     <Reference Include="Microsoft.SilverlightMediaFramework.Compatibility.Phone">
       <HintPath>..\libs\Analytics\Microsoft.SilverlightMediaFramework.Compatibility.Phone.dll</HintPath>
     </Reference>

@@ -7,7 +7,7 @@ using Microsoft.Phone.Controls;
 using Microsoft.Phone.Shell;
 using RichardSzalay.PocketCiTray.Services;
 using RichardSzalay.PocketCiTray.ViewModels;
-using WP7Contrib.Logging;
+
 using System.Diagnostics;
 using Microsoft.Phone.Info;
 using BugSense;

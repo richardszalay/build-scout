@@ -97,10 +97,6 @@ namespace RichardSzalay.PocketCiTray.Services
 
             switch (status)
             {
-                case WebExceptionStatus.UnknownError:
-                case WebExceptionStatus.ProtocolError:
-                    return String.Format(CommonStrings.HttpServerResponseStatusError, ((HttpWebResponse)ex.Response).StatusCode);
-
                 case WebExceptionStatus.Timeout:
                     return CommonStrings.HttpServerResponseTimedOutError;
 
@@ -120,8 +116,36 @@ namespace RichardSzalay.PocketCiTray.Services
                     return CommonStrings.HttpServerResponseNetwork;
 
                 default:
-                    return CommonStrings.HttpServerUnexpectedResponse;
+                    var response = ex.Response as HttpWebResponse;
+
+                    return (response != null)
+                        ? GetDisplayMessage(response)
+                        : CommonStrings.HttpServerUnexpectedResponse;
             }
+        }
+
+        public static string GetDisplayMessage(HttpWebResponse response)
+        {
+            switch (response.StatusCode)
+            {
+                case HttpStatusCode.GatewayTimeout:
+                case HttpStatusCode.RequestTimeout:
+                    return CommonStrings.HttpServerResponseTimedOutError;
+
+                case HttpStatusCode.Forbidden:
+                case HttpStatusCode.Unauthorized:
+                    return CommonStrings.HttpServerResponseForbidden;
+
+                default:
+                    string statusLine = String.Format("{0:D} {1}",
+                        response.StatusCode, response.StatusDescription);
+
+                    return String.Format(CommonStrings.HttpServerHttpStatusError, statusLine);
+            }
+
+            
+
+
         }
 
         private static bool IsIncorrectlyReportedConnectionError(WebException ex)

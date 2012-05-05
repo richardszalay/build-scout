@@ -13,9 +13,9 @@
 // --------------------------------------------------------------------------------------------------------------------
 
 using System;
+using System.Linq;
 using System.Reactive.Linq;
 using Microsoft.Phone.Shell;
-using WP7Contrib.View.Controls.Extensions;
 
 namespace RichardSzalay.PocketCiTray.Infrastructure
 {
@@ -38,7 +38,12 @@ namespace RichardSzalay.PocketCiTray.Infrastructure
         {
             base.OnAttached();
 
-            this.applicationBarMenuItem = this.AssociatedObject.ApplicationBar.FindMenuItem(this.TextKey, true);
+            this.applicationBarMenuItem = this.AssociatedObject.ApplicationBar
+                .MenuItems.OfType<ApplicationBarMenuItem>()
+                .First(x => x.Text == this.TextKey);
+
+            TextChanged();
+            UpdateCanExecute();
         }
 
         protected override void TextChanged()
@@ -51,7 +56,7 @@ namespace RichardSzalay.PocketCiTray.Infrastructure
 
         protected override void UpdateCanExecute()
         {
-            if (this.applicationBarMenuItem != null)
+            if (this.applicationBarMenuItem != null && Command != null)
             {
                 this.applicationBarMenuItem.IsEnabled = this.Command.CanExecute(this.CommandParameter);
             }

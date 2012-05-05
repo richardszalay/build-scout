@@ -13,12 +13,11 @@
 // --------------------------------------------------------------------------------------------------------------------
 
 using System;
+using System.Linq;
 using System.Reactive.Linq;
 using System.Windows;
 using System.Windows.Data;
 using Microsoft.Phone.Shell;
-using WP7Contrib.View.Controls.BindingListener;
-using WP7Contrib.View.Controls.Extensions;
 
 namespace RichardSzalay.PocketCiTray.Infrastructure
 {
@@ -73,20 +72,24 @@ namespace RichardSzalay.PocketCiTray.Infrastructure
                    (EventHandler<EventArgs> handler) => new EventHandler(handler),
                    handler => this.applicationBarIconButton.Click += handler,
                    handler => this.applicationBarIconButton.Click -= handler).Subscribe(this.OnNextClick));
-
-            this.BindIcon();
         }
 
         protected override void OnAttached()
         {
             base.OnAttached();
 
-            this.applicationBarIconButton = this.AssociatedObject.ApplicationBar.FindButton(this.TextKey, true);
+            this.applicationBarIconButton = this.AssociatedObject.ApplicationBar
+                .Buttons.OfType<ApplicationBarIconButton>()
+                .First(x => x.Text == this.TextKey);
+
+            TextChanged();
+            UpdateCanExecute();
+            IconBindingChanged();
         }
 
         protected override void TextChanged()
         {
-            if (this.applicationBarIconButton != null)
+            if (this.applicationBarIconButton != null && Text != null)
             {
                 this.applicationBarIconButton.Text = this.Text;
             }
@@ -110,26 +113,11 @@ namespace RichardSzalay.PocketCiTray.Infrastructure
             }
         }
 
-        private void BindIcon()
-        {
-            Binding binding = this.IconBinding;
-            if (binding != null)
-            {
-                this.Subscriptions.Add(
-                    this.AssociatedObject.GetChanges(binding).Subscribe(
-                        args =>
-                        {
-                            this.icon = args.NewValue as Uri;
-                            this.IconChanged();
-                        }));
-            }
-        }
-
         private void IconBindingChanged()
         {
             if (this.AssociatedObject != null)
             {
-                this.BindIcon();
+                //this.BindIcon();
             }
         }
 

@@ -1,7 +1,7 @@
 ﻿using System;
 using System.IO;
 using Microsoft.Phone.Scheduler;
-using WP7Contrib.Logging;
+
 using System.Windows.Media;
 using Microsoft.Phone.Shell;
 using System.Reactive;
@@ -76,17 +76,25 @@ namespace RichardSzalay.PocketCiTray.Services
             var failedColor = GetTileColor(applicationSettings.FailedColorResource);
             var unavailableColor = GetTileColor(applicationSettings.UnavailableColorResource);
 
-            applicationSettings.SuccessTileUri = UpdateTileImage(successColor, @"Shared\ShellContent\SuccessTile.png");
-            applicationSettings.FailureTileUri = UpdateTileImage(failedColor, @"Shared\ShellContent\FailedTile.png");
-            applicationSettings.UnavailableTileUri = UpdateTileImage(unavailableColor, @"Shared\ShellContent\UnavailableTile.png");
+            if (applicationSettings.UseColoredTiles)
+            {
+                applicationSettings.SuccessTileUri = UpdateTileImage(successColor, @"Shared\ShellContent\SuccessTile.jpg");
+                applicationSettings.FailureTileUri = UpdateTileImage(failedColor, @"Shared\ShellContent\FailedTile.jpg");
+                applicationSettings.UnavailableTileUri = UpdateTileImage(unavailableColor, @"Shared\ShellContent\UnavailableTile.jpg");
+            }
+            else
+            {
+                Uri UncoloredTileUri = new Uri("Images/Tiles/Template.png", UriKind.Relative);
+                applicationSettings.SuccessTileUri = UncoloredTileUri;
+                applicationSettings.FailureTileUri = UncoloredTileUri;
+                applicationSettings.UnavailableTileUri = UncoloredTileUri;
+            }
             applicationSettings.Save();
         }
 
         private Color GetTileColor(string brushResourceKey)
         {
-            return (brushResourceKey == PhoneAccentBrushResourceKey)
-                ? Colors.Transparent
-                : applicationResourceFacade.GetResource<SolidColorBrush>(brushResourceKey).Color;
+            return applicationResourceFacade.GetResource<SolidColorBrush>(brushResourceKey).Color;
         }
 
         private Uri UpdateTileImage(Color color, string path)
@@ -127,11 +135,11 @@ namespace RichardSzalay.PocketCiTray.Services
                 {
                     periodicJobUpdateService.RegisterBackgroundTask();
                 }
-                catch (InvalidOperationException ex)
+                catch (InvalidOperationException)
                 {
                     log.Write("InvalidOperationException registering background service");
                 }
-                catch (SchedulerServiceException ex)
+                catch (SchedulerServiceException)
                 {
                     log.Write("SchedulerServiceException registering background service");
                 }

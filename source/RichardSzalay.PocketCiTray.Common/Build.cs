@@ -4,8 +4,6 @@ namespace RichardSzalay.PocketCiTray
 {
     public class Build
     {
-        private BuildResult buildResult;
-
         public BuildResultChange Change { get; set; }
         public BuildResult Result { get; set; }
         public DateTimeOffset Time { get; set; }

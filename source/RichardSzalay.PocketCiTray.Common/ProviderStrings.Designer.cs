@@ -39,7 +39,13 @@ namespace RichardSzalay.PocketCiTray {
         public static global::System.Resources.ResourceManager ResourceManager {
             get {
                 if (object.ReferenceEquals(resourceMan, null)) {
-                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("RichardSzalay.PocketCiTray.ProviderStrings", typeof(ProviderStrings).Assembly);
+#if PSEUDOLOCALIZER_ENABLED
+                    global::System.Resources.ResourceManager temp =
+                        new Delay.PseudoLocalizerResourceManager("RichardSzalay.PocketCiTray.ProviderStrings", typeof(ProviderStrings).Assembly);
+#else
+                        global::System.Resources.ResourceManager temp =
+                            new global::System.Resources.ResourceManager("RichardSzalay.PocketCiTray.ProviderStrings", typeof(ProviderStrings).Assembly);
+#endif
                     resourceMan = temp;
                 }
                 return resourceMan;

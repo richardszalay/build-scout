@@ -1,10 +1,8 @@
 ﻿using System.Reactive.Concurrency;
 using Funq;
-using Google.WebAnalytics;
-using Microsoft.WebAnalytics;
 using RichardSzalay.PocketCiTray.Providers;
 using RichardSzalay.PocketCiTray.ViewModels;
-using WP7Contrib.Logging;
+
 using Microsoft.Phone.Controls;
 using Microsoft.Phone.Shell;
 using RichardSzalay.PocketCiTray.Controllers;
@@ -85,6 +83,12 @@ namespace RichardSzalay.PocketCiTray.Services
                 c.Resolve<IApplicationResourceFacade>(),
                 c.Resolve<IThemeCssGenerator>()
                 ));
+
+            container.Register<IApplicationMarketplaceFacade>(c => new ApplicationMarketplaceFacade(
+                c.Resolve<IApplicationInformation>()
+                ));
+
+            container.Register<IShellTileService>(c => new UpdatingShellTileService());
 
             container.Register<IJobController>(c => new JobController(
                 c.Resolve<IJobRepository>(),
@@ -187,12 +191,6 @@ namespace RichardSzalay.PocketCiTray.Services
                 c.Resolve<IApplicationInformation>(),
                 c.Resolve<IApplicationMarketplaceFacade>(),
                 c.Resolve<INavigationService>()
-                )).ReusedWithin(ReuseScope.None);
-
-            container.Register<IGoogleAnalyticsFactory>(c => new GoogleAnalyticsFactory(
-                TrackingCodes.Foreground,
-                c.Resolve<IDeviceInformationService>(),
-                c.Resolve<IApplicationInformation>()
                 )).ReusedWithin(ReuseScope.None);
         }
 

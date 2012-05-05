@@ -52,7 +52,7 @@
                         <StackPanel Margin="0,0,0,6">
                             <tk:ContextMenuService.ContextMenu>
                                 <tk:ContextMenu>
-                                    <tk:MenuItem Header="delete" 
+                                    <tk:MenuItem Header="{Binding Path=Strings.DeleteMenuItem, Source={StaticResource LocalizedResources}}" 
                                                  Command="{Binding DataContext.DeleteBuildServerCommand, ElementName=ContentPanel}"
                                                  CommandParameter="{Binding}" />
                                 </tk:ContextMenu>
@@ -76,6 +76,7 @@
     <i:Interaction.Behaviors>
         <inf:ApplicationBarIconButtonCommand TextKey="add"
                                                       CommandBinding="{Binding AddBuildServerCommand}"
+                                                      Text="{Binding Path=Strings.AddMenuItem, Source={StaticResource LocalizedResources}}"
                                                       />
     </i:Interaction.Behaviors>
 

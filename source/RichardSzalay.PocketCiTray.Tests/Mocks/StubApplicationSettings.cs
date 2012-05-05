@@ -106,5 +106,12 @@ namespace RichardSzalay.PocketCiTray.Tests.Mocks
         public string UnavailableColorResource { get; set; }
 
         public event System.ComponentModel.PropertyChangedEventHandler PropertyChanged;
+
+
+        public bool UseColoredTiles
+        {
+            get;
+            set;
+        }
     }
 }

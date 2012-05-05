@@ -120,8 +120,14 @@
   <data name="ApplicationTitle" xml:space="preserve">
     <value>Build Scout</value>
   </data>
+  <data name="HttpServerHttpStatusError" xml:space="preserve">
+    <value>The server returned an error ({0})</value>
+  </data>
   <data name="HttpServerResponseConnection" xml:space="preserve">
     <value>The server could not be contacted</value>
+  </data>
+  <data name="HttpServerResponseForbidden" xml:space="preserve">
+    <value>Your login details for the build server were rejected</value>
   </data>
   <data name="HttpServerResponseNetwork" xml:space="preserve">
     <value>There is a problem with the network connection</value>
