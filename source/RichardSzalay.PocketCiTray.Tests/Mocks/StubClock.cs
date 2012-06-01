@@ -24,5 +24,12 @@ namespace RichardSzalay.PocketCiTray.Tests.Mocks
             get;
             set;
         }
+
+
+        public DateTimeOffset LocalNow
+        {
+            get;
+            set;
+        }
     }
 }

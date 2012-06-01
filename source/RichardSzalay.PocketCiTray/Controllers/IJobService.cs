@@ -7,7 +7,7 @@ namespace RichardSzalay.PocketCiTray.Controllers
 {
     public interface IJobController
     {
-        IObservable<Unit> DeleteJob(Job job);
+        IObservable<bool> DeleteJob(Job job);
 
         IObservable<ICollection<Job>> AddJobs(ICollection<Job> jobs);
 

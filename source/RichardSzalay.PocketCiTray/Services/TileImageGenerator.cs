@@ -27,10 +27,15 @@ namespace RichardSzalay.PocketCiTray.Services
 
         public void Create(Color color, Stream outputStream)
         {
-            int colorValue = (color.A << 24) |
-                color.R << 16 |
+            /*int colorValue = color.R << 24 |
+                color.G << 16 |
+                color.B << 8 |
+                color.A;*/
+
+            int colorValue = color.R << 16 |
                 color.G << 8 |
-                color.B;
+                color.B |
+                color.A << 24;
 
             var template = new WriteableBitmap(GetTemplateImage());
             var bitmap = CreateEmptyBitmap(TileWidth, TileWidth, color);
@@ -38,7 +43,6 @@ namespace RichardSzalay.PocketCiTray.Services
             var tileRect = new Rect(0D, 0D, TileWidth, TileWidth);
 
             bitmap.Blit(tileRect, template, tileRect, WriteableBitmapExtensions.BlendMode.Alpha);
-
             
             bitmap.SaveJpeg(outputStream, TileWidth, TileWidth, 0, 90);
         }
@@ -83,10 +87,10 @@ namespace RichardSzalay.PocketCiTray.Services
 
         private WriteableBitmap CreateEmptyBitmap(int width, int height, Color color)
         {
-            int colorValue = (color.R << 24) |
-                color.G << 16 |
-                color.B << 8 |
-                color.A;
+            int colorValue = (color.R << 16) |
+                color.G << 8 |
+                color.B |
+                color.A << 24;
 
 
             WriteableBitmap bitmap = new WriteableBitmap(width, height);

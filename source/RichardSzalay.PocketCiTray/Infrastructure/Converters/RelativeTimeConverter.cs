@@ -24,7 +24,7 @@ namespace RichardSzalay.PocketCiTray.Infrastructure
 
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
-            var date = ((DateTimeOffset) value).ToUniversalTime();
+            var date = ((DateTimeOffset)value).ToLocalTime();
             var now = clock.UtcNow;
             var diff = now - date;
 

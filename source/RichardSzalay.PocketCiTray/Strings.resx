@@ -163,13 +163,13 @@
     <value>Delete build server?</value>
   </data>
   <data name="DeleteBuildServerConfirmationMessage" xml:space="preserve">
-    <value>All related builds will be removed, but will remain on the server</value>
+    <value>All related jobs will be removed, but will remain on the server</value>
   </data>
   <data name="DeleteJobConfirmationDescription" xml:space="preserve">
-    <value>Delete build?</value>
+    <value>Delete job?</value>
   </data>
   <data name="DeleteJobConfirmationMessage" xml:space="preserve">
-    <value>The build will remain on the server</value>
+    <value>The job will remain on the server</value>
   </data>
   <data name="DeleteMenuItem" xml:space="preserve">
     <value>delete</value>
@@ -196,7 +196,7 @@
     <value>Error validating build server</value>
   </data>
   <data name="FindingJobsStatusMessage" xml:space="preserve">
-    <value>Looking for builds...</value>
+    <value>Looking for jobs...</value>
   </data>
   <data name="GrayAccentBrush" xml:space="preserve">
     <value>gray</value>
@@ -211,7 +211,7 @@
     <value>lime</value>
   </data>
   <data name="ListJobsTitle" xml:space="preserve">
-    <value>builds</value>
+    <value>jobs</value>
   </data>
   <data name="LoadingStatusMessage" xml:space="preserve">
     <value>loading</value>
@@ -226,7 +226,7 @@
     <value>{0} mins ago</value>
   </data>
   <data name="NoJobs" xml:space="preserve">
-    <value>No builds</value>
+    <value>No jobs</value>
   </data>
   <data name="NotificationNoneSelectedOption" xml:space="preserve">
     <value>never</value>
@@ -271,13 +271,13 @@
     <value>Trial Mode</value>
   </data>
   <data name="TrialModePrompt" xml:space="preserve">
-    <value>Thanks for trying Build Scout. The trial is fully functional, but limited to monitoring a single build. Please provide constructive feedback either through the marketplace or via the about screen.</value>
+    <value>Thanks for trying Build Scout. The trial is fully functional, but limited to monitoring a single job. Please provide constructive feedback either through the marketplace or via the about screen.</value>
   </data>
   <data name="TrialModePromptTitle" xml:space="preserve">
     <value>Trial Mode</value>
   </data>
   <data name="TrialModeTooManyJobsException" xml:space="preserve">
-    <value>The trial is limited to 1 build. Purchase Build Scout to add unlimited builds and support the developer.</value>
+    <value>The trial is limited to 1 job. Purchase Build Scout to add unlimited jobs and support the developer.</value>
   </data>
   <data name="UpdateIntervalDay" xml:space="preserve">
     <value>1 day</value>
@@ -310,13 +310,13 @@
     <value>yesterday</value>
   </data>
   <data name="AddJobsTitle" xml:space="preserve">
-    <value>add builds</value>
+    <value>server jobs</value>
   </data>
   <data name="AdvancedButtonLabel" xml:space="preserve">
     <value>advanced</value>
   </data>
   <data name="ErrorFindingJobsPrefix" xml:space="preserve">
-    <value>Error finding builds.</value>
+    <value>Error finding jobs.</value>
   </data>
   <data name="FindMenuItem" xml:space="preserve">
     <value>find</value>
@@ -331,7 +331,7 @@
     <comment>Used in the add jobs screen to indicate the user's filter text does not match any jobs</comment>
   </data>
   <data name="NoRemoteJobs" xml:space="preserve">
-    <value>No builds found</value>
+    <value>No jobs found</value>
     <comment>Used in the add jobs screen to indicate the server has no jobs</comment>
   </data>
   <data name="PasswordLabel" xml:space="preserve">

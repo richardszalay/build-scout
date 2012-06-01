@@ -56,15 +56,15 @@
         <!--ContentPanel - place additional content here-->
         <ScrollViewer x:Name="ContentPanel" Grid.Row="1" Margin="12,0,0,0">
             <StackPanel>
-                <TextBlock Text="{Binding Path=SettingsStrings.SuccessfulColor, Source={StaticResource LocalizedResources}}" Style="{StaticResource PhoneTextSubtleStyle}" Margin="12,0,12,4" />
+                <TextBlock Text="{Binding Path=SettingsStrings.SuccessfulLabel, Source={StaticResource LocalizedResources}}" Style="{StaticResource PhoneTextSubtleStyle}" Margin="12,0,12,4" />
                 <tk:ListPicker ItemsSource="{Binding ColourOptions}" SelectedItem="{Binding SuccessfulColor, Mode=TwoWay}" Margin="12,-5,0,28"
                                         ItemTemplate="{StaticResource ColorPickerItemTemplate}" FullModeItemTemplate="{StaticResource ColorPickerFullModeItemTemplate}" />
 
-                <TextBlock Text="{Binding Path=SettingsStrings.FailedColor, Source={StaticResource LocalizedResources}}" Style="{StaticResource PhoneTextSubtleStyle}" Margin="12,0,12,4" />
+                <TextBlock Text="{Binding Path=SettingsStrings.FailedLabel, Source={StaticResource LocalizedResources}}" Style="{StaticResource PhoneTextSubtleStyle}" Margin="12,0,12,4" />
                 <tk:ListPicker ItemsSource="{Binding ColourOptions}" SelectedItem="{Binding FailedColor, Mode=TwoWay}" Margin="12,-5,0,28"
                                         ItemTemplate="{StaticResource ColorPickerItemTemplate}" FullModeItemTemplate="{StaticResource ColorPickerFullModeItemTemplate}" />
 
-                <TextBlock Text="{Binding Path=SettingsStrings.UnavailableColor, Source={StaticResource LocalizedResources}}" Style="{StaticResource PhoneTextSubtleStyle}" Margin="12,0,12,4" />
+                <TextBlock Text="{Binding Path=SettingsStrings.UnavailableLabel, Source={StaticResource LocalizedResources}}" Style="{StaticResource PhoneTextSubtleStyle}" Margin="12,0,12,4" />
                 <tk:ListPicker ItemsSource="{Binding ColourOptions}" SelectedItem="{Binding UnavailableColor, Mode=TwoWay}" Margin="12,-5,0,12"
                                         ItemTemplate="{StaticResource ColorPickerItemTemplate}" FullModeItemTemplate="{StaticResource ColorPickerFullModeItemTemplate}" />
 

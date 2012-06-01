@@ -330,7 +330,9 @@
     <None Include="App.config" />
     <None Include="packages.config" />
     <None Include="Properties\AppManifest.xml" />
-    <None Include="Properties\WMAppManifest.xml" />
+    <None Include="Properties\WMAppManifest.xml">
+      <SubType>Designer</SubType>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <Content Include="ApplicationIcon.png">
@@ -342,6 +344,9 @@
     <Content Include="Content\Help\AddServer.html" />
     <Content Include="Content\Help\ChangeLog.html" />
     <Content Include="Content\Help\shared\help.css" />
+    <Resource Include="Images\Tiles\Failed.png" />
+    <Resource Include="Images\Tiles\Success.png" />
+    <Resource Include="Images\Tiles\Unavailable.png" />
     <Content Include="Toolkit.Content\ApplicationBar.Cancel.png" />
     <Content Include="Toolkit.Content\ApplicationBar.Check.png" />
     <Content Include="Toolkit.Content\ApplicationBar.Delete.png" />
@@ -358,10 +363,7 @@
     <Content Include="Images\appbar.refresh.rest.png" />
     <Content Include="Images\appbar.save.rest.png" />
     <Content Include="Images\appbar.transport.play.rest.png" />
-    <Content Include="Images\Tiles\Failed.png" />
-    <Content Include="Images\Tiles\Success.png" />
     <Content Include="Images\Tiles\Template.png" />
-    <Content Include="Images\Tiles\Unavailable.png" />
     <Page Include="Resources\ControlTemplates.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>

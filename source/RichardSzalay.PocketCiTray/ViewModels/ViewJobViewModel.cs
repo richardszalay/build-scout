@@ -82,15 +82,18 @@ namespace RichardSzalay.PocketCiTray.ViewModels
         private void OnDelete()
         {
             jobController.DeleteJob(Job)
-                .Subscribe(_ => { }, () =>
+                .Subscribe(deleted =>
                 {
-                    if (navigationService.CanGoBack)
+                    if (deleted)
                     {
-                        navigationService.GoBack();
-                    }
-                    else
-                    {
-                        navigationService.Navigate(ViewUris.ListJobs);
+                        if (navigationService.CanGoBack)
+                        {
+                            navigationService.GoBack();
+                        }
+                        else
+                        {
+                            navigationService.Navigate(ViewUris.ListJobs);
+                        }
                     }
                 });
         }

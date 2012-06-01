@@ -42,7 +42,7 @@ namespace RichardSzalay.PocketCiTray.Controllers
             this.applicationMarketplace = applicationMarketplace;
         }
 
-        public IObservable<Unit> DeleteJob(Job job)
+        public IObservable<bool> DeleteJob(Job job)
         {
             var result = messageBoxFacade.Show(Strings.DeleteJobConfirmationMessage,
                 Strings.DeleteJobConfirmationDescription, MessageBoxButton.OKCancel);
@@ -50,11 +50,12 @@ namespace RichardSzalay.PocketCiTray.Controllers
             if (result == MessageBoxResult.OK)
             {
                 return Observable.ToAsync(() => DeleteJobInternal(job), schedulerAccessor.Background)()
-                    .ObserveOn(schedulerAccessor.UserInterface);
+                    .ObserveOn(schedulerAccessor.UserInterface)
+                    .Select(_ => true);
             }
             else
             {
-                return Observable.Empty<Unit>();
+                return Observable.Return(false);
             }
         }
 
