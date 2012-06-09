@@ -1,9 +1,6 @@
 <MarketplaceDetails>
-  <SmallAppTile>
-  </SmallAppTile>
-  <LargeAppTile>
-  </LargeAppTile>
-  <PCAppTile>
-  </PCAppTile>
-  <ScreenShots>;;;;;;;;</ScreenShots>
+  <SmallAppTile>SmallMarketplaceImage.png</SmallAppTile>
+  <LargeAppTile>LargeApplicationIcon.png</LargeAppTile>
+  <PCAppTile>LargeMarketplaceImage.png</PCAppTile>
+  <ScreenShots>Screenshot-JobList.png;Screenshot-JobDetails.png;Screenshot-SelectServer.png;Screenshot-ServerJobs.png;Screenshot-ScheduleSettings.png;Screenshot-NotificationSettings.png;Screenshot-ColourSettings.png;Screenshot-LiveTiles.png;</ScreenShots>
 </MarketplaceDetails>

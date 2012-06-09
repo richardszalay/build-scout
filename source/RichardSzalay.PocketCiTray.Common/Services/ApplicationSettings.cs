@@ -121,19 +121,19 @@ namespace RichardSzalay.PocketCiTray.Services
 
         public Uri SuccessTileUri
         {
-            get { return new Uri(GetValue("SuccessTileUri", "Images/Tiles/Success.png"), UriKind.RelativeOrAbsolute); }
+            get { return new Uri(GetValue("SuccessTileUri", "Images/Tiles/Success.jpg"), UriKind.RelativeOrAbsolute); }
             set { ChangeValue("SuccessTileUri", value.OriginalString); }
         }
 
         public Uri FailureTileUri
         {
-            get { return new Uri(GetValue("FailureTileUri", "Images/Tiles/Failed.png"), UriKind.RelativeOrAbsolute); }
+            get { return new Uri(GetValue("FailureTileUri", "Images/Tiles/Failed.jpg"), UriKind.RelativeOrAbsolute); }
             set { ChangeValue("FailureTileUri", value.OriginalString); }
         }
 
         public Uri UnavailableTileUri
         {
-            get { return new Uri(GetValue("UnavailableTileUri", "Images/Tiles/Unavailable.png"), UriKind.RelativeOrAbsolute); }
+            get { return new Uri(GetValue("UnavailableTileUri", "Images/Tiles/Unavailable.jpg"), UriKind.RelativeOrAbsolute); }
             set { ChangeValue("UnavailableTileUri", value.OriginalString); }
         }
 

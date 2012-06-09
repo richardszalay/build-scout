@@ -19,7 +19,7 @@
     <SupportedCultures>en-US;en-GB</SupportedCultures>
     <XapOutputs>true</XapOutputs>
     <GenerateSilverlightManifest>true</GenerateSilverlightManifest>
-    <XapFilename>RichardSzalay.PocketCiTray.xap</XapFilename>
+    <XapFilename>RichardSzalay.PocketBuild.xap</XapFilename>
     <SilverlightManifestTemplate>Properties\AppManifest.xml</SilverlightManifestTemplate>
     <SilverlightAppEntry>RichardSzalay.PocketCiTray.App</SilverlightAppEntry>
     <ValidateXaml>true</ValidateXaml>
@@ -344,9 +344,10 @@
     <Content Include="Content\Help\AddServer.html" />
     <Content Include="Content\Help\ChangeLog.html" />
     <Content Include="Content\Help\shared\help.css" />
-    <Resource Include="Images\Tiles\Failed.png" />
-    <Resource Include="Images\Tiles\Success.png" />
-    <Resource Include="Images\Tiles\Unavailable.png" />
+    <Content Include="Images\Tiles\Failed.jpg" />
+    <Content Include="Images\Tiles\Success.jpg" />
+    <Content Include="Images\Tiles\Template.png" />
+    <Content Include="Images\Tiles\Unavailable.jpg" />
     <Content Include="Toolkit.Content\ApplicationBar.Cancel.png" />
     <Content Include="Toolkit.Content\ApplicationBar.Check.png" />
     <Content Include="Toolkit.Content\ApplicationBar.Delete.png" />
@@ -363,7 +364,6 @@
     <Content Include="Images\appbar.refresh.rest.png" />
     <Content Include="Images\appbar.save.rest.png" />
     <Content Include="Images\appbar.transport.play.rest.png" />
-    <Content Include="Images\Tiles\Template.png" />
     <Page Include="Resources\ControlTemplates.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>

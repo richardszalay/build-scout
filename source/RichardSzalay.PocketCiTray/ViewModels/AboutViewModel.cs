@@ -19,7 +19,7 @@ namespace RichardSzalay.PocketCiTray.ViewModels
 {
     public class AboutViewModel : ViewModelBase
     {
-        private const string AuthorEmailAddress = "\"Richard Szalay\" <buildscout@richardszalay.com>";
+        private const string AuthorEmailAddress = "\"Richard Szalay\" <richard@richardszalay.com>";
 
         private readonly IEmailComposeTaskFacade emailComposeTask;
         private readonly IApplicationInformation applicationInformation;

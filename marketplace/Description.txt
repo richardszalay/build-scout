@@ -1,0 +1,5 @@
+Build Scout makes it easy to track the status of your build jobs from your phone. Add jobs from Hudson/Jenkins, TeamCity, or any CCTray compatible server and Build Scout will monitor them in the background and notify you if anything goes wrong. Pin important jobs to the start screen to track their status without even starting the app.
+
+A free trial is available with a single job limitation.
+
+Background updates, live tiles and notifications are not available on 256MB devices.
