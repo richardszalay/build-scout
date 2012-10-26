@@ -60,7 +60,9 @@ namespace RichardSzalay.PocketCiTray.BackgroundTask
 
             if (!container.Resolve<IMutexService>().WaitOne(MutexNames.ForegroundApplication))
             {
+#if DEBUG
                 Debug.WriteLine("Foreground process is running, aborting agent task");
+#endif
                 NotifyComplete();
                 return;
             }

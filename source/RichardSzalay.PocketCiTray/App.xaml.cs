@@ -17,6 +17,8 @@ namespace RichardSzalay.PocketCiTray
 {
     public partial class App : Application
     {
+        private WebBrowser fixForCapabilityDetection;
+
         /// <summary>
         /// Provides easy access to the root frame of the Phone Application.
         /// </summary>
@@ -28,8 +30,6 @@ namespace RichardSzalay.PocketCiTray
         /// </summary>
         public App()
         {
-            Debug.WriteLine("[{0:hh:mm:ss.fff}] Begin App.ctor", DateTimeOffset.UtcNow);
-
             TiltEffect.TiltableItems.Add(typeof(MultiselectItem));
             
             BugSenseHandler.Instance.Init(this, "6726e103");
@@ -50,9 +50,6 @@ namespace RichardSzalay.PocketCiTray
 #if DEBUG
             //WindowsPhoneTestFramework.Client.AutomationClient.Automation.Instance.Initialise();
 #endif //DEBUG
-
-            Debug.WriteLine("[{0:hh:mm:ss.fff}] End App.ctor", DateTimeOffset.UtcNow);
-
         }
 
         private Container container;
@@ -61,8 +58,6 @@ namespace RichardSzalay.PocketCiTray
         // This code will not execute when the application is reactivated
         private void Application_Launching(object sender, LaunchingEventArgs e)
         {
-            Debug.WriteLine("[{0:hh:mm:ss.fff}] Begin App.Launching", DateTimeOffset.UtcNow);
-
             container = ConfigureContainer();
 
             this.log = container.Resolve<ILog>();
@@ -71,8 +66,6 @@ namespace RichardSzalay.PocketCiTray
             bootstrap.Startup();
 
             EnableLoggingForDebug();
-
-            Debug.WriteLine("[{0:hh:mm:ss.fff}] End App.Launching", DateTimeOffset.UtcNow);
         }
 
         // Code to execute when the application is activated (brought to foreground)
