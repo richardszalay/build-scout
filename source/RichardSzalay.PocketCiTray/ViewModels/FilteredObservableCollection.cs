@@ -310,8 +310,6 @@ namespace RichardSzalay.PocketCiTray.ViewModels
                 items = String.Join(", ", args.OldItems.Cast<Object>().Select(x => x.ToString()));
                 index = args.OldStartingIndex.ToString();
             }
-
-            Debug.WriteLine("{0}[{1}] {2}", symbol, index, items);
         }
 
         //private static IEnumerable<NotifyCollectionChangedEventArgs>

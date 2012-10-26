@@ -30,7 +30,8 @@ namespace RichardSzalay.PocketCiTray.View
             {
                 e.ContinuumElement = (FrameworkElement)e.ContinuumElement
                     .Descendants()
-                    .First(x => (string)x.GetValue(FrameworkElement.NameProperty) == "JobName");
+                    .FirstOrDefault(x => (string)x.GetValue(FrameworkElement.NameProperty) == "JobName")
+                    ?? e.ContinuumElement;
             }
         }
     }
